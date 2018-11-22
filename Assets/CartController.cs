@@ -32,7 +32,6 @@ public class CartController : MonoBehaviour {
    
     
 
-  
     public float angle;
     public Vector3 worldTouch;
     public Vector3 screenTouch;
