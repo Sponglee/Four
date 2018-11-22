@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 159276105}
   m_Layer: 0
   m_Name: Cart1
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -671,7 +671,7 @@ GameObject:
   - component: {fileID: 372958484}
   m_Layer: 0
   m_Name: DollyHolder1
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_Path: {fileID: 980028802}
   m_UpdateMethod: 0
   m_PositionUnits: 0
-  m_Speed: 3
+  m_Speed: 0
   m_Position: 3
 --- !u!4 &372958483
 Transform:
@@ -725,11 +725,15 @@ MonoBehaviour:
   - {fileID: 1330973415}
   speed: 0
   current: 0
+  angle: 0
+  worldTouch: {x: 0, y: 0, z: 0}
   screenTouch: {x: 0, y: 0, z: 0}
   touchPosition: {x: 0, y: 0, z: 0}
   firstScreenTouch: {x: 0, y: 0, z: 0}
   firstTouchPosition: {x: 0, y: 0, z: 0}
   firstTouchAngle: 0
+  firstCurrent: 0
+  MoveDirection: 0
 --- !u!1 &457062917
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +747,7 @@ GameObject:
   - component: {fileID: 457062919}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -906,7 +910,7 @@ GameObject:
   - component: {fileID: 562882462}
   m_Layer: 0
   m_Name: 1 (1)
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1085,7 +1089,7 @@ GameObject:
   - component: {fileID: 738389737}
   m_Layer: 5
   m_Name: Image
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1233,7 +1237,7 @@ GameObject:
   - component: {fileID: 848786651}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1412,7 +1416,7 @@ GameObject:
   - component: {fileID: 936372678}
   m_Layer: 5
   m_Name: Image
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1646,11 +1650,15 @@ MonoBehaviour:
   - {fileID: 1330973415}
   speed: 8
   current: 0
+  angle: 0
+  worldTouch: {x: 0, y: 0, z: 0}
   screenTouch: {x: 0, y: 0, z: 0}
   touchPosition: {x: 0, y: 0, z: 0}
   firstScreenTouch: {x: 0, y: 0, z: 0}
   firstTouchPosition: {x: 0, y: 0, z: 0}
   firstTouchAngle: 0
+  firstCurrent: 0
+  MoveDirection: 0
 --- !u!114 &985218651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1694,7 +1702,7 @@ GameObject:
   - component: {fileID: 988719697}
   m_Layer: 0
   m_Name: 2 (1)
-  m_TagString: Untagged
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1781,7 +1789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1004284638
 Transform:
   m_ObjectHideFlags: 0
@@ -2982,15 +2990,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1972847504}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 2.5000033, z: 2}
+  m_LocalRotation: {x: 0.5014148, y: -0.49858126, z: 0.501415, w: -0.49858105}
+  m_LocalPosition: {x: 0, y: 4.4984217, z: 4.2553334}
+  m_LocalScale: {x: 5, y: 2.500006, z: 2}
   m_Children:
   - {fileID: 985186891}
   - {fileID: 1922543356}
   m_Father: {fileID: 985218652}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: -180, y: 89.99999, z: 0}
 --- !u!65 &1972847506
 BoxCollider:
   m_ObjectHideFlags: 0
