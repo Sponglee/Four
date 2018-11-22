@@ -8,8 +8,13 @@ public class CartController : MonoBehaviour {
 
     public Transform center;
 
+    public GameObject[] carts;
+    public int[] currents;
     public CinemachineSmoothPath[] paths;
     private CinemachineDollyCart tempCart;
+    private GameObject selectedCart;
+    public int selectedIndex;
+
     public float speed;
 
     [SerializeField]
@@ -19,51 +24,74 @@ public class CartController : MonoBehaviour {
     public int Current
     {
         get
-        { return current;}
+        {
+            current = currents[selectedIndex];
+            return current;
+        }
         set
         {
+            
             current = value;
+            //Check if passes 0 and set to value again
             if (current < 0)
                 current = paths.Length - 1;
             else if (current > paths.Length - 1)
                 current = 0;
+            currents[selectedIndex] = current;
         }
     }
    
-    
+ 
 
     public float angle;
-    public Vector3 worldTouch;
-    public Vector3 screenTouch;
-    public Vector3 touchPosition;
+    private Vector3 worldTouch;
+    private Vector3 screenTouch;
+    private Vector3 touchPosition;
 
-    public Vector3 firstCartTouch;
+    private Vector3 firstCartTouch;
 
-    public Vector3 firstScreenTouch;
-    public Vector3 firstTouchPosition;
-    public Vector3 firstCartTouchPosition;
-    public float firstTouchAngle;
-    public int firstCurrent;
-    public bool firstClickBool = false;
+    private Vector3 firstScreenTouch;
+    private Vector3 firstTouchPosition;
+    private Vector3 firstCartTouchPosition;
+    private float firstTouchAngle;
+    private int firstCurrent;
+    private bool firstClickBool = false;
 
     //To prevent changing direction while moving (-1 - left, 1 - right, 0 - free)
-    public int MoveDirection = 0;
+    private int MoveDirection = 0;
 
     
 
     private void Start()
     {
-        tempCart = gameObject.GetComponent<CinemachineDollyCart>();
+        
     }
 
     // Update is called once per frame
     void Update () {
-        Debug.DrawLine(firstCartTouch, center.position, Color.red);
 
 
-        if (Input.GetMouseButtonDown(0) && IsPointerOverUIObject("Cart"))
+      
+
+        
+        if (Input.GetMouseButtonDown(0) && (IsPointerOverUIObject("Cart1") || IsPointerOverUIObject("Cart2")))
         {
-            
+            if (IsPointerOverUIObject("Cart1"))
+            {
+                selectedIndex = 0;
+                selectedCart = carts[0];
+                //current = currents[0];
+                tempCart = selectedCart.GetComponent<CinemachineDollyCart>();
+            }
+            else if (IsPointerOverUIObject("Cart2"))
+            {
+                selectedIndex = 1;
+                selectedCart = carts[selectedIndex];
+                //current = currents[selectedIndex];
+                tempCart = selectedCart.GetComponent<CinemachineDollyCart>();
+            }
+
+
             firstClickBool = true;
             //For tracking speed
             firstTouchPosition = Input.mousePosition;
@@ -77,7 +105,7 @@ public class CartController : MonoBehaviour {
         }
 
 
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0) && firstClickBool)
         {
 
 
@@ -90,13 +118,13 @@ public class CartController : MonoBehaviour {
 
 
             // when cart reaches its goal - move next but upto checkCurrent and not too far
-            if (tempCart.m_Position == 3 && Current != checkCurrent && IsNearCurrent(checkCurrent, current) && MoveDirection == 1)
+            if (tempCart.m_Position == 3 && Current != checkCurrent && IsNearCurrent(checkCurrent, Current) && MoveDirection == 1)
             {
                 tempCart.m_Position = 0;
                 Current += 1;
                
             }
-            else if (tempCart.m_Position == 0 && Current != checkCurrent && IsNearCurrent(checkCurrent, current) && MoveDirection == -1)
+            else if (tempCart.m_Position == 0 && Current != checkCurrent && IsNearCurrent(checkCurrent, Current) && MoveDirection == -1)
             {
                 tempCart.m_Position = 3;
                 Current -= 1;
@@ -106,22 +134,23 @@ public class CartController : MonoBehaviour {
             tempCart.m_Path = paths[Current];
 
             //Check if u clicked on cart first
-            if (firstClickBool)
-            {
+            //if (firstClickBool)
+            //{
                 //check where coursor is 
-                if (screenTouch.x < 0.5 && screenTouch.y > 0.5)
-                    checkCurrent = 0;
-                else if (screenTouch.x > 0.5 && screenTouch.y > 0.5)
-                    checkCurrent = 1;
-                else if (screenTouch.x > 0.5 && screenTouch.y < 0.5)
-                    checkCurrent = 2;
-                else if (screenTouch.x < 0.5 && screenTouch.y < 0.5)
-                    checkCurrent = 3;
-            }
+            if (screenTouch.x < 0.5 && screenTouch.y > 0.5)
+                checkCurrent = 0;
+            else if (screenTouch.x > 0.5 && screenTouch.y > 0.5)
+                checkCurrent = 1;
+            else if (screenTouch.x > 0.5 && screenTouch.y < 0.5)
+                checkCurrent = 2;
+            else if (screenTouch.x < 0.5 && screenTouch.y < 0.5)
+                checkCurrent = 3;
+            //}
 
             //For moving right
             if (angle > 10 && MoveDirection != -1)
             {
+
                 MoveDirection = 1;
                 tempCart.m_Speed = Vector3.Distance(firstScreenTouch, screenTouch) / Time.deltaTime;
                 //set min and max speeds
@@ -147,6 +176,11 @@ public class CartController : MonoBehaviour {
 
         if(Input.GetMouseButtonUp(0))
         {
+            //if(MoveDirection == 0)
+            //{
+            //    carts[selectedIndex].transform.GetChild(0).Rotate(Vector3.up, 180f);
+            //}
+
             MoveDirection = 0;
             firstClickBool = false;
         }
@@ -157,6 +191,7 @@ public class CartController : MonoBehaviour {
     //Check if u point to nearest current
     private bool IsNearCurrent(int checkCurr, int curr)
     {
+
         if (checkCurr == 0 && curr == 3)
             return true;
         else if (checkCurr == 3 && curr == 0)
@@ -185,12 +220,24 @@ public class CartController : MonoBehaviour {
 
 
     // Is touching tag
-    public bool IsPointerOverUIObject(string obj)
+    private bool IsPointerOverUIObject(string obj)
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        int i = 0;
+        foreach ( RaycastResult result in results)
+        {
+            i++;
+            Debug.Log(">"+i+" "  + result.gameObject.tag);
+             
+        }
+
+
+
         if (results.Count > 0)
             return results[0].gameObject.CompareTag(obj);
         else
