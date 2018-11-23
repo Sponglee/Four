@@ -6,40 +6,23 @@ using UnityEngine.EventSystems;
 
 public class CartController : MonoBehaviour {
 
-    public Transform center;
-
-    public GameObject[] carts;
-    public int[] currents;
     public CinemachineSmoothPath[] paths;
-    private CinemachineDollyCart tempCart;
-    private GameObject selectedCart;
+
+    public Transform center;
+    public CartModelContoller[] carts;
+
+    public int[] currents;
+    public GameObject[] cartModels;
+
+    private CinemachineDollyCart selectedDolly;
+    private CartModelContoller selectedCart;
     public int selectedIndex;
 
     public float speed;
 
     [SerializeField]
     private int checkCurrent;
-    [SerializeField]
-    private int current;
-    public int Current
-    {
-        get
-        {
-            current = currents[selectedIndex];
-            return current;
-        }
-        set
-        {
-            
-            current = value;
-            //Check if passes 0 and set to value again
-            if (current < 0)
-                current = paths.Length - 1;
-            else if (current > paths.Length - 1)
-                current = 0;
-            currents[selectedIndex] = current;
-        }
-    }
+   
    
  
 
@@ -80,15 +63,14 @@ public class CartController : MonoBehaviour {
             {
                 selectedIndex = 0;
                 selectedCart = carts[0];
-                //current = currents[0];
-                tempCart = selectedCart.GetComponent<CinemachineDollyCart>();
+                selectedDolly = carts[0].gameObject.GetComponent<CinemachineDollyCart>();
+               
             }
             else if (IsPointerCast("Cart2"))
             {
                 selectedIndex = 1;
-                selectedCart = carts[selectedIndex];
-                //current = currents[selectedIndex];
-                tempCart = selectedCart.GetComponent<CinemachineDollyCart>();
+                selectedCart = carts[1];
+                selectedDolly = carts[1].gameObject.GetComponent<CinemachineDollyCart>();
             }
 
 
@@ -118,20 +100,30 @@ public class CartController : MonoBehaviour {
 
 
             // when cart reaches its goal - move next but upto checkCurrent and not too far
-            if (tempCart.m_Position == 3 && Current != checkCurrent && IsNearCurrent(checkCurrent, Current) && MoveDirection == 1)
+            if (selectedDolly.m_Position== 3 && MoveDirection == 1)
             {
-                tempCart.m_Position = 0;
-                Current += 1;
+
+                if(IsNearCurrent(checkCurrent,selectedCart.Current))
+                {
+                    selectedDolly.m_Position = 0;
+                    selectedCart.Current += 1;
+                    Debug.Log("DING " + checkCurrent + ":" + selectedCart.Current);
+                }
+
                
             }
-            else if (tempCart.m_Position == 0 && Current != checkCurrent && IsNearCurrent(checkCurrent, Current) && MoveDirection == -1)
+            else if (selectedDolly.m_Position == 0 && MoveDirection == -1)
             {
-                tempCart.m_Position = 3;
-                Current -= 1;
-                
+                if (IsNearCurrent(checkCurrent,selectedCart.Current))
+                {
+                    Debug.Log("DONG " + checkCurrent + ":" + selectedCart.Current);
+                    selectedDolly.m_Position = 3;
+                    selectedCart.Current -= 1;
+                }
+
             }
-            //Set path after calculating current
-            tempCart.m_Path = paths[Current];
+
+            
 
             //Check if u clicked on cart first
             //if (firstClickBool)
@@ -152,23 +144,23 @@ public class CartController : MonoBehaviour {
             {
 
                 MoveDirection = 1;
-                tempCart.m_Speed = Vector3.Distance(firstScreenTouch, screenTouch) / Time.deltaTime;
+                selectedDolly.m_Speed = Vector3.Distance(firstScreenTouch, screenTouch) / Time.deltaTime;
                 //set min and max speeds
-                if (tempCart.m_Speed < 8)
-                    tempCart.m_Speed = 8;
-                else if (tempCart.m_Speed >= 30)
-                    tempCart.m_Speed = 30;
+                if (selectedDolly.m_Speed < 8)
+                    selectedDolly.m_Speed = 8;
+                else if (selectedDolly.m_Speed >= 30)
+                    selectedDolly.m_Speed = 30;
             }
             //For moving left
             else if (angle < -10 && MoveDirection != 1)
             {
                 MoveDirection = -1;
-                tempCart.m_Speed = -Vector3.Distance(firstScreenTouch, screenTouch) / Time.deltaTime;
+                selectedDolly.m_Speed = -Vector3.Distance(firstScreenTouch, screenTouch) / Time.deltaTime;
                 //set min and max speeds
-                if (tempCart.m_Speed > -8)
-                    tempCart.m_Speed = -8;
-                else if (tempCart.m_Speed <= -30)
-                    tempCart.m_Speed = -30;
+                if (selectedDolly.m_Speed > -8)
+                    selectedDolly.m_Speed = -8;
+                else if (selectedDolly.m_Speed <= -30)
+                    selectedDolly.m_Speed = -30;
             }
 
         }
@@ -261,4 +253,10 @@ public class CartController : MonoBehaviour {
         }
         return false;
     }
+
+
+   
+
+
+    
 }

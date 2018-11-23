@@ -217,7 +217,6 @@ GameObject:
   - component: {fileID: 159276108}
   - component: {fileID: 159276107}
   - component: {fileID: 159276106}
-  - component: {fileID: 159276105}
   m_Layer: 0
   m_Name: Cart1
   m_TagString: Cart1
@@ -225,18 +224,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &159276105
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 159276104}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &159276106
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -900,6 +887,9 @@ GameObject:
   m_Component:
   - component: {fileID: 372958483}
   - component: {fileID: 372958482}
+  - component: {fileID: 372958485}
+  - component: {fileID: 372958484}
+  - component: {fileID: 372958486}
   m_Layer: 0
   m_Name: DollyHolder1
   m_TagString: Cart1
@@ -935,8 +925,52 @@ Transform:
   m_Children:
   - {fileID: 159276108}
   m_Father: {fileID: 1122500937}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
+--- !u!54 &372958484
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 372958481}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &372958485
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 372958481}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.95, y: 2.42, z: 5.43}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &372958486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 372958481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paths:
+  - {fileID: 980028802}
+  - {fileID: 1814680755}
+  - {fileID: 197588450}
+  - {fileID: 1330973415}
+  current: 0
 --- !u!1 &457062917
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,7 +1175,7 @@ BoxCollider:
   m_GameObject: {fileID: 562882460}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1266,7 +1300,6 @@ GameObject:
   - component: {fileID: 689180139}
   - component: {fileID: 689180142}
   - component: {fileID: 689180141}
-  - component: {fileID: 689180140}
   m_Layer: 0
   m_Name: Cart2
   m_TagString: Cart2
@@ -1289,18 +1322,6 @@ Transform:
   m_Father: {fileID: 1474488296}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!65 &689180140
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 689180138}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &689180141
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1929,7 +1950,7 @@ BoxCollider:
   m_GameObject: {fileID: 988719695}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2145,7 +2166,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 1}
+  m_Size: {x: 1.04, y: 0.97, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1039240180
 MeshRenderer:
@@ -2600,7 +2621,7 @@ BoxCollider:
   m_GameObject: {fileID: 1113955545}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2672,8 +2693,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 4.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1474488296}
   - {fileID: 372958483}
+  - {fileID: 1474488296}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2688,20 +2709,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7baf237a5884b374d903db455c17e709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  center: {fileID: 1039240182}
-  carts:
-  - {fileID: 372958481}
-  - {fileID: 1474488293}
-  currents: 0000000002000000
   paths:
   - {fileID: 980028802}
   - {fileID: 1814680755}
   - {fileID: 197588450}
   - {fileID: 1330973415}
+  center: {fileID: 1039240182}
+  carts:
+  - {fileID: 372958486}
+  - {fileID: 1474488298}
+  currents: 0000000002000000
+  cartModels:
+  - {fileID: 372958481}
+  - {fileID: 1474488293}
   selectedIndex: 0
   speed: 0
   checkCurrent: 0
-  current: 0
   angle: 0
 --- !u!1 &1178556463
 GameObject:
@@ -3005,6 +3028,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1474488296}
   - component: {fileID: 1474488295}
+  - component: {fileID: 1474488294}
+  - component: {fileID: 1474488297}
+  - component: {fileID: 1474488298}
   m_Layer: 0
   m_Name: DollyHolder2
   m_TagString: Cart2
@@ -3012,6 +3038,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &1474488294
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1474488293}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.46, z: 5.51}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1474488295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3040,8 +3078,40 @@ Transform:
   m_Children:
   - {fileID: 689180139}
   m_Father: {fileID: 1122500937}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
+--- !u!54 &1474488297
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1474488293}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1474488298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1474488293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paths:
+  - {fileID: 980028802}
+  - {fileID: 1814680755}
+  - {fileID: 197588450}
+  - {fileID: 1330973415}
+  current: 2
 --- !u!1 &1539146675
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,7 +3247,7 @@ BoxCollider:
   m_GameObject: {fileID: 1686233980}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
