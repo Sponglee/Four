@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CartController : MonoBehaviour {
+public class CartManager : MonoBehaviour {
 
     public CinemachineSmoothPath[] paths;
 
@@ -41,8 +41,9 @@ public class CartController : MonoBehaviour {
     private bool firstClickBool = false;
 
     //To prevent changing direction while moving (-1 - left, 1 - right, 0 - free)
-    private int MoveDirection = 0;
-
+    public int MoveDirection = 0;
+    //For collision moving
+    public int CartMoveDiretion = 0;
     
 
     private void Start()
@@ -59,6 +60,7 @@ public class CartController : MonoBehaviour {
         
         if (Input.GetMouseButtonDown(0) && (IsPointerCast("Cart1") || IsPointerCast("Cart2")))
         {
+            
             if (IsPointerCast("Cart1"))
             {
                 selectedIndex = 0;
@@ -71,6 +73,8 @@ public class CartController : MonoBehaviour {
                 selectedIndex = 1;
                 selectedCart = carts[1];
                 selectedDolly = carts[1].gameObject.GetComponent<CinemachineDollyCart>();
+
+
             }
 
 
@@ -107,7 +111,10 @@ public class CartController : MonoBehaviour {
                 {
                     selectedDolly.m_Position = 0;
                     selectedCart.Current += 1;
-                    Debug.Log("DING " + checkCurrent + ":" + selectedCart.Current);
+                    //Set path after calculating current
+                    selectedDolly.m_Path = paths[selectedCart.Current];
+                    CartMoveDiretion = 1;
+                    
                 }
 
                
@@ -116,9 +123,13 @@ public class CartController : MonoBehaviour {
             {
                 if (IsNearCurrent(checkCurrent,selectedCart.Current,MoveDirection))
                 {
-                    Debug.Log("DONG " + checkCurrent + ":" + selectedCart.Current);
+                    
                     selectedDolly.m_Position = 3;
                     selectedCart.Current -= 1;
+                    //Set path after calculating current
+                    selectedDolly.m_Path = paths[selectedCart.Current];
+                    CartMoveDiretion = -1;
+             
                 }
 
             }
@@ -175,6 +186,8 @@ public class CartController : MonoBehaviour {
 
             MoveDirection = 0;
             firstClickBool = false;
+            //Remember which side cart was going
+            selectedCart.lastDirection =  CartMoveDiretion;
         }
 
     }
@@ -187,7 +200,7 @@ public class CartController : MonoBehaviour {
         int checking = Mathf.Abs(checkCurr - curr);
         if (checking == 1)
             return true;
-        //when moving clockwise check if coursor not at 3
+        //when moving clockwise check if coursor not at 3 and vice-versa
         else if (checking != 1 && moveDir == 1 && checkCurr == 0 && curr == 3)
             return true;
         else if (checking != 1 && moveDir == -1 && checkCurr ==3  && curr == 0)
