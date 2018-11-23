@@ -74,16 +74,16 @@ public class CartController : MonoBehaviour {
       
 
         
-        if (Input.GetMouseButtonDown(0) && (IsPointerOverUIObject("Cart1") || IsPointerOverUIObject("Cart2")))
+        if (Input.GetMouseButtonDown(0) && (IsPointerCast("Cart1") || IsPointerCast("Cart2")))
         {
-            if (IsPointerOverUIObject("Cart1"))
+            if (IsPointerCast("Cart1"))
             {
                 selectedIndex = 0;
                 selectedCart = carts[0];
                 //current = currents[0];
                 tempCart = selectedCart.GetComponent<CinemachineDollyCart>();
             }
-            else if (IsPointerOverUIObject("Cart2"))
+            else if (IsPointerCast("Cart2"))
             {
                 selectedIndex = 1;
                 selectedCart = carts[selectedIndex];
@@ -174,12 +174,12 @@ public class CartController : MonoBehaviour {
         }
 
 
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
-            //if(MoveDirection == 0)
-            //{
-            //    carts[selectedIndex].transform.GetChild(0).Rotate(Vector3.up, 180f);
-            //}
+            if (MoveDirection == 0 && (IsPointerCast("Cart1") || IsPointerCast("Cart2")))
+            {
+                carts[selectedIndex].transform.GetChild(0).Rotate(Vector3.up, 180f);
+            }
 
             MoveDirection = 0;
             firstClickBool = false;
@@ -244,4 +244,21 @@ public class CartController : MonoBehaviour {
             return false;
     }
 
+
+    private bool IsPointerCast(string obj)
+    {
+        RaycastHit hit;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 100f))
+        {
+            if(hit.transform)
+            {
+                if (hit.transform.gameObject.CompareTag(obj))
+                    return true;
+            }
+        }
+        return false;
+    }
 }
