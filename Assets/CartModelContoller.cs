@@ -11,8 +11,14 @@ public class CartModelContoller : MonoBehaviour
     private CinemachineDollyCart tempCart;
     public CinemachineSmoothPath[] paths;
     public CartManager cartManager;
-    //Keep track of what direction cart was moving for skipping track bug(0-3 position etc)
-    public int lastDirection;
+    private int cartNumber;
+
+
+    ////for Direction control
+    //public int lastDirection;
+    //public float lastDirectionTimer;
+
+
     [SerializeField]
     private int current;
     public int Current
@@ -23,97 +29,95 @@ public class CartModelContoller : MonoBehaviour
         }
         set
         {
-
             current = value;
             //Check if passes 0 and set to value again
             if (current < 0)
                 current = 3;
             else if (current > 3)
                 current = 0;
-            
-            
         }
     }
-
-
-
 
     private void Start()
     {
         tempCart = gameObject.GetComponent<CinemachineDollyCart>();
+        if (gameObject.CompareTag("Cart0"))
+            cartNumber = 0;
+        else if (gameObject.CompareTag("Cart1"))
+            cartNumber = 1;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         //first cart selected, hits second one(this), which is not moving
-        if (gameObject.CompareTag("Cart2") && cartManager.selectedIndex==0 && other.gameObject.CompareTag("Cart1") && !CollidedBool 
-                                            && gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0, 0, 0))
+        if (gameObject.CompareTag("Cart1") && cartManager.selectedIndex==0 && other.gameObject.CompareTag("Cart0") && !CollidedBool)
         {
             CollidedBool = true;
-            Debug.Log("YAY Cart2");
-          
-           
-            MoveOut(cartManager.CartMoveDiretion);
+            MoveOut(cartManager.CartMoveDirection);
         }
-        else if (gameObject.CompareTag("Cart1") && cartManager.selectedIndex == 1 && other.gameObject.CompareTag("Cart2") && !CollidedBool 
-                                            && gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0, 0, 0))
+        else if (gameObject.CompareTag("Cart0") && cartManager.selectedIndex == 1 && other.gameObject.CompareTag("Cart1") && !CollidedBool)                           
         {
             CollidedBool = true;
-
-            Debug.Log("YAY Cart 1");
-
-            MoveOut(cartManager.CartMoveDiretion);
+            MoveOut(cartManager.CartMoveDirection);
         }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
-
-        if (gameObject.CompareTag("Cart2") && cartManager.selectedIndex == 0 && other.gameObject.CompareTag("Cart1") && CollidedBool 
+        if (gameObject.CompareTag("Cart1") && cartManager.selectedIndex == 0 && other.gameObject.CompareTag("Cart0") && CollidedBool 
                                                 && gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0, 0, 0))
         {
-            CollidedBool = false;
-            Debug.Log("EXIT 2");
-            
-            //other.transform.parent.gameObject.GetComponent<CartController>().MoveOut(gameObject, 1);
+            CollidedBool = false;     
         }
-        else if (gameObject.CompareTag("Cart1") && cartManager.selectedIndex == 1 && other.gameObject.CompareTag("Cart2") && CollidedBool 
+        else if (gameObject.CompareTag("Cart0") && cartManager.selectedIndex == 1 && other.gameObject.CompareTag("Cart1") && CollidedBool 
                                                 && gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0, 0, 0))
         {
             CollidedBool = false;
-            Debug.Log("EXIT 1");
-
-            //other.transform.parent.gameObject.GetComponent<CartController>().MoveOut(gameObject, 1);
         }
     }
 
-
     private void MoveOut(int direction)
     {
-        if(lastDirection != direction)
+        if (GetCartAngle() > 0)
         {
-            tempCart.m_Speed = -tempCart.m_Speed;
-            lastDirection = direction;
-            Debug.Log("REEE");
-            return;
-        }
-        if(direction == 1)
-        {
+            if(tempCart.m_Position == 0)
+            {
+                tempCart.m_Speed = -tempCart.m_Speed;
+                return;
+            }
             Current++;
             //Set path after calculating current
             tempCart.m_Path = paths[current];
             tempCart.m_Position = 0;
-            tempCart.m_Speed = 30;
+            tempCart.m_Speed = 40;
 
         }
-        else if(direction == -1)
+        else if(GetCartAngle() < 0)
         {
+            if (tempCart.m_Position == 3)
+            {
+                tempCart.m_Speed = -tempCart.m_Speed;
+                return;
+            }
             Current--;
             //Set path after calculating current
             tempCart.m_Path = paths[current];
             tempCart.m_Position = 3;
-            tempCart.m_Speed = -30;
+            tempCart.m_Speed = -40;
         }
+    }
+
+    // Get angle for mousePosition
+    private float GetCartAngle()
+    {
+        Vector3 selCart = cartManager.carts[cartManager.selectedIndex].transform.position;
+        Vector3 selDirection = selCart - cartManager.center.position;
+
+        Vector3 moveCart = transform.position;
+        Vector3 direction = moveCart - cartManager.center.position;
+
+        //Get angle between mouse coursor and first touch on cart
+        return Mathf.Atan2(Vector3.Dot(Vector3.back, Vector3.Cross(selDirection, direction)),
+                                        Vector3.Dot(selDirection, direction)) * Mathf.Rad2Deg;
     }
 }

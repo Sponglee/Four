@@ -17,14 +17,14 @@ public class CartManager : MonoBehaviour {
     private CinemachineDollyCart selectedDolly;
     private CartModelContoller selectedCart;
     public int selectedIndex;
+    public int CartMoveDirection;
 
     public float speed;
 
     [SerializeField]
     private int checkCurrent;
-   
-   
- 
+
+
 
     public float angle;
     private Vector3 worldTouch;
@@ -42,41 +42,23 @@ public class CartManager : MonoBehaviour {
 
     //To prevent changing direction while moving (-1 - left, 1 - right, 0 - free)
     public int MoveDirection = 0;
-    //For collision moving
-    public int CartMoveDiretion = 0;
-    
-
-    private void Start()
-    {
-        
-    }
-
+  
     // Update is called once per frame
-    void Update () {
-
-
-      
-
-        
-        if (Input.GetMouseButtonDown(0) && (IsPointerCast("Cart1") || IsPointerCast("Cart2")))
+    void Update () {     
+        if (Input.GetMouseButtonDown(0) && (IsPointerCast("Cart0") || IsPointerCast("Cart1")))
         {
-            
-            if (IsPointerCast("Cart1"))
+            if (IsPointerCast("Cart0"))
             {
                 selectedIndex = 0;
                 selectedCart = carts[0];
-                selectedDolly = carts[0].gameObject.GetComponent<CinemachineDollyCart>();
-               
+                selectedDolly = carts[0].gameObject.GetComponent<CinemachineDollyCart>(); 
             }
-            else if (IsPointerCast("Cart2"))
+            else if (IsPointerCast("Cart1"))
             {
                 selectedIndex = 1;
                 selectedCart = carts[1];
                 selectedDolly = carts[1].gameObject.GetComponent<CinemachineDollyCart>();
-
-
             }
-
 
             firstClickBool = true;
             //For tracking speed
@@ -87,59 +69,39 @@ public class CartManager : MonoBehaviour {
             firstCartTouchPosition = Input.mousePosition;
             firstCartTouchPosition.z = 14.4f;
             firstCartTouch = Camera.main.ScreenToWorldPoint(firstCartTouchPosition);
-
         }
 
-
         if(Input.GetMouseButton(0) && firstClickBool)
-        {
-
-
+        {       
             angle = GetFirstClickAngle();
 
             //Check which part of screen coursor points on
             touchPosition = Input.mousePosition;
             screenTouch = Camera.main.ScreenToViewportPoint(touchPosition);
 
-
-
             // when cart reaches its goal - move next but upto checkCurrent and not too far
             if (selectedDolly.m_Position== 3 && MoveDirection == 1)
             {
-
                 if(IsNearCurrent(checkCurrent,selectedCart.Current,MoveDirection))
                 {
                     selectedDolly.m_Position = 0;
                     selectedCart.Current += 1;
                     //Set path after calculating current
-                    selectedDolly.m_Path = paths[selectedCart.Current];
-                    CartMoveDiretion = 1;
-                    
-                }
-
-               
+                    selectedDolly.m_Path = paths[selectedCart.Current]; 
+                } 
             }
             else if (selectedDolly.m_Position == 0 && MoveDirection == -1)
             {
                 if (IsNearCurrent(checkCurrent,selectedCart.Current,MoveDirection))
-                {
-                    
+                {   
                     selectedDolly.m_Position = 3;
                     selectedCart.Current -= 1;
                     //Set path after calculating current
                     selectedDolly.m_Path = paths[selectedCart.Current];
-                    CartMoveDiretion = -1;
-             
                 }
+            } 
 
-            }
-
-            
-
-            //Check if u clicked on cart first
-            //if (firstClickBool)
-            //{
-                //check where coursor is 
+            //check where coursor is 
             if (screenTouch.x < 0.5 && screenTouch.y > 0.5)
                 checkCurrent = 0;
             else if (screenTouch.x > 0.5 && screenTouch.y > 0.5)
@@ -148,8 +110,7 @@ public class CartManager : MonoBehaviour {
                 checkCurrent = 2;
             else if (screenTouch.x < 0.5 && screenTouch.y < 0.5)
                 checkCurrent = 3;
-            //}
-
+            
             //For moving right
             if (angle > 10 && MoveDirection != -1)
             {
@@ -165,6 +126,7 @@ public class CartManager : MonoBehaviour {
             //For moving left
             else if (angle < -10 && MoveDirection != 1)
             {
+
                 MoveDirection = -1;
                 selectedDolly.m_Speed = -Vector3.Distance(firstScreenTouch, screenTouch) / Time.deltaTime;
                 //set min and max speeds
@@ -174,24 +136,35 @@ public class CartManager : MonoBehaviour {
                     selectedDolly.m_Speed = -30;
             }
 
+            //Write move direction to cartcontroller
+            if (selectedDolly.m_Speed > 0)
+                CartMoveDirection = 1;
+            else if (selectedDolly.m_Speed < 0)
+                CartMoveDirection = -1;
         }
-
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (MoveDirection == 0 && (IsPointerCast("Cart1") || IsPointerCast("Cart2")))
+            if (MoveDirection == 0 && (IsPointerCast("Cart0") || IsPointerCast("Cart1")))
             {
                 carts[selectedIndex].transform.GetChild(0).Rotate(Vector3.up, 180f);
             }
 
-            MoveDirection = 0;
             firstClickBool = false;
-            //Remember which side cart was going
-            selectedCart.lastDirection =  CartMoveDiretion;
+            MoveDirection = 0;
         }
 
     }
 
+    //public void SaveLastDirection(int index)
+    //{
+    //    if (selectedDolly.m_Speed > 0)
+    //        carts[index].lastDirection = 1;
+    //    else if (selectedDolly.m_Speed < 0)
+    //        carts[index].lastDirection = -1;
+
+    //    carts[index].lastDirectionTimer += Time.deltaTime;
+    //}
 
     //Check if u point to nearest current
     private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
@@ -207,7 +180,6 @@ public class CartManager : MonoBehaviour {
             return true;
         else return false;
     }
-
 
     // Get angle for mousePosition
     private float GetFirstClickAngle()
@@ -243,8 +215,6 @@ public class CartManager : MonoBehaviour {
              
         }
 
-
-
         if (results.Count > 0)
             return results[0].gameObject.CompareTag(obj);
         else
@@ -267,11 +237,5 @@ public class CartManager : MonoBehaviour {
             }
         }
         return false;
-    }
-
-
-   
-
-
-    
+    } 
 }
