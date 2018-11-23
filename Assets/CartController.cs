@@ -103,7 +103,7 @@ public class CartController : MonoBehaviour {
             if (selectedDolly.m_Position== 3 && MoveDirection == 1)
             {
 
-                if(IsNearCurrent(checkCurrent,selectedCart.Current))
+                if(IsNearCurrent(checkCurrent,selectedCart.Current,MoveDirection))
                 {
                     selectedDolly.m_Position = 0;
                     selectedCart.Current += 1;
@@ -114,7 +114,7 @@ public class CartController : MonoBehaviour {
             }
             else if (selectedDolly.m_Position == 0 && MoveDirection == -1)
             {
-                if (IsNearCurrent(checkCurrent,selectedCart.Current))
+                if (IsNearCurrent(checkCurrent,selectedCart.Current,MoveDirection))
                 {
                     Debug.Log("DONG " + checkCurrent + ":" + selectedCart.Current);
                     selectedDolly.m_Position = 3;
@@ -181,14 +181,16 @@ public class CartController : MonoBehaviour {
 
 
     //Check if u point to nearest current
-    private bool IsNearCurrent(int checkCurr, int curr)
+    private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
     {
 
-        if (checkCurr == 0 && curr == 3)
+        int checking = Mathf.Abs(checkCurr - curr);
+        if (checking == 1)
             return true;
-        else if (checkCurr == 3 && curr == 0)
+        //when moving clockwise check if coursor not at 3
+        else if (checking != 1 && moveDir == 1 && checkCurr == 0 && curr == 3)
             return true;
-        else if (Mathf.Abs(checkCurr - curr) == 1)
+        else if (checking != 1 && moveDir == -1 && checkCurr ==3  && curr == 0)
             return true;
         else return false;
     }
