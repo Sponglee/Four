@@ -148,6 +148,7 @@ public class CartManager : MonoBehaviour {
             if (MoveDirection == 0 && (IsPointerCast("Cart0") || IsPointerCast("Cart1")))
             {
                 carts[selectedIndex].transform.GetChild(0).Rotate(Vector3.up, 180f);
+                //carts[selectedIndex].gameObject.GetComponent<BoxCollider>().isTrigger = !carts[selectedIndex].gameObject.GetComponent<BoxCollider>().isTrigger;
             }
 
             firstClickBool = false;
