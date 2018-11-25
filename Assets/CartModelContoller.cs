@@ -7,12 +7,35 @@ public class CartModelContoller : MonoBehaviour
 {
 
     //public int modelCurrent;
-    private bool CollidedBool = false;
+    private bool collidedBool = false;
+    public bool CollidedBool
+    {
+        get
+        {
+            return collidedBool;
+        }
+
+        set
+        {
+            collidedBool = value;
+            StartCoroutine(StopCollided());
+
+        }
+    }
+
+    public IEnumerator StopCollided()
+    {
+        yield return new WaitForSeconds(0.3f);
+        collidedBool = false;
+    }
+
     private CinemachineDollyCart tempCart;
     public CinemachineSmoothPath[] paths;
     public CartManager cartManager;
+    [SerializeField]
     private int cartNumber;
 
+    public bool IsLowered = false;
 
     ////for Direction control
     //public int lastDirection;
@@ -38,46 +61,50 @@ public class CartModelContoller : MonoBehaviour
         }
     }
 
+   
     private void Start()
     {
-        tempCart = gameObject.GetComponent<CinemachineDollyCart>();
+        tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
         if (gameObject.CompareTag("Cart0"))
             cartNumber = 0;
         else if (gameObject.CompareTag("Cart1"))
             cartNumber = 1;
+        else if (gameObject.CompareTag("Cart2"))
+            cartNumber = 2;
+        else if (gameObject.CompareTag("Cart3"))
+            cartNumber = 3;
     }
 
+
+    
     private void OnTriggerEnter(Collider other)
     {
+        ////////first cart selected, hits second one(this), which is not moving
+        //if (cartManager.selectedIndex != cartNumber && !collidedBool)
+        //{
+        //    
+        //    //MoveOut(cartManager.CartMoveDirection);
+        //    CollidedBool = true;
+        //}
+
+            Debug.Log(gameObject.tag);
         //first cart selected, hits second one(this), which is not moving
-        if (gameObject.CompareTag("Cart1") && cartManager.selectedIndex==0 && other.gameObject.CompareTag("Cart0") && !CollidedBool)
+        if (cartManager.selectedIndex != cartNumber && !collidedBool)
         {
             CollidedBool = true;
             MoveOut(cartManager.CartMoveDirection);
         }
-        else if (gameObject.CompareTag("Cart0") && cartManager.selectedIndex == 1 && other.gameObject.CompareTag("Cart1") && !CollidedBool)                           
-        {
-            CollidedBool = true;
-            MoveOut(cartManager.CartMoveDirection);
-        }
+       
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (gameObject.CompareTag("Cart1") && cartManager.selectedIndex == 0 && other.gameObject.CompareTag("Cart0") && CollidedBool 
-                                                && gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0, 0, 0))
-        {
-            CollidedBool = false;     
-        }
-        else if (gameObject.CompareTag("Cart0") && cartManager.selectedIndex == 1 && other.gameObject.CompareTag("Cart1") && CollidedBool 
-                                                && gameObject.GetComponent<Rigidbody>().velocity == new Vector3(0, 0, 0))
-        {
-            CollidedBool = false;
-        }
-    }
+
 
     private void MoveOut(int direction)
     {
+        //foreach(CartModelContoller tempModel in cartManager.carts)
+        //{
+
+        //}
         if (GetCartAngle() > 0)
         {
             if(tempCart.m_Position == 0)
@@ -92,7 +119,7 @@ public class CartModelContoller : MonoBehaviour
             tempCart.m_Speed = 40;
 
         }
-        else if(GetCartAngle() < 0)
+        else if (GetCartAngle() < 0)
         {
             if (tempCart.m_Position == 3)
             {
