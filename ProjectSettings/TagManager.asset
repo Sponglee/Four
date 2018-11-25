@@ -7,7 +7,6 @@ TagManager:
   - Cart2
   - Cart1
   - Cart0
-  - Cart3
   layers:
   - Default
   - TransparentFX

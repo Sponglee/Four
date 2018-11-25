@@ -12,8 +12,7 @@ public class CartManager : MonoBehaviour {
     public CartModelContoller[] carts;
 
     public int[] currents;
-    public GameObject[] cartModelsUpper;
-    public GameObject[] cartModelsLower;
+    public GameObject[] cartModels;
 
     private CinemachineDollyCart selectedDolly;
     private CartModelContoller selectedCart;
@@ -46,34 +45,20 @@ public class CartManager : MonoBehaviour {
   
     // Update is called once per frame
     void Update () {     
-        if (Input.GetMouseButtonDown(0) && (IsPointerCast("Cart0") || IsPointerCast("Cart1") || IsPointerCast("Cart2") || IsPointerCast("Cart3")))
+        if (Input.GetMouseButtonDown(0) && (IsPointerCast("Cart0") || IsPointerCast("Cart1")))
         {
             if (IsPointerCast("Cart0"))
             {
                 selectedIndex = 0;
                 selectedCart = carts[0];
-                selectedDolly = carts[0].gameObject.transform.parent.GetComponent<CinemachineDollyCart>(); 
+                selectedDolly = carts[0].gameObject.GetComponent<CinemachineDollyCart>(); 
             }
             else if (IsPointerCast("Cart1"))
             {
                 selectedIndex = 1;
                 selectedCart = carts[1];
-                selectedDolly = carts[1].gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
+                selectedDolly = carts[1].gameObject.GetComponent<CinemachineDollyCart>();
             }
-            else if (IsPointerCast("Cart2"))
-            {
-                selectedIndex = 2;
-                selectedCart = carts[2];
-                selectedDolly = carts[2].gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
-            }
-            else if (IsPointerCast("Cart3"))
-            {
-                selectedIndex = 3;
-                selectedCart = carts[3];
-                selectedDolly = carts[3].gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
-            }
-
-
 
             firstClickBool = true;
             //For tracking speed
@@ -86,7 +71,7 @@ public class CartManager : MonoBehaviour {
             firstCartTouch = Camera.main.ScreenToWorldPoint(firstCartTouchPosition);
         }
 
-        if(Input.GetMouseButton(0) && firstClickBool && !carts[selectedIndex].IsLowered)
+        if(Input.GetMouseButton(0) && firstClickBool)
         {       
             angle = GetFirstClickAngle();
 
@@ -160,12 +145,10 @@ public class CartManager : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (MoveDirection == 0 && (IsPointerCast("Cart0") || IsPointerCast("Cart1") || IsPointerCast("Cart2") || IsPointerCast("Cart3")))
+            if (MoveDirection == 0 && (IsPointerCast("Cart0") || IsPointerCast("Cart1")))
             {
-                carts[selectedIndex].transform.Rotate(Vector3.up, 180f);
-                carts[selectedIndex].IsLowered = !carts[selectedIndex].IsLowered;
-                
-                    //carts[selectedIndex].gameObject.GetComponent<BoxCollider>().isTrigger = !carts[selectedIndex].gameObject.GetComponent<BoxCollider>().isTrigger;
+                carts[selectedIndex].transform.GetChild(0).Rotate(Vector3.up, 180f);
+                //carts[selectedIndex].gameObject.GetComponent<BoxCollider>().isTrigger = !carts[selectedIndex].gameObject.GetComponent<BoxCollider>().isTrigger;
             }
 
             firstClickBool = false;
@@ -245,16 +228,13 @@ public class CartManager : MonoBehaviour {
         RaycastHit hit;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-       
+
         if (Physics.Raycast(ray, out hit, 100f))
         {
             if(hit.transform)
             {
                 if (hit.transform.gameObject.CompareTag(obj))
-                {
-                    Debug.DrawRay(hit.transform.position, Camera.main.transform.position,Color.red,5f);
                     return true;
-                }
             }
         }
         return false;
