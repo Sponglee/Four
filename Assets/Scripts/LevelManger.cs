@@ -1,0 +1,146 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LevelManger : MonoBehaviour {
+
+    //Level Generator vars
+    public GameObject levelPrefab;
+    public int spawnOffset = 0;
+
+
+    //Input vars
+    public float currentAngleSpeed = 1f;
+    public Vector3 startPosition;
+    public float maxRotateSpeed = 30f;
+    public int rotateSpeed;
+    public List<float> speedHistory;
+    public float minSwipeDistX = 10f;
+    public bool RotationProgress = false;
+
+    [SerializeField]
+    private float currentAngle;
+    public float CurrentAngle
+    {
+        get
+        {
+            return currentAngle;
+        }
+
+        set
+        {
+            currentAngle = value%360;
+        }
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+                GameObject tmpSpawn = Instantiate(levelPrefab, transform);
+                tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
+                spawnOffset += 5;
+        }
+
+        speedHistory = new List<float>();
+    }
+
+    // Update is called once per frame
+    void Update () {
+
+
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("HERE");
+            StartCoroutine(FollowRotate());
+        }
+
+
+        UpdateInput();
+        currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
+        CurrentAngle += currentAngleSpeed * Time.deltaTime;
+        transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
+
+
+    }
+
+    IEnumerator FollowRotate(float duration = 0.2f, float angle = 0)
+    {
+
+        //To avoid interruptions
+        RotationProgress = true;
+
+        //if there was followmouse
+
+        
+        float from = CurrentAngle;
+        float to = Mathf.Round(CurrentAngle / 90f)*90f;
+        Debug.Log("FROM: " + from + " TO: " + to);
+        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
+
+        //smooth lerp rotation loop
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            CurrentAngle = Mathf.Lerp(from, to, elapsed / duration);
+            elapsed += Time.fixedDeltaTime;
+
+            yield return null;
+        }
+    }
+
+
+
+    private void UpdateInput()
+    {
+    //
+    Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
+    float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
+    float screenWidth = ((float)Screen.width);
+    float moveXPercent = moveX / screenWidth;
+    float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+        if (true/*!GameManager.Instance.gameOver*/)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //
+                speedHistory.Clear();
+                currentAngleSpeed = 0f;
+                startPosition = Input.mousePosition;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                //
+                currentAngleSpeed = 0f;
+                if (moveXPercent > minSwipeDistX)
+                {
+                    speedHistory.Add(speed);
+                }
+                else
+                {
+                    speedHistory.Add(0f);
+                }
+                if (speedHistory.Count > 4)
+                {
+                    speedHistory.RemoveAt(0);
+                }
+                CurrentAngle += speed;
+                startPosition = Input.mousePosition;
+            }
+            else if (Input.GetMouseButtonUp(0) && (moveX > minSwipeDistX))
+            {
+                //
+                float speedX = 0f;
+                for (int i = 0; i < speedHistory.Count; i++)
+                {
+                    speedX += speedHistory[i];
+                }
+                currentAngleSpeed = 6f * speedX;
+                startPosition = Input.mousePosition;
+               
+            }
+        }
+    }
+}
+
