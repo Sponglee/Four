@@ -14,7 +14,7 @@ public class LevelManger : MonoBehaviour {
 		if(Input.GetMouseButtonDown(2))
         {
             GameObject tmpSpawn = Instantiate(levelPrefab, transform);
-            tmpSpawn.transform.position += new Vector3(0,-spawnOffset,0);
+            tmpSpawn.transform.position += new Vector3(0,0, spawnOffset);
             spawnOffset += 5;
         }
 	}
