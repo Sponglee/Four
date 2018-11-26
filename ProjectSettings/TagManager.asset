@@ -9,6 +9,7 @@ TagManager:
   - Cart0
   - Cart3
   - Cart
+  - Spawn
   layers:
   - Default
   - TransparentFX

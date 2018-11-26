@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManger : MonoBehaviour {
+public class LevelManager : Singleton<LevelManager> {
 
     //Level Generator vars
     public GameObject levelPrefab;
@@ -10,12 +10,12 @@ public class LevelManger : MonoBehaviour {
 
 
     //Input vars
-    public float currentAngleSpeed = 1f;
+    public float currentAngleSpeed = 0f;
     public Vector3 startPosition;
     public float maxRotateSpeed = 30f;
     public int rotateSpeed;
     public List<float> speedHistory;
-    public float minSwipeDistX = 10f;
+    public float minSwipeDistX = 50f;
     public bool RotationProgress = false;
 
     [SerializeField]
@@ -52,7 +52,7 @@ public class LevelManger : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("HERE");
+            //Finish rotation to even 90 degree slot
             StartCoroutine(FollowRotate());
         }
 
@@ -68,12 +68,10 @@ public class LevelManger : MonoBehaviour {
     IEnumerator FollowRotate(float duration = 0.2f, float angle = 0)
     {
 
-        //To avoid interruptions
-        RotationProgress = true;
-
+        
         //if there was followmouse
 
-        
+
         float from = CurrentAngle;
         float to = Mathf.Round(CurrentAngle / 90f)*90f;
         Debug.Log("FROM: " + from + " TO: " + to);
@@ -85,9 +83,15 @@ public class LevelManger : MonoBehaviour {
         {
             CurrentAngle = Mathf.Lerp(from, to, elapsed / duration);
             elapsed += Time.fixedDeltaTime;
-
+            if (Mathf.Abs(CurrentAngle - to) <= 3f)
+            {
+                currentAngleSpeed = 0;
+                RotationProgress = false;
+                break;
+            }
             yield return null;
         }
+        
     }
 
 
@@ -100,21 +104,30 @@ public class LevelManger : MonoBehaviour {
     float screenWidth = ((float)Screen.width);
     float moveXPercent = moveX / screenWidth;
     float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+
         if (true/*!GameManager.Instance.gameOver*/)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //
+                
                 speedHistory.Clear();
                 currentAngleSpeed = 0f;
                 startPosition = Input.mousePosition;
             }
             else if (Input.GetMouseButton(0))
             {
-                //
+                if(SwipeManager.Instance.Direction != SwipeDirection.None)
+                {
+                    //To avoid interruptions
+                    RotationProgress = true;
+                }
+               
                 currentAngleSpeed = 0f;
+
                 if (moveXPercent > minSwipeDistX)
                 {
+                    
+
                     speedHistory.Add(speed);
                 }
                 else
@@ -126,7 +139,14 @@ public class LevelManger : MonoBehaviour {
                     speedHistory.RemoveAt(0);
                 }
                 CurrentAngle += speed;
+                currentAngleSpeed = speed;
                 startPosition = Input.mousePosition;
+                if (currentAngleSpeed <= 0.02f)
+                {
+                    currentAngleSpeed = 0;
+                   
+                }
+
             }
             else if (Input.GetMouseButtonUp(0) && (moveX > minSwipeDistX))
             {
@@ -140,7 +160,16 @@ public class LevelManger : MonoBehaviour {
                 startPosition = Input.mousePosition;
                
             }
+            //else if(Input.GetMouseButtonUp(0) && (moveX<minSwipeDistX))
+            //{
+            //    //To avoid interruptions
+            //    RotationProgress = false;
+            //}
         }
+        //if(currentAngleSpeed == 0)
+        //{
+            
+        //}
     }
 }
 

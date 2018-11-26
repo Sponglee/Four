@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class CartManager : MonoBehaviour {
 
-
+    
 
     public GameObject[] cartPrefabs;
     public CinemachineSmoothPath[] paths;
@@ -39,24 +39,29 @@ public class CartManager : MonoBehaviour {
 
     private void Start()
     {
-        int spawnRandomizer = Random.Range(2, 4);
-        Debug.Log(spawnRandomizer);
-        int iRandomizer = Random.Range(0, 4);
-        int index = 0;
-        for (int i = iRandomizer; i < iRandomizer + spawnRandomizer; i++)
+        if(gameObject.CompareTag("Cart"))
         {
-            //spawn cart prefab, set random position
-            GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
-            tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
-            //Set current for that cart
-            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
-            //Set track references for that cart
-            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
-            //set cart reference for manager
-            carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-            index++;
-        }
+            int spawnRandomizer = Random.Range(2, 4);
+            Debug.Log(spawnRandomizer);
+            int iRandomizer = Random.Range(0, 4);
+            int index = 0;
+            for (int i = iRandomizer; i < iRandomizer + spawnRandomizer; i++)
+            {
+                //spawn cart prefab, set random position
+                GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
+                tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
+                //Set current for that cart
+                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
+                //Set track references for that cart
+                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+                //set cart reference for manager
+                carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                index++;
+            }
 
+
+        }
+       
 
     }
 
@@ -65,10 +70,25 @@ public class CartManager : MonoBehaviour {
     void Update () {
         
 
-        if (Input.GetMouseButtonDown(0) && IsPointerCast("Cart"))
+        if (gameObject.CompareTag("Spawn") && Input.GetMouseButtonUp(0) && !LevelManager.Instance.RotationProgress)
         {
-
-           
+            int spawnRandomizer = Random.Range(1, 1);
+            Debug.Log(spawnRandomizer);
+            int iRandomizer = Random.Range(0, 4);
+            int index = 0;
+            for (int i = iRandomizer; i < iRandomizer + spawnRandomizer; i++)
+            {
+                //spawn cart prefab, set random position
+                GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
+                tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
+                //Set current for that cart
+                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
+                //Set track references for that cart
+                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+                //set cart reference for manager
+                carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                index++;
+            }
         }
 
         

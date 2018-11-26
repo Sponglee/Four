@@ -70,7 +70,15 @@ public class CartModelContoller : MonoBehaviour
     }
 
 
-    
+    private void OnCollisionEnter(Collision other)
+    {
+        if(gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart"))
+        {
+            Destroy(transform.parent.gameObject);
+            Destroy(other.transform.parent.gameObject);
+        }
+
+    }
     private void OnTriggerEnter(Collider other)
     {
         ////////first cart selected, hits second one(this), which is not moving
