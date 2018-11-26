@@ -65,14 +65,8 @@ public class CartModelContoller : MonoBehaviour
     private void Start()
     {
         tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
-        if (gameObject.CompareTag("Cart0"))
-            cartNumber = 0;
-        else if (gameObject.CompareTag("Cart1"))
-            cartNumber = 1;
-        else if (gameObject.CompareTag("Cart2"))
-            cartNumber = 2;
-        else if (gameObject.CompareTag("Cart3"))
-            cartNumber = 3;
+        cartNumber = tempCart.transform.GetSiblingIndex();
+        
     }
 
 
@@ -88,12 +82,12 @@ public class CartModelContoller : MonoBehaviour
         //}
 
             Debug.Log(gameObject.tag);
-        //first cart selected, hits second one(this), which is not moving
-        if (cartManager.selectedIndex != cartNumber && !collidedBool)
-        {
-            CollidedBool = true;
-            MoveOut(cartManager.CartMoveDirection);
-        }
+        ////first cart selected, hits second one(this), which is not moving
+        //if (cartManager.selectedIndex != cartNumber && !collidedBool)
+        //{
+        //    CollidedBool = true;
+        //    MoveOut(cartManager.CartMoveDirection);
+        //}
        
     }
 
