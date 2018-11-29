@@ -17,6 +17,8 @@ public class LevelManager : Singleton<LevelManager> {
     public List<float> speedHistory;
     public float minSwipeDistX = 50f;
     public bool RotationProgress = false;
+    public float followDuration;
+
 
     [SerializeField]
     private float currentAngle;
@@ -53,7 +55,7 @@ public class LevelManager : Singleton<LevelManager> {
         if (Input.GetMouseButtonUp(0))
         {
             //Finish rotation to even 90 degree slot
-            StartCoroutine(FollowRotate());
+            StartCoroutine(FollowRotate(followDuration));
         }
 
 
@@ -68,10 +70,8 @@ public class LevelManager : Singleton<LevelManager> {
     IEnumerator FollowRotate(float duration = 0.2f, float angle = 0)
     {
 
+
         
-        //if there was followmouse
-
-
         float from = CurrentAngle;
         float to = Mathf.Round(CurrentAngle / 90f)*90f;
         Debug.Log("FROM: " + from + " TO: " + to);
@@ -83,7 +83,7 @@ public class LevelManager : Singleton<LevelManager> {
         {
             CurrentAngle = Mathf.Lerp(from, to, elapsed / duration);
             elapsed += Time.fixedDeltaTime;
-            if (Mathf.Abs(CurrentAngle - to) <= 3f)
+            if (Mathf.Abs(CurrentAngle - to) <= 2f)
             {
                 currentAngleSpeed = 0;
                 RotationProgress = false;
@@ -144,7 +144,7 @@ public class LevelManager : Singleton<LevelManager> {
                 if (currentAngleSpeed <= 0.02f)
                 {
                     currentAngleSpeed = 0;
-                   
+                    //currentAngle = Mathf.Round(CurrentAngle / 90f) * 90f;
                 }
 
             }
