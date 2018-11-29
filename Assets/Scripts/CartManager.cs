@@ -90,7 +90,14 @@ public class CartManager : MonoBehaviour {
                 index++;
             }
         }
-
+        else if(gameObject.CompareTag("Cart"))
+        {
+            if(transform.childCount == 0)
+            {
+                Destroy(transform.parent.gameObject);
+                LevelManager.Instance.RaiseTower();
+            }
+        }
         
 
     }

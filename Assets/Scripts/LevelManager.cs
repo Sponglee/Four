@@ -74,7 +74,7 @@ public class LevelManager : Singleton<LevelManager> {
         
         float from = CurrentAngle;
         float to = Mathf.Round(CurrentAngle / 90f)*90f;
-        Debug.Log("FROM: " + from + " TO: " + to);
+        //Debug.Log("FROM: " + from + " TO: " + to);
         //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
         //smooth lerp rotation loop
@@ -83,10 +83,11 @@ public class LevelManager : Singleton<LevelManager> {
         {
             CurrentAngle = Mathf.Lerp(from, to, elapsed / duration);
             elapsed += Time.fixedDeltaTime;
-            if (Mathf.Abs(CurrentAngle - to) <= 2f)
+            if (Mathf.Abs(CurrentAngle - to) <= 3f)
             {
                 currentAngleSpeed = 0;
                 RotationProgress = false;
+                
                 break;
             }
             yield return null;
@@ -171,5 +172,60 @@ public class LevelManager : Singleton<LevelManager> {
             
         //}
     }
+
+    public float raiseDuration = 0.2f;
+
+    public void RaiseTower()
+    {
+        
+        foreach (Transform child in transform)
+        {
+
+            Vector3 to = transform.position;
+            StartCoroutine(StopRaiseTower(child, to));
+           
+        }
+
+    }
+
+
+
+    public IEnumerator StopRaiseTower(Transform child, Vector3 toDesto, float duration = 0.2f)
+    {
+
+        yield return new WaitForEndOfFrame();
+        if (child != null)
+        {
+            Vector3 from = child.position;
+            Vector3 to = toDesto + new Vector3(0, -5 * child.GetSiblingIndex(), 0); ;
+        
+
+            //smooth lerp rotation loop
+            float elapsed = 0.0f;
+        
+            Debug.Log(child.transform.GetSiblingIndex() + "x FROM: " + from + " TO: " + to);
+           
+            while (elapsed < duration)
+            {
+                if (child != null)
+                {
+                    child.position = Vector3.Lerp(from, to, elapsed / duration);
+                    elapsed += Time.fixedDeltaTime;
+                    yield return null;
+
+                }
+                else break;
+
+            }
+        }
+        else
+            yield break;
+
+       
+    }
+
 }
+
+   
+
 
