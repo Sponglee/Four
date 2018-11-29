@@ -74,8 +74,16 @@ public class CartModelContoller : MonoBehaviour
     {
         if(gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart"))
         {
+
+
+
             Destroy(transform.parent.gameObject);
             Destroy(other.transform.parent.gameObject);
+
+
+
+
+
         }
 
     }
