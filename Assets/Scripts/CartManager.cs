@@ -61,7 +61,8 @@ public class CartManager : MonoBehaviour {
             for (int i = 0; i < 4; i++)
             {
                 int spawnRandomizer = Random.Range(0, 100);
-                if(spawnRandomizer<=75)
+              
+                if(spawnRandomizer<=60)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
@@ -117,7 +118,7 @@ public class CartManager : MonoBehaviour {
                 //set cart reference for manager
                 carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 //Set parent of Level manager
-                tmpCart.transform.SetParent(LevelManager.Instance.transform);
+                //tmpCart.transform.SetParent(LevelManager.Instance.transform);
                 //set color of next spawn
                 spawnIRandomizer = Random.Range(0, 4);
                 canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
@@ -270,31 +271,30 @@ public class CartManager : MonoBehaviour {
         checkedDollys = new List<GameObject>();
 
       
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 5; i++)
         {
-            Debug.Log("Checking "+ i + ":" + checkNumber + " " + transform.GetChild(i % 4).gameObject.tag);
 
-            if (transform.GetChild(i%3).gameObject.CompareTag("Cart"))
+            if (transform.GetChild(i).gameObject.CompareTag("Cart"))
             {
-                if(transform.GetChild(i%3).GetChild(0).GetComponent<Renderer>().material.color 
+                if(transform.GetChild(i).GetChild(0).GetComponent<Renderer>().material.color 
                     == spawnColorsRef.transform.GetChild(0).GetChild(0).GetComponent<CartManager>().spawnColors[checkNumber].color)
                 {
-                    checkedDollys.Add(transform.GetChild(i % 3).GetChild(0).gameObject);
+                    checkedDollys.Add(transform.GetChild(i).GetChild(0).gameObject);
                     color++;
                 }
-                else
-                {
-                    color = 0;
-                }
+              
 
+            Debug.Log("Checking "+ i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
             }
         }
+
         if(color>=3)
         {
             Debug.Log("MORE THAN 3");
             foreach (GameObject go in checkedDollys)
             {
-                Destroy(go.transform.parent.parent.gameObject);
+                Destroy(go.transform.parent.gameObject);
+                Instantiate(LevelManager.Instance.blankCartPrefab, transform);
                 CheckCarts();
             }
         }
