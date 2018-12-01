@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class CartManager : MonoBehaviour {
 
-    
 
+  
     public GameObject[] cartPrefabs;
     public CinemachineSmoothPath[] paths;
 
@@ -35,7 +35,8 @@ public class CartManager : MonoBehaviour {
     public Image canvasIdentifier;
     public Material[] spawnColors;
 
-    
+    //for RaiseTower check if no carts
+    public bool NoDollysBool = false;
   
 
 
@@ -53,22 +54,37 @@ public class CartManager : MonoBehaviour {
 
         if (gameObject.CompareTag("Cart"))
         {
-            int spawnRandomizer = Random.Range(2, 4);
-            Debug.Log(spawnRandomizer);
-            int iRandomizer = Random.Range(0, 4);
+          
+         
+           
             int index = 0;
-            for (int i = iRandomizer; i < iRandomizer + spawnRandomizer; i++)
+            for (int i = 0; i < 4; i++)
             {
-                //spawn cart prefab, set random position
-                GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
-                tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
-                //Set current for that cart
-                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
-                //Set track references for that cart
-                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
-                //set cart reference for manager
-                carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-                index++;
+                int spawnRandomizer = Random.Range(0, 100);
+                if(spawnRandomizer<=75)
+                {
+                    //spawn cart prefab, set random position
+                    GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
+                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
+                    //Set current for that cart
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
+                    //Set track references for that cart
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+                    //set cart reference for manager
+                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                    index++;
+
+                }
+                else
+                {
+                    //spawn cart prefab, set random position
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
+                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
+                    //Set current for that cart
+                    
+                    index++;
+                }
+                
             }
 
 
@@ -100,8 +116,9 @@ public class CartManager : MonoBehaviour {
                 tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
                 //set cart reference for manager
                 carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                //Set parent of Level manager
+                tmpCart.transform.SetParent(LevelManager.Instance.transform);
                 //set color of next spawn
-
                 spawnIRandomizer = Random.Range(0, 4);
                 canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
                 index++;
@@ -109,15 +126,11 @@ public class CartManager : MonoBehaviour {
 
            
         }
-        else if(gameObject.CompareTag("Cart"))
-        {
-            if(transform.childCount == 0)
-            {
-                Destroy(transform.parent.gameObject);
-                LevelManager.Instance.RaiseTower();
-            }
-        }
-        
+        //else if (gameObject.CompareTag("Cart") && NoDollysBool)
+        //{
+           
+        //}
+
 
     }
 
@@ -169,7 +182,7 @@ public class CartManager : MonoBehaviour {
         foreach ( RaycastResult result in results)
         {
             i++;
-            Debug.Log(">"+i+" "  + result.gameObject.tag);
+            //Debug.Log(">"+i+" "  + result.gameObject.tag);
              
         }
 
@@ -219,5 +232,72 @@ public class CartManager : MonoBehaviour {
             }
         }
         return null;
+    }
+
+
+    //Check to RaiseTower
+    public void CheckCarts()
+    {
+        StartCoroutine(StopCheckCarts());
+    }
+
+    public IEnumerator StopCheckCarts()
+    {
+        yield return new WaitForSeconds(0.1f);
+        int cartCount = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.CompareTag("Cart"))
+            {
+                cartCount++;
+            }
+        }
+
+        if (cartCount == 0)
+        {
+            Destroy(transform.parent.gameObject);
+            LevelManager.Instance.RaiseTower();
+        }
+    }
+    
+
+
+    public void HorizontalCheck(int checkNumber)
+    {
+        int color = 0;
+        GameObject spawnColorsRef = GameObject.Find("Spawn");
+        List<GameObject> checkedDollys;
+        checkedDollys = new List<GameObject>();
+
+      
+        for (int i = 0; i < 9; i++)
+        {
+            Debug.Log("Checking "+ i + ":" + checkNumber + " " + transform.GetChild(i % 4).gameObject.tag);
+
+            if (transform.GetChild(i%3).gameObject.CompareTag("Cart"))
+            {
+                if(transform.GetChild(i%3).GetChild(0).GetComponent<Renderer>().material.color 
+                    == spawnColorsRef.transform.GetChild(0).GetChild(0).GetComponent<CartManager>().spawnColors[checkNumber].color)
+                {
+                    checkedDollys.Add(transform.GetChild(i % 3).GetChild(0).gameObject);
+                    color++;
+                }
+                else
+                {
+                    color = 0;
+                }
+
+            }
+        }
+        if(color>=3)
+        {
+            Debug.Log("MORE THAN 3");
+            foreach (GameObject go in checkedDollys)
+            {
+                Destroy(go.transform.parent.parent.gameObject);
+                CheckCarts();
+            }
+        }
+        
     }
 }

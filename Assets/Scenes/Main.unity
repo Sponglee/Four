@@ -155,6 +155,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelPrefab: {fileID: 1794271702706066, guid: d5fda22d61ba72e40b08a3e3af84557c,
     type: 2}
+  bottomPrefab: {fileID: 1992749020977688, guid: b5f3466a60e27db4f9917444bc11e4c3,
+    type: 2}
+  blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
+    type: 2}
   spawnOffset: 0
   currentAngleSpeed: 0
   startPosition: {x: 0, y: 0, z: 0}

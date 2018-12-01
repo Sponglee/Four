@@ -6,6 +6,8 @@ public class LevelManager : Singleton<LevelManager> {
 
     //Level Generator vars
     public GameObject levelPrefab;
+    public GameObject bottomPrefab;
+    public GameObject blankCartPrefab;
     public int spawnOffset = 0;
 
 
@@ -43,7 +45,9 @@ public class LevelManager : Singleton<LevelManager> {
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
                 spawnOffset += 5;
         }
-
+        GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform);
+        tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
+        
         speedHistory = new List<float>();
     }
 

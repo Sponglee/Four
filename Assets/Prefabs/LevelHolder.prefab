@@ -342,6 +342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7baf237a5884b374d903db455c17e709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
+    type: 2}
   cartPrefabs:
   - {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 2}
   - {fileID: 1438754303802734, guid: 39b159d7e816b7b40b0287ba6c9068f7, type: 2}
@@ -363,6 +365,9 @@ MonoBehaviour:
   CartMoveDirection: 0
   speed: 0
   MoveDirection: 0
+  spawnIRandomizer: 0
+  canvasIdentifier: {fileID: 0}
+  spawnColors: []
 --- !u!114 &114258792319890688
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -10,6 +10,8 @@ TagManager:
   - Cart3
   - Cart
   - Spawn
+  - Bottom
+  - Blank
   layers:
   - Default
   - TransparentFX

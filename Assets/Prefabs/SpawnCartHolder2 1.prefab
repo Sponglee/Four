@@ -165,7 +165,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &65414755850101846
 BoxCollider:
@@ -213,6 +213,7 @@ MonoBehaviour:
   - {fileID: 0}
   cartManager: {fileID: 0}
   cartNumber: 0
+  spawnNumber: 0
   IsLowered: 0
   current: 0
 --- !u!114 &114618797252627768
