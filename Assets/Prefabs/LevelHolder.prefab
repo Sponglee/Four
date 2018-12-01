@@ -342,13 +342,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7baf237a5884b374d903db455c17e709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
-    type: 2}
   cartPrefabs:
   - {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 2}
   - {fileID: 1438754303802734, guid: 39b159d7e816b7b40b0287ba6c9068f7, type: 2}
   - {fileID: 1149567189077958, guid: d0988991fb7003a47a21f967b88bf39b, type: 2}
   - {fileID: 1842389149166340, guid: 7c1e58bf8c795ba489195fec7763d2c9, type: 2}
+  - {fileID: 1384940010247930, guid: 60b7127644e919a4e88e4109ba5f7a54, type: 2}
   paths:
   - {fileID: 114506749219795186}
   - {fileID: 114569430522730566}
@@ -368,6 +367,7 @@ MonoBehaviour:
   spawnIRandomizer: 0
   canvasIdentifier: {fileID: 0}
   spawnColors: []
+  NoDollysBool: 0
 --- !u!114 &114258792319890688
 MonoBehaviour:
   m_ObjectHideFlags: 1

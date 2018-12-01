@@ -45,8 +45,9 @@ public class CartManager : MonoBehaviour {
     {
         if(gameObject.CompareTag("Spawn"))
         {
-            //set random spawn 
-            spawnIRandomizer = Random.Range(0, 4);
+            //set random spawn color
+            spawnIRandomizer = Random.Range(0,4);
+            
             canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
         }
       
@@ -65,7 +66,7 @@ public class CartManager : MonoBehaviour {
                 if(spawnRandomizer<=60)
                 {
                     //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
+                    GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, cartPrefabs.Length)], transform);
                     tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
                     //Set current for that cart
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
@@ -120,7 +121,7 @@ public class CartManager : MonoBehaviour {
                 //Set parent of Level manager
                 //tmpCart.transform.SetParent(LevelManager.Instance.transform);
                 //set color of next spawn
-                spawnIRandomizer = Random.Range(0, 4);
+                spawnIRandomizer = Random.Range(0, cartPrefabs.Length);
                 canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
                 index++;
 
