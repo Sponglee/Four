@@ -35,6 +35,7 @@ public class CartModelContoller : MonoBehaviour
     [SerializeField]
     private int cartNumber;
 
+    public int spawnNumber;
     public bool IsLowered = false;
 
     ////for Direction control
@@ -75,10 +76,32 @@ public class CartModelContoller : MonoBehaviour
         if(gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart"))
         {
 
+            if(gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
+            {
+                Destroy(transform.parent.gameObject);
+                Destroy(other.transform.parent.gameObject);
+            }
+            else if(other.transform.parent != null)
+            {
+                //get index of levelHolder above
+                int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
+                if(LevelManager.Instance.gameObject.transform.GetChild(levelIndex-1)!= null)
+                {
+                    int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
+                    //spawn cart prefab, set current position
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[spawnNumber], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
+                    //Set current for that cart
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
+                    ////Set track references for that cart
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().paths;
+                    //set cart reference for manager
+                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
+                    //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                    Destroy(transform.parent.gameObject);
+                }
+            }
 
-
-            Destroy(transform.parent.gameObject);
-            Destroy(other.transform.parent.gameObject);
+            
 
 
 

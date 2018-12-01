@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CartManager : MonoBehaviour {
 
@@ -27,10 +28,12 @@ public class CartManager : MonoBehaviour {
     
     //To prevent changing direction while moving (-1 - left, 1 - right, 0 - free)
     public int MoveDirection = 0;
- 
 
+    //For nextSpawn carts
+    public int spawnIRandomizer;
 
-
+    public Image canvasIdentifier;
+    public Material[] spawnColors;
 
     
   
@@ -39,7 +42,16 @@ public class CartManager : MonoBehaviour {
 
     private void Start()
     {
-        if(gameObject.CompareTag("Cart"))
+        if(gameObject.CompareTag("Spawn"))
+        {
+            //set random spawn 
+            spawnIRandomizer = Random.Range(0, 4);
+            canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
+        }
+      
+
+
+        if (gameObject.CompareTag("Cart"))
         {
             int spawnRandomizer = Random.Range(2, 4);
             Debug.Log(spawnRandomizer);
@@ -72,23 +84,30 @@ public class CartManager : MonoBehaviour {
 
         if (gameObject.CompareTag("Spawn") && Input.GetMouseButtonUp(0) && !LevelManager.Instance.RotationProgress)
         {
-            int spawnRandomizer = Random.Range(1, 1);
-            Debug.Log(spawnRandomizer);
-            int iRandomizer = Random.Range(0, 4);
+            
+            //Debug.Log(spawnIRandomizer);
+            
             int index = 0;
-            for (int i = iRandomizer; i < iRandomizer + spawnRandomizer; i++)
-            {
+            
                 //spawn cart prefab, set random position
-                GameObject tmpCart = Instantiate(cartPrefabs[Random.Range(0, 4)], transform);
+                GameObject tmpCart = Instantiate(cartPrefabs[spawnIRandomizer], transform);
                 tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
                 //Set current for that cart
-                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
+                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
+                //set material number
+                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnNumber = spawnIRandomizer;
                 //Set track references for that cart
                 tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
                 //set cart reference for manager
                 carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                //set color of next spawn
+
+                spawnIRandomizer = Random.Range(0, 4);
+                canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
                 index++;
-            }
+
+
+           
         }
         else if(gameObject.CompareTag("Cart"))
         {
