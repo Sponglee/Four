@@ -294,7 +294,19 @@ public class CartManager : MonoBehaviour {
             Debug.Log("MORE THAN 3");
             foreach (GameObject go in checkedDollys)
             {
+
                 Destroy(go.transform.parent.gameObject);
+
+
+                go.GetComponent<BoxCollider>().isTrigger = true;
+                Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                tmprb.constraints = RigidbodyConstraints.None;
+                tmprb.useGravity = true;
+                tmprb.velocity = new Vector3(0, 0, -50f);
+                tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
+
+
+
                 Instantiate(LevelManager.Instance.blankCartPrefab, transform);
                 CheckCarts();
             }

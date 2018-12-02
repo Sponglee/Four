@@ -63,6 +63,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1279731507263560
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4894299612150364}
+  - component: {fileID: 65622379667697798}
+  m_Layer: 0
+  m_Name: Boundary
+  m_TagString: Bottom
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1282046477725706
 GameObject:
   m_ObjectHideFlags: 1
@@ -432,6 +448,19 @@ Transform:
   m_Father: {fileID: 4541757553799610}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4894299612150364
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1279731507263560}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 0.20000006, y: 0.20000006, z: 0.4314996}
+  m_Children: []
+  m_Father: {fileID: 224441876507848240}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4928418812884696
 Transform:
   m_ObjectHideFlags: 1
@@ -699,6 +728,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.314179, y: 2.520149, z: 2.59}
   m_Center: {x: -0.027273087, y: 3.2107887, z: -1.52}
+--- !u!65 &65622379667697798
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1279731507263560}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 80, y: 500, z: 40}
+  m_Center: {x: 0, y: -250, z: 0}
 --- !u!65 &65728498462908454
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -980,6 +1021,7 @@ MonoBehaviour:
   spawnIRandomizer: 0
   canvasIdentifier: {fileID: 0}
   spawnColors: []
+  NoDollysBool: 0
 --- !u!114 &114827971697163798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1034,6 +1076,7 @@ RectTransform:
   m_Children:
   - {fileID: 4010408362200218}
   - {fileID: 4541757553799610}
+  - {fileID: 4894299612150364}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

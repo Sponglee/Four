@@ -71,6 +71,22 @@ public class CartModelContoller : MonoBehaviour
         
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Cart"))
+        {
+            //destroy holder if no dollys
+            transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+            Destroy(transform.parent.gameObject);
+        }
+        else if(other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Spawn"))
+        {
+            Destroy(gameObject);
+           
+        } 
+       
+    }
+
 
     private void OnCollisionEnter(Collision other)
     {
@@ -79,10 +95,18 @@ public class CartModelContoller : MonoBehaviour
 
             if(gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
-                //destroy holder if no dollys
-                other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                
                 Instantiate(LevelManager.Instance.blankCartPrefab,other.transform.parent.parent);
-                Destroy(other.transform.parent.gameObject);
+
+
+                other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+                rb.constraints = RigidbodyConstraints.None;
+                rb.useGravity = true;
+                rb.velocity = new Vector3(0, 50f, -50f);
+                rb.AddRelativeTorque(new Vector3(5000f, 0,0));
+
+                //Destroy(other.transform.parent.gameObject);
 
 
 
@@ -92,7 +116,12 @@ public class CartModelContoller : MonoBehaviour
                 
                 if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
-                    Destroy(gameObject.transform.parent.gameObject);
+                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                    Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                    tmprb.constraints = RigidbodyConstraints.None;
+                    tmprb.useGravity = true;
+                    tmprb.velocity = new Vector3(0, 0, -50f);
+                    tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
 
                 }
 
@@ -175,26 +204,7 @@ public class CartModelContoller : MonoBehaviour
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
         Destroy(transform.parent.gameObject);
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    ////////first cart selected, hits second one(this), which is not moving
-    //    //if (cartManager.selectedIndex != cartNumber && !collidedBool)
-    //    //{
-    //    //    
-    //    //    //MoveOut(cartManager.CartMoveDirection);
-    //    //    CollidedBool = true;
-    //    //}
-
-    //        Debug.Log(gameObject.tag);
-    //    ////first cart selected, hits second one(this), which is not moving
-    //    //if (cartManager.selectedIndex != cartNumber && !collidedBool)
-    //    //{
-    //    //    CollidedBool = true;
-    //    //    MoveOut(cartManager.CartMoveDirection);
-    //    //}
-       
-    //}
-
+   
 
 
     //private void MoveOut(int direction)
