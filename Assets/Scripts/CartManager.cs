@@ -35,7 +35,7 @@ public class CartManager : MonoBehaviour {
     public float spawnDuration = 0.5f;
 
     public Image canvasIdentifier;
-    public Material[] spawnColors;
+    public Material[] spawnMats;
 
     //for RaiseTower check if no carts
     public bool NoDollysBool = false;
@@ -52,7 +52,7 @@ public class CartManager : MonoBehaviour {
             //set random spawn color
             spawnIRandomizer = Random.Range(0,4);
             
-            canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
+            canvasIdentifier.color = spawnMats[spawnIRandomizer].color;
         }
       
 
@@ -107,13 +107,17 @@ public class CartManager : MonoBehaviour {
         if (gameObject.CompareTag("Spawn") && Input.GetMouseButtonUp(0) 
             && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress /*&& spawnTimer <= 0*/)
         {
+            GameObject tmpRayCart = GrabRayBelowObj(transform, "Cart");
+            if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material != spawnMats[spawnIRandomizer])
+            {
+                Debug.Log("NOT SAME");
+            }
 
-            //Debug.Log(spawnIRandomizer);
-
-            int index = 0;
 
             //spawn cart prefab, set random position
-            GameObject tmpCart = Instantiate(cartPrefabs[spawnIRandomizer], transform);
+            GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
+            //Set material to spawn
+            tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[spawnIRandomizer];
             tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
             //Set current for that cart
             tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
@@ -122,13 +126,13 @@ public class CartManager : MonoBehaviour {
             //Set track references for that cart
             tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
             //set cart reference for manager
-            carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+            carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
             //Set parent of Level manager
             //tmpCart.transform.SetParent(LevelManager.Instance.transform);
             //set color of next spawn
             spawnIRandomizer = Random.Range(0, cartPrefabs.Length);
-            canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
-            index++;
+            canvasIdentifier.color = spawnMats[spawnIRandomizer].color;
+           
             
             LevelManager.Instance.SpawnInProgress = true;
             ////Reset spawn cooldown
@@ -241,6 +245,31 @@ public class CartManager : MonoBehaviour {
         return null;
     }
 
+    //Get reference to object hit by ray with tag
+    private GameObject GrabRayBelowObj(Transform origin, string obj)
+    {
+        RaycastHit hit;
+        Vector3 dir = origin.position + new Vector3(0, -100f, -2.5f);
+
+
+        if (Physics.Raycast(origin.position + new Vector3(0, 0, -2.5f), -Vector3.up, out hit))
+        {
+            Debug.DrawLine(origin.position + new Vector3(0, 0, -2.5f), dir, Color.red, 10f);
+            if (hit.transform)
+            {
+                if (hit.transform.gameObject.CompareTag(obj))
+                {
+                    return hit.transform.gameObject;
+                }
+                return hit.transform.gameObject;
+            }
+        }
+        return null;
+
+
+
+
+    }
 
     //Check to RaiseTower
     public void CheckCarts()
@@ -285,7 +314,7 @@ public class CartManager : MonoBehaviour {
             if (transform.GetChild(i).gameObject.CompareTag("Cart"))
             {
                 if(transform.GetChild(i).GetChild(0).GetComponent<Renderer>().material.color 
-                    == spawnColorsRef.transform.GetChild(0).GetChild(0).GetComponent<CartManager>().spawnColors[checkNumber].color)
+                    == spawnColorsRef.transform.GetChild(0).GetChild(0).GetComponent<CartManager>().spawnMats[checkNumber].color)
                 {
                     checkedDollys.Add(transform.GetChild(i).GetChild(0).gameObject);
                     color++;
@@ -309,7 +338,7 @@ public class CartManager : MonoBehaviour {
                 Rigidbody tmprb = go.GetComponent<Rigidbody>();
                 tmprb.constraints = RigidbodyConstraints.None;
                 tmprb.useGravity = true;
-                tmprb.AddRelativeForce(new Vector3(0, 100f, 0));
+                tmprb.AddRelativeForce(new Vector3(0, 0, 100f));
                 tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
 
 
