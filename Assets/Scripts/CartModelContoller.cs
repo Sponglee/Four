@@ -80,7 +80,7 @@ public class CartModelContoller : MonoBehaviour
         }
         else if(other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Spawn"))
         {
-            Destroy(gameObject);
+            Destroy(gameObject.transform.parent.gameObject);
            
         } 
        
@@ -100,14 +100,14 @@ public class CartModelContoller : MonoBehaviour
 
                 //check if no dollys
                 other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-                //detach
+                //DETACH
                 other.transform.parent.SetParent(null);
                 //Pop sequence
                 other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
                 rb.constraints = RigidbodyConstraints.None;
                 rb.useGravity = true;
-                rb.velocity = new Vector3(0, 50f, -50f);
+                rb.velocity = new Vector3(Random.Range(-10f, 10f), 50f, -50f);
                 rb.AddRelativeTorque(new Vector3(5000f, 0,0));
 
                 //Get some effects 
@@ -124,7 +124,8 @@ public class CartModelContoller : MonoBehaviour
                     LevelManager.Instance.SpawnInProgress = false;
                     //destroy holder if no dollys
                     transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-                    //gameObject.transform.parent.SetParent(null);
+                    //DETACH
+                    //transform.parent.SetParent(null);
                     gameObject.GetComponent<BoxCollider>().isTrigger = true;
                     Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
                     tmprb.constraints = RigidbodyConstraints.None;
@@ -199,7 +200,10 @@ public class CartModelContoller : MonoBehaviour
         //Remove 1 blank
         Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
         //spawn cart prefab, set current position
-        GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[spawnNumber], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
+        GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
+        //Set material
+        Debug.Log(tmpCart.name);
+        tmpCart.transform.GetComponentInChildren<Renderer>().material = tmpCart.transform.parent.GetComponent<CartManager>().spawnMats[spawnNumber];
         //Set current for that cart
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
         ////Set track references for that cart
@@ -207,10 +211,11 @@ public class CartModelContoller : MonoBehaviour
         //set cart reference for manager
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
 
-        //Enable NodoLly bool Horizontal Check
+        //Enable Horizontal Check
         LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnNumber);
         LevelManager.Instance.SpawnInProgress = false;
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+
         Destroy(transform.parent.gameObject);
     }
    

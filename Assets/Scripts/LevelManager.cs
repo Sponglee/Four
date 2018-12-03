@@ -220,7 +220,7 @@ public class LevelManager : Singleton<LevelManager> {
             //smooth lerp rotation loop
             float elapsed = 0.0f;
         
-            Debug.Log(child.transform.GetSiblingIndex() + "x FROM: " + from + " TO: " + to);
+            //Debug.Log(child.transform.GetSiblingIndex() + "x FROM: " + from + " TO: " + to);
            
             while (elapsed < duration)
             {

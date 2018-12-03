@@ -364,9 +364,16 @@ MonoBehaviour:
   CartMoveDirection: 0
   speed: 0
   MoveDirection: 0
-  spawnIRandomizer: 0
+  spawnMatRandomizer: 0
+  spawnTimer: 0
+  spawnDuration: 0.5
   canvasIdentifier: {fileID: 0}
-  spawnColors: []
+  spawnMats:
+  - {fileID: 2100000, guid: 610192e893f67824282de753ea7bee69, type: 2}
+  - {fileID: 2100000, guid: 97f3a0a0a565e2b48bfd8ddee873c094, type: 2}
+  - {fileID: 2100000, guid: ee9eb124182f97241bcfc5b248738b04, type: 2}
+  - {fileID: 2100000, guid: fa77fcb6a5cf4f64d868623831542947, type: 2}
+  - {fileID: 2100000, guid: 85654d4adc5c83a4b97b74d56414d866, type: 2}
   NoDollysBool: 0
 --- !u!114 &114258792319890688
 MonoBehaviour:
