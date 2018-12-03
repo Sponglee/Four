@@ -96,8 +96,9 @@ public class LevelManager : Singleton<LevelManager> {
             if (Mathf.Abs(CurrentAngle - to) <= 3f)
             {
                 currentAngleSpeed = 0;
-                RotationProgress = false;
-                
+
+                //Delay rotation bool to avoid extra spawn
+                StartCoroutine(StopRotationProgress());
                 break;
             }
             yield return null;
@@ -105,6 +106,12 @@ public class LevelManager : Singleton<LevelManager> {
         
     }
 
+    //Delay rotation bool
+    private IEnumerator StopRotationProgress()
+    {
+        yield return new WaitForFixedUpdate();
+        RotationProgress = false;
+    }
 
 
     private void UpdateInput()
