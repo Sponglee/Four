@@ -75,8 +75,7 @@ public class CartModelContoller : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Cart"))
         {
-            //destroy holder if no dollys
-            transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+            
             Destroy(transform.parent.gameObject);
         }
         else if(other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Spawn"))
@@ -97,8 +96,13 @@ public class CartModelContoller : MonoBehaviour
             {
                 
                 Instantiate(LevelManager.Instance.blankCartPrefab,other.transform.parent.parent);
+                
 
-
+                //check if no dollys
+                other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                //detach
+                other.transform.parent.SetParent(null);
+                //Pop sequence
                 other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
                 Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
                 rb.constraints = RigidbodyConstraints.None;
@@ -106,8 +110,9 @@ public class CartModelContoller : MonoBehaviour
                 rb.velocity = new Vector3(0, 50f, -50f);
                 rb.AddRelativeTorque(new Vector3(5000f, 0,0));
 
-                //Destroy(other.transform.parent.gameObject);
-
+                //Get some effects 
+                Instantiate(LevelManager.Instance.hitPrefab,gameObject.transform.position + new Vector3(0, 5,-5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+                StartCoroutine(LevelManager.Instance.TiDi(0.05f));
 
 
 
@@ -116,13 +121,17 @@ public class CartModelContoller : MonoBehaviour
                 
                 if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
+                    LevelManager.Instance.SpawnInProgress = false;
+                    //destroy holder if no dollys
+                    transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                    //gameObject.transform.parent.SetParent(null);
                     gameObject.GetComponent<BoxCollider>().isTrigger = true;
                     Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
                     tmprb.constraints = RigidbodyConstraints.None;
                     tmprb.useGravity = true;
                     tmprb.velocity = new Vector3(0, 0, -50f);
                     tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-
+                   
                 }
 
             }
@@ -130,7 +139,7 @@ public class CartModelContoller : MonoBehaviour
             {
                 //get index of levelHolder above
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
-                if (LevelManager.Instance.gameObject.transform.GetChild(levelIndex-1)!= null)
+                if (levelIndex>=1)
                 {
                     StickCart(other, levelIndex);
                 }
@@ -142,7 +151,7 @@ public class CartModelContoller : MonoBehaviour
             else if(gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
             {
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
-                if (LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1) != null)
+                if (levelIndex >= 1)
                 {
                     StickCart(other, levelIndex);
                 }
@@ -200,7 +209,7 @@ public class CartModelContoller : MonoBehaviour
 
         //Enable NodoLly bool Horizontal Check
         LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnNumber);
-
+        LevelManager.Instance.SpawnInProgress = false;
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
         Destroy(transform.parent.gameObject);
     }

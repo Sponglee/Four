@@ -10,6 +10,11 @@ public class LevelManager : Singleton<LevelManager> {
     public GameObject blankCartPrefab;
     public int spawnOffset = 0;
 
+    //Effects
+    public GameObject hitPrefab;
+    public GameObject threePrefab;
+    public GameObject cylinderPrefab;
+    public Transform EffectHolder;
 
     //Input vars
     public float currentAngleSpeed = 0f;
@@ -19,6 +24,7 @@ public class LevelManager : Singleton<LevelManager> {
     public List<float> speedHistory;
     public float minSwipeDistX = 50f;
     public bool RotationProgress = false;
+    public bool SpawnInProgress = false;
     public float followDuration;
 
 
@@ -110,7 +116,7 @@ public class LevelManager : Singleton<LevelManager> {
     float moveXPercent = moveX / screenWidth;
     float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
 
-        if (true/*!GameManager.Instance.gameOver*/)
+        if (!SpawnInProgress)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -228,6 +234,13 @@ public class LevelManager : Singleton<LevelManager> {
        
     }
 
+
+    public IEnumerator TiDi(float timeDelay)
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(timeDelay);
+        Time.timeScale = 1;
+    }
 }
 
    

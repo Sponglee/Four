@@ -31,6 +31,8 @@ public class CartManager : MonoBehaviour {
 
     //For nextSpawn carts
     public int spawnIRandomizer;
+    public float spawnTimer;
+    public float spawnDuration = 0.5f;
 
     public Image canvasIdentifier;
     public Material[] spawnColors;
@@ -43,8 +45,10 @@ public class CartManager : MonoBehaviour {
 
     private void Start()
     {
+
         if(gameObject.CompareTag("Spawn"))
         {
+            //spawnTimer = spawnDuration;
             //set random spawn color
             spawnIRandomizer = Random.Range(0,4);
             
@@ -97,46 +101,47 @@ public class CartManager : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update () {
-        
+    void Update()
+    {
 
-        if (gameObject.CompareTag("Spawn") && Input.GetMouseButtonUp(0) && !LevelManager.Instance.RotationProgress)
+        if (gameObject.CompareTag("Spawn") && Input.GetMouseButtonUp(0) 
+            && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress /*&& spawnTimer <= 0*/)
         {
-            
+
             //Debug.Log(spawnIRandomizer);
-            
+
             int index = 0;
+
+            //spawn cart prefab, set random position
+            GameObject tmpCart = Instantiate(cartPrefabs[spawnIRandomizer], transform);
+            tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
+            //Set current for that cart
+            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
+            //set material number
+            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnNumber = spawnIRandomizer;
+            //Set track references for that cart
+            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+            //set cart reference for manager
+            carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+            //Set parent of Level manager
+            //tmpCart.transform.SetParent(LevelManager.Instance.transform);
+            //set color of next spawn
+            spawnIRandomizer = Random.Range(0, cartPrefabs.Length);
+            canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
+            index++;
             
-                //spawn cart prefab, set random position
-                GameObject tmpCart = Instantiate(cartPrefabs[spawnIRandomizer], transform);
-                tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
-                //Set current for that cart
-                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
-                //set material number
-                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnNumber = spawnIRandomizer;
-                //Set track references for that cart
-                tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
-                //set cart reference for manager
-                carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-                //Set parent of Level manager
-                //tmpCart.transform.SetParent(LevelManager.Instance.transform);
-                //set color of next spawn
-                spawnIRandomizer = Random.Range(0, cartPrefabs.Length);
-                canvasIdentifier.color = spawnColors[spawnIRandomizer].color;
-                index++;
-
-
-           
+            LevelManager.Instance.SpawnInProgress = true;
+            ////Reset spawn cooldown
+            //spawnTimer = spawnDuration;
         }
-        //else if (gameObject.CompareTag("Cart") && NoDollysBool)
-        //{
-           
-        //}
-
-
-    }
 
     
+        //if (gameObject.CompareTag("Spawn") && spawnTimer > 0)
+        //{
+        //    spawnTimer -= Time.fixedUnscaledDeltaTime;
+        //}
+    }
+
     //Check if u point to nearest current
     private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
     {
@@ -257,7 +262,9 @@ public class CartManager : MonoBehaviour {
 
         if (cartCount == 0)
         {
+            Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
             Destroy(transform.parent.gameObject);
+            //Get some effects 
             LevelManager.Instance.RaiseTower();
         }
     }
@@ -294,15 +301,15 @@ public class CartManager : MonoBehaviour {
             Debug.Log("MORE THAN 3");
             foreach (GameObject go in checkedDollys)
             {
-
-                Destroy(go.transform.parent.gameObject);
-
+                //Get some effects at effect position (1 child)
+                Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
+                go.transform.parent.SetParent(null);
 
                 go.GetComponent<BoxCollider>().isTrigger = true;
-                Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                Rigidbody tmprb = go.GetComponent<Rigidbody>();
                 tmprb.constraints = RigidbodyConstraints.None;
                 tmprb.useGravity = true;
-                tmprb.velocity = new Vector3(0, 0, -50f);
+                tmprb.AddRelativeForce(new Vector3(0, 100f, 0));
                 tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
 
 
