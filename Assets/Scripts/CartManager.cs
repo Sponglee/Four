@@ -12,6 +12,9 @@ public class CartManager : MonoBehaviour {
     public GameObject[] cartPrefabs;
     public CinemachineSmoothPath[] paths;
 
+    //For dropping
+    public GameObject spawnObject;
+
     public Transform center;
     public CartModelContoller[] carts;
 
@@ -51,8 +54,9 @@ public class CartManager : MonoBehaviour {
             //spawnTimer = spawnDuration;
             //set random spawn color
             spawnMatRandomizer = Random.Range(0,4);
-            
             canvasIdentifier.color = spawnMats[spawnMatRandomizer].color;
+            Spawn();
+            
         }
       
 
@@ -109,37 +113,22 @@ public class CartManager : MonoBehaviour {
             && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress /*&& spawnTimer <= 0*/)
         {
             GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
-            if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnMats[spawnMatRandomizer].color)
+            if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnMats[spawnMatRandomizer].color
+                && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
             {
                 //Debug.Log("NOT SAME ");
             }
-            else
+            else 
             {
-                //Debug.Log("SAME");
+                DropSpawn(spawnObject);
+                LevelManager.Instance.SpawnInProgress = true;
             }
 
 
-            //spawn cart prefab, set random position
-            GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
-            //Set material to spawn
-            tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[spawnMatRandomizer];
-            tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
-            //Set current for that cart
-            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
-            //set material number
-            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnNumber = spawnMatRandomizer;
-            //Set track references for that cart
-            tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
-            //set cart reference for manager
-            carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-            //Set parent of Level manager
-            //tmpCart.transform.SetParent(LevelManager.Instance.transform);
-            //set color of next spawn
-            spawnMatRandomizer = Random.Range(0, cartPrefabs.Length);
-            canvasIdentifier.color = spawnMats[spawnMatRandomizer].color;
+            
            
             
-            LevelManager.Instance.SpawnInProgress = true;
+            
             ////Reset spawn cooldown
             //spawnTimer = spawnDuration;
         }
@@ -149,6 +138,40 @@ public class CartManager : MonoBehaviour {
         //{
         //    spawnTimer -= Time.fixedUnscaledDeltaTime;
         //}
+    }
+
+
+    //Spawn new cart
+    public void Spawn()
+    {
+        //spawn cart prefab, set random position
+        GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
+        spawnObject = tmpCart;
+        //Set material to spawn
+        tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[spawnMatRandomizer];
+        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
+        //Set current for that cart
+        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
+        //set material number
+        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnNumber = spawnMatRandomizer;
+        //Set track references for that cart
+        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+        //set cart reference for manager
+        carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+        //Set parent of Level manager
+        //tmpCart.transform.SetParent(LevelManager.Instance.transform);
+        
+    }
+
+
+
+    public void DropSpawn(GameObject spawnCart)
+    {
+        spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        //set color of next spawn
+        spawnMatRandomizer = Random.Range(0, cartPrefabs.Length);
+        canvasIdentifier.color = spawnMats[spawnMatRandomizer].color;
+      
     }
 
     //Check if u point to nearest current
@@ -313,6 +336,7 @@ public class CartManager : MonoBehaviour {
     {
         yield return new WaitForSecondsRealtime(0.05f);
         int color = 0;
+        //Find object named Spawn for reference
         GameObject spawnColorsRef = GameObject.Find("Spawn");
         List<GameObject> checkedDollys;
         checkedDollys = new List<GameObject>();

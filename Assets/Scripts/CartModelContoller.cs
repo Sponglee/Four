@@ -32,7 +32,7 @@ public class CartModelContoller : MonoBehaviour
 
     private CinemachineDollyCart tempCart;
     public CinemachineSmoothPath[] paths;
-    public CartManager cartManager;
+    public CartManager spawnManager;
     [SerializeField]
     private int cartNumber;
 
@@ -68,7 +68,7 @@ public class CartModelContoller : MonoBehaviour
     {
         tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
         cartNumber = tempCart.transform.GetSiblingIndex();
-        
+        spawnManager = GameObject.Find("Spawn").transform.GetChild(0).GetChild(0).GetComponent<CartManager>();
     }
 
     private void OnTriggerExit(Collider other)
@@ -112,6 +112,7 @@ public class CartModelContoller : MonoBehaviour
 
                 //Get some effects 
                 Instantiate(LevelManager.Instance.hitPrefab,gameObject.transform.position + new Vector3(0, 5,-5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+                //For pizzaz
                 StartCoroutine(LevelManager.Instance.TiDi(0.05f));
 
 
@@ -132,7 +133,8 @@ public class CartModelContoller : MonoBehaviour
                     tmprb.useGravity = true;
                     tmprb.velocity = new Vector3(0, 0, -50f);
                     tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-                   
+                    //GetNew spawn ready
+                    spawnManager.Spawn();
                 }
 
             }
@@ -158,11 +160,12 @@ public class CartModelContoller : MonoBehaviour
                 }
                 else
                 {
+
                     SceneManager.LoadScene("Main");
                 }
             }
         }
-
+       
     }
 
 
@@ -202,7 +205,6 @@ public class CartModelContoller : MonoBehaviour
         //spawn cart prefab, set current position
         GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
         //Set material
-        Debug.Log(tmpCart.name);
         tmpCart.transform.GetComponentInChildren<Renderer>().material = tmpCart.transform.parent.GetComponent<CartManager>().spawnMats[spawnNumber];
         //Set current for that cart
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
@@ -217,10 +219,13 @@ public class CartModelContoller : MonoBehaviour
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
         Destroy(transform.parent.gameObject);
+        //Debug.Log(tmpCart.name);
+
+        //GetNew spawn ready
+        spawnManager.Spawn();
     }
+
    
-
-
     //private void MoveOut(int direction)
     //{
     //    //foreach(CartModelContoller tempModel in cartManager.carts)

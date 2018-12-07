@@ -12,6 +12,8 @@ TagManager:
   - Spawn
   - Bottom
   - Blank
+  - FxTemporaire
+  - SpawnManager
   layers:
   - Default
   - TransparentFX
