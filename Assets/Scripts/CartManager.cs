@@ -15,7 +15,10 @@ public class CartManager : MonoBehaviour {
     //For dropping
     public GameObject spawnObject;
     //Reference to spawnManager
-    public CartManager spawnManager;
+    public CartManager spawnManagerRef;
+    //For spawn helping
+    public List<Color> colorHelper;
+
     public bool spawnedBool = false;
     public Transform center;
     public CartModelContoller[] carts;
@@ -35,7 +38,7 @@ public class CartManager : MonoBehaviour {
     public int MoveDirection = 0;
 
     //For nextSpawn carts
-    public int spawnMatRandomizer;
+    public Color spawnMatRandomColor;
     public float spawnTimer;
     public float spawnDuration = 0.5f;
 
@@ -51,25 +54,14 @@ public class CartManager : MonoBehaviour {
     private void Start()
     {
 
-        spawnManager = GameObject.Find("Spawn").transform.GetChild(0).GetChild(0).GetComponent<CartManager>();
+        spawnManagerRef = SpawnManager.Instance.spawnCartManager;
+        colorHelper = new List<Color>();
 
-        if (gameObject.CompareTag("Spawn"))
-        {
-            //spawnTimer = spawnDuration;
-            //set random spawn color
-            spawnMatRandomizer = Random.Range(0,4);
-            canvasIdentifier.color = spawnMats[spawnMatRandomizer].color;
-            Spawn();
-            
-        }
-      
+       
 
 
         if (gameObject.CompareTag("Cart"))
-        {
-          
-         
-           
+        {          
             int index = 0;
             for (int i = 0; i < 4; i++)
             {
@@ -88,7 +80,6 @@ public class CartManager : MonoBehaviour {
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                     index++;
-
                 }
                 else
                 {
@@ -101,83 +92,13 @@ public class CartManager : MonoBehaviour {
                 }
                 
             }
-
-
         }
-       
-
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (gameObject.CompareTag("Spawn") && Input.GetMouseButtonUp(0) 
-            && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress /*&& spawnTimer <= 0*/)
-        {
-            GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
-            if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnMats[spawnMatRandomizer].color
-                && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
-            {
-                //Debug.Log("NOT SAME ");
-            }
-            else 
-            {
-                DropSpawn(spawnObject);
-                LevelManager.Instance.SpawnInProgress = true;
-                spawnedBool = false;
-            }
-
-
-            
-           
-            
-            
-            ////Reset spawn cooldown
-            //spawnTimer = spawnDuration;
-        }
 
     
-        //if (gameObject.CompareTag("Spawn") && spawnTimer > 0)
-        //{
-        //    spawnTimer -= Time.fixedUnscaledDeltaTime;
-        //}
-    }
 
 
-    //Spawn new cart
-    public void Spawn()
-    {
-        spawnedBool = true;
-        //spawn cart prefab, set random position
-        GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
-        spawnObject = tmpCart;
-        //Set material to spawn
-        tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[spawnMatRandomizer];
-        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[2];
-        //Set current for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
-        //set material number
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnNumber = spawnMatRandomizer;
-        //Set track references for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
-        //set cart reference for manager
-        carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-        //Set parent of Level manager
-        //tmpCart.transform.SetParent(LevelManager.Instance.transform);
-    }
-
-
-
-    public void DropSpawn(GameObject spawnCart)
-    {
-        spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        //set color of next spawn
-        spawnMatRandomizer = Random.Range(0, cartPrefabs.Length);
-        canvasIdentifier.color = spawnMats[spawnMatRandomizer].color;
-      
-    }
 
     //Check if u point to nearest current
     private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
@@ -278,32 +199,7 @@ public class CartManager : MonoBehaviour {
         return null;
     }
 
-    //Get reference to object hit by ray with tag
-    private GameObject GrabSpawnObj(Transform origin, string obj)
-    {
-        RaycastHit hit;
-        Vector3 dir = origin.position + new Vector3(0, -100f, 0f);
-
-            Debug.DrawLine(origin.position, dir, Color.red, 10f);
-
-        if (Physics.Raycast(origin.position, -Vector3.up, out hit))
-        {
-            if (hit.transform)
-            {
-                if (hit.transform.gameObject.CompareTag(obj))
-                {
-                    return hit.transform.gameObject;
-                }
-                return hit.transform.gameObject;
-            }
-        }
-        return null;
-
-
-
-
-    }
-
+   
     //Check to RaiseTower
     public void CheckCarts()
     {
@@ -331,26 +227,26 @@ public class CartManager : MonoBehaviour {
             LevelManager.Instance.RaiseTower();
         }
         //GetNew spawn ready
-        if(!spawnManager.spawnedBool)
+        if(!spawnManagerRef.spawnedBool)
         {
-            spawnManager.Spawn();
-            Debug.Log("NANI");
+            SpawnManager.Instance.Spawn();
+            //Debug.Log("NANI");
         }
         
     }
     
     //Check for more than 3
-    public void HorizontalCheck(int checkNumber)
+    public void HorizontalCheck(Color checkColor)
     {
-        StartCoroutine(StopHorizontalCheck(checkNumber));
+        StartCoroutine(StopHorizontalCheck(checkColor));
     }
 
-    public IEnumerator StopHorizontalCheck(int checkNumber)
+    public IEnumerator StopHorizontalCheck(Color checkColor)
     {
         yield return new WaitForSecondsRealtime(0.05f);
         int color = 0;
         //Find object named Spawn for reference
-        GameObject spawnColorsRef = GameObject.Find("Spawn");
+        CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
         List<GameObject> checkedDollys;
         checkedDollys = new List<GameObject>();
 
@@ -361,7 +257,7 @@ public class CartManager : MonoBehaviour {
             if (transform.GetChild(i).gameObject.CompareTag("Cart"))
             {
                 if(transform.GetChild(i).GetChild(0).GetComponent<Renderer>().material.color 
-                    == spawnColorsRef.transform.GetChild(0).GetChild(0).GetComponent<CartManager>().spawnMats[checkNumber].color)
+                    == spawnColorsRef.spawnMatRandomColor)
                 {
                     checkedDollys.Add(transform.GetChild(i).GetChild(0).gameObject);
                     color++;
@@ -395,6 +291,6 @@ public class CartManager : MonoBehaviour {
             }
         }
         //GetNew spawn ready
-        spawnManager.Spawn();
+        SpawnManager.Instance.Spawn();
     }
 }

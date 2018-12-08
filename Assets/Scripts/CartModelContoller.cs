@@ -36,7 +36,7 @@ public class CartModelContoller : MonoBehaviour
     [SerializeField]
     private int cartNumber;
 
-    public int spawnNumber;
+    public Color spawnColor;
     public bool IsLowered = false;
 
     ////for Direction control
@@ -96,7 +96,7 @@ public class CartModelContoller : MonoBehaviour
             {
                 
                 Instantiate(LevelManager.Instance.blankCartPrefab,other.transform.parent.parent);
-                Debug.Log("FIRST SAME COLOR");
+                //Debug.Log("FIRST SAME COLOR");
 
                 //check if no dollys
                 other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
@@ -124,7 +124,7 @@ public class CartModelContoller : MonoBehaviour
                 {
                     LevelManager.Instance.SpawnInProgress = false;
                     //destroy holder if no dollys
-                    Debug.Log("THEN SECOND");
+                    //Debug.Log("THEN SECOND");
                     transform.parent.parent.GetComponent<CartManager>().CheckCarts();
                     //DETACH
                     //transform.parent.SetParent(null);
@@ -205,7 +205,7 @@ public class CartModelContoller : MonoBehaviour
         //spawn cart prefab, set current position
         GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
         //Set material
-        tmpCart.transform.GetComponentInChildren<Renderer>().material = tmpCart.transform.parent.GetComponent<CartManager>().spawnMats[spawnNumber];
+        tmpCart.transform.GetComponentInChildren<Renderer>().material.color = SpawnManager.Instance.spawnCartManager.spawnMatRandomColor;
         //Set current for that cart
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
         ////Set track references for that cart
@@ -214,7 +214,7 @@ public class CartModelContoller : MonoBehaviour
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
 
         //Enable Horizontal Check
-        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnNumber);
+        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor);
         LevelManager.Instance.SpawnInProgress = false;
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
