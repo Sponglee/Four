@@ -14,7 +14,9 @@ public class CartManager : MonoBehaviour {
 
     //For dropping
     public GameObject spawnObject;
-
+    //Reference to spawnManager
+    public CartManager spawnManager;
+    public bool spawnedBool = false;
     public Transform center;
     public CartModelContoller[] carts;
 
@@ -49,7 +51,9 @@ public class CartManager : MonoBehaviour {
     private void Start()
     {
 
-        if(gameObject.CompareTag("Spawn"))
+        spawnManager = GameObject.Find("Spawn").transform.GetChild(0).GetChild(0).GetComponent<CartManager>();
+
+        if (gameObject.CompareTag("Spawn"))
         {
             //spawnTimer = spawnDuration;
             //set random spawn color
@@ -122,6 +126,7 @@ public class CartManager : MonoBehaviour {
             {
                 DropSpawn(spawnObject);
                 LevelManager.Instance.SpawnInProgress = true;
+                spawnedBool = false;
             }
 
 
@@ -144,6 +149,7 @@ public class CartManager : MonoBehaviour {
     //Spawn new cart
     public void Spawn()
     {
+        spawnedBool = true;
         //spawn cart prefab, set random position
         GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
         spawnObject = tmpCart;
@@ -160,7 +166,6 @@ public class CartManager : MonoBehaviour {
         carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
         //Set parent of Level manager
         //tmpCart.transform.SetParent(LevelManager.Instance.transform);
-        
     }
 
 
@@ -308,6 +313,7 @@ public class CartManager : MonoBehaviour {
     public IEnumerator StopCheckCarts()
     {
         yield return new WaitForSeconds(0.1f);
+       
         int cartCount = 0;
         foreach (Transform child in transform)
         {
@@ -324,6 +330,13 @@ public class CartManager : MonoBehaviour {
             //Get some effects 
             LevelManager.Instance.RaiseTower();
         }
+        //GetNew spawn ready
+        if(!spawnManager.spawnedBool)
+        {
+            spawnManager.Spawn();
+            Debug.Log("NANI");
+        }
+        
     }
     
     //Check for more than 3
@@ -381,6 +394,7 @@ public class CartManager : MonoBehaviour {
                 CheckCarts();
             }
         }
-        
+        //GetNew spawn ready
+        spawnManager.Spawn();
     }
 }

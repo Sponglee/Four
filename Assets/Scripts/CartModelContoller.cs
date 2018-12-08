@@ -68,7 +68,7 @@ public class CartModelContoller : MonoBehaviour
     {
         tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
         cartNumber = tempCart.transform.GetSiblingIndex();
-        spawnManager = GameObject.Find("Spawn").transform.GetChild(0).GetChild(0).GetComponent<CartManager>();
+       
     }
 
     private void OnTriggerExit(Collider other)
@@ -96,7 +96,7 @@ public class CartModelContoller : MonoBehaviour
             {
                 
                 Instantiate(LevelManager.Instance.blankCartPrefab,other.transform.parent.parent);
-                
+                Debug.Log("FIRST SAME COLOR");
 
                 //check if no dollys
                 other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
@@ -124,6 +124,7 @@ public class CartModelContoller : MonoBehaviour
                 {
                     LevelManager.Instance.SpawnInProgress = false;
                     //destroy holder if no dollys
+                    Debug.Log("THEN SECOND");
                     transform.parent.parent.GetComponent<CartManager>().CheckCarts();
                     //DETACH
                     //transform.parent.SetParent(null);
@@ -133,8 +134,7 @@ public class CartModelContoller : MonoBehaviour
                     tmprb.useGravity = true;
                     tmprb.velocity = new Vector3(0, 0, -50f);
                     tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-                    //GetNew spawn ready
-                    spawnManager.Spawn();
+                  
                 }
 
             }
@@ -221,8 +221,7 @@ public class CartModelContoller : MonoBehaviour
         Destroy(transform.parent.gameObject);
         //Debug.Log(tmpCart.name);
 
-        //GetNew spawn ready
-        spawnManager.Spawn();
+        
     }
 
    
