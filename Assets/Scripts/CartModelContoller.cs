@@ -249,7 +249,7 @@ public class CartModelContoller : MonoBehaviour
         // remember what level it's on currently
         currentLevel = levelIndex - 1;
         //Remove 1 blank
-        Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
+        //Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
         //spawn cart prefab, set current position
         //SpawnManager.Instance.Bounce();
         
@@ -264,7 +264,7 @@ public class CartModelContoller : MonoBehaviour
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().paths;
         //set cart reference for manager
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
-
+        tmpCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         SpawnManager.Instance.Bounce();
 
         //Enable Horizontal Check
