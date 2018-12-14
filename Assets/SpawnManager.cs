@@ -37,7 +37,7 @@ public class SpawnManager : Singleton<SpawnManager> {
             //LevelManager.Instance.SpawnInProgress = true;
             Rigidbody rb = spawnCartManager.transform.GetChild(0).GetChild(0).GetComponent<Rigidbody>();
 
-            rb.AddForce(0, 1f, 0);
+            rb.AddForce(0, 16f, 0);
 
             
 
@@ -52,76 +52,77 @@ public class SpawnManager : Singleton<SpawnManager> {
     //Spawn new cart
     public void Spawn()
     {
-        spawnCartManager.colorHelper.Clear();
-        //set random spawn color\
-        GameObject spawnCheck = GrabSpawnObj(transform);
-        //if there's something with tag cart that ray hit
-        if (spawnCheck != null && spawnCheck.CompareTag("Cart"))
-        {
-            Debug.Log(spawnCheck.tag);
-            //if ray obj is first level
-            if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
-            {
-                //if it's full
-                if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
-                {
-                    //Pick a color from ones on top level
-                    foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
-                    {
-                        Debug.Log(dolly.GetChild(0).GetComponent<Renderer>().material.color);
-                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
-                        spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
-                        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-                    }
-                }
-                else
-                {
-                    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-                    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //spawnCartManager.colorHelper.Clear();
+        ////set random spawn color\
+        //GameObject spawnCheck = GrabSpawnObj(transform);
+        ////if there's something with tag cart that ray hit
+        //if (spawnCheck != null && spawnCheck.CompareTag("Cart"))
+        //{
+        //    Debug.Log(spawnCheck.tag);
+        //    //if ray obj is first level
+        //    if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
+        //    {
+        //        //if it's full
+        //        if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
+        //        {
+        //            //Pick a color from ones on top level
+        //            foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+        //            {
+        //                Debug.Log(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+        //                spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+        //                spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+        //                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+        //            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
 
-                }
-            }
-            else
-            {
-                spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-            }
-        }
-        else if(spawnCheck != null && spawnCheck.CompareTag("Cart") || spawnCheck.CompareTag("Bottom"))
-        {
-            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-        }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+        //        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //    }
+        //}
+        //else if(spawnCheck != null && spawnCheck.CompareTag("Cart") || spawnCheck.CompareTag("Bottom"))
+        //{
+        //    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+        //    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //}
 
-        else
-        {
-            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-        }
-
-
+        //else
+        //{
+        //    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+        //    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //}
 
 
+        //spawnCartManager.spawnedBool = true;
 
-        spawnCartManager.spawnedBool = true;
-        //spawn cart prefab, set random position
+
+
+        ////spawn cart prefab, set random position
         GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
         spawnCartManager.spawnObject = tmpCart;
-        //Set material to spawn
-        tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
-        //Set current for that cart
-        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
-        //Set dolly position
+        ////Set material to spawn
+        ////tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
+        ////Set current for that cart
+        //tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
+        ////Set dolly position
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
-        //set material number
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
-        //Set track references for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = spawnCartManager.paths;
-        //set cart reference for manager
-        spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+        ////set material number
+        ////tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
+        ////Set track references for that cart
+        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = spawnCartManager.paths;
+        ////set cart reference for manager
+        //spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
         //Set parent of Level manager
         //tmpCart.transform.SetParent(LevelManager.Instance.transform);
-        //Set camera target
+        ///
+        ////Set camera target
         vCam.m_LookAt = tmpCart.transform.GetChild(0);
         vCam.m_Follow = tmpCart.transform.GetChild(0);
     }
@@ -170,13 +171,33 @@ public class SpawnManager : Singleton<SpawnManager> {
 
 
     //Drop spawned cart
-    public void DropSpawn(GameObject spawnCart)
+    public void DropCart(GameObject cart)
     {
-        if (spawnCart != null)
+        if (cart != null)
         {
-            spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+           
+            Rigidbody rb = cart.GetComponent<Rigidbody>();
+            //DETACH
+            //cart.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+            cart.transform.parent.SetParent(transform);
+
+            rb.constraints = RigidbodyConstraints.None;
+            rb.constraints = RigidbodyConstraints.FreezePositionX;
+            rb.constraints = RigidbodyConstraints.FreezePositionZ;
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.AddForce(0, -10f, 0);
+            
         }
 
 
+    }
+
+
+    public void Bounce()
+    {
+        Debug.Log("BOUNCE");
+        Rigidbody rb = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Rigidbody>();
+        rb.velocity = new Vector3 (0,0,0);
+        rb.AddForce(0, 16f, 0);
     }
 }

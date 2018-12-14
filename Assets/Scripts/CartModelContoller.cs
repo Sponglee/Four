@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class CartModelContoller : MonoBehaviour
 {
+    //for tracking same color detatch
+    public bool sameColorDrop = false;
     //Track level of spawn
     public int currentLevel = 0;
     //public int modelCurrent;
@@ -69,6 +71,7 @@ public class CartModelContoller : MonoBehaviour
     {
         tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
         cartNumber = tempCart.transform.GetSiblingIndex();
+      
         if(gameObject.CompareTag("Cart"))
         {
             currentLevel = transform.parent.parent.parent.GetSiblingIndex();
@@ -95,7 +98,8 @@ public class CartModelContoller : MonoBehaviour
     {
         //Debug.Log("STICK " + currentLevel + " TO " + other.transform.parent.parent.parent.GetSiblingIndex());
         //if hits something below( or up <- fix this)
-        if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") 
+        
+        if (gameObject.CompareTag("Cart") && other.gameObject.CompareTag("Cart") 
             && gameObject.transform.position.y > other.transform.position.y)
         {
            
@@ -120,35 +124,28 @@ public class CartModelContoller : MonoBehaviour
                 //Get some effects 
                 Instantiate(LevelManager.Instance.hitPrefab,gameObject.transform.position + new Vector3(0, 5,-5), Quaternion.identity, LevelManager.Instance.EffectHolder);
                 //For pizzaz
-                //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
+                StartCoroutine(LevelManager.Instance.TiDi(0.05f));
 
 
 
 
-                //GameObject tmpRay = GrabRayObj(other, "Cart");
-                
-                //if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
-                //{
-                //    LevelManager.Instance.SpawnInProgress = false;
-                //    //destroy holder if no dollys
-                //    //Debug.Log("THEN SECOND");
-                //    transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-                //    //DETACH
-                //    //transform.parent.SetParent(null);
-                //    //gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                //    //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                //    //tmprb.constraints = RigidbodyConstraints.None;
-                //    //tmprb.useGravity = true;
-                //    //tmprb.velocity = new Vector3(0, 0, -50f);
-                //    //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-                  
-                //}
 
             }
             else
             {
+
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
-                if (levelIndex >= 1)
+                if(sameColorDrop)
+                {
+                    //Pop sequence
+                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                    Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+                    rb.constraints = RigidbodyConstraints.None;
+                    rb.useGravity = true;
+                    rb.velocity = new Vector3(Random.Range(-10f, 10f), 50f, -50f);
+                    rb.AddRelativeTorque(new Vector3(5000f, 0, 0));
+                }
+                else if (levelIndex >= 1)
                 {
                     StickCart(other, levelIndex);
                 }
@@ -169,12 +166,34 @@ public class CartModelContoller : MonoBehaviour
             //}
 
         }
-
-        if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") && currentLevel == other.gameObject.GetComponent<CartModelContoller>().currentLevel)
+        else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") && gameObject.transform.position.y > other.transform.position.y)
         {
-            Debug.Log(currentLevel + " : " + other.gameObject.GetComponent<CartModelContoller>().currentLevel);
-            MoveOut(gameObject.transform, other.transform, other.transform.parent.parent.parent.GetSiblingIndex());
+            GameObject tmpRay = GrabRayObj(other, "Cart");
+
+            //Debug.Log(other.gameObject.GetComponent<CartModelContoller>().currentLevel + " : " + tmpRay.GetComponent<CartModelContoller>().currentLevel);
+            //Drop if lower one same color
+            if (tmpRay != null && tmpRay.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
+            {
+                other.gameObject.GetComponent<CartModelContoller>().sameColorDrop = true;
+                SpawnManager.Instance.DropCart(other.transform.gameObject);
+
+            }
+            //Drop cart if only there's more than 1 level to move
+            else if (tmpRay != null && tmpRay.GetComponent<CartModelContoller>().currentLevel - other.gameObject.GetComponent<CartModelContoller>().currentLevel > 1)
+            {
+                //LevelManager.Instance.SpawnInProgress = false;
+                SpawnManager.Instance.DropCart(other.transform.gameObject);
+            }
+            
+
         }
+
+
+        //if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") && currentLevel == other.gameObject.GetComponent<CartModelContoller>().currentLevel)
+        //{
+        //    Debug.Log(currentLevel + " : " + other.gameObject.GetComponent<CartModelContoller>().currentLevel);
+        //    MoveOut(gameObject.transform, other.transform, other.transform.parent.parent.parent.GetSiblingIndex());
+        //}
         if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
         {
             SceneManager.LoadScene("Main");
@@ -198,9 +217,9 @@ public class CartModelContoller : MonoBehaviour
         Vector3 dir = other.transform.position + new Vector3(0, -100f, -2.5f);
       
 
-        if (Physics.Raycast(other.transform.position + new Vector3(0, 0, -2.5f), -Vector3.up, out hit))
+        if (Physics.Raycast(other.transform.position + new Vector3(0, -0.5f, -2.5f), -Vector3.up, out hit))
         {
-            Debug.DrawLine(other.transform.position + new Vector3(0, 0, -2.5f), dir, Color.red, 10f);
+            Debug.DrawLine(other.transform.position + new Vector3(0, -0.5f, -2.5f), dir, Color.red, 10f);
             if (hit.transform)
             {
                 if (hit.transform.gameObject.CompareTag(obj))
@@ -218,19 +237,46 @@ public class CartModelContoller : MonoBehaviour
     }
 
 
+   
+
     public void StickCart(Collision other, int levelIndex)
     {
+
+
       
         int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
-
+       
         // remember what level it's on currently
-        currentLevel = levelIndex -1;
+        currentLevel = levelIndex - 1;
+        //Remove 1 blank
+        Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
+        //spawn cart prefab, set current position
+        //SpawnManager.Instance.Bounce();
+        
+        GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1)
+            .GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1)
+            .GetChild(0).transform);
+        //Set material
+        tmpCart.transform.GetComponentInChildren<Renderer>().material = gameObject.transform.GetComponentInChildren<Renderer>().material;
+        //Set current for that cart
+        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
+        ////Set track references for that cart
+        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().paths;
+        //set cart reference for manager
+        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
 
+        SpawnManager.Instance.Bounce();
 
+        //Enable Horizontal Check
+        other.transform.parent.parent.GetComponent<CartManager>().HorizontalCheck(spawnColor);
         LevelManager.Instance.SpawnInProgress = false;
-        
+        //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
-        
+        Destroy(transform.parent.gameObject);
+     
+        //Debug.Log(tmpCart.name);
+
+
     }
 
 
