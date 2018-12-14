@@ -50,14 +50,18 @@ public class SpawnManager : Singleton<SpawnManager> {
     {
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
-        GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
-        if (spawnCheck != null)
+        GameObject spawnCheck = GrabSpawnObj(transform);
+        //if there's something with tag cart that ray hit
+        if (spawnCheck != null && spawnCheck.CompareTag("Cart"))
         {
             Debug.Log(spawnCheck.tag);
+            //if ray obj is first level
             if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
             {
+                //if it's full
                 if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
                 {
+                    //Pick a color from ones on top level
                     foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                     {
                         Debug.Log(dolly.GetChild(0).GetComponent<Renderer>().material.color);
@@ -79,6 +83,12 @@ public class SpawnManager : Singleton<SpawnManager> {
                 spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
             }
         }
+        else if(spawnCheck != null && spawnCheck.CompareTag("Cart") || spawnCheck.CompareTag("Bottom"))
+        {
+            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        }
+
         else
         {
             spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
@@ -109,7 +119,7 @@ public class SpawnManager : Singleton<SpawnManager> {
     }
 
     //Get reference to object hit by ray with tag
-    private GameObject GrabSpawnObj(Transform origin, string obj)
+    private GameObject GrabSpawnObj(Transform origin, string obj="")
     {
         RaycastHit hit;
         Vector3 dir = origin.position + new Vector3(0, -100f, -3f);
@@ -120,10 +130,10 @@ public class SpawnManager : Singleton<SpawnManager> {
         {
             if (hit.transform)
             {
-                if (hit.transform.gameObject.CompareTag(obj))
-                {
-                    return hit.transform.gameObject;
-                }
+                //if (hit.transform.gameObject.CompareTag(obj))
+                //{
+                //    return hit.transform.gameObject;
+                //}
                 return hit.transform.gameObject;
             }
         }
