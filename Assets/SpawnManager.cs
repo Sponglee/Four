@@ -6,6 +6,8 @@ using UnityEngine;
 public class SpawnManager : Singleton<SpawnManager> {
 
     public CartManager spawnCartManager;
+
+    public CinemachineVirtualCamera vCam;
 	// Use this for initialization
 	void Start () {
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
@@ -104,9 +106,10 @@ public class SpawnManager : Singleton<SpawnManager> {
         GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
         spawnCartManager.spawnObject = tmpCart;
         //Set material to spawn
-        tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
-        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
+        tmpCart.transform.GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
         //Set current for that cart
+        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
+        //Set dolly position
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
         //set material number
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
@@ -116,6 +119,9 @@ public class SpawnManager : Singleton<SpawnManager> {
         spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
         //Set parent of Level manager
         //tmpCart.transform.SetParent(LevelManager.Instance.transform);
+        //Set camera target
+        vCam.m_LookAt = tmpCart.transform;
+        vCam.m_Follow = tmpCart.transform;
     }
 
     //Get reference to object hit by ray with tag
