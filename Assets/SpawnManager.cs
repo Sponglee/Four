@@ -91,7 +91,7 @@ public class SpawnManager : Singleton<SpawnManager> {
 
         spawnCartManager.spawnedBool = true;
         //spawn cart prefab, set random position
-        GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], transform);
+        GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
         spawnCartManager.spawnObject = tmpCart;
         //Set material to spawn
         tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
@@ -112,11 +112,11 @@ public class SpawnManager : Singleton<SpawnManager> {
     private GameObject GrabSpawnObj(Transform origin, string obj)
     {
         RaycastHit hit;
-        Vector3 dir = origin.position + new Vector3(0, -100f, 0f);
+        Vector3 dir = origin.position + new Vector3(0, -100f, -3f);
 
-        Debug.DrawLine(origin.position, dir, Color.red, 10f);
+        Debug.DrawLine(origin.position  + new Vector3(0,0,-3f), dir, Color.red, 10f);
 
-        if (Physics.Raycast(origin.position, -Vector3.up, out hit))
+        if (Physics.Raycast(origin.position + new Vector3(0, 0, -3f), -Vector3.up, out hit))
         {
             if (hit.transform)
             {
