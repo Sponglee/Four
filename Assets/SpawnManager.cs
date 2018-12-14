@@ -19,25 +19,27 @@ public class SpawnManager : Singleton<SpawnManager> {
 	void Update () {
 
         if (Input.GetMouseButtonUp(0)
-            && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress /*&& spawnTimer <= 0*/)
+            && !LevelManager.Instance.RotationProgress /*&& !LevelManager.Instance.SpawnInProgress && spawnTimer <= 0*/)
         {
-            GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
-            if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
-                && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
-            {
-                //Debug.Log("NOT SAME ");
-            }
-            else
-            {
-                DropSpawn(spawnCartManager.spawnObject);
-                LevelManager.Instance.SpawnInProgress = true;
-                spawnCartManager.spawnedBool = false;
-            }
+            //GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
+            //if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
+            //    && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
+            //{
+            //    //Debug.Log("NOT SAME ");
+            //}
+            //else
+            //{
+            //    DropSpawn(spawnCartManager.spawnObject);
+            //    
+            //spawnCartManager.spawnedBool = false;
+            //  
+            //}
+            //LevelManager.Instance.SpawnInProgress = true;
+            Rigidbody rb = spawnCartManager.transform.GetChild(0).GetChild(0).GetComponent<Rigidbody>();
 
+            rb.AddForce(0, 1f, 0);
 
-
-
-
+            
 
             ////Reset spawn cooldown
             //spawnTimer = spawnDuration;
@@ -106,7 +108,7 @@ public class SpawnManager : Singleton<SpawnManager> {
         GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
         spawnCartManager.spawnObject = tmpCart;
         //Set material to spawn
-        tmpCart.transform.GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
+        tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
         //Set current for that cart
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
         //Set dolly position
@@ -120,8 +122,8 @@ public class SpawnManager : Singleton<SpawnManager> {
         //Set parent of Level manager
         //tmpCart.transform.SetParent(LevelManager.Instance.transform);
         //Set camera target
-        vCam.m_LookAt = tmpCart.transform;
-        vCam.m_Follow = tmpCart.transform;
+        vCam.m_LookAt = tmpCart.transform.GetChild(0);
+        vCam.m_Follow = tmpCart.transform.GetChild(0);
     }
 
     //Get reference to object hit by ray with tag

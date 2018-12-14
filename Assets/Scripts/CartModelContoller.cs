@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class CartModelContoller : MonoBehaviour
 {
-
+    //Track level of spawn
+    public int currentLevel = 0;
     //public int modelCurrent;
     private bool collidedBool = false;
     public bool CollidedBool
@@ -68,7 +69,10 @@ public class CartModelContoller : MonoBehaviour
     {
         tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
         cartNumber = tempCart.transform.GetSiblingIndex();
-       
+        if(gameObject.CompareTag("Cart"))
+        {
+            currentLevel = transform.parent.parent.parent.GetSiblingIndex();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -80,7 +84,7 @@ public class CartModelContoller : MonoBehaviour
         }
         else if(other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Spawn"))
         {
-            Destroy(gameObject.transform.parent.gameObject);
+            //Destroy(gameObject.transform.parent.gameObject);
            
         } 
        
@@ -89,10 +93,13 @@ public class CartModelContoller : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if(gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom")))
+        //Debug.Log("STICK " + currentLevel + " TO " + other.transform.parent.parent.parent.GetSiblingIndex());
+        //if hits something below( or up <- fix this)
+        if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") 
+            && gameObject.transform.position.y > other.transform.position.y)
         {
-
-            if(gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
+           
+            if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
                 
                 Instantiate(LevelManager.Instance.blankCartPrefab,other.transform.parent.parent);
@@ -113,59 +120,74 @@ public class CartModelContoller : MonoBehaviour
                 //Get some effects 
                 Instantiate(LevelManager.Instance.hitPrefab,gameObject.transform.position + new Vector3(0, 5,-5), Quaternion.identity, LevelManager.Instance.EffectHolder);
                 //For pizzaz
-                StartCoroutine(LevelManager.Instance.TiDi(0.05f));
+                //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
 
 
 
 
-                GameObject tmpRay = GrabRayObj(other, "Cart");
+                //GameObject tmpRay = GrabRayObj(other, "Cart");
                 
-                if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
-                {
-                    LevelManager.Instance.SpawnInProgress = false;
-                    //destroy holder if no dollys
-                    //Debug.Log("THEN SECOND");
-                    transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-                    //DETACH
-                    //transform.parent.SetParent(null);
-                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                    Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                    tmprb.constraints = RigidbodyConstraints.None;
-                    tmprb.useGravity = true;
-                    tmprb.velocity = new Vector3(0, 0, -50f);
-                    tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
+                //if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
+                //{
+                //    LevelManager.Instance.SpawnInProgress = false;
+                //    //destroy holder if no dollys
+                //    //Debug.Log("THEN SECOND");
+                //    transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                //    //DETACH
+                //    //transform.parent.SetParent(null);
+                //    //gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                //    //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                //    //tmprb.constraints = RigidbodyConstraints.None;
+                //    //tmprb.useGravity = true;
+                //    //tmprb.velocity = new Vector3(0, 0, -50f);
+                //    //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                   
-                }
+                //}
 
             }
-            else if(other.transform.parent != null)
-            {
-                //get index of levelHolder above
-                int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
-                if (levelIndex>=1)
-                {
-                    StickCart(other, levelIndex);
-                }
-                else
-                {
-                    SceneManager.LoadScene("Main");
-                }
-            }
-            else if(gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
+            else
             {
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
                 if (levelIndex >= 1)
                 {
                     StickCart(other, levelIndex);
                 }
-                else
-                {
+            }
+            
+            //else if (other.transform.parent != null /*&& LevelManager.Instance.SpawnInProgress == true*/)
+            //{
+            //    //Debug.Log("SIDEBUMP");
+            //    ////get index of levelHolder above
+            //    int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
+               
 
-                    SceneManager.LoadScene("Main");
-                }
+            //   
+            //    ////else
+            //    ////{
+            //    ////    //SceneManager.LoadScene("Main");
+            //    ////}
+            //}
+
+        }
+
+        if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") && currentLevel == other.gameObject.GetComponent<CartModelContoller>().currentLevel)
+        {
+            Debug.Log(currentLevel + " : " + other.gameObject.GetComponent<CartModelContoller>().currentLevel);
+            MoveOut(gameObject.transform, other.transform, other.transform.parent.parent.parent.GetSiblingIndex());
+        }
+        if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
+        {
+            SceneManager.LoadScene("Main");
+            int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
+            if (levelIndex >= 1)
+            {
+            }
+            else
+            {
+
+                //SceneManager.LoadScene("Main");
             }
         }
-       
     }
 
 
@@ -198,79 +220,74 @@ public class CartModelContoller : MonoBehaviour
 
     public void StickCart(Collision other, int levelIndex)
     {
-        
+      
         int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
-        //Remove 1 blank
-        Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
-        //spawn cart prefab, set current position
-        GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
-        //Set material
-        tmpCart.transform.GetComponentInChildren<Renderer>().material.color = SpawnManager.Instance.spawnCartManager.spawnMatRandomColor;
-        //Set current for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
-        ////Set track references for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().paths;
-        //set cart reference for manager
-        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
 
-        //Enable Horizontal Check
-        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor);
+        // remember what level it's on currently
+        currentLevel = levelIndex -1;
+
+
         LevelManager.Instance.SpawnInProgress = false;
-        //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-
-        Destroy(transform.parent.gameObject);
-        //Debug.Log(tmpCart.name);
+        
 
         
     }
 
-   
-    //private void MoveOut(int direction)
-    //{
-    //    //foreach(CartModelContoller tempModel in cartManager.carts)
-    //    //{
 
-    //    //}
-    //    if (GetCartAngle() > 0)
-    //    {
-    //        if(tempCart.m_Position == 0)
-    //        {
-    //            tempCart.m_Speed = -tempCart.m_Speed;
-    //            return;
-    //        }
-    //        Current++;
-    //        //Set path after calculating current
-    //        tempCart.m_Path = paths[current];
-    //        tempCart.m_Position = 0;
-    //        tempCart.m_Speed = 40;
+    private void MoveOut( Transform spawn, Transform other, int levelIndex)
+    {
+        //foreach (Transform tempModel in other.parent.parent)
+        //{
+            
+        //}
+        CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
+        Debug.Log(GetCartAngle(spawn, other, levelIndex));
 
-    //    }
-    //    else if (GetCartAngle() < 0)
-    //    {
-    //        if (tempCart.m_Position == 3)
-    //        {
-    //            tempCart.m_Speed = -tempCart.m_Speed;
-    //            return;
-    //        }
-    //        Current--;
-    //        //Set path after calculating current
-    //        tempCart.m_Path = paths[current];
-    //        tempCart.m_Position = 3;
-    //        tempCart.m_Speed = -40;
-    //    }
-    //}
+        if (GetCartAngle(spawn,other, levelIndex) > 0)
+        {
+            if (otherCart.m_Position == 0)
+            {
+                otherCart.m_Speed = -otherCart.m_Speed;
+                return;
+            }
+            int otherCurrent = other.GetComponent<CartModelContoller>().Current++;
+            //Set path after calculating current
+            otherCart.m_Path = other.GetComponent<CartModelContoller>().paths[otherCurrent];
+            otherCart.m_Position = 0;
+            otherCart.m_Speed = 40;
 
-    //// Get angle for mousePosition
-    //private float GetCartAngle()
-    //{
-    //    Vector3 selCart = cartManager.carts[cartManager.selectedIndex].transform.position;
-    //    Vector3 selDirection = selCart - cartManager.center.position;
+        }
+        else if (GetCartAngle(spawn, other, levelIndex) < 0)
+        {
+            if (tempCart.m_Position == 3)
+            {
+                otherCart.m_Speed = -otherCart.m_Speed;
+                return;
+            }
+            int otherCurrent = other.GetComponent<CartModelContoller>().Current++;
+            //Set path after calculating current
+            otherCart.m_Path = other.GetComponent<CartModelContoller>().paths[otherCurrent];
+            otherCart.m_Position = 3;
+            otherCart.m_Speed = -40;
 
-    //    Vector3 moveCart = transform.position;
-    //    Vector3 direction = moveCart - cartManager.center.position;
+        }
+    }
 
-    //    //Get angle between mouse coursor and first touch on cart
-    //    return Mathf.Atan2(Vector3.Dot(Vector3.back, Vector3.Cross(selDirection, direction)),
-    //                                    Vector3.Dot(selDirection, direction)) * Mathf.Rad2Deg;
-    //}
+    // Get angle for mousePosition
+    private float GetCartAngle(Transform spawn, Transform other, int levelIndex)
+    {
+        Vector3 spawnDirection = spawn.position - LevelManager.Instance.transform.GetChild(levelIndex).transform.position;
+        Vector3 otherDirection = other.parent.position - LevelManager.Instance.transform.GetChild(levelIndex).transform.position;
+
+        Debug.DrawLine(spawn.position,
+            LevelManager.Instance.transform.GetChild(levelIndex).transform.position, Color.black, 5f);
+        Debug.DrawLine(other.parent.position, 
+            LevelManager.Instance.transform.GetChild(levelIndex).transform.position, Color.green,5f);
+
+        //Get angle between mouse coursor and first touch on cart
+        return Mathf.Atan2(Vector3.Dot(Vector3.back, Vector3.Cross(spawnDirection, otherDirection)),
+                                        Vector3.Dot(spawnDirection, otherDirection)) * Mathf.Rad2Deg;
+
+
+    }
 }

@@ -9,7 +9,7 @@ public class LevelManager : Singleton<LevelManager> {
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
     public int spawnOffset = 0;
-
+    public int levelsCount = 10;
     //Effects
     public GameObject hitPrefab;
     public GameObject threePrefab;
@@ -45,7 +45,7 @@ public class LevelManager : Singleton<LevelManager> {
 
     private void Start()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < levelsCount; i++)
         {
                 GameObject tmpSpawn = Instantiate(levelPrefab, transform);
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
