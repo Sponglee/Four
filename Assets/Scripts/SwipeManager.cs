@@ -73,10 +73,10 @@ public class SwipeManager : Singleton<SwipeManager>
             {
                 if (screenTouch.x >= 0.5)
                 {
-                    Direction |= (deltaSwipe.y < 0) ? SwipeDirection.Left : SwipeDirection.Right;
+                    Direction |= (deltaSwipe.y < 0) ? SwipeDirection.Up : SwipeDirection.Down;
                 }
                 else
-                    Direction |= (deltaSwipe.y < 0) ? SwipeDirection.Left : SwipeDirection.Right;
+                    Direction |= (deltaSwipe.y < 0) ? SwipeDirection.Up : SwipeDirection.Down;
             }
             else
             {

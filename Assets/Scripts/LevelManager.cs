@@ -9,7 +9,8 @@ public class LevelManager : Singleton<LevelManager> {
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
     public int spawnOffset = 0;
-    public int levelsCount = 10;
+
+    public int level=0;
     //Effects
     public GameObject hitPrefab;
     public GameObject threePrefab;
@@ -45,7 +46,7 @@ public class LevelManager : Singleton<LevelManager> {
 
     private void Start()
     {
-        for (int i = 0; i < levelsCount; i++)
+        for (int i = 0; i < 10; i++)
         {
                 GameObject tmpSpawn = Instantiate(levelPrefab, transform);
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
@@ -72,8 +73,8 @@ public class LevelManager : Singleton<LevelManager> {
         UpdateInput();
         currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
         CurrentAngle += currentAngleSpeed * Time.deltaTime;
+        //transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0, 0f, CurrentAngle));
         transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
-
 
     }
 
@@ -134,11 +135,14 @@ public class LevelManager : Singleton<LevelManager> {
             }
             else if (Input.GetMouseButton(0))
             {
+               
+
                 if(SwipeManager.Instance.Direction != SwipeDirection.None)
                 {
                     //To avoid interruptions
                     RotationProgress = true;
                 }
+                
                
                 currentAngleSpeed = 0f;
 
@@ -178,10 +182,16 @@ public class LevelManager : Singleton<LevelManager> {
                 startPosition = Input.mousePosition;
                
             }
-            //else if(Input.GetMouseButtonUp(0) && (moveX<minSwipeDistX))
+            //else if (Input.GetMouseButtonUp(0) && (moveX < minSwipeDistX))
             //{
-            //    //To avoid interruptions
-            //    RotationProgress = false;
+            //    if (SwipeManager.Instance.Direction == SwipeDirection.Down)
+            //    {
+            //        level++;
+            //    }
+            //    else if (SwipeManager.Instance.Direction == SwipeDirection.Up)
+            //    {
+            //        level--;
+            //    }
             //}
         }
         //if(currentAngleSpeed == 0)
