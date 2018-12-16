@@ -52,6 +52,7 @@ public class SpawnManager : Singleton<SpawnManager> {
     //Spawn new cart
     public void Spawn()
     {
+<<<<<<< HEAD
         //spawnCartManager.colorHelper.Clear();
         ////set random spawn color\
         //GameObject spawnCheck = GrabSpawnObj(transform);
@@ -106,6 +107,52 @@ public class SpawnManager : Singleton<SpawnManager> {
 
         ////spawn cart prefab, set random position
         GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
+=======
+        spawnCartManager.colorHelper.Clear();
+        //set random spawn color\
+        GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
+        if (spawnCheck != null)
+        {
+            Debug.Log(spawnCheck.tag);
+            if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
+            {
+                if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
+                {
+                    foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+                    {
+                        Debug.Log(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                        spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+                        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+                    }
+                }
+                else
+                {
+                    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+                    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+
+                }
+            }
+            else
+            {
+                spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+            }
+        }
+        else
+        {
+            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        }
+
+
+
+
+
+        spawnCartManager.spawnedBool = true;
+        //spawn cart prefab, set random position
+        GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], transform);
+>>>>>>> parent of fa5f07f... 14.12.18
         spawnCartManager.spawnObject = tmpCart;
         ////Set material to spawn
         ////tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
@@ -131,11 +178,11 @@ public class SpawnManager : Singleton<SpawnManager> {
     private GameObject GrabSpawnObj(Transform origin, string obj="")
     {
         RaycastHit hit;
-        Vector3 dir = origin.position + new Vector3(0, -100f, -3f);
+        Vector3 dir = origin.position + new Vector3(0, -100f, 0f);
 
-        Debug.DrawLine(origin.position  + new Vector3(0,0,-3f), dir, Color.red, 10f);
+        Debug.DrawLine(origin.position, dir, Color.red, 10f);
 
-        if (Physics.Raycast(origin.position + new Vector3(0, 0, -3f), -Vector3.up, out hit))
+        if (Physics.Raycast(origin.position, -Vector3.up, out hit))
         {
             if (hit.transform)
             {
