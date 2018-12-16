@@ -10,6 +10,7 @@ public class SpawnManager : Singleton<SpawnManager> {
     public CinemachineVirtualCamera vCam;
 	// Use this for initialization
 	void Start () {
+
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
 
         Spawn();

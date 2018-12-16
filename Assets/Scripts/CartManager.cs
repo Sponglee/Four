@@ -35,6 +35,7 @@ public class CartManager : MonoBehaviour {
     public int MoveDirection = 0;
 
     //For nextSpawn carts
+    public Color spawnMatRandomColor;
     public int spawnMatRandomizer;
     public float spawnTimer;
     public float spawnDuration = 0.5f;
@@ -44,13 +45,15 @@ public class CartManager : MonoBehaviour {
 
     //for RaiseTower check if no carts
     public bool NoDollysBool = false;
-  
+
+    //For spawn helping
+    public List<Color> colorHelper;
 
 
 
     private void Start()
     {
-
+        colorHelper = new List<Color>();
         spawnManager = GameObject.Find("Spawn").transform.GetChild(0).GetChild(0).GetComponent<CartManager>();
 
         if (gameObject.CompareTag("Spawn"))
@@ -333,13 +336,10 @@ public class CartManager : MonoBehaviour {
         //GetNew spawn ready
         if(!spawnManager.spawnedBool)
         {
-<<<<<<< HEAD
-            //SpawnManager.Instance.Spawn();
-            //Debug.Log("NANI");
-=======
+
             spawnManager.Spawn();
             Debug.Log("NANI");
->>>>>>> parent of b6b68cc... 08.12.18
+
         }
         
     }
@@ -400,10 +400,8 @@ public class CartManager : MonoBehaviour {
             }
         }
         //GetNew spawn ready
-<<<<<<< HEAD
-        //SpawnManager.Instance.Spawn();
-=======
+
         spawnManager.Spawn();
->>>>>>> parent of b6b68cc... 08.12.18
+
     }
 }

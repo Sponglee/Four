@@ -8,6 +8,7 @@ public class CartModelContoller : MonoBehaviour
 {
     //for tracking same color detatch
     public bool sameColorDrop = false;
+    public Color spawnColor;
     //Track level of spawn
     public int currentLevel = 0;
     //public int modelCurrent;
@@ -105,15 +106,10 @@ public class CartModelContoller : MonoBehaviour
 
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
-<<<<<<< HEAD
 
-                Instantiate(LevelManager.Instance.blankCartPrefab, other.transform.parent.parent);
-                //Debug.Log("FIRST SAME COLOR");
-=======
                 
                 Instantiate(LevelManager.Instance.blankCartPrefab,other.transform.parent.parent);
                 Debug.Log("FIRST SAME COLOR");
->>>>>>> parent of b6b68cc... 08.12.18
 
                 //check if no dollys
                 other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
@@ -135,8 +131,6 @@ public class CartModelContoller : MonoBehaviour
 
 
 
-<<<<<<< HEAD
-=======
                 GameObject tmpRay = GrabRayObj(other, "Cart");
                 
                 if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
@@ -155,7 +149,7 @@ public class CartModelContoller : MonoBehaviour
                     tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                   
                 }
->>>>>>> parent of b6b68cc... 08.12.18
+
 
             }
             else
@@ -298,11 +292,9 @@ public class CartModelContoller : MonoBehaviour
             .GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1)
             .GetChild(0).transform);
         //Set material
-<<<<<<< HEAD
-        tmpCart.transform.GetComponentInChildren<Renderer>().material = gameObject.transform.GetComponentInChildren<Renderer>().material;
-=======
+
         tmpCart.transform.GetComponentInChildren<Renderer>().material = tmpCart.transform.parent.GetComponent<CartManager>().spawnMats[spawnNumber];
->>>>>>> parent of b6b68cc... 08.12.18
+
         //Set current for that cart
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
         ////Set track references for that cart
@@ -313,11 +305,9 @@ public class CartModelContoller : MonoBehaviour
         SpawnManager.Instance.Bounce();
 
         //Enable Horizontal Check
-<<<<<<< HEAD
-        other.transform.parent.parent.GetComponent<CartManager>().HorizontalCheck(spawnColor);
-=======
+
         LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnNumber);
->>>>>>> parent of b6b68cc... 08.12.18
+
         LevelManager.Instance.SpawnInProgress = false;
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
