@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CartManager : MonoBehaviour {
+public class CartManager : MonoBehaviour
+{
 
 
-  
+
     public GameObject[] cartPrefabs;
     public CinemachineSmoothPath[] paths;
 
@@ -24,7 +25,7 @@ public class CartManager : MonoBehaviour {
     public CartModelContoller[] carts;
 
     public int[] currents;
-    
+
 
     private CinemachineDollyCart selectedDolly;
     private CartModelContoller selectedCart;
@@ -33,7 +34,7 @@ public class CartManager : MonoBehaviour {
 
     public float speed;
     private Vector3 firstCartTouch;
-    
+
     //To prevent changing direction while moving (-1 - left, 1 - right, 0 - free)
     public int MoveDirection = 0;
 
@@ -47,7 +48,7 @@ public class CartManager : MonoBehaviour {
 
     //for RaiseTower check if no carts
     public bool NoDollysBool = false;
-  
+
 
 
 
@@ -57,17 +58,17 @@ public class CartManager : MonoBehaviour {
         spawnManagerRef = SpawnManager.Instance.spawnCartManager;
         colorHelper = new List<Color>();
 
-       
+
 
 
         if (gameObject.CompareTag("Cart"))
-        {          
+        {
             int index = 0;
             for (int i = 0; i < 4; i++)
             {
                 int spawnRandomizer = Random.Range(0, 100);
                 int materialRandomizer = Random.Range(0, spawnMats.Length);
-                if(spawnRandomizer<=60)
+                if (spawnRandomizer <= 60)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
@@ -87,16 +88,16 @@ public class CartManager : MonoBehaviour {
                     GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
                     tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
                     //Set current for that cart
-                    
+
                     index++;
                 }
-                
+
             }
         }
     }
 
 
-    
+
 
 
 
@@ -110,7 +111,7 @@ public class CartManager : MonoBehaviour {
         //when moving clockwise check if coursor not at 3 and vice-versa
         else if (checking != 1 && moveDir == 1 && checkCurr == 0 && curr == 3)
             return true;
-        else if (checking != 1 && moveDir == -1 && checkCurr ==3  && curr == 0)
+        else if (checking != 1 && moveDir == -1 && checkCurr == 3 && curr == 0)
             return true;
         else return false;
     }
@@ -122,14 +123,14 @@ public class CartManager : MonoBehaviour {
         mousePos.z = 20f;
 
         Vector3 screenPos = Camera.main.ScreenToWorldPoint(mousePos);
-        
+
         Vector3 direction = screenPos - center.position;
-        
-        Debug.DrawLine(screenPos,center.position,Color.blue);
-      
+
+        Debug.DrawLine(screenPos, center.position, Color.blue);
+
         //Get angle between mouse coursor and first touch on cart
-        return Mathf.Atan2(Vector3.Dot(Vector3.up, Vector3.Cross(firstCartTouch-center.position, direction)), 
-                                        Vector3.Dot(firstCartTouch- center.position, direction)) * Mathf.Rad2Deg;
+        return Mathf.Atan2(Vector3.Dot(Vector3.up, Vector3.Cross(firstCartTouch - center.position, direction)),
+                                        Vector3.Dot(firstCartTouch - center.position, direction)) * Mathf.Rad2Deg;
     }
 
 
@@ -139,16 +140,16 @@ public class CartManager : MonoBehaviour {
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        
+
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 
         int i = 0;
-        foreach ( RaycastResult result in results)
+        foreach (RaycastResult result in results)
         {
             i++;
             //Debug.Log(">"+i+" "  + result.gameObject.tag);
-             
+
         }
 
         if (results.Count > 0)
@@ -163,10 +164,10 @@ public class CartManager : MonoBehaviour {
         RaycastHit hit;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-       
+
         if (Physics.Raycast(ray, out hit, 100f))
         {
-            if(hit.transform)
+            if (hit.transform)
             {
                 if (hit.transform.gameObject.CompareTag(obj))
                 {
@@ -183,7 +184,7 @@ public class CartManager : MonoBehaviour {
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-       
+
 
         if (Physics.Raycast(ray, out hit, 100f))
         {
@@ -191,7 +192,7 @@ public class CartManager : MonoBehaviour {
             {
                 if (hit.transform.gameObject.CompareTag(obj))
                 {
-                  
+
                     return hit.transform.gameObject;
                 }
             }
@@ -199,7 +200,7 @@ public class CartManager : MonoBehaviour {
         return null;
     }
 
-   
+
     //Check to RaiseTower
     public void CheckCarts()
     {
@@ -209,7 +210,7 @@ public class CartManager : MonoBehaviour {
     public IEnumerator StopCheckCarts()
     {
         yield return new WaitForSeconds(0.1f);
-       
+
         int cartCount = 0;
         foreach (Transform child in transform)
         {
@@ -227,14 +228,14 @@ public class CartManager : MonoBehaviour {
             LevelManager.Instance.RaiseTower();
         }
         //GetNew spawn ready
-        if(!gameObject.CompareTag("Spawn") && !spawnManagerRef.spawnedBool)
+        if (!spawnManagerRef.spawnedBool)
         {
-            SpawnManager.Instance.Spawn();
+            //SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
         }
-        
+
     }
-    
+
     //Check for more than 3
     public void HorizontalCheck(Color checkColor)
     {
@@ -250,25 +251,25 @@ public class CartManager : MonoBehaviour {
         List<GameObject> checkedDollys;
         checkedDollys = new List<GameObject>();
 
-        
+
         for (int i = 0; i < transform.childCount; i++)
         {
             //Debug.Log("I " + i + " : " + transform.childCount);
             if (transform.GetChild(i).gameObject.CompareTag("Cart"))
             {
-                if(transform.GetChild(i).GetChild(0).GetComponent<Renderer>().material.color 
+                if (transform.GetChild(i).GetChild(0).GetComponent<Renderer>().material.color
                     == spawnColorsRef.spawnMatRandomColor)
                 {
                     checkedDollys.Add(transform.GetChild(i).GetChild(0).gameObject);
                     color++;
                 }
-              
 
-            //Debug.Log("Checking "+ i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
+
+                //Debug.Log("Checking "+ i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
             }
         }
 
-        if(color>=3)
+        if (color >= 3)
         {
             //Debug.Log("MORE THAN 3");
             foreach (GameObject go in checkedDollys)
@@ -291,6 +292,6 @@ public class CartManager : MonoBehaviour {
             }
         }
         //GetNew spawn ready
-        SpawnManager.Instance.Spawn();
+        //SpawnManager.Instance.Spawn();
     }
 }
