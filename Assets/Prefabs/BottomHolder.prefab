@@ -260,10 +260,10 @@ GameObject:
   - component: {fileID: 4166585496530470}
   - component: {fileID: 33363232385419296}
   - component: {fileID: 23479827441083636}
-  - component: {fileID: 136525095711613364}
+  - component: {fileID: 65977657626733070}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Bottom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -362,9 +362,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1285333337275722}
-  m_LocalRotation: {x: -0.00000005506444, y: 0.00000008948642, z: 0.00000004906905,
-    w: 1}
-  m_LocalPosition: {x: 0.00001532867, y: -3.6721804, z: 0.0118511}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.00000014900611, y: -3.67218, z: 0.011851099}
   m_LocalScale: {x: 1.0000007, y: 1.0000004, z: 1.0000005}
   m_Children:
   - {fileID: 4216854791603688}
@@ -377,8 +376,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1334918901993046}
-  m_LocalRotation: {x: -0.7071068, y: -0.000013120472, z: 0.0000131726265, w: -0.7071068}
-  m_LocalPosition: {x: 0.000015258795, y: -0.0118510965, z: -3.6721811}
+  m_LocalRotation: {x: -0.70710677, y: 0.0000000012223609, z: 0.000000029802322, w: -0.7071069}
+  m_LocalPosition: {x: 0, y: -0.0118510965, z: -3.6721811}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4891015072630504}
@@ -404,8 +403,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1356686967156866}
-  m_LocalRotation: {x: -0.7071068, y: 0.000013165234, z: 0.000013142824, w: 0.7071068}
-  m_LocalPosition: {x: 0.000015258795, y: 0.0118510965, z: 3.6721811}
+  m_LocalRotation: {x: -0.7071068, y: 0.00000012043165, z: 0.000000029802322, w: 0.70710677}
+  m_LocalPosition: {x: 0, y: 0.0118510965, z: 3.6721811}
   m_LocalScale: {x: 1.0000007, y: 1.0000004, z: 1.0000005}
   m_Children:
   - {fileID: 4820170122504362}
@@ -418,8 +417,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1395709940172246}
-  m_LocalRotation: {x: -1, y: -0.00000007043126, z: -0.00000008940696, w: -0.000000034051478}
-  m_LocalPosition: {x: 0.000015188922, y: 3.6721804, z: -0.0118511}
+  m_LocalRotation: {x: -1, y: 0.00000004377216, z: -0, w: 0}
+  m_LocalPosition: {x: 0.00000014900611, y: 3.67218, z: -0.011851099}
   m_LocalScale: {x: 1.0000007, y: 1.0000008, z: 1.0000007}
   m_Children:
   - {fileID: 4570990378534894}
@@ -851,6 +850,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 80, y: 500, z: 40}
   m_Center: {x: 0, y: -250, z: 0}
+--- !u!65 &65977657626733070
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1592776759611664}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000007, y: 2.0000005, z: 1.0000004}
+  m_Center: {x: 0.00000005960485, y: -0.00000047683716, z: -0.000000089307015}
 --- !u!114 &114106994814936224
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -878,14 +889,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sameColorDrop: 0
+  currentLevel: 0
   paths:
   - {fileID: 114991282829264764}
   - {fileID: 114527094378879466}
   - {fileID: 114762728001046746}
   - {fileID: 114292657062107808}
-  cartManager: {fileID: 0}
+  spawnManager: {fileID: 0}
   cartNumber: 2
-  spawnNumber: 0
+  spawnColor: {r: 0, g: 0, b: 0, a: 0}
   IsLowered: 0
   current: 0
 --- !u!114 &114158820664180594
@@ -899,14 +912,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sameColorDrop: 0
+  currentLevel: 0
   paths:
   - {fileID: 114991282829264764}
   - {fileID: 114527094378879466}
   - {fileID: 114762728001046746}
   - {fileID: 114292657062107808}
-  cartManager: {fileID: 0}
+  spawnManager: {fileID: 0}
   cartNumber: 3
-  spawnNumber: 0
+  spawnColor: {r: 0, g: 0, b: 0, a: 0}
   IsLowered: 0
   current: 1
 --- !u!114 &114259291096476612
@@ -1046,14 +1061,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sameColorDrop: 0
+  currentLevel: 0
   paths:
   - {fileID: 114991282829264764}
   - {fileID: 114527094378879466}
   - {fileID: 114762728001046746}
   - {fileID: 114292657062107808}
-  cartManager: {fileID: 0}
+  spawnManager: {fileID: 0}
   cartNumber: 1
-  spawnNumber: 0
+  spawnColor: {r: 0, g: 0, b: 0, a: 0}
   IsLowered: 0
   current: 3
 --- !u!114 &114822733474225012
@@ -1077,6 +1094,10 @@ MonoBehaviour:
   - {fileID: 114527094378879466}
   - {fileID: 114762728001046746}
   - {fileID: 114292657062107808}
+  spawnObject: {fileID: 0}
+  spawnManagerRef: {fileID: 0}
+  colorHelper: []
+  spawnedBool: 0
   center: {fileID: 0}
   carts:
   - {fileID: 114129122006234938}
@@ -1088,9 +1109,11 @@ MonoBehaviour:
   CartMoveDirection: 0
   speed: 0
   MoveDirection: 0
-  spawnIRandomizer: 0
+  spawnMatRandomColor: {r: 0, g: 0, b: 0, a: 0}
+  spawnTimer: 0
+  spawnDuration: 0.5
   canvasIdentifier: {fileID: 0}
-  spawnColors: []
+  spawnMats: []
   NoDollysBool: 0
 --- !u!114 &114986420518534594
 MonoBehaviour:
@@ -1103,14 +1126,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sameColorDrop: 0
+  currentLevel: 0
   paths:
   - {fileID: 114991282829264764}
   - {fileID: 114527094378879466}
   - {fileID: 114762728001046746}
   - {fileID: 114292657062107808}
-  cartManager: {fileID: 0}
+  spawnManager: {fileID: 0}
   cartNumber: 4
-  spawnNumber: 0
+  spawnColor: {r: 0, g: 0, b: 0, a: 0}
   IsLowered: 0
   current: 2
 --- !u!114 &114991282829264764
@@ -1139,19 +1164,6 @@ MonoBehaviour:
     roll: 180
   - position: {x: 0, y: 4.27, z: 0}
     roll: 180
---- !u!136 &136525095711613364
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1592776759611664}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!224 &224441876507848240
 RectTransform:
   m_ObjectHideFlags: 1

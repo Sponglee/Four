@@ -8,6 +8,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public CartManager spawnCartManager;
 
+
     public CinemachineVirtualCamera vCam;
     // Use this for initialization
     void Start()
@@ -190,7 +191,7 @@ public class SpawnManager : Singleton<SpawnManager>
             rb.constraints = RigidbodyConstraints.FreezePositionX;
             rb.constraints = RigidbodyConstraints.FreezePositionZ;
             rb.constraints = RigidbodyConstraints.FreezeRotation;
-            rb.AddForce(0, -10f, 0);
+            rb.AddForce(0, -100f, 0);
 
         }
 

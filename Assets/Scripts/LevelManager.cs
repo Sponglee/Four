@@ -28,7 +28,7 @@ public class LevelManager : Singleton<LevelManager> {
     public bool SpawnInProgress = false;
     public float followDuration;
 
-
+    public float levelCurrentAngle=0;
     [SerializeField]
     private float currentAngle;
     public float CurrentAngle
@@ -66,19 +66,53 @@ public class LevelManager : Singleton<LevelManager> {
         if (Input.GetMouseButtonUp(0))
         {
             //Finish rotation to even 90 degree slot
-            StartCoroutine(FollowRotate(followDuration));
+            StartCoroutine(StopRotate(followDuration));
         }
 
 
         UpdateInput();
         currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
         CurrentAngle += currentAngleSpeed * Time.deltaTime;
-        //transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0, 0f, CurrentAngle));
+        //transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0, 0f, levelCurrentAngle));
         transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
 
+       
     }
 
-    IEnumerator FollowRotate(float duration = 0.2f, float angle = 0)
+    //public void LevelRotate(int level, int direction)
+    //{
+    //    //if (direction == 1)
+    //    //{
+
+    //    //    levelCurrentAngle -= 90f;
+    //    //    levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
+    //    //}
+    //    //else if (direction == -1)
+    //    //{
+    //    //    levelCurrentAngle += 90f;
+    //    //    levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
+    //    //}
+
+    //    //StartCoroutine(FollowRotate(level, levelCurrentAngle));
+
+    //}
+
+    public IEnumerator FollowRotate(int level, float levelAngle)
+    {
+        float tempAngle = 0; 
+        while (tempAngle<=levelAngle)
+        {
+            Debug.Log(tempAngle + " + " + levelAngle);
+            tempAngle += 160 * Time.deltaTime;
+            transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
+            yield return null;
+        }
+        //StartCoroutine(StopRotate(tempAngle));
+       
+    }
+
+
+    IEnumerator StopRotate(float duration = 0.2f, float angle = 0)
     {
 
 
@@ -207,7 +241,7 @@ public class LevelManager : Singleton<LevelManager> {
         
         foreach (Transform child in transform)
         {
-
+           
             Vector3 to = transform.position;
             StartCoroutine(StopRaiseTower(child, to));
            

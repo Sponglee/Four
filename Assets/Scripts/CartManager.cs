@@ -217,6 +217,8 @@ public class CartManager : MonoBehaviour
             if (child.gameObject.CompareTag("Cart"))
             {
                 cartCount++;
+                //Debug.Log(child.GetChild(0).GetComponent<CartModelContoller>().CurrentLevel);
+               
             }
         }
 
