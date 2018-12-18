@@ -10,7 +10,7 @@ public class CartModelContoller : MonoBehaviour
     public bool sameColorDrop = false;
     //Track level of spawn
     [SerializeField]
-    private int currentLevel = -1;
+    private int currentLevel = -2;
     public int CurrentLevel
     {
         get
@@ -26,7 +26,8 @@ public class CartModelContoller : MonoBehaviour
         {
             if(gameObject.CompareTag("Spawn"))
             {
-                LevelManager.Instance.level = value;
+                LevelManager.Instance.Level = value;
+                
             }
       
             currentLevel = value;
@@ -53,7 +54,7 @@ public class CartModelContoller : MonoBehaviour
 
     public IEnumerator StopCollided()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         collidedBool = false;
     }
 
@@ -190,15 +191,17 @@ public class CartModelContoller : MonoBehaviour
         //If carts are on the same level
         else if (gameObject.CompareTag("Cart") && other.gameObject.CompareTag("Cart")
         && CurrentLevel == other.gameObject.GetComponent<CartModelContoller>().CurrentLevel
-        && !other.gameObject.GetComponent<CartModelContoller>().CollidedBool
-       /* && gameObject.gameObject.GetComponent<CartModelContoller>().CollidedBool*/)
+        && !gameObject.GetComponent<CartModelContoller>().CollidedBool
+        /*&& !gameObject.gameObject.GetComponent<CartModelContoller>().CollidedBool*/)
         {
-            Debug.Log(gameObject.transform.GetComponent<Renderer>().material.color + "HIT " + other.gameObject.transform.GetComponent<Renderer>().material.color);
+            //Debug.Log("CART HIT " + gameObject.transform.GetComponent<CartModelContoller>().current);
+            CollidedBool = true;
             MoveOut(gameObject.transform, other.transform, gameObject.transform.GetComponent<CartModelContoller>().currentLevel);
         }
         //Else if spawn is hitting cart and not same level
-        else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart") 
-            && gameObject.transform.position.y - other.transform.position.y > 0.5f)
+        else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart")
+            && gameObject.transform.position.y - other.transform.position.y > 0.1f
+             /*&& CurrentLevel != other.gameObject.GetComponent<CartModelContoller>().CurrentLevel*/)
         {
             GameObject tmpRay = GrabRayObj(other, "Cart");
 
@@ -224,7 +227,7 @@ public class CartModelContoller : MonoBehaviour
         //Detach cart from bottom
         if (gameObject.CompareTag("Cart") && other.gameObject.CompareTag("Bottom"))
         {
-            Debug.Log("REE");
+            //Debug.Log("REE");
             //DETACH
             transform.parent.SetParent(null);
             //Pop sequence
@@ -244,9 +247,11 @@ public class CartModelContoller : MonoBehaviour
         //Move cart if spawn push
         if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart")
         && CurrentLevel == other.gameObject.GetComponent<CartModelContoller>().CurrentLevel
-        && !other.gameObject.GetComponent<CartModelContoller>().CollidedBool)
+        && gameObject.transform.position.y - other.transform.position.y <0.1f
+        && !gameObject.GetComponent<CartModelContoller>().CollidedBool)
         {
-            Debug.Log(currentLevel + " : " + other.gameObject.GetComponent<CartModelContoller>().currentLevel);
+            //Debug.Log("SPAWN MOVE " + currentLevel + " : " + other.gameObject.GetComponent<CartModelContoller>().currentLevel);
+            CollidedBool = true;
             MoveOut(gameObject.transform, other.transform, other.transform.parent.parent.parent.GetSiblingIndex());
 
 
@@ -340,27 +345,27 @@ public class CartModelContoller : MonoBehaviour
     }
 
 
-    //private void MoveOut(Transform spawn, Transform other, int levelIndex)
-    //{
+    private void MoveOut(Transform spawn, Transform other, int levelIndex)
+    {
 
-    //    CollidedBool = true;
-       
-    //    CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
-    //    Debug.Log(GetCartAngle(spawn, other, levelIndex) + " : " + other.GetComponent<CartModelContoller>().Current);
-       
-    //    if (GetCartAngle(spawn, other, levelIndex) < 0)
-    //    {
+        CollidedBool = true;
 
-    //        LevelManager.Instance.LevelRotate(levelIndex, -1);
+        CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
+        //Debug.Log(GetCartAngle(spawn, other, levelIndex) + " : " + other.GetComponent<CartModelContoller>().Current);
+
+        if (GetCartAngle(spawn, other, levelIndex) < 0)
+        {
+
+            LevelManager.Instance.LevelRotate(levelIndex, -1);
 
 
-    //    }
-    //    else if (GetCartAngle(spawn, other, levelIndex) > 0)
-    //    {
-    //        LevelManager.Instance.LevelRotate(levelIndex, 1);
+        }
+        else if (GetCartAngle(spawn, other, levelIndex) > 0)
+        {
+            LevelManager.Instance.LevelRotate(levelIndex, 1);
 
-    //    }
-    //}
+        }
+    }
 
     // Get angle for mousePosition
     private float GetCartAngle(Transform spawn, Transform other, int levelIndex)
@@ -379,58 +384,68 @@ public class CartModelContoller : MonoBehaviour
 
 
     }
-    private void MoveOut(Transform spawn, Transform other, int levelIndex)
-    {
-        Debug.Log("MOVEOUT");
-        CollidedBool = true;
-        float cartSpeed = 40;
-        CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
-        //Debug.Log(GetCartAngle(spawn, other, levelIndex) + " : " + other.GetComponent<CartModelContoller>().Current);
-        //if (spawn.CompareTag("Spawn"))
-        //{
-        //    cartSpeed = 10;
-        //}
-        if (GetCartAngle(spawn, other, levelIndex) < 0)
-        {
-            if (otherCart.m_Position == 3)
-            {
-                otherCart.m_Speed = -cartSpeed;
-                CollidedBool = false;
-                return;
-            }
-            else if (otherCart.m_Position == 0)
-            {
-                other.GetComponent<CartModelContoller>().Current--;
-                //Debug.Log(": " + other.GetComponent<CartModelContoller>().Current);
-                //Set path after calculating current
-                otherCart.m_Path = other.GetComponent<CartModelContoller>().paths[other.GetComponent<CartModelContoller>().Current];
-                otherCart.m_Position = 3;
-                otherCart.m_Speed = -cartSpeed;
-                CollidedBool = false;
-                return;
-            }
+
+
+    //private void MoveOut(Transform spawn, Transform other, int levelIndex)
+    //{
+
+        
+    //    //other.GetComponent<CartModelContoller>().CollidedBool = true;
+        
+    //    float cartSpeed = 40;
+    //    CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
+    //    Debug.Log(GetCartAngle(spawn, other, levelIndex) + " : " + other.GetComponent<CartModelContoller>().Current);
+    //    //if (spawn.CompareTag("Spawn"))
+    //    //{
+    //    //    cartSpeed = 10;
+    //    //}
+        
+    //    if (GetCartAngle(spawn, other, levelIndex) < 0)
+    //    {
+    //        if (otherCart.m_Position <= 3 && otherCart.m_Position >0)
+    //        {
+               
+    //            otherCart.m_Speed = -cartSpeed;
+               
+    //            Debug.Log("-: " + other.GetComponent<CartModelContoller>().Current);
+    //            return;
+    //        }
+    //        else if (otherCart.m_Position >= 0 && otherCart.m_Position < 3)
+    //        {
+    //            other.GetComponent<CartModelContoller>().Current--;
+    //            Debug.Log("current: " + other.GetComponent<CartModelContoller>().Current);
+    //            //Set path after calculating current
+    //            otherCart.m_Path = other.GetComponent<CartModelContoller>().paths[other.GetComponent<CartModelContoller>().Current];
+    //            otherCart.m_Position = 3;
+    //            otherCart.m_Speed = -cartSpeed;
+                
+    //            return;
+    //        }
 
 
 
-        }
-        else if (GetCartAngle(spawn, other, levelIndex) > 0)
-        {
-            if (otherCart.m_Position == 0)
-            {
-                otherCart.m_Speed = cartSpeed;
-                return;
-            }
-            else if (otherCart.m_Position == 3)
-            {
-                other.GetComponent<CartModelContoller>().Current++;
-                //Set path after calculating current
-                otherCart.m_Path = other.GetComponent<CartModelContoller>().paths[other.GetComponent<CartModelContoller>().Current];
-                otherCart.m_Position = 0;
-                otherCart.m_Speed = cartSpeed;
-                return;
-            }
+    //    }
+    //    else if (GetCartAngle(spawn, other, levelIndex) > 0)
+    //    {
+    //        if (otherCart.m_Position >= 0 && otherCart.m_Position < 3)
+    //        {
+    //            otherCart.m_Speed = cartSpeed;
+
+    //            Debug.Log("-: " + other.GetComponent<CartModelContoller>().Current);
+    //            return;
+    //        }
+    //        else if (otherCart.m_Position <= 3 && otherCart.m_Position > 0)
+    //        {
+    //            other.GetComponent<CartModelContoller>().Current++;
+    //            //Set path after calculating current
+    //            otherCart.m_Path = other.GetComponent<CartModelContoller>().paths[other.GetComponent<CartModelContoller>().Current];
+    //            otherCart.m_Position = 0;
+    //            otherCart.m_Speed = cartSpeed;
+    //            Debug.Log("current: " + other.GetComponent<CartModelContoller>().Current);
+    //            return;
+    //        }
 
 
-        }
-    }
+    //    }
+    //}
 }
