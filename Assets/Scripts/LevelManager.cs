@@ -224,15 +224,15 @@ public class LevelManager : Singleton<LevelManager> {
             }
             yield return null;
         }
-        if(Mathf.Abs(CurrentAngle - to)<=0.3f)
-        {
-            CurrentAngle = to;
-            if (Level >= 0)
-            {
+        //if(Mathf.Abs(CurrentAngle - to)<=0.3f)
+        //{
+        //    CurrentAngle = to;
+        //    if (Level >= 0)
+        //    {
                 
-                LevelCurrentAngle = transform.GetChild(level).eulerAngles.y;
-            }
-        }
+        //        LevelCurrentAngle = transform.GetChild(level).eulerAngles.y;
+        //    }
+        //}
        
 
     }
