@@ -26,7 +26,7 @@ public class CartModelContoller : MonoBehaviour
         {
             if(gameObject.CompareTag("Spawn"))
             {
-                LevelManager.Instance.Level = value;
+                //LevelManager.Instance.Level = value;
                 
             }
       
