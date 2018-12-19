@@ -229,9 +229,7 @@ public class CartManager : MonoBehaviour
             //Get some effects 
             LevelManager.Instance.RaiseTower();
         }
-        //GetNew spawn ready
-
-        if(!spawnManagerRef.spawnedBool)
+        else if (!spawnManagerRef.spawnedBool)
         {
             SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
@@ -295,6 +293,10 @@ public class CartManager : MonoBehaviour
             }
         }
         //GetNew spawn ready
-        SpawnManager.Instance.Spawn();
+        if (!spawnManagerRef.spawnedBool)
+        {
+            SpawnManager.Instance.Spawn();
+            //Debug.Log("NANI");
+        }
     }
 }

@@ -56,26 +56,56 @@ public class SpawnManager : Singleton<SpawnManager>
         //set random spawn color\
         GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
         if (spawnCheck != null)
-        {
-            Debug.Log(spawnCheck.tag);
-            if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
+        {   
+            //GAME OVER CHECK
+            if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
             {
-                if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
+                Debug.Log("GAMEOVER");
+                return;
+            }
+            //Debug.Log(spawnCheck.tag);
+            else if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
+            {
+                if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart"))
                 {
-                    foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+                    //First level Helper
+                    if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
                     {
-                        Debug.Log(dolly.GetChild(0).GetComponent<Renderer>().material.color);
-                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                        foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+                        {
+                            Debug.Log("HELPER");
+                            spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+
+                        }
                         spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
                         spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
                     }
+                    else
+                    {
+                        spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+                        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+
+                    }
                 }
-                else
+
+
+
+            }
+            //Last level helper
+            else if (LevelManager.Instance.transform.GetChild(1).GetChild(0).CompareTag("Bottom"))
+            {
+                foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                 {
-                    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-                    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+                    Debug.Log(dolly.gameObject.name + " HELPER");
+                    if (!dolly.CompareTag("Blank"))
+                    {
+                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+
+                    }
 
                 }
+                spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
             }
             else
             {

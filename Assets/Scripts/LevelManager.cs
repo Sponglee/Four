@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct LevelAnglePtr
-{
-    public float ptrAngle;
-    public int ptrLevel;
-}
 
 public class LevelManager : Singleton<LevelManager> {
 
+    public int levelCount = 10;
     //Level Generator vars
     public GameObject levelPrefab;
     public GameObject bottomPrefab;
@@ -108,7 +104,7 @@ public class LevelManager : Singleton<LevelManager> {
         //LevelCurrentAngles = new Stack<LevelAnglePtr>();
 
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < levelCount; i++)
         {
                 GameObject tmpSpawn = Instantiate(levelPrefab, transform);
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
@@ -445,6 +441,12 @@ public class LevelManager : Singleton<LevelManager> {
     {
 
         yield return new WaitForEndOfFrame();
+        //Debug.Log("HERE");
+        if(!SpawnManager.Instance.spawnCartManager.spawnedBool)
+        {
+            SpawnManager.Instance.Spawn();
+        }
+
         if (child != null)
         {
             Vector3 from = child.position;

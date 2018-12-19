@@ -146,23 +146,23 @@ public class CartModelContoller : MonoBehaviour
                 {
                     StickCart(other, levelIndex);
                 }
-                else
-                {
-                    SceneManager.LoadScene("Main");
-                }
+                //else
+                //{
+                //    SceneManager.LoadScene("Main");
+                //}
             }
             else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
             {
-                int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
+                int levelIndex = other.transform.parent.parent.GetSiblingIndex();
                 if (levelIndex >= 1)
                 {
                     StickCart(other, levelIndex);
                 }
-                else
-                {
+                //else
+                //{
 
-                    SceneManager.LoadScene("Main");
-                }
+                //    SceneManager.LoadScene("Main");
+                //}
             }
         }
 
