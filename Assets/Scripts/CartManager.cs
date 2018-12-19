@@ -233,7 +233,7 @@ public class CartManager : MonoBehaviour
 
         if(!spawnManagerRef.spawnedBool)
         {
-            //SpawnManager.Instance.Spawn();
+            SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
         }
 
@@ -295,6 +295,6 @@ public class CartManager : MonoBehaviour
             }
         }
         //GetNew spawn ready
-        //SpawnManager.Instance.Spawn();
+        SpawnManager.Instance.Spawn();
     }
 }
