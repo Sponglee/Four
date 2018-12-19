@@ -230,7 +230,8 @@ public class CartManager : MonoBehaviour
             LevelManager.Instance.RaiseTower();
         }
         //GetNew spawn ready
-        if (!spawnManagerRef.spawnedBool)
+
+        if(!spawnManagerRef.spawnedBool)
         {
             //SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
