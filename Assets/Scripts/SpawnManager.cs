@@ -63,7 +63,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 Debug.Log("GAMEOVER");
                 return;
             }
-            //Debug.Log(spawnCheck.tag);
+           
             else if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
             {
                 if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart"))
