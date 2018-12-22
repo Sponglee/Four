@@ -89,7 +89,7 @@ public class CartModelContoller : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom")))
+        if (gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
         {
 
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
@@ -151,7 +151,7 @@ public class CartModelContoller : MonoBehaviour
                 //    SceneManager.LoadScene("Main");
                 //}
             }
-            else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
+            else if (gameObject.CompareTag("Spawn") &&  other.gameObject.CompareTag("Bottom"))
             {
                 int levelIndex = other.transform.parent.parent.GetSiblingIndex();
                 if (levelIndex >= 1)

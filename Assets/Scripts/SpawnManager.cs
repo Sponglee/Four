@@ -97,7 +97,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                 {
                     Debug.Log(dolly.gameObject.name + " HELPER");
-                    if (!dolly.CompareTag("Blank"))
+                    if (!dolly.CompareTag("Blank") && !dolly.CompareTag("Steel"))
                     {
                         spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
 

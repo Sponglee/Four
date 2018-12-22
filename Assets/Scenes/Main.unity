@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba56f73b03106f44af918dbe84ee89a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelCount: 2
+  levelCount: 10
   levelPrefab: {fileID: 1794271702706066, guid: d5fda22d61ba72e40b08a3e3af84557c,
     type: 2}
   bottomPrefab: {fileID: 1992749020977688, guid: b5f3466a60e27db4f9917444bc11e4c3,

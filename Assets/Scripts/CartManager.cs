@@ -72,6 +72,11 @@ public class CartManager : MonoBehaviour
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
+                    if(materialRandomizer == spawnMats.Length - 1)
+                    {
+                        tmpCart.tag = "Steel";
+                        tmpCart.transform.GetChild(0).tag = "Steel";
+                    }
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[materialRandomizer];
                     tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
                     //Set current for that cart
