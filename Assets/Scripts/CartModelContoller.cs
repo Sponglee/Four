@@ -138,24 +138,27 @@ public class CartModelContoller : MonoBehaviour
                 }
 
             }
-            else if (other.transform.parent != null)
+            else if (other.transform.CompareTag("Cart") && other.transform.parent != null)
             {
                 //get index of levelHolder above
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
                 if (levelIndex >= 1)
                 {
-                    StickCart(other, levelIndex);
+                    ColorMerge(other, levelIndex);
                 }
                 //else
                 //{
                 //    SceneManager.LoadScene("Main");
                 //}
             }
+            //stick cart to the bottom
             else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Bottom"))
             {
-                int levelIndex = other.transform.parent.parent.GetSiblingIndex();
+                int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
+                //Debug.Log("STICKY " + other.gameObject.name);
                 if (levelIndex >= 1)
                 {
+                    
                     StickCart(other, levelIndex);
                 }
                 //else
@@ -224,6 +227,34 @@ public class CartModelContoller : MonoBehaviour
 
     }
 
+    public void ColorMerge(Collision other, int levelIndex)
+    {
+
+        int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
+        //Remove 1 blank
+        //Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
+        //spawn cart prefab, set current position
+        //GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
+        //Set material
+        Color newColor = (other.transform.GetComponent<Renderer>().material.color + gameObject.transform.GetComponent<Renderer>().material.color)/2;
+        other.transform.GetComponentInChildren<Renderer>().material.color = newColor;
+        //Set current for that cart
+        //Current = newCurrent;
+        //////Set track references for that cart
+        //GetComponent<CartModelContoller>().paths = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().paths;
+        //set cart reference for manager
+        //tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
+
+        //Enable Horizontal Check
+        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor);
+        LevelManager.Instance.SpawnInProgress = false;
+        //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+
+        Destroy(transform.parent.gameObject);
+        //Debug.Log(tmpCart.name);
+
+
+    }
 
     //private void MoveOut(int direction)
     //{
