@@ -24,10 +24,10 @@ public class LevelManager : Singleton<LevelManager> {
         {
            
             level = value;
-            if (value == -2)
-                CurrentAngle = lastCurrentLevel;
-            else
-                CurrentAngle = transform.GetChild(level).localEulerAngles.z;
+            //if (value == -2)
+                //CurrentAngle = lastCurrentLevel;
+            //else
+            //    CurrentAngle = transform.GetChild(level).localEulerAngles.z;
         }
     }
 
@@ -90,21 +90,42 @@ public class LevelManager : Singleton<LevelManager> {
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
         
         speedHistory = new List<float>();
+
+
+        StartCoroutine(LevelMover());
     }
 
+    public float moveTime = 5f;
+    public IEnumerator LevelMover()
+    {
+        Debug.Log("LEVELMOVE");
+        while (true)
+        {
+            yield return new WaitForSeconds(moveTime);
+            for (int i = 0; i < 5; i++)
+            {
+                level = Random.Range(0, transform.childCount - 1);
+                Debug.Log(level);
+                StartCoroutine(FollowRotate(level, transform.GetChild(level).localEulerAngles.z));
+            }
+            
+        }
+       
+    }
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
 
         //
         if (Input.GetMouseButtonDown(0))
         {
             GameObject rayObj = GrabRayObj("Cart");
 
-            if (rayObj != null)
-            {
-                Level = rayObj.GetComponent<CartModelContoller>().CurrentLevel;
-            }
-            else
+            //if (rayObj != null)
+            //{
+            //    Level = rayObj.GetComponent<CartModelContoller>().CurrentLevel;
+            //}
+            //else
                 Level = -2;
 
         }
@@ -117,58 +138,75 @@ public class LevelManager : Singleton<LevelManager> {
        
         UpdateInput();
 
-        if(Level != -2)
-        {
-            Mover(transform.GetChild(Level), 0f);
-        }
-        else
-        {
-            Mover(transform, 90f);
-        }
-       
-
-    }
-
-    public void Mover(Transform target, float y)
-    {
         currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
         CurrentAngle += currentAngleSpeed * Time.deltaTime;
-        target.localRotation = Quaternion.Euler(new Vector3(y, 0f, CurrentAngle));
-    }
-
-     
-    public void LevelRotate(int level, int direction)
-    {
-        if (direction == 1)
-        {
-            levelStop = true;
-            //levelCurrentAngle -= 90f;
-            //levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
-        }
-        else if (direction == -1)
-        {
-            levelStop = true;
-            //levelCurrentAngle += 90f;
-            //levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
-        }
-
-        //StartCoroutine(FollowRotate(level, levelCurrentAngle));
+        transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
+      
+       
 
     }
 
-    //public IEnumerator FollowRotate(int level, float levelAngle)
+    //public IEnumerator Mover(Transform target, float y)
     //{
-    //    float tempAngle = 0; 
-    //    while (tempAngle<=levelAngle)
+    //    currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
+    //    CurrentAngle += currentAngleSpeed * Time.deltaTime;
+    //    target.localRotation = Quaternion.Euler(new Vector3(y, 0f, CurrentAngle));
+
+    //    float from = CurrentAngle;
+    //    float to = Mathf.Round(CurrentAngle / 90f) * 90f;
+
+    //    float elapsed = 0.0f;
+    //    while (elapsed < duration)
     //    {
-    //        Debug.Log(tempAngle + " + " + levelAngle);
-    //        tempAngle += 160 * Time.deltaTime;
-    //        transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
+    //        CurrentAngle = Mathf.Lerp(from, to, elapsed / duration);
+    //        elapsed += Time.fixedDeltaTime;
+    //        if (Mathf.Abs(CurrentAngle - to) <= 3f)
+    //        {
+    //            currentAngleSpeed = 0;
+
+    //            //Delay rotation bool to avoid extra spawn
+    //            StartCoroutine(StopRotationProgress());
+    //            break;
+    //        }
     //        yield return null;
     //    }
-    //    //StartCoroutine(StopRotate(tempAngle));
-       
     //}
+
+    //public void LevelRotate(int level, int direction, float angle)
+    //{
+    //    if (direction == 1)
+    //    {
+    //        levelStop = true;
+    //        //levelCurrentAngle -= 90f;
+    //        levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
+    //    }
+    //    else if (direction == -1)
+    //    {
+    //        levelStop = true;
+    //        //levelCurrentAngle += 90f;
+    //        levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
+    //    }
+
+    //    //StartCoroutine(FollowRotate(level, levelCurrentAngle));
+
+    //}
+
+    public IEnumerator FollowRotate(int level, float levelAngle)
+    {
+        Debug.Log("FOLLOWING");
+        float tempAngle = 0f;
+        float targetAngle = levelAngle+Random.Range(1,2)*90f;
+
+        while (tempAngle <= targetAngle)
+        {
+            //Debug.Log(tempAngle + " + " + levelAngle);
+            tempAngle += 160 * Time.deltaTime;
+            transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
+            yield return null;
+        }
+        StartCoroutine(StopLevelRotate(tempAngle,level));
+
+    }
 
     //for whole tower finish
     IEnumerator StopRotate(float duration = 0.2f, float angle = 0)
@@ -207,55 +245,55 @@ public class LevelManager : Singleton<LevelManager> {
        
 
     }
-    ////for current level finish
-    //IEnumerator StopLevelRotate(int tempLevel = -2, float duration = 0.2f, float angle = 0)
-    //{
+    //for current level finish
+    IEnumerator StopLevelRotate(float levelCur, int tempLevel = -2, float duration = 0.2f, float angle = 0)
+    {
 
-    //    float tempLevelAngle = LevelCurrentAngle;
-    //    float from = tempLevelAngle;
-    //    float to = Mathf.Round(LevelCurrentAngle / 90f) * 90f;
-    //    //Debug.Log("FROM: " + from + " TO: " + to);
-    //    //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
+        float tempLevelAngle = levelCur;
+        float from = tempLevelAngle;
+        float to = Mathf.Round(levelCur / 90f) * 90f;
+        //Debug.Log("FROM: " + from + " TO: " + to);
+        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
-    //    //smooth lerp rotation loop
-    //    float elapsed = 0.0f;
-    //    while (elapsed < duration)
-    //    {
-    //        tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
+        //smooth lerp rotation loop
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
 
-    //        elapsed += Time.fixedDeltaTime;
-    //        if (Mathf.Abs(tempLevelAngle - to) <= 3f)
-    //        {
-    //            currentAngleSpeed = 0;
+            elapsed += Time.fixedDeltaTime;
+            if (Mathf.Abs(tempLevelAngle - to) <= 3f)
+            {
+                //currentAngleSpeed = 0;
 
-    //            //Delay rotation bool to avoid extra spawn
-    //            StartCoroutine(StopRotationProgress());
-    //            break;
-    //        }
-    //        if (tempLevel >= 0)
-    //        {
-    //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
-    //        }
-    //        //Debug.Log(tempLevelAngle + " ::: " + to);
+                //Delay rotation bool to avoid extra spawn
+                StartCoroutine(StopRotationProgress());
+                break;
+            }
+            if (tempLevel >= 0)
+            {
+                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
+            }
+            //Debug.Log(tempLevelAngle + " ::: " + to);
 
-    //        yield return null;
-    //    }
+            yield return null;
+        }
 
-    //    //if (Mathf.Abs(tempLevelAngle - to) <= 10f)
-    //    //{
-    //    //    if (tempLevel >= 0)
-    //    //    {
-    //    //        transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
-    //    //    }
-    //    //}
+        if (Mathf.Abs(tempLevelAngle - to) <= 10f)
+        {
+            if (tempLevel >= 0)
+            {
+                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
+            }
+        }
 
-    //    levelStop = false;
-    //}
+        levelStop = false;
+    }
 
     ////For finishing levels that are not current
     //IEnumerator StopLevelTempRotate(int tempLevel = -2, float duration = 0.2f, float angle = 0)
     //{
-            
+
     //        float tempLevelAngle = LevelCurrentAngle;
     //        float from = tempLevelAngle;
     //        float to = Mathf.Round(LevelCurrentAngle / 90f) * 90f;
@@ -267,7 +305,7 @@ public class LevelManager : Singleton<LevelManager> {
     //        while (elapsed < duration)
     //        {
     //            tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
-               
+
     //            elapsed += Time.fixedDeltaTime;
     //            if (Mathf.Abs(tempLevelAngle - to) <= 3f)
     //            {
@@ -282,10 +320,10 @@ public class LevelManager : Singleton<LevelManager> {
     //                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
     //            }
     //            //Debug.Log(tempLevelAngle + " ::: " + to);
-                
+
     //            yield return null;
     //        }
-      
+
     //    if (Mathf.Abs(tempLevelAngle - to) <= 10f)
     //    {
     //        if (tempLevel >= 0)
@@ -293,7 +331,7 @@ public class LevelManager : Singleton<LevelManager> {
     //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
     //        }
     //    }
-       
+
     //    levelStop = false;
     //}
 

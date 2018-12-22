@@ -195,8 +195,8 @@ public class CartModelContoller : MonoBehaviour
         /*&& !gameObject.gameObject.GetComponent<CartModelContoller>().CollidedBool*/)
         {
             //Debug.Log("CART HIT " + gameObject.transform.GetComponent<CartModelContoller>().current);
-            CollidedBool = true;
-            MoveOut(gameObject.transform, other.transform, gameObject.transform.GetComponent<CartModelContoller>().currentLevel);
+            //CollidedBool = true;
+            //MoveOut(gameObject.transform, other.transform, gameObject.transform.GetComponent<CartModelContoller>().currentLevel);
         }
         //Else if spawn is hitting cart and not same level
         else if (gameObject.CompareTag("Spawn") && other.gameObject.CompareTag("Cart")
@@ -251,8 +251,8 @@ public class CartModelContoller : MonoBehaviour
         && !gameObject.GetComponent<CartModelContoller>().CollidedBool)
         {
             //Debug.Log("SPAWN MOVE " + currentLevel + " : " + other.gameObject.GetComponent<CartModelContoller>().currentLevel);
-            CollidedBool = true;
-            MoveOut(gameObject.transform, other.transform, other.transform.parent.parent.parent.GetSiblingIndex());
+            //CollidedBool = true;
+            //MoveOut(gameObject.transform, other.transform, other.transform.parent.parent.parent.GetSiblingIndex());
 
 
 
@@ -345,27 +345,27 @@ public class CartModelContoller : MonoBehaviour
     }
 
 
-    private void MoveOut(Transform spawn, Transform other, int levelIndex)
-    {
+    //private void MoveOut(Transform spawn, Transform other, int levelIndex)
+    //{
 
-        CollidedBool = true;
+    //    CollidedBool = true;
 
-        CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
-        //Debug.Log(GetCartAngle(spawn, other, levelIndex) + " : " + other.GetComponent<CartModelContoller>().Current);
+    //    CinemachineDollyCart otherCart = other.parent.GetComponent<CinemachineDollyCart>();
+    //    //Debug.Log(GetCartAngle(spawn, other, levelIndex) + " : " + other.GetComponent<CartModelContoller>().Current);
 
-        if (GetCartAngle(spawn, other, levelIndex) < 0)
-        {
+    //    if (GetCartAngle(spawn, other, levelIndex) < 0)
+    //    {
 
-            LevelManager.Instance.LevelRotate(levelIndex, -1);
+    //        LevelManager.Instance.LevelRotate(levelIndex, -1);
 
 
-        }
-        else if (GetCartAngle(spawn, other, levelIndex) > 0)
-        {
-            LevelManager.Instance.LevelRotate(levelIndex, 1);
+    //    }
+    //    else if (GetCartAngle(spawn, other, levelIndex) > 0)
+    //    {
+    //        LevelManager.Instance.LevelRotate(levelIndex, 1);
 
-        }
-    }
+    //    }
+    //}
 
     // Get angle for mousePosition
     private float GetCartAngle(Transform spawn, Transform other, int levelIndex)
