@@ -9,7 +9,7 @@ public class LevelManager : Singleton<LevelManager> {
     public GameObject levelPrefab;
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
-    public int spawnOffset = 0;
+    public float spawnOffset = 0;
 
     [SerializeField]
     private int level = -2;
@@ -24,8 +24,8 @@ public class LevelManager : Singleton<LevelManager> {
         {
            
             // if spawn moved down - rotate levels
-            if(level < value)
-                StartCoroutine(LevelMover());
+            //if(level < value)
+             
             level = value;
             //if (value == -2)
             //CurrentAngle = lastCurrentLevel;
@@ -89,34 +89,37 @@ public class LevelManager : Singleton<LevelManager> {
         {
                 GameObject tmpSpawn = Instantiate(levelPrefab, transform);
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
-                spawnOffset += 5;
+                spawnOffset += 6.6f;
         }
         GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform);
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
         
         speedHistory = new List<float>();
 
+        StartCoroutine(LevelMover());
 
-       
     }
 
-    public float moveTime = 2f;
+    public float moveTime = 5f;
     public IEnumerator LevelMover()
     {
         Debug.Log("LEVELMOVE");
-       
+       while(true)
+        {
             yield return new WaitForSeconds(moveTime);
             //LevelMoveProgress = true;
-            StartCoroutine(StopRotate(followDuration));
+            //StartCoroutine(StopRotate(followDuration));
             for (int i = 0; i < 5; i++)
             {
                 int rotLevel = Random.Range(0, transform.childCount - 1);
                 Debug.Log(rotLevel);
                 StartCoroutine(FollowRotate(rotLevel, transform.GetChild(rotLevel).localEulerAngles.z));
             }
-            
-        
-       
+
+        }
+
+
+
     }
     // Update is called once per frame
     void Update ()
@@ -201,8 +204,8 @@ public class LevelManager : Singleton<LevelManager> {
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
         Debug.Log("FOLLOWING");
-        float tempAngle = 0f;
-        float targetAngle = levelAngle+/*Random.Range(1,2)**/90f;
+        float tempAngle = levelAngle;
+        float targetAngle = levelAngle+ Random.Range(0, 2) * 90f;
 
         while (tempAngle <= targetAngle)
         {
@@ -465,7 +468,7 @@ public class LevelManager : Singleton<LevelManager> {
         if (child != null)
         {
             Vector3 from = child.position;
-            Vector3 to = toDesto + new Vector3(0, -5 * child.GetSiblingIndex(), 0); ;
+            Vector3 to = toDesto + new Vector3(0, -6.6f * child.GetSiblingIndex(), 0); ;
         
 
             //smooth lerp rotation loop
