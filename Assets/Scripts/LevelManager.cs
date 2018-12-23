@@ -23,9 +23,12 @@ public class LevelManager : Singleton<LevelManager> {
         set
         {
            
+            // if spawn moved down - rotate levels
+            if(level < value)
+                StartCoroutine(LevelMover());
             level = value;
             //if (value == -2)
-                //CurrentAngle = lastCurrentLevel;
+            //CurrentAngle = lastCurrentLevel;
             //else
             //    CurrentAngle = transform.GetChild(level).localEulerAngles.z;
         }
@@ -46,9 +49,11 @@ public class LevelManager : Singleton<LevelManager> {
     public List<float> speedHistory;
     public float minSwipeDistX = 50f;
     public bool RotationProgress = false;
+    public bool LevelMoveProgress = false;
     public bool SpawnInProgress = false;
     public float followDuration;
 
+    public int levelCount=10;
   
 
     //[SerializeField]
@@ -80,7 +85,7 @@ public class LevelManager : Singleton<LevelManager> {
         //LevelCurrentAngles = new Stack<LevelAnglePtr>();
 
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < levelCount; i++)
         {
                 GameObject tmpSpawn = Instantiate(levelPrefab, transform);
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
@@ -92,24 +97,25 @@ public class LevelManager : Singleton<LevelManager> {
         speedHistory = new List<float>();
 
 
-        StartCoroutine(LevelMover());
+       
     }
 
-    public float moveTime = 5f;
+    public float moveTime = 2f;
     public IEnumerator LevelMover()
     {
         Debug.Log("LEVELMOVE");
-        while (true)
-        {
+       
             yield return new WaitForSeconds(moveTime);
+            //LevelMoveProgress = true;
+            StartCoroutine(StopRotate(followDuration));
             for (int i = 0; i < 5; i++)
             {
-                level = Random.Range(0, transform.childCount - 1);
-                Debug.Log(level);
-                StartCoroutine(FollowRotate(level, transform.GetChild(level).localEulerAngles.z));
+                int rotLevel = Random.Range(0, transform.childCount - 1);
+                Debug.Log(rotLevel);
+                StartCoroutine(FollowRotate(rotLevel, transform.GetChild(rotLevel).localEulerAngles.z));
             }
             
-        }
+        
        
     }
     // Update is called once per frame
@@ -119,14 +125,14 @@ public class LevelManager : Singleton<LevelManager> {
         //
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject rayObj = GrabRayObj("Cart");
+            //GameObject rayObj = GrabRayObj("Cart");
 
             //if (rayObj != null)
             //{
             //    Level = rayObj.GetComponent<CartModelContoller>().CurrentLevel;
             //}
             //else
-                Level = -2;
+                //Level = -2;
 
         }
 
@@ -190,17 +196,18 @@ public class LevelManager : Singleton<LevelManager> {
     //    //StartCoroutine(FollowRotate(level, levelCurrentAngle));
 
     //}
+    public float levelMoveSpeed = 120f;
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
         Debug.Log("FOLLOWING");
         float tempAngle = 0f;
-        float targetAngle = levelAngle+Random.Range(1,2)*90f;
+        float targetAngle = levelAngle+/*Random.Range(1,2)**/90f;
 
         while (tempAngle <= targetAngle)
         {
             //Debug.Log(tempAngle + " + " + levelAngle);
-            tempAngle += 160 * Time.deltaTime;
+            tempAngle += levelMoveSpeed * Time.deltaTime;
             transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
             yield return null;
         }
@@ -287,6 +294,7 @@ public class LevelManager : Singleton<LevelManager> {
             }
         }
 
+        //LevelMoveProgress = false;
         levelStop = false;
     }
 
@@ -361,7 +369,7 @@ public class LevelManager : Singleton<LevelManager> {
                 currentAngleSpeed = 0f;
                 startPosition = Input.mousePosition;
             }
-            else if (Input.GetMouseButton(0))
+            else if (Input.GetMouseButton(0) /*&& !LevelMoveProgress*/)
             {
                
 

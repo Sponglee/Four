@@ -176,8 +176,11 @@ MonoBehaviour:
   RotationProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
-  levelCurrentAngle: 0
+  levelCount: 20
+  lastCurrentLevel: 0
+  lastLevelCurrentLevel: 0
   currentAngle: 0
+  moveTime: 2
   raiseDuration: 0.2
 --- !u!4 &206328901 stripped
 Transform:
