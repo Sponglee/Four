@@ -20,7 +20,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
 
         if (Input.GetMouseButtonUp(0)
-            && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress /*&& spawnTimer <= 0*/)
+            && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress && !LevelManager.Instance.LevelMoveProgress /*&& spawnTimer <= 0*/)
         {
             GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
             if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
@@ -64,7 +64,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 return;
             }
             //Debug.Log(spawnCheck.tag);
-            else if (spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
+            else if (spawnCheck && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
             {
                 if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart"))
                 {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -104,19 +105,38 @@ public class LevelManager : Singleton<LevelManager>
     public float moveTime = 5f;
     public IEnumerator LevelMover()
     {
-        Debug.Log("LEVELMOVE");
+        LevelMoveProgress = true;
+        //Debug.Log("LEVELMOVE");
         while (true)
         {
             yield return new WaitForSeconds(moveTime);
-            //LevelMoveProgress = true;
-            //StartCoroutine(StopRotate(followDuration));
+            List<int> rotLevels = new List<int>();
+            int rotLevel;
+
+            //Add first random level toa  list
+            rotLevels.Add(Random.Range(0, transform.childCount - 1));
+            //Get 5-1 different non-repeateable levels 
+            for (int i = 0; i < 4; i++)
+            {
+                //Repeat if number contains in the list
+                do
+                {
+                    rotLevel = Random.Range(0, transform.childCount - 1);
+                }
+                while (rotLevels.Contains(rotLevel));
+                //if not - add it to the list
+                rotLevels.Add(rotLevel);
+            }
+            
+
+            Debug.Log(rotLevels.Count);
+            //Turn every Rot Level
             for (int i = 0; i < 5; i++)
             {
-                int rotLevel = Random.Range(0, transform.childCount - 1);
-                Debug.Log(rotLevel);
-                StartCoroutine(FollowRotate(rotLevel, transform.GetChild(rotLevel).localEulerAngles.z));
+                StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
             }
 
+            rotLevels.Clear();
         }
 
 
@@ -206,16 +226,51 @@ public class LevelManager : Singleton<LevelManager>
     {
         Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
-        float targetAngle = levelAngle + Random.Range(0, 2) * 90f;
+        int turnCount = Random.Range(0, 3);
+        //float targetAngle = levelAngle + turnCount * 90f;
 
-        while (tempAngle <= targetAngle)
+
+        for (int i = 0; i < turnCount; i++)
         {
-            //Debug.Log(tempAngle + " + " + levelAngle);
-            tempAngle += levelMoveSpeed * Time.deltaTime;
-            transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
-            yield return null;
+            Debug.Log("TURN " + i);
+            foreach (Transform child in transform.GetChild(level).GetChild(0))
+            {
+                if (child.childCount != 0)
+                {
+                    CartModelContoller tmp = child.GetChild(0).GetComponent<CartModelContoller>();
+                    CinemachineDollyCart tmpCart = child.GetComponent<CinemachineDollyCart>();
+                    
+
+                    if (turnCount == 0)
+                    {
+
+                        break;
+                    }
+                    else
+                    {
+                        tmp.Current++;
+                        tmpCart.m_Path = tmp.paths[tmp.Current];
+                        tmpCart.m_Position = 0;
+                        tmpCart.m_Speed = 8;
+                    }
+                }
+
+            }
+
+            yield return new WaitForSeconds(0.8f);
         }
-        StartCoroutine(StopLevelRotate(tempAngle, level));
+
+        LevelMoveProgress = false;
+        yield return null;
+
+        //while (tempAngle <= targetAngle)
+        //{
+        //    //Debug.Log(tempAngle + " + " + levelAngle);
+        //    tempAngle += levelMoveSpeed * Time.deltaTime;
+        //    transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
+        //    yield return null;
+        //}
+        //StartCoroutine(StopLevelRotate(tempAngle, level));
 
     }
 
@@ -516,7 +571,7 @@ public class LevelManager : Singleton<LevelManager>
             if (hit.transform)
             {
                 Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
-                Debug.Log(hit.transform.name);
+                //Debug.Log(hit.transform.name);
                 if (hit.transform.gameObject.CompareTag(obj))
                 {
                     return hit.transform.gameObject;
