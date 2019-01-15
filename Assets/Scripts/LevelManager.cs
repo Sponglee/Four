@@ -98,50 +98,59 @@ public class LevelManager : Singleton<LevelManager>
 
         speedHistory = new List<float>();
 
-        StartCoroutine(LevelMover());
+        
 
     }
 
-    public float moveTime = 5f;
-    public IEnumerator LevelMover()
+
+    public void LevelMove()
     {
         LevelMoveProgress = true;
         //Debug.Log("LEVELMOVE");
-        while (true)
+        //while (true)
+        //{
+        //yield return new WaitForSeconds(moveTime);
+        List<int> rotLevels = new List<int>();
+        int rotLevel;
+
+        //Add first random level toa  list
+        rotLevels.Add(Random.Range(0, transform.childCount - 1));
+        //Get 5-1 different non-repeateable levels 
+        for (int i = 0; i < 4; i++)
         {
-            yield return new WaitForSeconds(moveTime);
-            List<int> rotLevels = new List<int>();
-            int rotLevel;
-
-            //Add first random level toa  list
-            rotLevels.Add(Random.Range(0, transform.childCount - 1));
-            //Get 5-1 different non-repeateable levels 
-            for (int i = 0; i < 4; i++)
+            //Repeat if number contains in the list
+            do
             {
-                //Repeat if number contains in the list
-                do
-                {
-                    rotLevel = Random.Range(0, transform.childCount - 1);
-                }
-                while (rotLevels.Contains(rotLevel));
-                //if not - add it to the list
-                rotLevels.Add(rotLevel);
+                rotLevel = Random.Range(0, transform.childCount - 1);
             }
-            
-
-            Debug.Log(rotLevels.Count);
-            //Turn every Rot Level
-            for (int i = 0; i < 5; i++)
-            {
-                StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
-            }
-
-            rotLevels.Clear();
+            while (rotLevels.Contains(rotLevel));
+            //if not - add it to the list
+            rotLevels.Add(rotLevel);
         }
 
 
+        Debug.Log(rotLevels.Count);
+        //Turn every Rot Level
+        for (int i = 0; i < 5; i++)
+        {
+            StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
+        }
+
+        rotLevels.Clear();
+        //}
 
     }
+
+
+    public float moveTime = 5f;
+    //public IEnumerator LevelMover()
+    //{
+       
+
+
+    //}
+
+
     // Update is called once per frame
     void Update()
     {

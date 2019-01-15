@@ -20,7 +20,9 @@ public class SpawnManager : Singleton<SpawnManager>
     {
 
         if (Input.GetMouseButtonUp(0)
-            && !LevelManager.Instance.RotationProgress && !LevelManager.Instance.SpawnInProgress && !LevelManager.Instance.LevelMoveProgress /*&& spawnTimer <= 0*/)
+            && !LevelManager.Instance.RotationProgress 
+                && !LevelManager.Instance.SpawnInProgress 
+                    && !LevelManager.Instance.LevelMoveProgress /*&& spawnTimer <= 0*/)
         {
             GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
             if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
@@ -66,15 +68,19 @@ public class SpawnManager : Singleton<SpawnManager>
             //Debug.Log(spawnCheck.tag);
             else if (spawnCheck && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
             {
-                if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart"))
+                if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
                 {
                     //First level Helper
                     if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
                     {
                         foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                         {
-                            Debug.Log("HELPER");
-                            spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                            if(!dolly.GetChild(0).CompareTag("Steel"))
+                            {
+                                Debug.Log("HELPER");
+                                spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                            }
+                           
 
                         }
                         spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
