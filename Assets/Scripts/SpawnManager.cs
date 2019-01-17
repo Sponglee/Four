@@ -48,22 +48,32 @@ public class SpawnManager : Singleton<SpawnManager>
 
     }
 
-
+    
 
     //Spawn new cart
     public void Spawn()
     {
+        StartCoroutine(StopSpawn());
+        
+    }
 
+
+
+
+    public IEnumerator StopSpawn()
+    {
+        spawnCartManager.spawnedBool = true;
+        yield return new WaitForSeconds(0.3f);
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
         GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
         if (spawnCheck != null)
-        {   
+        {
             //GAME OVER CHECK
             if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
             {
                 Debug.Log("GAMEOVER");
-                return;
+                yield break;
             }
             //Debug.Log(spawnCheck.tag);
             else if (spawnCheck && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
@@ -75,12 +85,12 @@ public class SpawnManager : Singleton<SpawnManager>
                     {
                         foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                         {
-                            if(!dolly.GetChild(0).CompareTag("Steel"))
+                            Debug.Log("HELPER");
+                            if (!dolly.CompareTag("Steel"))
                             {
-                                Debug.Log("HELPER");
                                 spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
                             }
-                           
+
 
                         }
                         spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
@@ -129,7 +139,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
 
-        spawnCartManager.spawnedBool = true;
+       
         //spawn cart prefab, set random position
         GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
         spawnCartManager.spawnObject = tmpCart;
@@ -147,6 +157,7 @@ public class SpawnManager : Singleton<SpawnManager>
         //Set parent of Level manager
         //tmpCart.transform.SetParent(LevelManager.Instance.transform);
     }
+
 
     //Get reference to object hit by ray with tag
     private GameObject GrabSpawnObj(Transform origin, string obj)

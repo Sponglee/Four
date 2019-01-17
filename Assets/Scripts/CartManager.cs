@@ -237,7 +237,8 @@ public class CartManager : MonoBehaviour
         else if (!spawnManagerRef.spawnedBool)
         {
             SpawnManager.Instance.Spawn();
-            //Debug.Log("NANI");
+            Debug.Log("NANI");
+            //yield break;
         }
 
     }
@@ -290,7 +291,7 @@ public class CartManager : MonoBehaviour
                 tmprb.useGravity = true;
                 tmprb.AddRelativeForce(new Vector3(0, 100f, 0));
                 tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-
+                go.tag = "Untagged";
 
 
                 Instantiate(LevelManager.Instance.blankCartPrefab, transform);
