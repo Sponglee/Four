@@ -98,18 +98,26 @@ public class LevelManager : Singleton<LevelManager>
 
         speedHistory = new List<float>();
 
-        
 
+        StartCoroutine(LevelMover());
     }
 
+    public float moveTime = 1f;
+    public IEnumerator LevelMover()
+    {
+
+        while (true)
+        {
+            yield return new WaitForSeconds(moveTime);
+            LevelMove();
+        }
+    }
 
     public void LevelMove()
     {
         LevelMoveProgress = true;
         //Debug.Log("LEVELMOVE");
-        //while (true)
-        //{
-        //yield return new WaitForSeconds(moveTime);
+        
         List<int> rotLevels = new List<int>();
         int rotLevel;
 
@@ -142,13 +150,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    public float moveTime = 5f;
-    //public IEnumerator LevelMover()
-    //{
-       
-
-
-    //}
+   
 
 
     // Update is called once per frame
@@ -235,7 +237,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
-        int turnCount = Random.Range(0, 3);
+        int turnCount = Random.Range(1, 2);
         //float targetAngle = levelAngle + turnCount * 90f;
 
 

@@ -221,7 +221,7 @@ public class CartModelContoller : MonoBehaviour
         Destroy(transform.parent.gameObject);
         //Debug.Log(tmpCart.name);
 
-        LevelManager.Instance.LevelMove();
+        //LevelManager.Instance.LevelMove();
     }
 
 

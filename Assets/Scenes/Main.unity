@@ -177,7 +177,7 @@ MonoBehaviour:
   LevelMoveProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
-  levelCount: 15
+  levelCount: 7
   lastCurrentLevel: 0
   lastLevelCurrentLevel: 0
   currentAngle: 0
@@ -500,14 +500,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1917794420133208, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 2}
-      propertyPath: m_TagString
-      value: Spawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 1489495547602736, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 2}
   m_IsPrefabAsset: 0
@@ -813,26 +805,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2074089705 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1549900511862974, guid: dbcc59e4fdb02b44999c4aa86140d884,
-    type: 2}
-  m_PrefabInternal: {fileID: 1015605860}
---- !u!114 &2074089706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2074089705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99cdbcd765ee33043b3c05d051e02754, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnCartManager: {fileID: 2080946424}
---- !u!114 &2080946424 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114349600795921836, guid: dbcc59e4fdb02b44999c4aa86140d884,
-    type: 2}
-  m_PrefabInternal: {fileID: 1015605860}
-  m_Script: {fileID: 11500000, guid: 7baf237a5884b374d903db455c17e709, type: 3}

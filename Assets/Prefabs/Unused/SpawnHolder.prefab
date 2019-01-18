@@ -98,7 +98,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1549900511862974
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,6 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224099429714040892}
+  - component: {fileID: 114842364593748610}
   m_Layer: 0
   m_Name: SpawnHolder
   m_TagString: Spawn
@@ -382,7 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cartPrefabs:
-  - {fileID: 1061318804531502, guid: ad52b24c2bae12b49be5ee8f7417faa7, type: 2}
+  - {fileID: 1401756761524346, guid: c23cc1e3cd83182469fce5f71cbca3ee, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -393,6 +394,9 @@ MonoBehaviour:
   - {fileID: 114438779887965834}
   - {fileID: 114046453889700290}
   spawnObject: {fileID: 0}
+  spawnManagerRef: {fileID: 0}
+  colorHelper: []
+  spawnedBool: 0
   center: {fileID: 224620156436891164}
   carts:
   - {fileID: 0}
@@ -404,7 +408,7 @@ MonoBehaviour:
   CartMoveDirection: 0
   speed: 0
   MoveDirection: 0
-  spawnMatRandomizer: 0
+  spawnMatRandomColor: {r: 0, g: 0, b: 0, a: 0}
   spawnTimer: 0.5
   spawnDuration: 0.5
   canvasIdentifier: {fileID: 114440903482957368}
@@ -610,6 +614,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114842364593748610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1549900511862974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99cdbcd765ee33043b3c05d051e02754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnCartManager: {fileID: 114349600795921836}
 --- !u!222 &222233160637343870
 CanvasRenderer:
   m_ObjectHideFlags: 1
