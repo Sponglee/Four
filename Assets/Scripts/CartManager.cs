@@ -66,7 +66,7 @@ public class CartManager : MonoBehaviour
             int index = 0;
             for (int i = 0; i < 4; i++)
             {
-                int spawnRandomizer = Random.Range(0, 100);
+                int spawnRandomizer = Random.Range(0, 60);
                 int materialRandomizer = Random.Range(0, spawnMats.Length);
                 if (spawnRandomizer <= 60)
                 {

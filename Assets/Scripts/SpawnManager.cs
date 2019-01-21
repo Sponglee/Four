@@ -11,7 +11,7 @@ public class SpawnManager : Singleton<SpawnManager>
     void Start()
     {
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
-
+        Spawn();
     }
 
     // Update is called once per frame
@@ -43,15 +43,12 @@ public class SpawnManager : Singleton<SpawnManager>
         //}
 
 
-        if(Input.GetMouseButton(0))
-        {
-            SpawnBall();
-        }
+        
 
 
 
     }
-
+   
     public void SpawnBall()
     {
         //spawn cart prefab, set random position
@@ -85,100 +82,104 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public IEnumerator StopSpawn()
     {
-        spawnCartManager.spawnedBool = true;
-        yield return new WaitForSeconds(0.3f);
-        spawnCartManager.colorHelper.Clear();
-        //set random spawn color\
-        GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
-        if (spawnCheck != null)
+        while(!LevelManager.Instance.LevelMoveProgress)
         {
-            //GAME OVER CHECK
-            if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
-            {
-                Debug.Log("GAMEOVER");
-                yield break;
-            }
-            //Debug.Log(spawnCheck.tag);
-            else if (spawnCheck && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
-            {
-                if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
-                {
-                    //First level Helper
-                    if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
-                    {
-                        foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
-                        {
-                            Debug.Log("HELPER");
-                            if (!dolly.CompareTag("Steel"))
-                            {
-                                spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
-                            }
+            spawnCartManager.spawnedBool = true;
+            yield return new WaitForSeconds(0.2f);
+            spawnCartManager.colorHelper.Clear();
+            //set random spawn color\
+            //GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
+            //if (spawnCheck != null)
+            //{
+            //    //GAME OVER CHECK
+            //    if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
+            //    {
+            //        Debug.Log("GAMEOVER");
+            //        yield break;
+            //    }
+            //    //Debug.Log(spawnCheck.tag);
+            //    else if (spawnCheck && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
+            //    {
+            //        if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
+            //        {
+            //            //First level Helper
+            //            if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
+            //            {
+            //                foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+            //                {
+            //                    Debug.Log("HELPER");
+            //                    if (!dolly.CompareTag("Steel"))
+            //                    {
+            //                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+            //                    }
 
 
-                        }
-                        spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
-                        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-                    }
-                    else
-                    {
-                        spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-                        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+            //                }
+            //                spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+            //                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+            //            }
+            //            else
+            //            {
+            //                spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+            //                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
 
-                    }
-                }
+            //            }
+            //        }
 
 
 
-            }
-            //Last level helper
-            else if (LevelManager.Instance.transform.GetChild(1).GetChild(0).CompareTag("Bottom"))
-            {
-                foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
-                {
-                    Debug.Log(dolly.gameObject.name + " HELPER");
-                    if (!dolly.CompareTag("Blank") && !dolly.CompareTag("Steel"))
-                    {
-                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                //}
+                //Last level helper
+                //else if (LevelManager.Instance.transform.GetChild(1).GetChild(0).CompareTag("Bottom"))
+                //{
+                //    foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+                //    {
+                //        Debug.Log(dolly.gameObject.name + " HELPER");
+                //        if (!dolly.CompareTag("Blank") && !dolly.CompareTag("Steel"))
+                //        {
+                //            spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
 
-                    }
+                //        }
 
-                }
-                spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
-                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-            }
-            else
-            {
+                //    }
+                //    spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+                //    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+                //}
+                //else
+                //{
+                //    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+            //    //    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+            //    //}
+            //}
+            //else
+            //{
                 spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
                 spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-            }
+            //}
+
+
+
+
+
+
+            //spawn cart prefab, set random position
+            GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
+            spawnCartManager.spawnObject = tmpCart;
+            //Set material to spawn
+            tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
+            //tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
+            //Set current for that cart
+            //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
+            ////set material number
+            //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
+            ////Set track references for that cart
+            //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = spawnCartManager.paths;
+            //set cart reference for manager
+            //spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+            //Set parent of Level manager
+            //tmpCart.transform.SetParent(LevelManager.Instance.transform);
         }
-        else
-        {
-            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-        }
 
-
-
-
-
-       
-        //spawn cart prefab, set random position
-        GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform);
-        spawnCartManager.spawnObject = tmpCart;
-        //Set material to spawn
-        tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
-        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
-        //Set current for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
-        //set material number
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
-        //Set track references for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = spawnCartManager.paths;
-        //set cart reference for manager
-        spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-        //Set parent of Level manager
-        //tmpCart.transform.SetParent(LevelManager.Instance.transform);
     }
 
 

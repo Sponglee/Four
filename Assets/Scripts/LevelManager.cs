@@ -106,7 +106,7 @@ public class LevelManager : Singleton<LevelManager>
     public IEnumerator LevelMover()
     {
 
-        while (true)
+        while (!LevelMoveProgress)
         {
             yield return new WaitForSeconds(moveTime);
             LevelMove();

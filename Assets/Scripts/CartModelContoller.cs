@@ -87,6 +87,21 @@ public class CartModelContoller : MonoBehaviour
     }
 
 
+    public float speed = 300.0f;
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (!collision.gameObject.CompareTag("Ball"))
+    //        return;
+
+    //    // Assign velocity based upon direction of conveyor belt
+    //    // Ensure that conveyor mesh is facing towards its local Z-axis
+    //    float conveyorVelocity = speed * Time.deltaTime;
+    //    Rigidbody rigidbody = collision.gameObject.GetComponent<Rigidbody>();
+    //    Debug.Log(rigidbody.tag);
+    //    rigidbody.AddForce(conveyorVelocity * transform.right);
+    //}
+    
+
     private void OnCollisionEnter(Collision other)
     {
         if (gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
