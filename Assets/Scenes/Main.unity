@@ -173,12 +173,16 @@ MonoBehaviour:
   currentAngleSpeed: 0
   startPosition: {x: 0, y: 0, z: 0}
   maxRotateSpeed: 500
-  rotateSpeed: 360
   speedHistory: []
   minSwipeDistX: 10
   RotationProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
+  runSpeed: 360
+  speedInertioa: 100
+  stopInertia: 50
+  jumpInertia: 10
+  collisionInertia: 0.3
   levelCurrentAngle: 0
   currentAngle: 0
 --- !u!4 &206328901 stripped
@@ -870,6 +874,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ScreenY
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114648690009687196, guid: f9e2b8faa9019e047932d2b203cbd2cb,
+        type: 3}
+      propertyPath: m_DeadZoneWidth
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114648690009687196, guid: f9e2b8faa9019e047932d2b203cbd2cb,
+        type: 3}
+      propertyPath: m_TrackedObjectOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114648690009687196, guid: f9e2b8faa9019e047932d2b203cbd2cb,
+        type: 3}
+      propertyPath: m_ScreenX
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9e2b8faa9019e047932d2b203cbd2cb, type: 3}

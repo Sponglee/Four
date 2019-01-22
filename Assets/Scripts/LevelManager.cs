@@ -62,7 +62,6 @@ public class LevelManager : Singleton<LevelManager> {
     public float currentAngleSpeed = 0f;
     public Vector3 startPosition;
     public float maxRotateSpeed = 30f;
-    public int rotateSpeed;
     public List<float> speedHistory;
     public float minSwipeDistX = 50f;
     public bool RotationProgress = false;
@@ -70,8 +69,11 @@ public class LevelManager : Singleton<LevelManager> {
     public float followDuration;
 
     //Running parameters
-    float stopInertia = 50f;
-    float jumpInertia = 10f;
+    public float runSpeed = 360f;
+    public float speedInertioa = 100f;
+    public float stopInertia = 50f;
+    public float jumpInertia = 10f;
+    public float collisionInertia =0.3f;
 
     //[SerializeField]
     //private Stack<LevelAnglePtr> LevelCurrentAngles;
@@ -160,12 +162,7 @@ public class LevelManager : Singleton<LevelManager> {
         }
 
 
-        UpdateInput();
-
-      
-
-
-       
+        UpdateInput(); 
     }
 
     public void LevelRotate(int level, int direction)
@@ -197,12 +194,39 @@ public class LevelManager : Singleton<LevelManager> {
             CurrentAngle -= speed * Time.deltaTime;
             transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
             speed -= inertia;
-            Debug.Log(speed);
+            //Debug.Log(speed);
             yield return null;
         }
     }
    
+    
+    //public void DropSpeed()
+    //{
+    //    runSpeed = 180;
+        
+    //}
 
+
+    //Catch up behaviour when collided with obstaclew
+    public IEnumerator StopCollision()
+    {
+        float originSpeed = runSpeed;
+        runSpeed /= 2;
+      
+       //Bring spawn back to center
+        while (runSpeed < originSpeed)
+        {
+            runSpeed += stopInertia * Time.deltaTime;
+
+            yield return null;
+        }
+
+        runSpeed = originSpeed;
+        ////Reset it if catch up "overshoots"
+        //if (tmpChild.localPosition.z >= 0)
+        //    tmpChild.localPosition = new Vector3(tmpChild.localPosition.x, tmpChild.localPosition.y, 0);
+    }
+    
     private void UpdateInput()
     {
     //
@@ -210,7 +234,7 @@ public class LevelManager : Singleton<LevelManager> {
     float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
     float screenWidth = ((float)Screen.width);
     float moveXPercent = moveX / screenWidth;
-    float speed = /*(Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) **/ rotateSpeed;
+    float speed = /*(Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) **/ runSpeed;
         currentAngleSpeed = speed;
     }
 
