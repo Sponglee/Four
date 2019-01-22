@@ -169,6 +169,7 @@ MonoBehaviour:
   cylinderPrefab: {fileID: 1892078723244562, guid: 46876a2780737ec45a19d62f88e5ce56,
     type: 3}
   EffectHolder: {fileID: 0}
+  spawn: {fileID: 1963761521}
   currentAngleSpeed: 0
   startPosition: {x: 0, y: 0, z: 0}
   maxRotateSpeed: 500
@@ -180,7 +181,6 @@ MonoBehaviour:
   followDuration: 0.1
   levelCurrentAngle: 0
   currentAngle: 0
-  raiseDuration: 0.2
 --- !u!4 &206328901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: f89732ea99785b94c87bbba1e27f75a3,
@@ -397,7 +397,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 21
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -422,8 +422,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786702170}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.1588296, y: -0.040290568, z: 0.0064871544, w: 0.98646224}
+  m_LocalPosition: {x: 4.7313056, y: 9.4, z: -74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1178556464}
@@ -604,6 +604,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4321652583099776, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4321652583099776, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4321652583099776, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1722296659547124, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1487820441969540, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -803,6 +819,11 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114932868631676898, guid: f9e2b8faa9019e047932d2b203cbd2cb,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 21
+      objectReference: {fileID: 0}
     - target: {fileID: 4733626729407244, guid: f9e2b8faa9019e047932d2b203cbd2cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.7313056
@@ -843,12 +864,12 @@ PrefabInstance:
     - target: {fileID: 114648690009687196, guid: f9e2b8faa9019e047932d2b203cbd2cb,
         type: 3}
       propertyPath: m_BiasY
-      value: 0.00000005789518
+      value: 0.00000011579036
       objectReference: {fileID: 0}
     - target: {fileID: 114648690009687196, guid: f9e2b8faa9019e047932d2b203cbd2cb,
         type: 3}
       propertyPath: m_ScreenY
-      value: 0.45499998
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9e2b8faa9019e047932d2b203cbd2cb, type: 3}
@@ -876,7 +897,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886522785}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -10.6, z: -15.8}
+  m_LocalPosition: {x: 0, y: -5.79, z: -15.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 383150056}
@@ -994,6 +1015,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1963761521 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4321652583099776, guid: dbcc59e4fdb02b44999c4aa86140d884,
+    type: 3}
+  m_PrefabInstance: {fileID: 1015605860}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2015310517 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1295405511423846, guid: f9e2b8faa9019e047932d2b203cbd2cb,
@@ -1013,9 +1040,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 75.8, y: 18, z: 5.78}
+  m_FollowOffset: {x: 75, y: 0, z: 0}
   m_XDamping: 1
-  m_YDamping: 1
+  m_YDamping: 12.5
   m_ZDamping: 1
   m_PitchDamping: 0
   m_YawDamping: 0

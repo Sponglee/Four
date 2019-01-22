@@ -35,7 +35,7 @@ public class LevelManager : Singleton<LevelManager> {
             //LevelCurrentAngles.Push(tmp);
             if(level != value)
             {
-                StartCoroutine(StopLevelRotate(level, followDuration));
+                //StartCoroutine(StopLevelRotate(level, followDuration));
              
 
                 level = value;
@@ -53,7 +53,10 @@ public class LevelManager : Singleton<LevelManager> {
     public GameObject hitPrefab;
     public GameObject threePrefab;
     public GameObject cylinderPrefab;
+
+
     public Transform EffectHolder;
+    public Transform spawn;
 
     //Input vars
     public float currentAngleSpeed = 0f;
@@ -66,7 +69,9 @@ public class LevelManager : Singleton<LevelManager> {
     public bool SpawnInProgress = false;
     public float followDuration;
 
-  
+    //Running parameters
+    float stopInertia = 50f;
+    float jumpInertia = 10f;
 
     //[SerializeField]
     //private Stack<LevelAnglePtr> LevelCurrentAngles;
@@ -105,14 +110,13 @@ public class LevelManager : Singleton<LevelManager> {
 
     private void Start()
     {
-        //LevelCurrentAngles = new Stack<LevelAnglePtr>();
-
+       
 
         for (int i = 0; i < 10; i++)
         {
                 GameObject tmpSpawn = Instantiate(levelPrefab, transform);
                 tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
-                spawnOffset += 5;
+                spawnOffset += 20;
         }
         GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform);
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
@@ -124,39 +128,39 @@ public class LevelManager : Singleton<LevelManager> {
     void Update () {
 
         //
-        if (Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0))
+        {
+            StopAllCoroutines();
+        }
+
+
+        if (Input.GetMouseButton(0) )
         {
             if(level>=0)
                 LevelCurrentAngle = transform.GetChild(level).localEulerAngles.z;
+
+
+            currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
+            CurrentAngle -= currentAngleSpeed * Time.deltaTime;
+            transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
+        }
+        
+
+        if (Input.GetMouseButtonUp(0) && SwipeManager.Instance.Direction == SwipeDirection.None)
+        {
+            //Finish rotation to full stop
+            StartCoroutine(StopRotate(currentAngleSpeed, stopInertia));
+        }
+        else if (Input.GetMouseButtonUp(0) && SwipeManager.Instance.Direction == SwipeDirection.Up)
+        {
+            Rigidbody rb = spawn.GetChild(0).GetChild(0).GetComponent<Rigidbody>();
+            rb.AddForce(0, 16f, 0);
+            StartCoroutine(StopRotate(currentAngleSpeed, jumpInertia));
+
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            //Finish rotation to even 90 degree slot
-            StartCoroutine(StopRotate(followDuration));
-          
-            StartCoroutine(StopLevelRotate(level,followDuration));
-            //LevelCurrentAngle = transform.GetChild(level).eulerAngles.y;
-        }
-       
 
         UpdateInput();
-        currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
-        CurrentAngle += currentAngleSpeed * Time.deltaTime;
-
-        LevelCurrentAngle -= currentAngleSpeed * Time.deltaTime;
-        if (/*Input.GetMouseButton(0) &&*/ levelStop)
-        {
-           
-            if (level >= 0)
-            {
-                
-                transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0, 0f, LevelCurrentAngle));
-            }
-        }
-
-
-        transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
 
       
 
@@ -182,157 +186,22 @@ public class LevelManager : Singleton<LevelManager> {
         //StartCoroutine(FollowRotate(level, levelCurrentAngle));
 
     }
-
-    //public IEnumerator FollowRotate(int level, float levelAngle)
-    //{
-    //    float tempAngle = 0; 
-    //    while (tempAngle<=levelAngle)
-    //    {
-    //        Debug.Log(tempAngle + " + " + levelAngle);
-    //        tempAngle += 160 * Time.deltaTime;
-    //        transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
-    //        yield return null;
-    //    }
-    //    //StartCoroutine(StopRotate(tempAngle));
-       
-    //}
-
+    
     //for whole tower finish
-    IEnumerator StopRotate(float duration = 0.2f, float angle = 0)
+    IEnumerator StopRotate(float speed, float inertia)
     {
 
-
-        
-        float from = CurrentAngle;
-        float to = Mathf.Round(CurrentAngle / 90f)*90f;
-        //Debug.Log("FROM: " + from + " TO: " + to);
-        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
-
-        //smooth lerp rotation loop
-        float elapsed = 0.0f;
-        while (elapsed < duration)
+        while(speed>0)
         {
-            CurrentAngle = Mathf.Lerp(from, to, elapsed / duration);
-            elapsed += Time.fixedDeltaTime;
-            if (Mathf.Abs(CurrentAngle - to) <= 3f)
-            {
-                currentAngleSpeed = 0;
-
-                //Delay rotation bool to avoid extra spawn
-                StartCoroutine(StopRotationProgress());
-                break;
-            }
+            currentAngleSpeed = Mathf.Lerp(speed, 0f, 5f * Time.deltaTime);
+            CurrentAngle -= speed * Time.deltaTime;
+            transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
+            speed -= inertia;
+            Debug.Log(speed);
             yield return null;
         }
-        //if(Mathf.Abs(CurrentAngle - to)<=0.3f)
-        //{
-        //    CurrentAngle = to;
-        //    if (Level >= 0)
-        //    {
-                
-        //        LevelCurrentAngle = transform.GetChild(level).eulerAngles.y;
-        //    }
-        //}
-       
-
     }
-    //for current level finish
-    IEnumerator StopLevelRotate(int tempLevel = -2, float duration = 0.2f, float angle = 0)
-    {
-
-        float tempLevelAngle = LevelCurrentAngle;
-        float from = tempLevelAngle;
-        float to = Mathf.Round(LevelCurrentAngle / 90f) * 90f;
-        //Debug.Log("FROM: " + from + " TO: " + to);
-        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
-
-        //smooth lerp rotation loop
-        float elapsed = 0.0f;
-        while (elapsed < duration)
-        {
-            tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
-
-            elapsed += Time.fixedDeltaTime;
-            if (Mathf.Abs(tempLevelAngle - to) <= 3f)
-            {
-                currentAngleSpeed = 0;
-
-                //Delay rotation bool to avoid extra spawn
-                StartCoroutine(StopRotationProgress());
-                break;
-            }
-            if (tempLevel >= 0)
-            {
-                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
-            }
-            //Debug.Log(tempLevelAngle + " ::: " + to);
-
-            yield return null;
-        }
-
-        //if (Mathf.Abs(tempLevelAngle - to) <= 10f)
-        //{
-        //    if (tempLevel >= 0)
-        //    {
-        //        transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
-        //    }
-        //}
-
-        levelStop = false;
-    }
-
-    //For finishing levels that are not current
-    IEnumerator StopLevelTempRotate(int tempLevel = -2, float duration = 0.2f, float angle = 0)
-    {
-            
-            float tempLevelAngle = LevelCurrentAngle;
-            float from = tempLevelAngle;
-            float to = Mathf.Round(LevelCurrentAngle / 90f) * 90f;
-            //Debug.Log("FROM: " + from + " TO: " + to);
-            //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
-
-            //smooth lerp rotation loop
-            float elapsed = 0.0f;
-            while (elapsed < duration)
-            {
-                tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
-               
-                elapsed += Time.fixedDeltaTime;
-                if (Mathf.Abs(tempLevelAngle - to) <= 3f)
-                {
-                    currentAngleSpeed = 0;
-
-                    //Delay rotation bool to avoid extra spawn
-                    StartCoroutine(StopRotationProgress());
-                    break;
-                }
-                if (tempLevel >= 0)
-                {
-                    transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
-                }
-                //Debug.Log(tempLevelAngle + " ::: " + to);
-                
-                yield return null;
-            }
-      
-        if (Mathf.Abs(tempLevelAngle - to) <= 10f)
-        {
-            if (tempLevel >= 0)
-            {
-                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
-            }
-        }
-       
-        levelStop = false;
-    }
-
-    //Delay rotation bool
-    private IEnumerator StopRotationProgress()
-    {
-        yield return new WaitForFixedUpdate();
-        RotationProgress = false;
-    }
-
+   
 
     private void UpdateInput()
     {
@@ -341,140 +210,11 @@ public class LevelManager : Singleton<LevelManager> {
     float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
     float screenWidth = ((float)Screen.width);
     float moveXPercent = moveX / screenWidth;
-    float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
-
-        if (!SpawnInProgress)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                
-                speedHistory.Clear();
-                currentAngleSpeed = 0f;
-                startPosition = Input.mousePosition;
-            }
-            else if (Input.GetMouseButton(0))
-            {
-               
-
-                if(SwipeManager.Instance.Direction != SwipeDirection.None)
-                {
-                    //To avoid interruptions
-                    RotationProgress = true;
-                }
-                
-               
-                currentAngleSpeed = 0f;
-
-                if (moveXPercent > minSwipeDistX)
-                {
-                    
-
-                    speedHistory.Add(speed);
-                }
-                else
-                {
-                    speedHistory.Add(0f);
-                }
-                if (speedHistory.Count > 4)
-                {
-                    speedHistory.RemoveAt(0);
-                }
-                CurrentAngle += speed;
-                if(levelStop)
-                {
-                    LevelCurrentAngle -= speed;
-                }
-                currentAngleSpeed = speed;
-                startPosition = Input.mousePosition;
-                if (currentAngleSpeed <= 0.02f)
-                {
-                    currentAngleSpeed = 0;
-                    
-                    //currentAngle = Mathf.Round(CurrentAngle / 90f) * 90f;
-                }
-
-            }
-            else if (Input.GetMouseButtonUp(0) && (moveX > minSwipeDistX))
-            {
-                //
-                float speedX = 0f;
-                for (int i = 0; i < speedHistory.Count; i++)
-                {
-                    speedX += speedHistory[i];
-                }
-                currentAngleSpeed = 6f * speedX;
-                startPosition = Input.mousePosition;
-               
-            }
-            //else if (Input.GetMouseButtonUp(0) && (moveX < minSwipeDistX))
-            //{
-            //    if (SwipeManager.Instance.Direction == SwipeDirection.Down)
-            //    {
-            //        level++;
-            //    }
-            //    else if (SwipeManager.Instance.Direction == SwipeDirection.Up)
-            //    {
-            //        level--;
-            //    }
-            //}
-        }
-        //if(currentAngleSpeed == 0)
-        //{
-            
-        //}
+    float speed = /*(Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) **/ rotateSpeed;
+        currentAngleSpeed = speed;
     }
 
-    public float raiseDuration = 0.2f;
-
-    public void RaiseTower()
-    {
-        
-        foreach (Transform child in transform)
-        {
-           
-            Vector3 to = transform.position;
-            StartCoroutine(StopRaiseTower(child, to));
-           
-        }
-
-    }
-
-
-
-    public IEnumerator StopRaiseTower(Transform child, Vector3 toDesto, float duration = 0.2f)
-    {
-
-        yield return new WaitForEndOfFrame();
-        if (child != null)
-        {
-            Vector3 from = child.position;
-            Vector3 to = toDesto + new Vector3(0, -5 * child.GetSiblingIndex(), 0); ;
-        
-
-            //smooth lerp rotation loop
-            float elapsed = 0.0f;
-        
-            //Debug.Log(child.transform.GetSiblingIndex() + "x FROM: " + from + " TO: " + to);
-           
-            while (elapsed < duration)
-            {
-                if (child != null)
-                {
-                    child.position = Vector3.Lerp(from, to, elapsed / duration);
-                    elapsed += Time.fixedDeltaTime;
-                    yield return null;
-
-                }
-                else break;
-
-            }
-        }
-        else
-            yield break;
-
-       
-    }
-
+   
 
     public IEnumerator TiDi(float timeDelay)
     {

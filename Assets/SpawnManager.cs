@@ -22,32 +22,30 @@ public class SpawnManager : Singleton<SpawnManager>
     void Update()
     {
 
-        if (Input.GetMouseButtonUp(0)
-            && !LevelManager.Instance.RotationProgress /*&& !LevelManager.Instance.SpawnInProgress && spawnTimer <= 0*/)
-        {
-            //GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
-            //if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
-            //    && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
-            //{
-            //    //Debug.Log("NOT SAME ");
-            //}
-            //else
-            //{
-            //    DropSpawn(spawnCartManager.spawnObject);
-            //    
-            //spawnCartManager.spawnedBool = false;
-            //  
-            //}
-            //LevelManager.Instance.SpawnInProgress = true;
-            Rigidbody rb = spawnCartManager.transform.GetChild(0).GetChild(0).GetComponent<Rigidbody>();
-
-            rb.AddForce(0, 16f, 0);
+        //if (Input.GetMouseButtonUp(0)
+        //    && !LevelManager.Instance.RotationProgress /*&& !LevelManager.Instance.SpawnInProgress && spawnTimer <= 0*/)
+        //{
+        //    //GameObject tmpRayCart = GrabSpawnObj(transform, "Cart");
+        //    //if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
+        //    //    && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
+        //    //{
+        //    //    //Debug.Log("NOT SAME ");
+        //    //}
+        //    //else
+        //    //{
+        //    //    DropSpawn(spawnCartManager.spawnObject);
+        //    //    
+        //    //spawnCartManager.spawnedBool = false;
+        //    //  
+        //    //}
+        //    //LevelManager.Instance.SpawnInProgress = true;
+           
 
 
 
-            ////Reset spawn cooldown
-            //spawnTimer = spawnDuration;
-        }
+        //    ////Reset spawn cooldown
+        //    //spawnTimer = spawnDuration;
+        //}
 
     }
 

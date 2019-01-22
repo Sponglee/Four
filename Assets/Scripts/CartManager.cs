@@ -227,7 +227,7 @@ public class CartManager : MonoBehaviour
             Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
             Destroy(transform.parent.gameObject);
             //Get some effects 
-            LevelManager.Instance.RaiseTower();
+            //LevelManager.Instance.RaiseTower();
         }
         //GetNew spawn ready
         if (!spawnManagerRef.spawnedBool)

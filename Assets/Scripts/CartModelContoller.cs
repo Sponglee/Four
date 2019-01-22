@@ -356,13 +356,13 @@ public class CartModelContoller : MonoBehaviour
         if (GetCartAngle(spawn, other, levelIndex) < 0)
         {
 
-            LevelManager.Instance.LevelRotate(levelIndex, -1);
+            //LevelManager.Instance.LevelRotate(levelIndex, -1);
 
 
         }
         else if (GetCartAngle(spawn, other, levelIndex) > 0)
         {
-            LevelManager.Instance.LevelRotate(levelIndex, 1);
+            //LevelManager.Instance.LevelRotate(levelIndex, 1);
 
         }
     }
