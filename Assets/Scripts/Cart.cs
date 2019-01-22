@@ -9,18 +9,42 @@ public class Cart : MonoBehaviour {
 
     public int current;
 
-	
-	
-	void Update ()
+    //RUNNER
+    private void Start()
     {
-		if(transform.position != targets[current].position)
+        current = transform.parent.parent.GetSiblingIndex();
+    }
+
+    //void Update ()
+    //   {
+    //	if(transform.position != targets[current].position)
+    //       {
+    //           Vector3 pos = Vector3.MoveTowards(transform.position, targets[current].position, speed);
+    //           GetComponent<Rigidbody>().MovePosition(pos);
+    //       }
+    //       else
+    //       {
+    //           current = (current + 1) % targets.Length;
+    //       }
+    //}
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Spawn"))
         {
-            Vector3 pos = Vector3.MoveTowards(transform.position, targets[current].position, speed);
-            GetComponent<Rigidbody>().MovePosition(pos);
+
+            LevelManager.Instance.Level = current;
+
         }
-        else
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Boundary") && LevelManager.Instance.Level == current && current != 0)
         {
-            current = (current + 1) % targets.Length;
+            Destroy(gameObject);
         }
-	}
+    }
 }

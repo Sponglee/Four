@@ -39,8 +39,8 @@ public class LevelManager : Singleton<LevelManager> {
              
 
                 level = value;
-                if (level >= 0)
-                    LevelCurrentAngle = transform.GetChild(level).localEulerAngles.z;
+                //if (level >= 0)
+                //    LevelCurrentAngle = transform.GetChild(level).localEulerAngles.z;
             }
 
 
@@ -110,6 +110,9 @@ public class LevelManager : Singleton<LevelManager> {
         }
     }
 
+
+
+    //RUNNER
     private void Start()
     {
        
@@ -126,12 +129,16 @@ public class LevelManager : Singleton<LevelManager> {
         speedHistory = new List<float>();
     }
 
+
+    private float currentScroll;
+    public float visualSpeedScalar = 1f;
     // Update is called once per frame
     void Update () {
 
         //
         if(Input.GetMouseButtonDown(0))
         {
+            //currentScroll = 0;
             StopAllCoroutines();
         }
 
@@ -145,6 +152,10 @@ public class LevelManager : Singleton<LevelManager> {
             currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
             CurrentAngle -= currentAngleSpeed * Time.deltaTime;
             transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
+            // Scroll texture to fake it moving
+            currentScroll = currentScroll + Time.deltaTime * currentAngleSpeed * visualSpeedScalar;
+            transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material.mainTextureOffset = new Vector2(currentScroll, 0 );
+            //transform.GetChild(0).GetChild(2).GetComponent<Renderer>().material.mainTextureOffset = new Vector2(-currentScroll, -currentScroll);
         }
         
 
@@ -187,14 +198,17 @@ public class LevelManager : Singleton<LevelManager> {
     //for whole tower finish
     IEnumerator StopRotate(float speed, float inertia)
     {
-
-        while(speed>0)
+        //currentScroll = 0;
+        while (speed>0)
         {
             currentAngleSpeed = Mathf.Lerp(speed, 0f, 5f * Time.deltaTime);
             CurrentAngle -= speed * Time.deltaTime;
             transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
             speed -= inertia;
             //Debug.Log(speed);
+            // Scroll texture to fake it moving
+            currentScroll = currentScroll + Time.deltaTime * currentAngleSpeed * visualSpeedScalar;
+            transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material.mainTextureOffset = new Vector2(currentScroll, 0);
             yield return null;
         }
     }
@@ -246,6 +260,8 @@ public class LevelManager : Singleton<LevelManager> {
         yield return new WaitForSecondsRealtime(timeDelay);
         Time.timeScale = 1;
     }
+
+
 }
 
    

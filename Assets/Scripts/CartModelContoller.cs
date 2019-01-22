@@ -15,20 +15,17 @@ public class CartModelContoller : MonoBehaviour
     {
         get
         {
-            if (gameObject.CompareTag("Cart"))
-            {
-                currentLevel = transform.parent.parent.parent.GetSiblingIndex();
-            }
+            currentLevel = transform.parent.GetSiblingIndex();
             return currentLevel;
         }
 
         set
         {
-            if(gameObject.CompareTag("Spawn"))
-            {
-                LevelManager.Instance.Level = value;
+            //if(gameObject.CompareTag("Spawn"))
+            //{
+            //    LevelManager.Instance.Level = value;
                 
-            }
+            //}
       
             currentLevel = value;
         }
@@ -99,12 +96,15 @@ public class CartModelContoller : MonoBehaviour
     private void Start()
     {
         colInertia = LevelManager.Instance.collisionInertia;
-        tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
-        cartNumber = tempCart.transform.GetSiblingIndex();
-        int tmp = CurrentLevel;
-      
+        //tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
+        //cartNumber = tempCart.transform.GetSiblingIndex();
+        //int tmp = CurrentLevel;
+        currentLevel = transform.parent.GetSiblingIndex();
     }
 
+
+
+    //RUNNER
     private void Update()
     {
         ////DEbug;
@@ -112,14 +112,17 @@ public class CartModelContoller : MonoBehaviour
         //Bring spawn back to center
         if (transform.localPosition.z != 0)
         {
-            transform.localPosition =Vector3.MoveTowards(transform.localPosition, 
-                                                        new Vector3(transform.localPosition.x, 
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition,
+                                                        new Vector3(transform.localPosition.x,
                                                         transform.localPosition.y, colInertia), colInertia);
             //Debug.Log(transform.localPosition.z);
-           
+
         }
 
     }
+
+
+
     //private void OnTriggerExit(Collider other)
     //{
 
@@ -131,6 +134,12 @@ public class CartModelContoller : MonoBehaviour
         if (other.transform.CompareTag("Obstacle"))
         {
             StartCoroutine(LevelManager.Instance.StopCollision());
+        }
+        else if(other.transform.CompareTag("Spawn"))
+        {
+           
+            LevelManager.Instance.Level = currentLevel;
+          
         }
     }
 
