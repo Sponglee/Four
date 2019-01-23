@@ -17,6 +17,7 @@ TagManager:
   - Obstacle
   - Boundary
   - Stairs
+  - Level
   layers:
   - Default
   - TransparentFX
