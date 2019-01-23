@@ -169,7 +169,7 @@ public class LevelManager : Singleton<LevelManager> {
             //Finish rotation to full stop
             StartCoroutine(StopRotate(currentAngleSpeed, stopInertia));
             character.StopRunning();
-
+            
         }
         //Jump logic
         else if (Input.GetMouseButtonUp(0) && SwipeManager.Instance.Direction == SwipeDirection.Up)

@@ -14,11 +14,11 @@ public class CharacterModelController : MonoBehaviour
     static int s_JumpingSpeedHash = Animator.StringToHash("JumpSpeed");
     static int s_SlidingHash = Animator.StringToHash("Sliding");
 
-    public TrackManager trackManager;
+    //public TrackManager trackManager;
     public Character character;
     public CapsuleCollider charCollider;
-    public GameObject blobShadow;
-    public float laneChangeSpeed = 1.0f;
+    //public GameObject blobShadow;
+    //public float laneChangeSpeed = 1.0f;
 
     public int maxLife = 3;
 
@@ -34,7 +34,7 @@ public class CharacterModelController : MonoBehaviour
     [Header("Controls")]
     public float jumpLength = 2.0f;     // Distance jumped
     public float jumpHeight = 1.2f;
-
+    public float jumpSpeed = 1.0f;
     public float slideLength = 2.0f;
 
     [Header("Sounds")]
@@ -90,88 +90,7 @@ public class CharacterModelController : MonoBehaviour
         //Set collider reference
         charCollider = transform.GetComponent<CapsuleCollider>();
     }
-#if !UNITY_STANDALONE
-    protected Vector2 m_StartingTouch;
-	protected bool m_IsSwiping = false;
-#endif
 
-    //// Cheating functions, use for testing
-    //public void CheatInvincible(bool invincible)
-    //{
-    //    m_IsInvincible = invincible;
-    //}
-
-    //public bool IsCheatInvincible()
-    //{
-    //    return m_IsInvincible;
-    //}
-
-    public void Init()
-    {
-        transform.position = k_StartingPosition;
-      
-        //characterCollider.transform.localPosition = Vector3.zero;
-
-        //currentLife = maxLife;
-
-        m_Audio = GetComponent<AudioSource>();
-
-        //m_ObstacleLayer = 1 << LayerMask.NameToLayer("Obstacle");
-    }
-
-    // Called at the beginning of a run or rerun
-    public void Begin()
-    {
-        character.animator.SetBool(s_DeadHash, false);
-
-        //characterCollider.Init();
-
-        //m_ActiveConsumables.Clear();
-    }
-
-    public void End()
-    {
-        //CleanConsumable();
-    }
-
-    //public void CleanConsumable()
-    //{
-    //    for (int i = 0; i < m_ActiveConsumables.Count; ++i)
-    //    {
-    //        m_ActiveConsumables[i].Ended(this);
-    //        Destroy(m_ActiveConsumables[i].gameObject);
-    //    }
-
-    //    m_ActiveConsumables.Clear();
-    //}
-
-    public void StartRunning()
-    {
-        if (character.animator)
-        {
-            character.animator.Play(s_RunStartHash);
-            character.animator.SetBool(s_MovingHash, true);
-        }
-    }
-
-    public void StopRunning()
-    {
-        if (character.animator)
-        {
-            //character.animator.Play(s_RunStartHash);
-            character.animator.SetBool(s_MovingHash, false);
-        }
-    }
-
-
-    public void StopMoving()
-    {
-        //trackManager.StopMove();
-        if (character.animator)
-        {
-            character.animator.SetBool(s_MovingHash, false);
-        }
-    }
 
     protected void Update()
     {
@@ -301,9 +220,117 @@ public class CharacterModelController : MonoBehaviour
             //}
         }
 
+
+    }
+
+
+#if !UNITY_STANDALONE
+    protected Vector2 m_StartingTouch;
+	protected bool m_IsSwiping = false;
+#endif
+
+    //// Cheating functions, use for testing
+    //public void CheatInvincible(bool invincible)
+    //{
+    //    m_IsInvincible = invincible;
+    //}
+
+    //public bool IsCheatInvincible()
+    //{
+    //    return m_IsInvincible;
+    //}
+
+    public void Init()
+    {
+        transform.position = k_StartingPosition;
+      
+        //characterCollider.transform.localPosition = Vector3.zero;
+
+        //currentLife = maxLife;
+
+        m_Audio = GetComponent<AudioSource>();
+
+        //m_ObstacleLayer = 1 << LayerMask.NameToLayer("Obstacle");
+    }
+
+    // Called at the beginning of a run or rerun
+    public void Begin()
+    {
+        character.animator.SetBool(s_DeadHash, false);
+
+        //characterCollider.Init();
+
+        //m_ActiveConsumables.Clear();
+    }
+
+    public void End()
+    {
+        //CleanConsumable();
+    }
+
+    //public void CleanConsumable()
+    //{
+    //    for (int i = 0; i < m_ActiveConsumables.Count; ++i)
+    //    {
+    //        m_ActiveConsumables[i].Ended(this);
+    //        Destroy(m_ActiveConsumables[i].gameObject);
+    //    }
+
+    //    m_ActiveConsumables.Clear();
+    //}
+
+    public bool m_IsRunning=false;
+    public bool m_IsIdle=true;
+
+    public void StartRunning()
+    {
+        if (character.animator && m_IsIdle)
+        {
+            if (!m_IsRunning)
+            {
+                if(m_IsIdle)
+                    character.animator.Play(s_RunStartHash);
+                character.animator.SetBool(s_MovingHash, true);
+            }
+           
+            
+            //Break sliding loop
+            StopSliding();
+            
+           
+
+        }
+        
+    }
+
+
+    public void StopRunning()
+    {
+        m_IsRunning = false;
+            if (character.animator)
+            {
+                //character.animator.Play(s_RunStartHash);
+                character.animator.SetBool(s_MovingHash, false);
+                //Check if gonna go out to idle layer after
+                m_IsIdle = true;
+            }
+       
        
     }
 
+
+    //public void StopMoving()
+    //{
+        
+    //    trackManager.StopMove();
+    //    if (character.animator)
+    //    {
+    //        character.animator.SetBool(s_MovingHash, false);
+    //    }
+        
+    //}
+
+  
     public void Jump()
     {
         if (!m_Jumping)
@@ -315,7 +342,7 @@ public class CharacterModelController : MonoBehaviour
             //m_JumpStart = trackManager.worldDistance;
             //float animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctJumpLength);
 
-            character.animator.SetFloat(s_JumpingSpeedHash, 1/*animSpeed*/);
+            character.animator.SetFloat(s_JumpingSpeedHash, jumpSpeed);
             character.animator.SetBool(s_JumpingHash, true);
             m_Audio.PlayOneShot(character.jumpSound);
             m_Jumping = true;
@@ -343,7 +370,7 @@ public class CharacterModelController : MonoBehaviour
             //m_SlideStart = trackManager.worldDistance;
             //float animSpeed = k_TrackSpeedToJumpAnimSpeedRatio * (trackManager.speed / correctSlideLength);
 
-            character.animator.SetFloat(s_JumpingSpeedHash, 1/*animSpeed*/);
+            character.animator.SetFloat(s_JumpingSpeedHash, jumpSpeed);
             character.animator.SetBool(s_SlidingHash, true);
             m_Audio.PlayOneShot(slideSound);
             m_Sliding = true;
@@ -354,7 +381,7 @@ public class CharacterModelController : MonoBehaviour
             ColliderSlide(true);
 
             //Start time reset of slide anim
-            StartCoroutine(SlideTimer());
+            StartCoroutine(SliderDelay());
         }
     }
 
@@ -366,6 +393,8 @@ public class CharacterModelController : MonoBehaviour
             m_Sliding = false;
             //characterCollider.Slide(false);
             ColliderSlide(false);
+            //Check if gonna go out to idle layer after
+            m_IsIdle = true;
         }
     }
 
@@ -394,8 +423,8 @@ public class CharacterModelController : MonoBehaviour
 
     public void ChangeLane(int direction)
     {
-        if (!trackManager.isMoving)
-            return;
+        //if (!trackManager.isMoving)
+        //    return;
 
         //int targetLane = m_CurrentLane + direction;
 
@@ -454,15 +483,14 @@ public class CharacterModelController : MonoBehaviour
       
     }
 
-    IEnumerator SlideTimer()
+   
+
+    IEnumerator SliderDelay()
     {
         yield return new WaitForSeconds(1f);
-        m_Sliding = false;
-        character.animator.SetBool(s_SlidingHash, false);
-        ////SlideLogic
-        //charCollider.localRotation = Quaternion.Euler(0, 0, 0);
-        ColliderSlide(false);
+        StopSliding();
     }
+
 
 }
 

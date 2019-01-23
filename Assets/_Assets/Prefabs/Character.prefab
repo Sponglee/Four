@@ -336,20 +336,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1928b6712f5814b47888271c618d987f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackManager: {fileID: 0}
   character: {fileID: 6807814561934405432}
   charCollider: {fileID: 0}
-  blobShadow: {fileID: 0}
-  laneChangeSpeed: 1
   maxLife: 3
   inventory: {fileID: 0}
   jumpLength: 2
   jumpHeight: 1.2
+  jumpSpeed: 0.6
   slideLength: 2
   slideSound: {fileID: 8300000, guid: febd5a5a8b245774fbfa9f0bef51e0b6, type: 3}
   powerUpUseSound: {fileID: 8300000, guid: defdb98bfddc24748aead1ce73ba7972, type: 3}
   powerupSource: {fileID: 0}
   m_Audio: {fileID: 6807814561890370661}
+  m_IsRunning: 0
+  m_IsIdle: 0
 --- !u!82 &6807814561890370661
 AudioSource:
   m_ObjectHideFlags: 0
