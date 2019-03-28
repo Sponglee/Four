@@ -67,6 +67,7 @@ public class SpawnManager : Singleton<SpawnManager>
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
         GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
+        Debug.Log(spawnCheck.name);
         if (spawnCheck != null)
         {
             //GAME OVER CHECK
@@ -78,17 +79,24 @@ public class SpawnManager : Singleton<SpawnManager>
             //Debug.Log(spawnCheck.tag);
             else if (spawnCheck && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0)
             {
+                Debug.Log("FIRST LEVEL");
                 if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
                 {
+                    Debug.Log("HELPER ENABLED");
                     //First level Helper
                     if (CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) == 4)
                     {
+                        Debug.Log("4 dollys");
                         foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                         {
                             Debug.Log("HELPER");
                             if (!dolly.CompareTag("Steel"))
                             {
                                 spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                            }
+                            else
+                            {
+                                spawnCartManager.colorHelper.Add(spawnCartManager.colorHelper[spawnCartManager.colorHelper.Count]);
                             }
 
 

@@ -12,6 +12,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
     public float spawnOffset = 0;
+    public float spawnOffsetStep = 5f;
 
     [SerializeField]
     private int level = -2;
@@ -91,7 +92,7 @@ public class LevelManager : Singleton<LevelManager>
         {
             GameObject tmpSpawn = Instantiate(levelPrefab, transform);
             tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
-            spawnOffset += 6.6f;
+            spawnOffset += spawnOffsetStep;
         }
         GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform);
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
@@ -129,7 +130,7 @@ public class LevelManager : Singleton<LevelManager>
         }
 
 
-        Debug.Log(rotLevels.Count);
+        //Debug.Log(rotLevels.Count);
         //Turn every Rot Level
         for (int i = 0; i < 5; i++)
         {
@@ -233,7 +234,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
-        Debug.Log("FOLLOWING");
+        //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         int turnCount = Random.Range(0, 3);
         //float targetAngle = levelAngle + turnCount * 90f;
@@ -533,7 +534,7 @@ public class LevelManager : Singleton<LevelManager>
         if (child != null)
         {
             Vector3 from = child.position;
-            Vector3 to = toDesto + new Vector3(0, -6.6f * child.GetSiblingIndex(), 0); ;
+            Vector3 to = toDesto + new Vector3(0, -spawnOffsetStep * child.GetSiblingIndex(), 0); ;
 
 
             //smooth lerp rotation loop
