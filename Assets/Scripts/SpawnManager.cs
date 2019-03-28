@@ -67,7 +67,7 @@ public class SpawnManager : Singleton<SpawnManager>
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
         GameObject spawnCheck = GrabSpawnObj(transform, "Cart");
-        Debug.Log(spawnCheck.name);
+        //Debug.Log(spawnCheck.name);
         if (spawnCheck != null)
         {
             //GAME OVER CHECK
