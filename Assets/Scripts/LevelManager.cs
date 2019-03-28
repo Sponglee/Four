@@ -107,7 +107,7 @@ public class LevelManager : Singleton<LevelManager>
     public void LevelMove()
     {
         //Check if there's enough levels to move around
-        if (transform.childCount > Mathf.Round(levelCount / 3))
+        if (transform.childCount >2)
         {
             LevelMoveProgress = true;
             Debug.Log("LEVELMOVE");
@@ -121,7 +121,7 @@ public class LevelManager : Singleton<LevelManager>
             rotLevels.Add(Random.Range(0, transform.childCount - 1));
             //Get 5-1 different non-repeateable levels 
      
-            for (int i = 0; i < Mathf.Round(levelCount / 3); i++)
+            for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
             {
                 //Repeat if number contains in the list
                 do
@@ -138,7 +138,7 @@ public class LevelManager : Singleton<LevelManager>
 
             //Debug.Log(rotLevels.Count);
             //Turn every Rot Level
-            for (int i = 0; i < Mathf.Round(levelCount / 3); i++)
+            for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
             {
                 Debug.Log(rotLevels[i]);
                 StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));

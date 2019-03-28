@@ -90,10 +90,10 @@ public class CartModelContoller : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
        
-        if (!CollidedBool && gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
+        if (/*!CollidedBool &&*/gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
         {
             Debug.Log("COLLISION " + gameObject.name);
-            CollidedBool = true;
+            //CollidedBool = true;
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
 

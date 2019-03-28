@@ -209,7 +209,8 @@ public class CartManager : MonoBehaviour
     //Check to RaiseTower
     public void CheckCarts()
     {
-        StartCoroutine(StopCheckCarts());
+       
+            StartCoroutine(StopCheckCarts());
     }
 
     public IEnumerator StopCheckCarts()
@@ -227,7 +228,7 @@ public class CartManager : MonoBehaviour
             }
         }
 
-        if (cartCount == 0)
+        if (gameObject.CompareTag("Cart") && cartCount == 0)
         {
             Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
             Destroy(transform.parent.gameObject);
