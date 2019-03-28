@@ -89,9 +89,11 @@ public class CartModelContoller : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
+       
+        if (!CollidedBool && gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
         {
-
+            Debug.Log("COLLISION " + gameObject.name);
+            CollidedBool = true;
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
 
@@ -144,6 +146,7 @@ public class CartModelContoller : MonoBehaviour
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
                 if (levelIndex >= 1)
                 {
+                    //Debug.Log("STICK CART");
                     StickCart(other, levelIndex);
                 }
                 //else
@@ -198,7 +201,7 @@ public class CartModelContoller : MonoBehaviour
 
     public void StickCart(Collision other, int levelIndex)
     {
-
+        Debug.Log("STICK CART");
         int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
         //Remove 1 blank
         Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);

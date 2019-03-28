@@ -162,6 +162,7 @@ MonoBehaviour:
   blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
     type: 3}
   spawnOffset: 0
+  spawnOffsetStep: 5
   level: 0
   levelStop: 0
   hitPrefab: {fileID: 100018, guid: a40b64bf23366dc42a892af2c6ff6140, type: 3}
@@ -639,7 +640,7 @@ GameObject:
   - component: {fileID: 1178556464}
   - component: {fileID: 1178556465}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -697,7 +698,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0.1028854, b: 0.16981131, a: 1}
+  m_Color: {r: 0, g: 0.9444442, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

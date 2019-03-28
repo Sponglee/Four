@@ -92,11 +92,12 @@ public class SpawnManager : Singleton<SpawnManager>
                             Debug.Log("HELPER");
                             if (!dolly.CompareTag("Steel"))
                             {
+                                //**************************************
                                 spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
                             }
                             else
                             {
-                                spawnCartManager.colorHelper.Add(spawnCartManager.colorHelper[spawnCartManager.colorHelper.Count]);
+                                //spawnCartManager.colorHelper.Add(spawnCartManager.colorHelper[spawnCartManager.colorHelper.Count-1]);
                             }
 
 
@@ -201,7 +202,7 @@ public class SpawnManager : Singleton<SpawnManager>
         for (int i = 0; i < origin.childCount; i++)
         {
             //Debug.Log("I " + i + " : " + transform.childCount);
-            if (origin.GetChild(i).gameObject.CompareTag("Cart"))
+            if (origin.GetChild(i).gameObject.CompareTag("Cart")|| origin.GetChild(i).gameObject.CompareTag("Steel"))
             {
                 dollyCount++;
             }

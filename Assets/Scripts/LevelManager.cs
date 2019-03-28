@@ -106,39 +106,48 @@ public class LevelManager : Singleton<LevelManager>
 
     public void LevelMove()
     {
-        LevelMoveProgress = true;
-        //Debug.Log("LEVELMOVE");
-        //while (true)
-        //{
-        //yield return new WaitForSeconds(moveTime);
-        List<int> rotLevels = new List<int>();
-        int rotLevel;
-
-        //Add first random level toa  list
-        rotLevels.Add(Random.Range(0, transform.childCount - 1));
-        //Get 5-1 different non-repeateable levels 
-        for (int i = 0; i < 4; i++)
+        //Check if there's enough levels to move around
+        if (transform.childCount > Mathf.Round(levelCount / 3))
         {
-            //Repeat if number contains in the list
-            do
+            LevelMoveProgress = true;
+            Debug.Log("LEVELMOVE");
+            //while (true)
+            //{
+            //yield return new WaitForSeconds(moveTime);
+            List<int> rotLevels = new List<int>();
+            int rotLevel;
+
+            //Add first random level toa  list
+            rotLevels.Add(Random.Range(0, transform.childCount - 1));
+            //Get 5-1 different non-repeateable levels 
+     
+            for (int i = 0; i < Mathf.Round(levelCount / 3); i++)
             {
-                rotLevel = Random.Range(0, transform.childCount - 1);
+                //Repeat if number contains in the list
+                do
+                {
+                    rotLevel = Random.Range(0, transform.childCount - 1);
+                    Debug.Log(rotLevel + " : " + transform.childCount);
+
+                }
+                while (rotLevels.Contains(rotLevel));
+                //if not - add it to the list
+                rotLevels.Add(rotLevel);
             }
-            while (rotLevels.Contains(rotLevel));
-            //if not - add it to the list
-            rotLevels.Add(rotLevel);
+
+
+            //Debug.Log(rotLevels.Count);
+            //Turn every Rot Level
+            for (int i = 0; i < Mathf.Round(levelCount / 3); i++)
+            {
+                Debug.Log(rotLevels[i]);
+                StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
+            }
+
+            rotLevels.Clear();
+            //}
         }
 
-
-        //Debug.Log(rotLevels.Count);
-        //Turn every Rot Level
-        for (int i = 0; i < 5; i++)
-        {
-            StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
-        }
-
-        rotLevels.Clear();
-        //}
 
     }
 
@@ -236,13 +245,13 @@ public class LevelManager : Singleton<LevelManager>
     {
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
-        int turnCount = Random.Range(0, 3);
+        int turnCount = Random.Range(0, 2);
         //float targetAngle = levelAngle + turnCount * 90f;
 
 
         for (int i = 0; i < turnCount; i++)
         {
-            Debug.Log("TURN " + i);
+            //Debug.Log("TURN " + i);
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
                 if (child.childCount != 0)
