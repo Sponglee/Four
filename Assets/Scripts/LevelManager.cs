@@ -438,7 +438,7 @@ public class LevelManager : Singleton<LevelManager>
         float moveXPercent = moveX / screenWidth;
         float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
 
-        if (!SpawnInProgress)
+        if (true /*!SpawnInProgress*/)
         {
             if (Input.GetMouseButtonDown(0))
             {
