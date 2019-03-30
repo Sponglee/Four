@@ -11,7 +11,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject levelPrefab;
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
-    public float spawnOffset = 0;
+    public float spawnOffset = 15f;
     public float spawnOffsetStep = 5f;
 
     [SerializeField]
@@ -91,11 +91,11 @@ public class LevelManager : Singleton<LevelManager>
         for (int i = 0; i < levelCount; i++)
         {
             GameObject tmpSpawn = Instantiate(levelPrefab, transform);
-            tmpSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
-            spawnOffset += spawnOffsetStep;
+            tmpSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * i, 0);
+           /* spawnOffset += spawnOffsetStep*/;
         }
         GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform);
-        tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset, 0);
+        tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * levelCount, 0);
 
         speedHistory = new List<float>();
 
@@ -438,7 +438,7 @@ public class LevelManager : Singleton<LevelManager>
         float moveXPercent = moveX / screenWidth;
         float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
 
-        if (true /*!SpawnInProgress*/)
+        if (true /*!SpawnInProgress*/ )
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -543,7 +543,7 @@ public class LevelManager : Singleton<LevelManager>
         if (child != null)
         {
             Vector3 from = child.position;
-            Vector3 to = toDesto + new Vector3(0, -spawnOffsetStep * child.GetSiblingIndex(), 0); ;
+            Vector3 to = toDesto + new Vector3(0,  - spawnOffset -spawnOffsetStep * child.GetSiblingIndex(), 0); ;
 
 
             //smooth lerp rotation loop

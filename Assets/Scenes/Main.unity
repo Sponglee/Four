@@ -161,7 +161,7 @@ MonoBehaviour:
     type: 3}
   blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
     type: 3}
-  spawnOffset: 0
+  spawnOffset: 5
   spawnOffsetStep: 5
   level: 0
   levelStop: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
   LevelMoveProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
-  levelCount: 10
+  levelCount: 20
   lastCurrentLevel: 0
   lastLevelCurrentLevel: 0
   currentAngle: 0
@@ -379,8 +379,8 @@ Camera:
   near clip plane: 0.1
   far clip plane: 5000
   field of view: 40
-  orthographic: 0
-  orthographic size: 10
+  orthographic: 1
+  orthographic size: 15.93
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -404,7 +404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786702170}
   m_LocalRotation: {x: 0.38590598, y: 0, z: 0, w: 0.92253816}
-  m_LocalPosition: {x: 0, y: 22.1, z: -63}
+  m_LocalPosition: {x: 0, y: 24.5, z: -63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1178556464}
@@ -530,7 +530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2074089706, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
       propertyPath: spawnInterval
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114440903482957368, guid: dbcc59e4fdb02b44999c4aa86140d884,
         type: 3}
@@ -546,6 +546,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.248576
+      objectReference: {fileID: 0}
+    - target: {fileID: 114593477191987148, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114248846855554352, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571782770529990, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: m_EffectColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571782770529990, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: m_EffectColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571782770529990, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: m_EffectColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571782770529990, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
