@@ -92,7 +92,7 @@ public class CartModelContoller : MonoBehaviour
        
         if (/*!CollidedBool &&*/gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
         {
-            Debug.Log("COLLISION " + gameObject.name);
+            //Debug.Log("COLLISION " + gameObject.name);
             //CollidedBool = true;
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
@@ -115,16 +115,17 @@ public class CartModelContoller : MonoBehaviour
                 //Get some effects 
                 Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
                 //For pizzaz
-                StartCoroutine(LevelManager.Instance.TiDi(0.05f));
-
+                //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
+                
 
 
 
                 GameObject tmpRay = GrabRayObj(other, "Cart");
 
+                //Second cart below check for color
                 if (tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
-                    LevelManager.Instance.SpawnInProgress = false;
+                  
                     //destroy holder if no dollys
                     //Debug.Log("THEN SECOND");
                     transform.parent.parent.GetComponent<CartManager>().CheckCarts();
@@ -139,6 +140,7 @@ public class CartModelContoller : MonoBehaviour
 
                 }
 
+               
             }
             else if (other.transform.parent != null)
             {
@@ -167,8 +169,9 @@ public class CartModelContoller : MonoBehaviour
                 //    SceneManager.LoadScene("Main");
                 //}
             }
+          
         }
-
+    
     }
 
 
@@ -218,13 +221,13 @@ public class CartModelContoller : MonoBehaviour
 
         //Enable Horizontal Check
         LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor);
-        LevelManager.Instance.SpawnInProgress = false;
+       
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
         Destroy(transform.parent.gameObject);
         //Debug.Log(tmpCart.name);
 
-        LevelManager.Instance.LevelMove();
+        LevelManager.Instance.LevelMove(levelIndex);
     }
 
 

@@ -64,7 +64,7 @@ public class CartManager : MonoBehaviour
         if (gameObject.CompareTag("Cart"))
         {
             int index = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < carts.Length; i++)
             {
                 int spawnRandomizer = Random.Range(0, 100);
                 int materialRandomizer = Random.Range(0, spawnMats.Length);
@@ -78,9 +78,9 @@ public class CartManager : MonoBehaviour
                         tmpCart.transform.GetChild(0).tag = "Steel";
                     }
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[materialRandomizer];
-                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
+                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % paths.Length];
                     //Set current for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % 4;
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % paths.Length;
                     //Set track references for that cart
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
                     //set cart reference for manager
@@ -91,7 +91,7 @@ public class CartManager : MonoBehaviour
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
-                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % 4];
+                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % paths.Length];
                     //Set current for that cart
 
                     index++;

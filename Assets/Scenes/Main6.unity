@@ -136,13 +136,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 48147098}
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -18.54368, z: -15.807867}
-  m_LocalScale: {x: 1, y: 1.0000005, z: 1.0000005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &48147100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba56f73b03106f44af918dbe84ee89a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cartCount: 4
-  levelPrefab: {fileID: 1794271702706066, guid: d5fda22d61ba72e40b08a3e3af84557c,
+  cartCount: 6
+  levelPrefab: {fileID: 1794271702706066, guid: adddf2c1a3992ff49a61a3eed98b249b,
     type: 3}
   bottomPrefab: {fileID: 1992749020977688, guid: b5f3466a60e27db4f9917444bc11e4c3,
     type: 3}
@@ -578,6 +578,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114349600795921836, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: cartPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 1061318804531502, guid: 0eb805415c6c5324b8622005c8a3c73f,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
 --- !u!1 &1100402873

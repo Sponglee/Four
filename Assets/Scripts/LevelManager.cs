@@ -7,6 +7,7 @@ using UnityEngine;
 public class LevelManager : Singleton<LevelManager>
 {
 
+    public int cartCount=4;
     //Level Generator vars
     public GameObject levelPrefab;
     public GameObject bottomPrefab;
@@ -104,49 +105,51 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    public void LevelMove()
+    public void LevelMove(int levelIndex)
     {
-        //Check if there's enough levels to move around
-        if (transform.childCount >2)
-        {
-            LevelMoveProgress = true;
-            Debug.Log("LEVELMOVE");
-            //while (true)
-            //{
-            //yield return new WaitForSeconds(moveTime);
-            List<int> rotLevels = new List<int>();
-            int rotLevel;
+        ////Check if there's enough levels to move around
+        //if (transform.childCount >2)
+        //{
+        //    LevelMoveProgress = true;
+        //    Debug.Log("LEVELMOVE");
+        //    //while (true)
+        //    //{
+        //    //yield return new WaitForSeconds(moveTime);
+        //    List<int> rotLevels = new List<int>();
+        //    int rotLevel;
 
-            //Add first random level toa  list
-            rotLevels.Add(Random.Range(0, transform.childCount - 1));
-            //Get 5-1 different non-repeateable levels 
+        //    //Add first random level toa  list
+        //    rotLevels.Add(Random.Range(0, transform.childCount - 1));
+        //    //Get 5-1 different non-repeateable levels 
      
-            for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
-            {
-                //Repeat if number contains in the list
-                do
-                {
-                    rotLevel = Random.Range(0, transform.childCount - 1);
-                    Debug.Log(rotLevel + " : " + transform.childCount);
+        //    for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
+        //    {
+        //        //Repeat if number contains in the list
+        //        do
+        //        {
+        //            rotLevel = Random.Range(0, transform.childCount - 1);
+        //            Debug.Log(rotLevel + " : " + transform.childCount);
 
-                }
-                while (rotLevels.Contains(rotLevel));
-                //if not - add it to the list
-                rotLevels.Add(rotLevel);
-            }
+        //        }
+        //        while (rotLevels.Contains(rotLevel));
+        //        //if not - add it to the list
+        //        rotLevels.Add(rotLevel);
+        //    }
 
 
-            //Debug.Log(rotLevels.Count);
-            //Turn every Rot Level
-            for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
-            {
-                Debug.Log(rotLevels[i]);
-                StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
-            }
+        //    //Debug.Log(rotLevels.Count);
+        //    //Turn every Rot Level
+        //    for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
+        //    {
+        //        Debug.Log(rotLevels[i]);
+        //        StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
+        //    }
 
-            rotLevels.Clear();
-            //}
-        }
+        //    rotLevels.Clear();
+        //    //}
+        //}
+
+        StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
 
 
     }
@@ -245,7 +248,8 @@ public class LevelManager : Singleton<LevelManager>
     {
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
-        int turnCount = Random.Range(0, 2);
+        //number of turns
+        int turnCount = Random.Range(1, 2);
         //float targetAngle = levelAngle + turnCount * 90f;
 
 
@@ -300,7 +304,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
         float from = CurrentAngle;
-        float to = Mathf.Round(CurrentAngle / 90f) * 90f;
+        float to = Mathf.Round(CurrentAngle / (360f/cartCount)) * (360f / cartCount);
         //Debug.Log("FROM: " + from + " TO: " + to);
         //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
@@ -604,4 +608,96 @@ public class LevelManager : Singleton<LevelManager>
 
 
     }
+
+    //Get reference to object hit by ray with tag
+    public List<GameObject> ScanCarts(Transform origin, string obj)
+    {
+        Debug.Log("TRUE GRAB SPAWN");
+        List<GameObject> grabObjs = new List<GameObject>();
+
+        ////Forward
+        //Vector3 dir = origin.position + new Vector3(0, -3f, -3f);
+        //GameObject tmp = GrabObjsRay(origin, dir, obj);
+        //if (tmp != null)
+        //    grabObjs.Add(tmp);
+
+
+        ////Left
+        //dir = origin.position + new Vector3(-3, -3f, 0f);
+        //tmp = GrabObjsRay(origin, dir, obj);
+        //if (tmp != null)
+        //    grabObjs.Add(tmp);
+
+
+
+        ////Back
+        //dir = origin.position + new Vector3(0, -3f, 3f);
+        //tmp = GrabObjsRay(origin, dir, obj);
+        //if (tmp != null)
+        //    grabObjs.Add(tmp);
+
+
+
+        ////Right
+        //dir = origin.position + new Vector3(3, -3f, 0f);
+        //tmp = GrabObjsRay(origin, dir, obj);
+        //if (tmp != null)
+        //    grabObjs.Add(tmp);
+
+
+        //Set all ray points 
+        for (int i = 0; i < cartCount; i++)
+        {
+            int a = 360 / cartCount * i;
+            Vector3 pos = RandomCircle(origin.position, 3.8f, a);
+            GameObject tmp = GrabObjsRay(origin, pos, obj);
+            if (tmp != null)
+                grabObjs.Add(tmp);
+        }
+
+
+
+
+
+
+        return grabObjs;
+    }
+
+    //Grab cartCount colors for spawn
+    public GameObject GrabObjsRay(Transform origin, Vector3 dir, string obj)
+    {
+       
+
+        RaycastHit hit;
+        Debug.DrawLine(dir, -Vector3.up * 100f + dir, Color.red, 10f);
+        if (Physics.Raycast(dir, -Vector3.up, out hit))
+        {
+            if (hit.transform)
+            {
+                if (hit.transform.gameObject.CompareTag(obj))
+                {
+                    Debug.Log("YEEET");
+                    return hit.transform.gameObject;
+                }
+            }
+        }
+        return null;
+    }
+
+
+ 
+
+    //Build circle for spots
+    public Vector3 RandomCircle(Vector3 center, float radius, int a)
+    {
+        //Debug.Log(a);
+        float ang = a;
+        Vector3 pos;
+        pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
+        pos.z = center.z + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
+        pos.y = center.y;
+        return pos;
+    }
+
+
 }

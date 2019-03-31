@@ -51,13 +51,13 @@ public class SpawnManager : Singleton<SpawnManager>
         //    //spawnTimer = spawnDuration;
         //}
 
+        if(spawnCartManager.spawnedBool)
+            spawnTime += Time.deltaTime;
 
-        spawnTime += Time.deltaTime;
-
-        if(spawnTime>= spawnInterval)
+        if(spawnTime>= spawnInterval )
         {
             DropSpawn(spawnCartManager.spawnObject);
-            LevelManager.Instance.SpawnInProgress = true;
+           
             spawnCartManager.spawnedBool = false;
 
             spawnTime = 0;
@@ -79,14 +79,15 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public IEnumerator StopSpawn()
     {
+       
         spawnCartManager.spawnedBool = true;
         yield return new WaitForSeconds(0.3f);
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
         List<GameObject> spawnChecks = new List<GameObject>();
-        spawnChecks = ScanCarts(transform, "Cart");
+        spawnChecks = LevelManager.Instance.ScanCarts(transform, "Cart");
 
-        Debug.Log(spawnChecks.Count);
+        //Debug.Log(spawnChecks.Count);
         //Debug.Log(spawnCheck.name);
         if (spawnChecks != null)
         {
@@ -117,24 +118,24 @@ public class SpawnManager : Singleton<SpawnManager>
             
             else 
             {
-                Debug.Log(" YEEEE " + spawnChecks.Count);
+                //Debug.Log(" YEEEE " + spawnChecks.Count);
                 foreach (GameObject spawnCheck in spawnChecks)
                 {
-                    Debug.Log("POINK " + spawnCheck.name);
+                    //Debug.Log("POINK " + spawnCheck.name);
                     if (spawnCheck/* && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0*/)
                     {
-                        Debug.Log("FIRST LEVEL");
+                        //Debug.Log("FIRST LEVEL");
                         //if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
                         if (spawnCheck.CompareTag("Cart") /*|| spawnCheck.CompareTag("Steel")*/)
                         {
-                            Debug.Log("HELPER ENABLED");
+                            //Debug.Log("HELPER ENABLED");
                             //First level Helper
                             if (true /*CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) >= 0*/)
                             {
-                                Debug.Log("4 dollys");
+                                //Debug.Log("4 dollys");
                                 //foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                                 //{
-                                    Debug.Log("HELPER");
+                                    //Debug.Log("HELPER");
                                     if (spawnCheck.CompareTag("Cart"))
                                     {
                                         //**************************************
@@ -157,6 +158,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 //If colorHelper was populated - use it to spawn
                 if(spawnCartManager.colorHelper.Count == 0)
                 {
+                    Debug.Log("RANDOM COLOR");
                     spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
                     spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
                 }
@@ -198,66 +200,11 @@ public class SpawnManager : Singleton<SpawnManager>
     }
 
    
-    //Get reference to object hit by ray with tag
-    private List<GameObject> ScanCarts(Transform origin, string obj)
-    {
-        Debug.Log("TRUE GRAB SPAWN");
-        List<GameObject> grabObjs = new List<GameObject>();
-
-        //Forward
-        Vector3 dir = origin.position + new Vector3(0, -3f, -3f);
-        GameObject tmp = GrabObjsRay(origin, dir, obj);
-        if (tmp != null)
-            grabObjs.Add(tmp);
-
-        
-
-        //Left
-        dir = origin.position + new Vector3(-3, -3f, 0f);
-        tmp = GrabObjsRay(origin, dir, obj);
-        if (tmp != null)
-            grabObjs.Add(tmp);
-      
-
-        //Back
-        dir = origin.position + new Vector3(0, -3f, 3f);
-        tmp = GrabObjsRay(origin, dir, obj);
-        if (tmp != null)
-            grabObjs.Add(tmp);
-       
-
-
-        //Right
-        dir = origin.position + new Vector3(3, -3f, 0f);
-        tmp = GrabObjsRay(origin, dir, obj);
-        if (tmp != null)
-            grabObjs.Add(tmp);
-
-        return grabObjs;
-    }
-
-    //Shoot rays
-    private GameObject GrabObjsRay(Transform origin, Vector3 dir, string obj)
-    {
-        RaycastHit hit;
-        Debug.DrawLine( dir, -Vector3.up * 100f + dir, Color.red, 10f);
-        if (Physics.Raycast(dir, -Vector3.up, out hit))
-        {
-            if (hit.transform)
-            {
-                if (hit.transform.gameObject.CompareTag(obj))
-                {
-                    Debug.Log("YEEET");
-                    return hit.transform.gameObject;
-                }
-            }
-        }
-        return null;
-    }
-
+   
+  
 
     //GrabSpawnObj reload for spawn check only
-    private GameObject ScanCarts(Transform origin, string obj, bool SpawnGrab)
+    public GameObject ScanCarts(Transform origin, string obj, bool SpawnGrab)
     {
         RaycastHit hit;
         Vector3 dir = origin.position + new Vector3(0, -100f, -3f);
