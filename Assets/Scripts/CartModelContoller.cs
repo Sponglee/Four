@@ -151,10 +151,10 @@ public class CartModelContoller : MonoBehaviour
                     //Debug.Log("STICK CART");
                     StickCart(other, levelIndex);
                 }
-                //else
-                //{
-                //    SceneManager.LoadScene("Main");
-                //}
+                else
+                {
+                    FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                }
             }
             else if (gameObject.CompareTag("Spawn") &&  other.gameObject.CompareTag("Bottom"))
             {
@@ -163,11 +163,11 @@ public class CartModelContoller : MonoBehaviour
                 {
                     StickCart(other, levelIndex);
                 }
-                //else
-                //{
+                else
+                {
 
-                //    SceneManager.LoadScene("Main");
-                //}
+                    FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                }
             }
           
         }
@@ -220,14 +220,14 @@ public class CartModelContoller : MonoBehaviour
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
 
         //Enable Horizontal Check
-        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor);
+        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor, levelIndex);
        
         //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
         Destroy(transform.parent.gameObject);
         //Debug.Log(tmpCart.name);
 
-        LevelManager.Instance.LevelMove(levelIndex);
+     
     }
 
 

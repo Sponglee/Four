@@ -245,12 +245,12 @@ public class CartManager : MonoBehaviour
     }
 
     //Check for more than 3
-    public void HorizontalCheck(Color checkColor)
+    public void HorizontalCheck(Color checkColor, int levelIndex)
     {
-        StartCoroutine(StopHorizontalCheck(checkColor));
+        StartCoroutine(StopHorizontalCheck(checkColor, levelIndex));
     }
 
-    public IEnumerator StopHorizontalCheck(Color checkColor)
+    public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
     {
         yield return new WaitForSecondsRealtime(0.05f);
         int color = 0;
@@ -299,6 +299,14 @@ public class CartManager : MonoBehaviour
                 CheckCarts();
             }
         }
+        else
+        {
+            //Rotate the lower level
+            LevelManager.Instance.LevelMove(levelIndex);
+        }
+
+
+
         //GetNew spawn ready
         if (!spawnManagerRef.spawnedBool)
         {

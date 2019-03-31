@@ -15,6 +15,7 @@ TagManager:
   - FxTemporaire
   - SpawnManager
   - Steel
+  - MenuCanvas
   layers:
   - Default
   - TransparentFX

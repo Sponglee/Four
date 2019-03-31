@@ -85,7 +85,7 @@ public class SpawnManager : Singleton<SpawnManager>
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
         List<GameObject> spawnChecks = new List<GameObject>();
-        spawnChecks = LevelManager.Instance.ScanCarts(transform, "Cart");
+        spawnChecks = LevelManager.Instance.ScanCarts(LevelManager.Instance.transform, "Cart");
 
         //Debug.Log(spawnChecks.Count);
         //Debug.Log(spawnCheck.name);
@@ -95,7 +95,7 @@ public class SpawnManager : Singleton<SpawnManager>
             //GAME OVER CHECK
             if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
             {
-                Debug.Log("GAMEOVER");
+                FunctionHandler.Instance.OpenGameOver("YOU WIN");
                 yield break;
             }
             //Last level helper
