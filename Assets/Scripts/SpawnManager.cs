@@ -158,7 +158,7 @@ public class SpawnManager : Singleton<SpawnManager>
                 //If colorHelper was populated - use it to spawn
                 if(spawnCartManager.colorHelper.Count == 0)
                 {
-                    Debug.Log("RANDOM COLOR");
+                    //Debug.Log("RANDOM COLOR");
                     spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
                     spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
                 }

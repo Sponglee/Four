@@ -129,7 +129,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.57, y: 1.39, z: 2.59}
+  m_Size: {x: 3, y: 1.39, z: 2.59}
   m_Center: {x: -0.027273087, y: 2.71, z: -1.52}
 --- !u!1 &1859630849823150
 GameObject:
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 4385715651048490}
   - component: {fileID: 114894144989393932}
   m_Layer: 0
-  m_Name: DollyHolder0
+  m_Name: DollyHolder4
   m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

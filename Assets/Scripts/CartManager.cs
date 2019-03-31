@@ -238,7 +238,7 @@ public class CartManager : MonoBehaviour
         else if (!spawnManagerRef.spawnedBool)
         {
             SpawnManager.Instance.Spawn();
-            Debug.Log("NANI");
+            //Debug.Log("NANI");
             //yield break;
         }
 

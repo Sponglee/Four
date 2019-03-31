@@ -59,6 +59,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public int levelCount = 10;
 
+    //public List<Transform> blanksLevelMove;
 
     //[SerializeField]
     //private Stack<LevelAnglePtr> LevelCurrentAngles;
@@ -87,6 +88,10 @@ public class LevelManager : Singleton<LevelManager>
     private void Start()
     {
         //LevelCurrentAngles = new Stack<LevelAnglePtr>();
+
+
+        ////Initialize blank list for levelMover
+        //blanksLevelMove = new List<Transform>();
 
 
         for (int i = 0; i < levelCount; i++)
@@ -121,7 +126,7 @@ public class LevelManager : Singleton<LevelManager>
         //    //Add first random level toa  list
         //    rotLevels.Add(Random.Range(0, transform.childCount - 1));
         //    //Get 5-1 different non-repeateable levels 
-     
+
         //    for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
         //    {
         //        //Repeat if number contains in the list
@@ -148,7 +153,7 @@ public class LevelManager : Singleton<LevelManager>
         //    rotLevels.Clear();
         //    //}
         //}
-
+        Debug.Log("LEVEL MOVE");
         StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
 
 
@@ -258,6 +263,7 @@ public class LevelManager : Singleton<LevelManager>
             //Debug.Log("TURN " + i);
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
+                //If it's a dolly
                 if (child.childCount != 0)
                 {
                     CartModelContoller tmp = child.GetChild(0).GetComponent<CartModelContoller>();
@@ -277,12 +283,37 @@ public class LevelManager : Singleton<LevelManager>
                         tmpCart.m_Speed = 8;
                     }
                 }
+                //else
+                //{
+                //    blanksLevelMove.Add(child);
+                //}
 
             }
 
             yield return new WaitForSeconds(0.8f);
         }
 
+        //Debug.Log("LIST " + blanksLevelMove.Count);
+        ////Move blanks to new sibling positions
+        //foreach (Transform blank in blanksLevelMove)
+        //{
+            
+        //    int blankIndex = blank.GetSiblingIndex() + 1;
+        //    if (blankIndex >= blank.parent.childCount)
+        //        blankIndex = 0;
+
+        //    blank.SetSiblingIndex(blankIndex);
+        //}
+
+
+
+        //*****************
+
+        //Reset blank list
+        //blanksLevelMove.Clear();
+
+      
+        //*****************
         LevelMoveProgress = false;
         yield return null;
 
@@ -612,7 +643,7 @@ public class LevelManager : Singleton<LevelManager>
     //Get reference to object hit by ray with tag
     public List<GameObject> ScanCarts(Transform origin, string obj)
     {
-        Debug.Log("TRUE GRAB SPAWN");
+        //Debug.Log("TRUE GRAB SPAWN");
         List<GameObject> grabObjs = new List<GameObject>();
 
         ////Forward
@@ -676,7 +707,7 @@ public class LevelManager : Singleton<LevelManager>
             {
                 if (hit.transform.gameObject.CompareTag(obj))
                 {
-                    Debug.Log("YEEET");
+                    //Debug.Log("YEEET");
                     return hit.transform.gameObject;
                 }
             }
