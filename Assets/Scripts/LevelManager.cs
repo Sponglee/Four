@@ -265,6 +265,7 @@ public class LevelManager : Singleton<LevelManager>
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
                 childsToMove.Add(child);
+                //Debug.Log(child.name);
             }
 
           

@@ -181,7 +181,7 @@ MonoBehaviour:
   LevelMoveProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
-  levelCount: 20
+  levelCount: 5
   lastCurrentLevel: 0
   lastLevelCurrentLevel: 0
   currentAngle: 0

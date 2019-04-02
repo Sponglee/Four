@@ -65,8 +65,8 @@ public class CartModelContoller : MonoBehaviour
             else if (current > 3)
                 current = 0;
 
-
-            
+            if(!gameObject.CompareTag("Spawn"))
+                Debug.Log(name + " : " + current);
 
             //Put dolly to a proper index
             transform.parent.SetSiblingIndex(Current);
@@ -129,10 +129,12 @@ public class CartModelContoller : MonoBehaviour
                 //Replace other with blank
                 //DETACH and set new sibling indexes
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
-                other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-                tmpBlank.transform.SetParent(other.transform.parent.parent);
+                Transform tmpBlankParent = other.transform.parent.parent;
                 int otherIndex = other.transform.parent.GetSiblingIndex();
+                other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
                 other.transform.parent.SetParent(null);
+
+                tmpBlank.transform.SetParent(tmpBlankParent);
                 tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = otherIndex;
 
 
