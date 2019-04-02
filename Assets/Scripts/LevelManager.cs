@@ -12,7 +12,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject levelPrefab;
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
-    public float spawnOffset = 15f;
+    public float spawnOffset = 35f;
     public float spawnOffsetStep = 5f;
 
     [SerializeField]
@@ -153,7 +153,7 @@ public class LevelManager : Singleton<LevelManager>
         //    rotLevels.Clear();
         //    //}
         //}
-        Debug.Log("LEVEL MOVE");
+        //Debug.Log("LEVEL MOVE");
         StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
 
 
@@ -257,53 +257,37 @@ public class LevelManager : Singleton<LevelManager>
         int turnCount = Random.Range(1, 2);
         //float targetAngle = levelAngle + turnCount * 90f;
 
-
+        //Remember every child of a level
+        List<Transform> childsToMove = new List<Transform>();
         for (int i = 0; i < turnCount; i++)
         {
-            //Debug.Log("TURN " + i);
+           
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
-                //If it's a dolly
-                if (child.childCount != 0)
-                {
-                    CartModelContoller tmp = child.GetChild(0).GetComponent<CartModelContoller>();
-                    CinemachineDollyCart tmpCart = child.GetComponent<CinemachineDollyCart>();
-                    
-
-                    if (turnCount == 0)
-                    {
-
-                        break;
-                    }
-                    else
-                    {
-                        tmp.Current++;
-                        tmpCart.m_Path = tmp.paths[tmp.Current];
-                        tmpCart.m_Position = 0;
-                        tmpCart.m_Speed = 8;
-                    }
-                }
-                //else
-                //{
-                //    blanksLevelMove.Add(child);
-                //}
-
+                childsToMove.Add(child);
             }
 
-            yield return new WaitForSeconds(0.8f);
+          
         }
 
-        //Debug.Log("LIST " + blanksLevelMove.Count);
-        ////Move blanks to new sibling positions
-        //foreach (Transform blank in blanksLevelMove)
-        //{
-            
-        //    int blankIndex = blank.GetSiblingIndex() + 1;
-        //    if (blankIndex >= blank.parent.childCount)
-        //        blankIndex = 0;
+        //Move them around 
+        foreach (Transform childToMove in childsToMove)
+        {
+            //Debug.Log("TURN " + childToMove.name);
+            CartModelContoller tmp = childToMove.GetComponent<CartModelContoller>();
+            CinemachineDollyCart tmpCart = childToMove.GetComponent<CinemachineDollyCart>();
 
-        //    blank.SetSiblingIndex(blankIndex);
-        //}
+            tmp.Current++;
+            tmpCart.m_Path = tmp.paths[tmp.Current];
+            tmpCart.m_Position = 0;
+            tmpCart.m_Speed = 8;
+
+          
+
+        }
+
+        childsToMove.Clear();
+        yield return new WaitForSeconds(0.8f);
 
 
 
@@ -312,7 +296,7 @@ public class LevelManager : Singleton<LevelManager>
         //Reset blank list
         //blanksLevelMove.Clear();
 
-      
+
         //*****************
         LevelMoveProgress = false;
         yield return null;

@@ -61,7 +61,7 @@ public class CartManager : MonoBehaviour
 
 
 
-        if (gameObject.CompareTag("Cart"))
+        if (gameObject.CompareTag("Cart") )
         {
             int index = 0;
             for (int i = 0; i < carts.Length; i++)
@@ -85,18 +85,22 @@ public class CartManager : MonoBehaviour
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-                    index++;
+                   
                 }
                 else
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
+                    //Set current for that blank
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % paths.Length;
+
+                    //Set track references for that cart
                     tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % paths.Length];
-                    //Set current for that cart
-
-                    index++;
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+                    //set cart reference for manager
+                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
-
+                index++;
             }
         }
     }
@@ -273,7 +277,7 @@ public class CartManager : MonoBehaviour
                 }
 
 
-                //Debug.Log("Checking "+ i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
+                Debug.Log("Checking " + i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
             }
         }
 
@@ -284,8 +288,13 @@ public class CartManager : MonoBehaviour
             {
                 //Get some effects at effect position (1 child)
                 Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
-                go.transform.parent.SetParent(null);
+                
+                GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
+                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetComponent<CartModelContoller>().Current;
 
+
+
+                go.transform.parent.SetParent(null);
                 go.GetComponent<BoxCollider>().isTrigger = true;
                 Rigidbody tmprb = go.GetComponent<Rigidbody>();
                 tmprb.constraints = RigidbodyConstraints.None;
@@ -295,7 +304,6 @@ public class CartManager : MonoBehaviour
                 go.tag = "Untagged";
 
 
-                Instantiate(LevelManager.Instance.blankCartPrefab, transform);
                 CheckCarts();
             }
         }

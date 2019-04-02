@@ -64,6 +64,8 @@ public class CartModelContoller : MonoBehaviour
                 current = 3;
             else if (current > 3)
                 current = 0;
+            //Put dolly to a proper index
+            transform.parent.SetSiblingIndex(Current);
         }
     }
 
@@ -96,7 +98,16 @@ public class CartModelContoller : MonoBehaviour
        
         if (!CollidedBool && gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
         {
-            //Debug.Log("COLLISION " + gameObject.name);
+
+            ////Second cart below check for color - if not the same - pop first cart outwards
+            //GameObject stickDebRay = GrabRayObj(transform);
+
+            //Debug.Log(" >< " + ReferenceEquals(other.gameObject, stickDebRay) + " >>> " + stickDebRay.GetComponent<Renderer>().material);
+
+
+
+            //Debug.Log(" >< " + ReferenceEquals(other.gameObject, gameObject));
+            //Debug.Log("COLLISION (" + gameObject.transform.position + "):" + other.transform.position.y);
             CollidedBool = true;
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
@@ -107,8 +118,8 @@ public class CartModelContoller : MonoBehaviour
                 }
                 //Replace other with blank
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, other.transform.parent.parent);
-                //Set blank to it's child position
-                tmpBlank.transform.SetSiblingIndex(other.transform.GetComponent<CartModelContoller>().Current);
+                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = other.transform.GetComponent<CartModelContoller>().Current;
+               
                 //Debug.Log("FIRST SAME COLOR");
 
                 //check if no dollys
@@ -134,7 +145,7 @@ public class CartModelContoller : MonoBehaviour
 
 
                 //Second cart below check for color - if not the same - pop first cart outwards
-                GameObject tmpRay = GrabRayObj(other, "Cart");
+                GameObject tmpRay = GrabRayObj(other.transform, "Cart");
                 if (tmpRay != null && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
                     
@@ -185,13 +196,13 @@ public class CartModelContoller : MonoBehaviour
                 int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
                 if (levelIndex >= 1)
                 {
-                    //Debug.Log("STICK CART");
 
+                    //Debug.Log("STICK CART " + levelIndex);
 
                     //Second cart below check for color - if not the same - pop first cart outwards
-                    GameObject rayUp = GrabRayObj(other, "Cart", true);
-                    //If there's something above collision - make it move further
-                    if (rayUp != null && rayUp.transform.parent.parent.parent.GetSiblingIndex() >= levelIndex -1)
+                    Debug.Log(other.transform.position + " >>> " + transform.position);
+                 
+                    if (false/*stickRay != null  && !ReferenceEquals(gameObject, stickRay)*/)
                     {
                         CollidedBool = false;
                         //SecondCollision = true;
@@ -245,38 +256,42 @@ public class CartModelContoller : MonoBehaviour
 
 
     //Get reference to object hit by ray with tag
-    private GameObject GrabRayObj(Collision other, string obj, bool up=false)
+    private GameObject GrabRayObj(Transform origin, string obj="")
     {
         RaycastHit hit;
 
         Vector3 dir;
         Vector3 rayDirection;
 
-        //Shoot ray up
-        if (up)
-        {
-            rayDirection = Vector3.up;
-            dir = other.transform.position + new Vector3(0, 20, -2.5f);
-            Debug.DrawLine(other.transform.position + new Vector3(0, 0, -2.5f), dir, Color.green, 10f);
-        }
-        else
-        {
+        ////Shoot ray up
+        //if (higherOrigin)
+        //{
+        //    rayDirection = -Vector3.up;
+        //    dir = origin.position + new Vector3(0, 20, -2.5f);
+        //    Debug.DrawLine(origin.position + new Vector3(0, 0, -2.5f), dir, Color.green, 10f);
+        //}
+        //else
+        //{
             rayDirection = -Vector3.up;
-            dir = other.transform.position + new Vector3(0, -20f, -2.5f);
-            Debug.DrawLine(other.transform.position + new Vector3(0, 0, -2.5f), dir, Color.black, 10f);
-        }
+            dir = origin.position + new Vector3(0, -20f, -2.5f);
+            Debug.DrawLine(origin.position + new Vector3(0, 0, -2.5f), dir, Color.black, 10f);
+        //}
 
 
-        if (Physics.Raycast(other.transform.position + new Vector3(0, 0, -2.5f), rayDirection, out hit))
+        if (Physics.Raycast(origin.position + new Vector3(0, 0, -2.5f), rayDirection, out hit))
         {
            
             if (hit.transform)
             {
+                ////Return any tag object if ""
+                //if (obj == "")
+                //    return hit.transform.gameObject;
+                //Return only objects with obj tag
                 if (hit.transform.gameObject.CompareTag(obj))
                 {
                     return hit.transform.gameObject;
                 }
-                //return hit.transform.gameObject;
+              
             }
         }
         return null;
