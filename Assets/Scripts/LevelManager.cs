@@ -274,7 +274,7 @@ public class LevelManager : Singleton<LevelManager>
         foreach (Transform childToMove in childsToMove)
         {
             //Debug.Log("TURN " + childToMove.name);
-            CartModelContoller tmp = childToMove.GetComponent<CartModelContoller>();
+            CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
             CinemachineDollyCart tmpCart = childToMove.GetComponent<CinemachineDollyCart>();
 
             tmp.Current++;

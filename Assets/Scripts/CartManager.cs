@@ -89,7 +89,7 @@ public class CartManager : MonoBehaviour
                 }
                 else
                 {
-                    //spawn cart prefab, set random position
+                    //spawn blank prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
                     //Set current for that blank
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % paths.Length;
@@ -277,7 +277,7 @@ public class CartManager : MonoBehaviour
                 }
 
 
-                Debug.Log("Checking " + i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
+                //Debug.Log("Checking " + i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
             }
         }
 
@@ -290,7 +290,7 @@ public class CartManager : MonoBehaviour
                 Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
                 
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
-                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetComponent<CartModelContoller>().Current;
+                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetSiblingIndex();
 
 
 
