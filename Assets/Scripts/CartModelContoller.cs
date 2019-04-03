@@ -138,7 +138,7 @@ public class CartModelContoller : MonoBehaviour
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
                 Transform tmpBlankParent = other.transform.parent.parent;
                 int otherIndex = other.transform.parent.GetSiblingIndex();
-                other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                other.transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
                 other.transform.parent.SetParent(null);
 
                 tmpBlank.transform.SetParent(tmpBlankParent);
@@ -147,7 +147,7 @@ public class CartModelContoller : MonoBehaviour
 
 
                 //check if no dollys
-                Debug.Log(tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current + " >>>>> " + other.transform.GetComponent<CartModelContoller>().Current);
+                //Debug.Log(tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current + " >>>>> " + other.transform.GetComponent<CartModelContoller>().Current);
 
 
 
@@ -177,7 +177,7 @@ public class CartModelContoller : MonoBehaviour
 
                     //destroy holder if no dollys
                     //Debug.Log("KILL SPAWN");
-                    transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                    transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
                     //DETACH
                     transform.parent.SetParent(null);
                     gameObject.GetComponent<BoxCollider>().isTrigger = true;
@@ -205,8 +205,8 @@ public class CartModelContoller : MonoBehaviour
                 if (SecondCollision)
                 {
                     //destroy holder if no dollys
-                    Debug.Log("THEN SECOND");
-                    transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+                    //Debug.Log("THEN SECOND");
+                    transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
               
                     ////Replace other with blank
                     ////DETACH and set new sibling indexes
@@ -248,7 +248,7 @@ public class CartModelContoller : MonoBehaviour
                     {
                         
                         //Debug.Log("Sticking levelIndex: " + levelIndex);
-                        StickCart(other, levelIndex);
+                        //////////////StickCart(other, levelIndex);
                     }
                    
                 }

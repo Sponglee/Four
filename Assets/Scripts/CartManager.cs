@@ -93,7 +93,7 @@ public class CartManager : MonoBehaviour
 
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[materialRandomizer];
 
-
+                    //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
                     tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
@@ -111,6 +111,7 @@ public class CartManager : MonoBehaviour
                     //spawn blank prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
 
+                    //Set position and orientation for blank
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
                     tmpCart.transform.rotation = tmpCart.transform.rotation;
@@ -257,8 +258,9 @@ public class CartManager : MonoBehaviour
         int cartCount = 0;
         foreach (Transform child in transform)
         {
-            if (child.gameObject.CompareTag("Cart"))
+            if (child.GetChild(0).gameObject.CompareTag("Cart"))
             {
+                Debug.Log(child.name);
                 cartCount++;
                 //Debug.Log(child.GetChild(0).GetComponent<CartModelContoller>().CurrentLevel);
                
