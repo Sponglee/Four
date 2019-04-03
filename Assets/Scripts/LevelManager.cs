@@ -252,10 +252,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
 
-        //*****************
-
-        //Reset blank list
-        //blanksLevelMove.Clear();
+       
 
 
         //*****************
