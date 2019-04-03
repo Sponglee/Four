@@ -112,49 +112,8 @@ public class LevelManager : Singleton<LevelManager>
 
     public void LevelMove(int levelIndex)
     {
-        ////Check if there's enough levels to move around
-        //if (transform.childCount >2)
-        //{
-        //    LevelMoveProgress = true;
-        //    Debug.Log("LEVELMOVE");
-        //    //while (true)
-        //    //{
-        //    //yield return new WaitForSeconds(moveTime);
-        //    List<int> rotLevels = new List<int>();
-        //    int rotLevel;
-
-        //    //Add first random level toa  list
-        //    rotLevels.Add(Random.Range(0, transform.childCount - 1));
-        //    //Get 5-1 different non-repeateable levels 
-
-        //    for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
-        //    {
-        //        //Repeat if number contains in the list
-        //        do
-        //        {
-        //            rotLevel = Random.Range(0, transform.childCount - 1);
-        //            Debug.Log(rotLevel + " : " + transform.childCount);
-
-        //        }
-        //        while (rotLevels.Contains(rotLevel));
-        //        //if not - add it to the list
-        //        rotLevels.Add(rotLevel);
-        //    }
-
-
-        //    //Debug.Log(rotLevels.Count);
-        //    //Turn every Rot Level
-        //    for (int i = 0; i < Mathf.Round(transform.childCount / 3); i++)
-        //    {
-        //        Debug.Log(rotLevels[i]);
-        //        StartCoroutine(FollowRotate(rotLevels[i], transform.GetChild(rotLevels[i]).localEulerAngles.z));
-        //    }
-
-        //    rotLevels.Clear();
-        //    //}
-        //}
-        //Debug.Log("LEVEL MOVE");
-        StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
+       if(!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
+            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
 
 
     }
@@ -251,6 +210,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
+        //yield return new WaitForEndOfFrame();
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         //number of turns
@@ -274,11 +234,11 @@ public class LevelManager : Singleton<LevelManager>
         //Move them around 
         foreach (Transform childToMove in childsToMove)
         {
-            //Debug.Log("TURN " + childToMove.name);
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
             CinemachineDollyCart tmpCart = childToMove.GetComponent<CinemachineDollyCart>();
-
+            Debug.Log("TURN " + childToMove.GetChild(0).name);
             tmp.Current++;
+            Debug.Log("Curr " + tmp.Current);
             tmpCart.m_Path = tmp.paths[tmp.Current];
             tmpCart.m_Position = 0;
             tmpCart.m_Speed = 8;

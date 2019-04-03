@@ -80,6 +80,13 @@ public class CartModelContoller : MonoBehaviour
         tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
         cartNumber = tempCart.transform.GetSiblingIndex();
 
+
+        if(gameObject.CompareTag("Blank"))
+        {
+            //Set track references for that cart
+            paths = transform.parent.parent.GetComponent<CartManager>().paths;
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -239,6 +246,7 @@ public class CartModelContoller : MonoBehaviour
                     }
                     else
                     {
+                        
                         //Debug.Log("Sticking levelIndex: " + levelIndex);
                         StickCart(other, levelIndex);
                     }
@@ -334,8 +342,10 @@ public class CartModelContoller : MonoBehaviour
 
     public void StickCart(Collision other, int levelIndex)
     {
-        Debug.Log("STICK CART");
         int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
+
+
+        Debug.Log("STICK CART " + newCurrent);
         //Remove 1 blank
         //Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
 
@@ -355,6 +365,8 @@ public class CartModelContoller : MonoBehaviour
         //set cart reference for manager
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
 
+
+        //****??????????
         //Enable Horizontal Check
         LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor, levelIndex);
        
