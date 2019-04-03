@@ -66,6 +66,18 @@ public class CartManager : MonoBehaviour
             int index = 0;
             for (int i = 0; i < carts.Length; i++)
             {
+                int a = 360 / LevelManager.Instance.cartCount * i;
+                Vector3 cartHolderPos = RandomCircle(transform.position, 3.8f, a);
+
+                GameObject tmpCartHolder = new GameObject(i.ToString());
+
+                //Set place and orientation for blank holder
+                tmpCartHolder.transform.position = cartHolderPos;
+                tmpCartHolder.transform.SetParent(transform);
+                tmpCartHolder.transform.LookAt(transform.position);
+                tmpCartHolder.transform.rotation = tmpCartHolder.transform.rotation * Quaternion.Euler(0, 90, 0);
+
+
                 int spawnRandomizer = Random.Range(0, 100);
                 int materialRandomizer = Random.Range(0, spawnMats.Length);
                 if (spawnRandomizer <= 60)
@@ -77,12 +89,19 @@ public class CartManager : MonoBehaviour
                         tmpCart.tag = "Steel";
                         tmpCart.transform.GetChild(0).tag = "Steel";
                     }
+
+
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[materialRandomizer];
-                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % paths.Length];
+
+
+                    tmpCart.transform.SetParent(tmpCartHolder.transform);
+                    tmpCart.transform.position = tmpCartHolder.transform.position;
+                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+                    tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
                     //Set current for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % paths.Length;
-                    //Set track references for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i;
+                   
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                    
@@ -91,12 +110,16 @@ public class CartManager : MonoBehaviour
                 {
                     //spawn blank prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
-                    //Set current for that blank
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i % paths.Length;
 
-                    //Set track references for that cart
-                    tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = paths[i % paths.Length];
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = paths;
+                    tmpCart.transform.SetParent(tmpCartHolder.transform);
+                    tmpCart.transform.position = tmpCartHolder.transform.position;
+                    tmpCart.transform.rotation = tmpCart.transform.rotation;
+                    tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
+
+                    //Set current for that blank
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i;
+
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
@@ -106,24 +129,34 @@ public class CartManager : MonoBehaviour
     }
 
 
-
-
-
-
-    //Check if u point to nearest current
-    private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
+    //Build circle for spots
+    public Vector3 RandomCircle(Vector3 center, float radius, int a)
     {
-
-        int checking = Mathf.Abs(checkCurr - curr);
-        if (checking == 1)
-            return true;
-        //when moving clockwise check if coursor not at 3 and vice-versa
-        else if (checking != 1 && moveDir == 1 && checkCurr == 0 && curr == 3)
-            return true;
-        else if (checking != 1 && moveDir == -1 && checkCurr == 3 && curr == 0)
-            return true;
-        else return false;
+        //Debug.Log(a);
+        float ang = a;
+        Vector3 pos;
+        pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
+        pos.z = center.z + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
+        pos.y = center.y;
+        return pos;
     }
+
+
+
+    ////Check if u point to nearest current
+    //private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
+    //{
+
+    //    int checking = Mathf.Abs(checkCurr - curr);
+    //    if (checking == 1)
+    //        return true;
+    //    //when moving clockwise check if coursor not at 3 and vice-versa
+    //    else if (checking != 1 && moveDir == 1 && checkCurr == 0 && curr == 3)
+    //        return true;
+    //    else if (checking != 1 && moveDir == -1 && checkCurr == 3 && curr == 0)
+    //        return true;
+    //    else return false;
+    //}
 
     // Get angle for mousePosition
     private float GetFirstClickAngle()

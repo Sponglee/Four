@@ -77,15 +77,15 @@ public class CartModelContoller : MonoBehaviour
 
     private void Start()
     {
-        tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
-        cartNumber = tempCart.transform.GetSiblingIndex();
+        //tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
+        cartNumber = gameObject.transform.parent.GetSiblingIndex();
 
 
-        if(gameObject.CompareTag("Blank"))
-        {
-            //Set track references for that cart
-            paths = transform.parent.parent.GetComponent<CartManager>().paths;
-        }
+        //if(gameObject.CompareTag("Blank"))
+        //{
+        //    //Set track references for that cart
+        //    paths = transform.parent.parent.GetComponent<CartManager>().paths;
+        //}
 
     }
 

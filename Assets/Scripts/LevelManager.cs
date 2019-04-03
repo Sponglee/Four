@@ -239,9 +239,9 @@ public class LevelManager : Singleton<LevelManager>
             Debug.Log("TURN " + childToMove.GetChild(0).name);
             tmp.Current++;
             Debug.Log("Curr " + tmp.Current);
-            tmpCart.m_Path = tmp.paths[tmp.Current];
-            tmpCart.m_Position = 0;
-            tmpCart.m_Speed = 8;
+
+
+            //StartCoroutine(StopCircLerp());
 
           
 
@@ -269,7 +269,26 @@ public class LevelManager : Singleton<LevelManager>
         //StartCoroutine(StopLevelRotate(tempAngle, level));
 
     }
+    
+    //public IEnumerator StopCircLerp(Transform cart, float fFraction)
+    //{
+    //    Vector3 delta = endPos - startPos;
+    //    Vector3 pos = startPos;
+    //    pos.x += delta.x * fFraction;
+    //    pos.y += delta.y * fFraction + Mathf.Sin(fFraction * Mathf.PI) * fYFactor;
+    //    pos.z += delta.z * fFraction + Mathf.Sin(fFraction * Mathf.PI) * fZFactor;
+    //    transform.position = pos;
+    //    yield return null;
 
+    //}
+    
+    
+    
+    
+    
+    
+    
+    
     //for whole tower finish
     IEnumerator StopRotate(float duration = 0.2f, float angle = 0)
     {
@@ -587,35 +606,6 @@ public class LevelManager : Singleton<LevelManager>
     {
         //Debug.Log("TRUE GRAB SPAWN");
         List<GameObject> grabObjs = new List<GameObject>();
-
-        ////Forward
-        //Vector3 dir = origin.position + new Vector3(0, -3f, -3f);
-        //GameObject tmp = GrabObjsRay(origin, dir, obj);
-        //if (tmp != null)
-        //    grabObjs.Add(tmp);
-
-
-        ////Left
-        //dir = origin.position + new Vector3(-3, -3f, 0f);
-        //tmp = GrabObjsRay(origin, dir, obj);
-        //if (tmp != null)
-        //    grabObjs.Add(tmp);
-
-
-
-        ////Back
-        //dir = origin.position + new Vector3(0, -3f, 3f);
-        //tmp = GrabObjsRay(origin, dir, obj);
-        //if (tmp != null)
-        //    grabObjs.Add(tmp);
-
-
-
-        ////Right
-        //dir = origin.position + new Vector3(3, -3f, 0f);
-        //tmp = GrabObjsRay(origin, dir, obj);
-        //if (tmp != null)
-        //    grabObjs.Add(tmp);
 
 
         //Set all ray points 
