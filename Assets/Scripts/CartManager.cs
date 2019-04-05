@@ -254,27 +254,30 @@ public class CartManager : MonoBehaviour
     public IEnumerator StopCheckCarts()
     {
         yield return new WaitForSeconds(0.1f);
-
+      
         int cartCount = 0;
+        Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
         foreach (Transform child in transform)
         {
+            Debug.Log(child.GetChild(0).name);
             if (child.GetChild(0).gameObject.CompareTag("Cart"))
             {
-                Debug.Log(child.name);
                 cartCount++;
                 //Debug.Log(child.GetChild(0).GetComponent<CartModelContoller>().CurrentLevel);
-               
+
             }
         }
 
         if (gameObject.CompareTag("Cart") && cartCount == 0)
         {
+            Debug.Log("HERE");
             Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
             Destroy(transform.parent.gameObject);
             //Get some effects 
             LevelManager.Instance.RaiseTower();
         }
-        else if (!spawnManagerRef.spawnedBool)
+
+        if (!spawnManagerRef.spawnedBool)
         {
             SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
@@ -338,7 +341,7 @@ public class CartManager : MonoBehaviour
                 tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                 go.tag = "Untagged";
 
-
+                Debug.Log("CH CRTS");
                 CheckCarts();
             }
         }

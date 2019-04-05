@@ -65,8 +65,8 @@ public class CartModelContoller : MonoBehaviour
             else if (current > 3)
                 current = 0;
 
-            if(!gameObject.CompareTag("Spawn"))
-                Debug.Log(name + " : " + current);
+            //if(!gameObject.CompareTag("Spawn"))
+            //    Debug.Log(name + " : " + current);
 
             //Put dolly to a proper index
             transform.parent.SetSiblingIndex(Current);
@@ -138,13 +138,14 @@ public class CartModelContoller : MonoBehaviour
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
                 Transform tmpBlankParent = other.transform.parent.parent;
                 int otherIndex = other.transform.parent.GetSiblingIndex();
-                other.transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
+                
                 other.transform.parent.SetParent(null);
 
                 tmpBlank.transform.SetParent(tmpBlankParent);
                 tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = otherIndex;
 
-
+                Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
+                tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
 
                 //check if no dollys
                 //Debug.Log(tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current + " >>>>> " + other.transform.GetComponent<CartModelContoller>().Current);
@@ -175,9 +176,10 @@ public class CartModelContoller : MonoBehaviour
                 if (tmpRay != null && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
 
-                    //destroy holder if no dollys
                     //Debug.Log("KILL SPAWN");
-                    transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
+                    //transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
+
+                    //destroy holder if no dollys
                     //DETACH
                     transform.parent.SetParent(null);
                     gameObject.GetComponent<BoxCollider>().isTrigger = true;
@@ -204,10 +206,10 @@ public class CartModelContoller : MonoBehaviour
                 //If this cart was going to go through same color twice- just pop it without sticking
                 if (SecondCollision)
                 {
-                    //destroy holder if no dollys
+                    ////destroy holder if no dollys
                     //Debug.Log("THEN SECOND");
-                    transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
-              
+                    //transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
+
                     ////Replace other with blank
                     ////DETACH and set new sibling indexes
                     //GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
@@ -218,7 +220,7 @@ public class CartModelContoller : MonoBehaviour
                     //tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = otherIndex;
 
 
-                   
+
                     gameObject.GetComponent<BoxCollider>().isTrigger = true;
                     Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
                     tmprb.constraints = RigidbodyConstraints.None;

@@ -105,13 +105,15 @@ public class SpawnManager : Singleton<SpawnManager>
             //Last level helper
             else if (LevelManager.Instance.transform.GetChild(1).GetChild(0).CompareTag("Bottom"))
             {
-                Debug.Log("LAST LEVEL HELPER");
+                //Debug.Log("LAST LEVEL HELPER");
                 foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
                 {
-                    //Debug.Log(dolly.gameObject.name + " HELPER");
-                    if (!dolly.CompareTag("Blank") && !dolly.CompareTag("Steel"))
+                    
+                    if (!dolly.GetChild(0).CompareTag("Blank") && !dolly.GetChild(0).CompareTag("Steel"))
                     {
-                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetComponent<Renderer>().material.color);
+                        //Debug.Log(dolly.GetChild(0).GetChild(0).name + " HELPER");
+                        //Grab material from cart
+                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color);
 
                     }
 
