@@ -67,10 +67,7 @@ public class CartModelContoller : MonoBehaviour
 
             //if(!gameObject.CompareTag("Spawn"))
             //    Debug.Log(name + " : " + current);
-
-            //Put dolly to a proper index
-            transform.parent.SetSiblingIndex(Current);
-
+          
         }
     }
 
@@ -142,7 +139,7 @@ public class CartModelContoller : MonoBehaviour
                 //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
                 
                 //Second cart below check for color - if not the same - pop Spawn out
-                GameObject tmpRay = GrabRayObj(other.transform);
+                GameObject tmpRay = DownCheckRay(other.transform);
                
                 //If there's not same color below
                 if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
@@ -229,7 +226,7 @@ public class CartModelContoller : MonoBehaviour
 
 
     //Get reference to object hit by ray with tag
-    private GameObject GrabRayObj(Transform origin, string obj="")
+    private GameObject DownCheckRay(Transform origin, string obj="")
     {
         RaycastHit hit;
 
@@ -291,7 +288,7 @@ public class CartModelContoller : MonoBehaviour
         tmpCart.transform.SetSiblingIndex(0);
         tmpCart.transform.GetComponentInChildren<Renderer>().material.color = SpawnManager.Instance.spawnCartManager.spawnMatRandomColor;
         tmpCart.transform.position = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(newCurrent).position;
-        tmpCart.transform.rotation = other.transform.parent.rotation;
+        tmpCart.transform.rotation = tmpCart.transform.parent.rotation;
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
         //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 

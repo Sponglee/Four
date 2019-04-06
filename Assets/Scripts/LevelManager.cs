@@ -114,7 +114,10 @@ public class LevelManager : Singleton<LevelManager>
     public void LevelMove(int levelIndex)
     {
        if(!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
+        {
+            LevelMoveProgress = true;
             StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
+        }
 
 
     }
@@ -211,7 +214,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
-        //yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.2f);
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         //number of turns
@@ -225,7 +228,7 @@ public class LevelManager : Singleton<LevelManager>
            
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
-                childsToMove.Add(child);
+                childsToMove.Add(child.GetChild(0));
                 //Debug.Log(child.name);
             }
 
@@ -236,15 +239,19 @@ public class LevelManager : Singleton<LevelManager>
         foreach (Transform childToMove in childsToMove)
         {
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
-            CinemachineDollyCart tmpCart = childToMove.GetComponent<CinemachineDollyCart>();
+            //CinemachineDollyCart tmpCart = childToMove.GetComponent<CinemachineDollyCart>();
             Debug.Log("TURN " + childToMove.GetChild(0).name);
             tmp.Current++;
+
+            tmp.transform.parent.SetParent(tmp.transform.parent.parent.parent.GetChild(tmp.Current));
+
+            //StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent,0.05f));
+           
             Debug.Log("Curr " + tmp.Current);
 
 
-            //StartCoroutine(StopCircLerp());
 
-          
+
 
         }
 
@@ -270,26 +277,49 @@ public class LevelManager : Singleton<LevelManager>
         //StartCoroutine(StopLevelRotate(tempAngle, level));
 
     }
-    
-    //public IEnumerator StopCircLerp(Transform cart, float fFraction)
-    //{
-    //    Vector3 delta = endPos - startPos;
-    //    Vector3 pos = startPos;
-    //    pos.x += delta.x * fFraction;
-    //    pos.y += delta.y * fFraction + Mathf.Sin(fFraction * Mathf.PI) * fYFactor;
-    //    pos.z += delta.z * fFraction + Mathf.Sin(fFraction * Mathf.PI) * fZFactor;
-    //    transform.position = pos;
-    //    yield return null;
 
-    //}
-    
-    
-    
-    
-    
-    
-    
-    
+    public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction)
+    {
+        Vector3 endPos = Vector3.zero;
+        Vector3 startPos = cart.localPosition;
+
+        //float timeLimit = Time.time + 5f;
+
+        while (cart.localPosition.x <= 0 || cart.localPosition.z >= 0)
+        {
+            Vector3 delta = endPos - startPos;
+            Vector3 pos = cart.localPosition;
+
+            Debug.Log("MOVING " + cart.localPosition + " :::::: " + delta);
+
+            if (cart.localPosition.x < 0)
+                pos.x += delta.x * fFraction + Mathf.Sin(fFraction * Mathf.PI) * 1;
+            else
+                pos.x = 0.0001f;
+
+            if (cart.localPosition.z > 0)
+                pos.z += delta.z * fFraction + Mathf.Sin(fFraction * Mathf.PI) * 0.5f;
+            else
+                pos.z = -0.0001f;
+
+            cart.localPosition = pos;
+
+            //cart.rotation = cart.rotation * Quaternion.Euler(-1f,0, 0);
+
+            yield return null;
+
+        }
+
+       
+    }
+
+
+
+
+
+
+
+
     //for whole tower finish
     IEnumerator StopRotate(float duration = 0.2f, float angle = 0)
     {
@@ -576,31 +606,31 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    //Get reference to object hit by ray with tag
-    private GameObject GrabRayObj(string obj)
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    ////Get reference to object hit by ray with tag
+    //private GameObject GrabRayObj(string obj)
+    //{
+    //    RaycastHit hit;
+    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, 500.0f))
-        {
-            if (hit.transform)
-            {
-                Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
-                //Debug.Log(hit.transform.name);
-                if (hit.transform.gameObject.CompareTag(obj))
-                {
-                    return hit.transform.gameObject;
-                }
-                return hit.transform.gameObject;
-            }
-        }
-        return null;
-
-
+    //    if (Physics.Raycast(ray, out hit, 500.0f))
+    //    {
+    //        if (hit.transform)
+    //        {
+    //            Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
+    //            //Debug.Log(hit.transform.name);
+    //            if (hit.transform.gameObject.CompareTag(obj))
+    //            {
+    //                return hit.transform.gameObject;
+    //            }
+    //            return hit.transform.gameObject;
+    //        }
+    //    }
+    //    return null;
 
 
-    }
+
+
+    //}
 
     //Get reference to object hit by ray with tag
     public List<GameObject> ScanCarts(Transform origin, string obj)
@@ -613,7 +643,7 @@ public class LevelManager : Singleton<LevelManager>
         for (int i = 0; i < cartCount; i++)
         {
             float a = 360 / cartCount * i - CurrentAngle;
-            Vector3 pos = RandomCircle(origin.position, 3.8f, a);
+            Vector3 pos = RandomCircle(origin.position, 2.5f, a);
             GameObject tmp = GrabObjsRay(origin, pos, obj);
             if (tmp != null)
                 grabObjs.Add(tmp);

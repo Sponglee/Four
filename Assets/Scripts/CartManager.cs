@@ -67,7 +67,7 @@ public class CartManager : MonoBehaviour
             for (int i = 0; i < carts.Length; i++)
             {
                 int a = 360 / LevelManager.Instance.cartCount * i;
-                Vector3 cartHolderPos = RandomCircle(transform.position, 3.8f, a);
+                Vector3 cartHolderPos = RandomCircle(transform.position,0f, a);
 
                 GameObject tmpCartHolder = new GameObject(i.ToString());
 
@@ -75,7 +75,7 @@ public class CartManager : MonoBehaviour
                 tmpCartHolder.transform.position = cartHolderPos;
                 tmpCartHolder.transform.SetParent(transform);
                 tmpCartHolder.transform.LookAt(transform.position);
-                tmpCartHolder.transform.rotation = tmpCartHolder.transform.rotation * Quaternion.Euler(0, 90, 0);
+                tmpCartHolder.transform.rotation = tmpCartHolder.transform.rotation * Quaternion.Euler(0, a, 0);
 
 
                 int spawnRandomizer = Random.Range(0, 100);
@@ -97,7 +97,7 @@ public class CartManager : MonoBehaviour
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
                     tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                    tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
                     //Set current for that cart
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i;
@@ -115,7 +115,7 @@ public class CartManager : MonoBehaviour
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
                     tmpCart.transform.rotation = tmpCart.transform.rotation;
-                    tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
 
                     //Set current for that blank
@@ -256,10 +256,10 @@ public class CartManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
       
         int cartCount = 0;
-        //Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
+        Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
         foreach (Transform child in transform)
         {
-            //Debug.Log(child.GetChild(0).name);
+            Debug.Log(child.GetChild(0).name);
             if (child.GetChild(0).gameObject.CompareTag("Cart"))
             {
                 cartCount++;
