@@ -12,6 +12,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject levelPrefab;
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
+    public GameObject cartPrefab;
     public float spawnOffset = 35f;
     public float spawnOffsetStep = 5f;
 
@@ -611,7 +612,7 @@ public class LevelManager : Singleton<LevelManager>
         //Set all ray points 
         for (int i = 0; i < cartCount; i++)
         {
-            int a = 360 / cartCount * i;
+            float a = 360 / cartCount * i - CurrentAngle;
             Vector3 pos = RandomCircle(origin.position, 3.8f, a);
             GameObject tmp = GrabObjsRay(origin, pos, obj);
             if (tmp != null)
@@ -632,7 +633,7 @@ public class LevelManager : Singleton<LevelManager>
        
 
         RaycastHit hit;
-        Debug.DrawLine(dir, -Vector3.up * 100f + dir, Color.red, 10f);
+        Debug.DrawLine(dir, -Vector3.up * 100f + dir, Color.red, 3f);
         if (Physics.Raycast(dir, -Vector3.up, out hit))
         {
             if (hit.transform)
@@ -651,7 +652,7 @@ public class LevelManager : Singleton<LevelManager>
  
 
     //Build circle for spots
-    public Vector3 RandomCircle(Vector3 center, float radius, int a)
+    public Vector3 RandomCircle(Vector3 center, float radius, float a)
     {
         //Debug.Log(a);
         float ang = a;

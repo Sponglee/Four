@@ -77,31 +77,19 @@ public class CartModelContoller : MonoBehaviour
 
     private void Start()
     {
-        //tempCart = gameObject.transform.parent.GetComponent<CinemachineDollyCart>();
-        cartNumber = gameObject.transform.parent.GetSiblingIndex();
-
-
-        //if(gameObject.CompareTag("Blank"))
-        //{
-        //    //Set track references for that cart
-        //    paths = transform.parent.parent.GetComponent<CartManager>().paths;
-        //}
-
+        //Current = gameObject.transform.parent.parent.GetSiblingIndex();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Cart"))
         {
-
             Destroy(transform.parent.gameObject);
         }
         else if (other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Spawn"))
         {
             Destroy(gameObject.transform.parent.gameObject);
-
         }
-
     }
 
 
@@ -110,16 +98,6 @@ public class CartModelContoller : MonoBehaviour
        
         if (!CollidedBool && gameObject.CompareTag("Spawn") && (other.gameObject.CompareTag("Cart") || other.gameObject.CompareTag("Bottom") || other.gameObject.CompareTag("Steel")))
         {
-
-            ////Second cart below check for color - if not the same - pop first cart outwards
-            //GameObject stickDebRay = GrabRayObj(transform);
-
-            //Debug.Log(" >< " + ReferenceEquals(other.gameObject, stickDebRay) + " >>> " + stickDebRay.GetComponent<Renderer>().material);
-
-
-
-            //Debug.Log(" >< " + ReferenceEquals(other.gameObject, gameObject));
-            //Debug.Log("COLLISION (" + gameObject.transform.position + "):" + other.transform.position.y);
             CollidedBool = true;
             if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
             {
@@ -130,29 +108,23 @@ public class CartModelContoller : MonoBehaviour
                     return;
                 }
 
-                //Debug.Log("FIRST SAME COLOR");
-
-
                 //Replace other with blank
-                //DETACH and set new sibling indexes
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
                 Transform tmpBlankParent = other.transform.parent.parent;
                 int otherIndex = other.transform.parent.GetSiblingIndex();
                 
+                //DETACH and set new sibling indexes
                 other.transform.parent.SetParent(null);
 
+                //Set blank orientation
                 tmpBlank.transform.SetParent(tmpBlankParent);
                 tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = otherIndex;
+                tmpBlank.transform.position = other.transform.parent.position;
+                tmpBlank.transform.rotation = other.transform.parent.rotation;
+
 
                 Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
                 tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-
-                //check if no dollys
-                //Debug.Log(tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current + " >>>>> " + other.transform.GetComponent<CartModelContoller>().Current);
-
-
-
-
 
                 //Second cart pop sequence
                 other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
@@ -167,18 +139,10 @@ public class CartModelContoller : MonoBehaviour
                 //For pizzaz
                 //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
                 
-
-
-
-
                 //Second cart below check for color - if not the same - pop Spawn out
                 GameObject tmpRay = GrabRayObj(other.transform, "Cart");
                 if (tmpRay != null && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
-
-                    //Debug.Log("KILL SPAWN");
-                    //transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
-
                     //destroy holder if no dollys
                     //DETACH
                     transform.parent.SetParent(null);
@@ -198,7 +162,6 @@ public class CartModelContoller : MonoBehaviour
                     SecondCollision = true;
                 }
 
-               
             }
             //If not the same color
             else if (other.transform.parent != null)
@@ -206,21 +169,7 @@ public class CartModelContoller : MonoBehaviour
                 //If this cart was going to go through same color twice- just pop it without sticking
                 if (SecondCollision)
                 {
-                    ////destroy holder if no dollys
-                    //Debug.Log("THEN SECOND");
-                    //transform.parent.parent.parent.GetComponent<CartManager>().CheckCarts();
-
-                    ////Replace other with blank
-                    ////DETACH and set new sibling indexes
-                    //GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
-                    //other.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-                    //tmpBlank.transform.SetParent(other.transform.parent.parent);
-                    //int otherIndex = other.transform.parent.GetSiblingIndex();
-                    //other.transform.parent.SetParent(null);
-                    //tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = otherIndex;
-
-
-
+                    //DETACH
                     gameObject.GetComponent<BoxCollider>().isTrigger = true;
                     Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
                     tmprb.constraints = RigidbodyConstraints.None;
@@ -231,15 +180,10 @@ public class CartModelContoller : MonoBehaviour
                 }
 
                 //get index of levelHolder above
-                int levelIndex = other.transform.parent.parent.parent.GetSiblingIndex();
+                int levelIndex = other.transform.parent.parent.parent.parent.GetSiblingIndex();
+                Debug.Log("LEVEL " + levelIndex);
                 if (levelIndex >= 1)
                 {
-
-                    //Debug.Log("STICK CART " + levelIndex);
-
-                    //Second cart below check for color - if not the same - pop first cart outwards
-                    //Debug.Log(other.transform.position + " >>> " + transform.position);
-                 
                     if (false/*stickRay != null  && !ReferenceEquals(gameObject, stickRay)*/)
                     {
                         CollidedBool = false;
@@ -248,48 +192,17 @@ public class CartModelContoller : MonoBehaviour
                     }
                     else
                     {
-                        
+
                         //Debug.Log("Sticking levelIndex: " + levelIndex);
-                        //////////////StickCart(other, levelIndex);
+                        StickCart(other, levelIndex);
                     }
-                   
+
                 }
                 else
                 {
                     FunctionHandler.Instance.OpenGameOver("GAME OVER");
                 }
             }
-            //else if (gameObject.CompareTag("Spawn") &&  other.gameObject.CompareTag("Bottom"))
-            //{
-            //    //If this cart was going to go through same color - just pop it without sticking
-            //    if (SecondCollision)
-            //    {
-            //        //destroy holder if no dollys
-            //        //Debug.Log("THEN SECOND");
-            //        transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-            //        //DETACH
-            //        //transform.parent.SetParent(null);
-            //        gameObject.GetComponent<BoxCollider>().isTrigger = true;
-            //        Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-            //        tmprb.constraints = RigidbodyConstraints.None;
-            //        tmprb.useGravity = true;
-            //        tmprb.velocity = new Vector3(0, 0, -50f);
-            //        tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-            //        return;
-            //    }
-
-            //    int levelIndex = other.transform.parent.parent.GetSiblingIndex();
-            //    if (levelIndex >= 1)
-            //    {
-            //        StickCart(other, levelIndex);
-            //    }
-            //    else
-            //    {
-
-            //        FunctionHandler.Instance.OpenGameOver("GAME OVER");
-            //    }
-            //}
-          
         }
     
     }
@@ -352,32 +265,40 @@ public class CartModelContoller : MonoBehaviour
         //Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
 
 
-        //spawn cart prefab, set current position
-        GameObject tmpCart = Instantiate(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().cartPrefabs[0], LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).transform);
-        //Set material
+        //spawn cart prefab
+        GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(newCurrent).transform);
+        //Set material and orientation
+        tmpCart.transform.SetSiblingIndex(0);
         tmpCart.transform.GetComponentInChildren<Renderer>().material.color = SpawnManager.Instance.spawnCartManager.spawnMatRandomColor;
-
-        //Get rid of that position blank
-        Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(newCurrent).gameObject);
-
-        //Set current for that cart
+        tmpCart.transform.position = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(newCurrent).position;
+        tmpCart.transform.rotation = other.transform.parent.rotation;
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;
-        ////Set track references for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().paths;
-        //set cart reference for manager
-        tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths[newCurrent];
+        //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
+
+        ////Get rid of that position blank
+        foreach (Transform child in tmpCart.transform.parent)
+        {
+            if (child.CompareTag("Blank"))
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        Destroy(transform.parent.gameObject);
+
+
+
+
 
 
         //****??????????
         //Enable Horizontal Check
-        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor, levelIndex);
-       
-        //LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(0).GetComponent<CartManager>().carts[Current] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+        LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1)
+                                                        .GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor, levelIndex);
 
-        Destroy(transform.parent.gameObject);
-        //Debug.Log(tmpCart.name);
 
-     
+
     }
 
 

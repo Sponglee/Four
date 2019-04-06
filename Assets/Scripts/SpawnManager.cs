@@ -188,7 +188,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
         //spawn cart prefab, set random position
-        GameObject tmpCart = Instantiate(spawnCartManager.cartPrefabs[0], spawnCartManager.transform.GetChild(0));
+        GameObject tmpCart = Instantiate(spawnCartManager.spawnPrefab, spawnCartManager.transform.GetChild(0));
         spawnCartManager.spawnObject = tmpCart;
         //Set material to spawn
         tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;

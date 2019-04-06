@@ -10,7 +10,7 @@ public class CartManager : MonoBehaviour
 
 
 
-    public GameObject[] cartPrefabs;
+    public GameObject spawnPrefab;
     public CinemachineSmoothPath[] paths;
 
     //For dropping
@@ -83,7 +83,7 @@ public class CartManager : MonoBehaviour
                 if (spawnRandomizer <= 60)
                 {
                     //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(cartPrefabs[0], transform);
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
                     if(materialRandomizer == spawnMats.Length - 1)
                     {
                         tmpCart.tag = "Steel";
@@ -298,19 +298,20 @@ public class CartManager : MonoBehaviour
         int color = 0;
         //Find object named Spawn for reference
         CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
-        List<GameObject> checkedDollys;
-        checkedDollys = new List<GameObject>();
+        List<GameObject> checkedCarts;
+        checkedCarts = new List<GameObject>();
 
 
         for (int i = 0; i < transform.childCount; i++)
         {
             //Debug.Log("I " + i + " : " + transform.childCount);
-            if (transform.GetChild(i).gameObject.CompareTag("Cart"))
+            if (transform.GetChild(i).GetChild(0).gameObject.CompareTag("Cart"))
             {
-                if (transform.GetChild(i).GetChild(0).GetComponent<Renderer>().material.color
+                if (transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Renderer>().material.color
                     == spawnColorsRef.spawnMatRandomColor)
                 {
-                    checkedDollys.Add(transform.GetChild(i).GetChild(0).gameObject);
+                    //Add cart to list
+                    checkedCarts.Add(transform.GetChild(i).GetChild(0).GetChild(0).gameObject);
                     color++;
                 }
 
@@ -322,15 +323,17 @@ public class CartManager : MonoBehaviour
         if (color >= 3)
         {
             //Debug.Log("MORE THAN 3");
-            foreach (GameObject go in checkedDollys)
+            foreach (GameObject go in checkedCarts)
             {
-                //Get some effects at effect position (1 child)
+                //Get some effects at effect position (1st child)
                 Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
                 
-                GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
+                GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, go.transform.parent.parent);
+                tmpBlank.transform.SetSiblingIndex(1);
                 tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetSiblingIndex();
 
-
+                tmpBlank.transform.position = go.transform.parent.transform.position;
+                tmpBlank.transform.rotation = go.transform.parent.transform.rotation;
 
                 go.transform.parent.SetParent(null);
                 go.GetComponent<BoxCollider>().isTrigger = true;
@@ -344,11 +347,13 @@ public class CartManager : MonoBehaviour
                 Debug.Log("CH CRTS");
                 CheckCarts();
             }
+
+            checkedCarts.Clear();
         }
         else
         {
             //Rotate the lower level
-            LevelManager.Instance.LevelMove(levelIndex);
+            //LevelManager.Instance.LevelMove(levelIndex);
         }
 
 

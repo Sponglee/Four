@@ -162,6 +162,7 @@ MonoBehaviour:
     type: 3}
   blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
     type: 3}
+  cartPrefab: {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 3}
   spawnOffset: 20
   spawnOffsetStep: 5
   level: 0
@@ -956,6 +957,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114349600795921836, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: spawnPrefab
+      value: 
+      objectReference: {fileID: 1061318804531502, guid: ad52b24c2bae12b49be5ee8f7417faa7,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
 --- !u!1 &1100402873
