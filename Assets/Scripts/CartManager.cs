@@ -256,10 +256,10 @@ public class CartManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
       
         int cartCount = 0;
-        Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
+        //Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
         foreach (Transform child in transform)
         {
-            Debug.Log(child.GetChild(0).name);
+            //Debug.Log(child.GetChild(0).name);
             if (child.GetChild(0).gameObject.CompareTag("Cart"))
             {
                 cartCount++;
@@ -270,7 +270,7 @@ public class CartManager : MonoBehaviour
 
         if (gameObject.CompareTag("Cart") && cartCount == 0)
         {
-            Debug.Log("HERE");
+            //Debug.Log("HERE");
             Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
             Destroy(transform.parent.gameObject);
             //Get some effects 

@@ -112,7 +112,9 @@ public class CartModelContoller : MonoBehaviour
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
                 Transform tmpBlankParent = other.transform.parent.parent;
                 int otherIndex = other.transform.parent.GetSiblingIndex();
-                
+
+                //remember which level other cart is on 
+                int detatchLevel = other.transform.parent.parent.parent.parent.GetSiblingIndex();
                 //DETACH and set new sibling indexes
                 other.transform.parent.SetParent(null);
 
@@ -123,7 +125,7 @@ public class CartModelContoller : MonoBehaviour
                 tmpBlank.transform.rotation = other.transform.parent.rotation;
 
 
-                Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
+                //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
                 tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
 
                 //Second cart pop sequence
@@ -140,9 +142,12 @@ public class CartModelContoller : MonoBehaviour
                 //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
                 
                 //Second cart below check for color - if not the same - pop Spawn out
-                GameObject tmpRay = GrabRayObj(other.transform, "Cart");
-                if (tmpRay != null && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
+                GameObject tmpRay = GrabRayObj(other.transform);
+               
+                //If there's not same color below
+                if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
+                    Debug.Log("REEEEETATCH");
                     //destroy holder if no dollys
                     //DETACH
                     transform.parent.SetParent(null);
@@ -150,16 +155,31 @@ public class CartModelContoller : MonoBehaviour
                     Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
                     tmprb.constraints = RigidbodyConstraints.None;
                     tmprb.useGravity = true;
-                    tmprb.velocity = new Vector3(0, 0, -50f);
+                    tmprb.velocity = new Vector3(0, 10f, -50f);
                     tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
 
                 }
                 //Enable next cart collision
-                else
+                else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
                 {
+                    Debug.Log("NEXT");  
                     CollidedBool = false;
                     CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
                     SecondCollision = true;
+                } //Detatch spawn if it hit last level (prevent bottom cart bug)
+                //if (tmpRay == null && detatchLevel == LevelManager.Instance.levelCount - 2)
+                else
+                {
+                    Debug.Log("REEEEETATCH");
+                    //destroy holder if no dollys
+                    //DETACH
+                    transform.parent.SetParent(null);
+                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                    Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                    tmprb.constraints = RigidbodyConstraints.None;
+                    tmprb.useGravity = true;
+                    tmprb.velocity = new Vector3(0, 10f, -50f);
+                    tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                 }
 
             }
@@ -236,9 +256,9 @@ public class CartModelContoller : MonoBehaviour
            
             if (hit.transform)
             {
-                ////Return any tag object if ""
-                //if (obj == "")
-                //    return hit.transform.gameObject;
+                //Return any tag object if ""
+                if (obj == "")
+                    return hit.transform.gameObject;
                 //Return only objects with obj tag
                 if (hit.transform.gameObject.CompareTag(obj))
                 {
