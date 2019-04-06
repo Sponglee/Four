@@ -56,7 +56,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         if(spawnTime>= spawnInterval )
         {
-            if(Input.GetMouseButtonDown(1))
+            if(Input.GetMouseButton(0))
             {
                 DropSpawn(spawnCartManager.spawnObject);
 
