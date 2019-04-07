@@ -214,7 +214,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         //number of turns
@@ -229,7 +229,7 @@ public class LevelManager : Singleton<LevelManager>
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
                 childsToMove.Add(child.GetChild(0));
-                //Debug.Log(child.name);
+                Debug.Log(child.parent.name);
             }
 
           
@@ -239,85 +239,60 @@ public class LevelManager : Singleton<LevelManager>
         foreach (Transform childToMove in childsToMove)
         {
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
-            //CinemachineDollyCart tmpCart = childToMove.GetComponent<CinemachineDollyCart>();
-            Debug.Log("TURN " + childToMove.GetChild(0).name);
+           
+            //Switch parents of carts
             tmp.Current++;
-
             tmp.transform.parent.SetParent(tmp.transform.parent.parent.parent.GetChild(tmp.Current));
 
-            //StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent,0.05f));
-           
-            Debug.Log("Curr " + tmp.Current);
-
-
-
-
-
+            //Start turning sequence
+            StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
         }
 
         childsToMove.Clear();
         yield return new WaitForSeconds(0.8f);
 
-
-
-       
-
-
         //*****************
         LevelMoveProgress = false;
         yield return null;
-
-        //while (tempAngle <= targetAngle)
-        //{
-        //    //Debug.Log(tempAngle + " + " + levelAngle);
-        //    tempAngle += levelMoveSpeed * Time.deltaTime;
-        //    transform.GetChild(level).localRotation = Quaternion.Euler(new Vector3(0f, 0f, tempAngle));
-        //    yield return null;
-        //}
-        //StartCoroutine(StopLevelRotate(tempAngle, level));
 
     }
 
     public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction)
     {
-        Vector3 endPos = Vector3.zero;
-        Vector3 startPos = cart.localPosition;
 
-        //float timeLimit = Time.time + 5f;
+        float rotAngle=0; /*= dest.localRotation.y - cart.localRotation.y;*/
+        float timeLimit = Time.time + 2f;
+            //Debug.Log(cart.parent.name + " >> " + cart.localRotation.y*Mathf.Rad2Deg + " :::: " + dest.rotation.y*Mathf.Rad2Deg);
 
-        while (cart.localPosition.x <= 0 || cart.localPosition.z >= 0)
+
+        if(cart.localRotation.y <0)
         {
-            Vector3 delta = endPos - startPos;
-            Vector3 pos = cart.localPosition;
-
-            Debug.Log("MOVING " + cart.localPosition + " :::::: " + delta);
-
-            if (cart.localPosition.x < 0)
-                pos.x += delta.x * fFraction + Mathf.Sin(fFraction * Mathf.PI) * 1;
-            else
-                pos.x = 0.0001f;
-
-            if (cart.localPosition.z > 0)
-                pos.z += delta.z * fFraction + Mathf.Sin(fFraction * Mathf.PI) * 0.5f;
-            else
-                pos.z = -0.0001f;
-
-            cart.localPosition = pos;
-
-            //cart.rotation = cart.rotation * Quaternion.Euler(-1f,0, 0);
-
-            yield return null;
-
+            while (cart.localRotation.y <= 0)
+            {
+                //Debug.Log(tempAngle + " + " + levelAngle
+                rotAngle += fFraction * Time.deltaTime;
+                cart.localRotation = cart.localRotation * Quaternion.Euler(0f, fFraction, 0);
+                yield return null;
+            }
+            cart.localRotation = Quaternion.Euler(0, 0, 0);
         }
-
+        else if(cart.localRotation.y>0)
+        {
+            while (cart.localRotation.y >= 0)
+            {
+                //Debug.Log(tempAngle + " + " + levelAngle
+                rotAngle += fFraction * Time.deltaTime;
+                cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+                yield return null;
+            }
+            cart.localRotation = Quaternion.Euler(0,0,0);
+        }
+        else
+        {
+            yield return null;
+        }
        
     }
-
-
-
-
-
-
 
 
     //for whole tower finish
@@ -402,51 +377,6 @@ public class LevelManager : Singleton<LevelManager>
         //LevelMoveProgress = false;
         levelStop = false;
     }
-
-    ////For finishing levels that are not current
-    //IEnumerator StopLevelTempRotate(int tempLevel = -2, float duration = 0.2f, float angle = 0)
-    //{
-
-    //        float tempLevelAngle = LevelCurrentAngle;
-    //        float from = tempLevelAngle;
-    //        float to = Mathf.Round(LevelCurrentAngle / 90f) * 90f;
-    //        //Debug.Log("FROM: " + from + " TO: " + to);
-    //        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
-
-    //        //smooth lerp rotation loop
-    //        float elapsed = 0.0f;
-    //        while (elapsed < duration)
-    //        {
-    //            tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
-
-    //            elapsed += Time.fixedDeltaTime;
-    //            if (Mathf.Abs(tempLevelAngle - to) <= 3f)
-    //            {
-    //                currentAngleSpeed = 0;
-
-    //                //Delay rotation bool to avoid extra spawn
-    //                StartCoroutine(StopRotationProgress());
-    //                break;
-    //            }
-    //            if (tempLevel >= 0)
-    //            {
-    //                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
-    //            }
-    //            //Debug.Log(tempLevelAngle + " ::: " + to);
-
-    //            yield return null;
-    //        }
-
-    //    if (Mathf.Abs(tempLevelAngle - to) <= 10f)
-    //    {
-    //        if (tempLevel >= 0)
-    //        {
-    //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
-    //        }
-    //    }
-
-    //    levelStop = false;
-    //}
 
     //Delay rotation bool
     private IEnumerator StopRotationProgress()

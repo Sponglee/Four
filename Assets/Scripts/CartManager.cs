@@ -64,8 +64,14 @@ public class CartManager : MonoBehaviour
         if (gameObject.CompareTag("Cart") )
         {
             int index = 0;
+
+            //Required 1 cart per level
+            int requiredCart = Random.Range(0, carts.Length);
+
+            //Debug.Log(":::::" + carts.Length);
             for (int i = 0; i < carts.Length; i++)
             {
+               
                 int a = 360 / LevelManager.Instance.cartCount * i;
                 Vector3 cartHolderPos = RandomCircle(transform.position,0f, a);
 
@@ -79,18 +85,34 @@ public class CartManager : MonoBehaviour
 
 
                 int spawnRandomizer = Random.Range(0, 100);
-                int materialRandomizer = Random.Range(0, spawnMats.Length);
-                if (spawnRandomizer <= 60)
+                //cart mats + steel
+
+                int materialRandomizer;
+                //Check if it's required Cart- don't include steel mat
+                if (i== requiredCart)
+                {
+                    materialRandomizer = Random.Range(0, spawnMats.Length-1);
+                }
+                else
+                {
+                     materialRandomizer = Random.Range(0, spawnMats.Length);
+                }
+                
+
+                //If randomizer proc or this is a required cart
+                if (i == requiredCart || spawnRandomizer <= 60)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
+                    //check if it's steel
                     if(materialRandomizer == spawnMats.Length - 1)
                     {
+                        
                         tmpCart.tag = "Steel";
                         tmpCart.transform.GetChild(0).tag = "Steel";
                     }
 
-
+                    //Set a material
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[materialRandomizer];
 
                     //Set position and orientation for dolly
@@ -109,12 +131,12 @@ public class CartManager : MonoBehaviour
                 else
                 {
                     //spawn blank prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab, transform);
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab);
 
                     //Set position and orientation for blank
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
-                    tmpCart.transform.rotation = tmpCart.transform.rotation;
+                    tmpCart.transform.localRotation = Quaternion.Euler(0,0,0);
                     //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
 
@@ -259,7 +281,8 @@ public class CartManager : MonoBehaviour
         Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
         foreach (Transform child in transform)
         {
-            Debug.Log(child.GetChild(0).name);
+            Debug.Log(child.name);
+            Debug.Log(">>>>"+child.GetChild(0).name);
             if (child.GetChild(0).gameObject.CompareTag("Cart"))
             {
                 cartCount++;
@@ -353,7 +376,7 @@ public class CartManager : MonoBehaviour
         else
         {
             //Rotate the lower level
-            //LevelManager.Instance.LevelMove(levelIndex);
+            LevelManager.Instance.LevelMove(levelIndex);
         }
 
 
