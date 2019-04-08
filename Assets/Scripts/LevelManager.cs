@@ -97,11 +97,11 @@ public class LevelManager : Singleton<LevelManager>
 
         for (int i = 0; i < levelCount; i++)
         {
-            GameObject tmpSpawn = Instantiate(levelPrefab, transform);
+            GameObject tmpSpawn = Instantiate(levelPrefab, transform.position, transform.rotation, transform);
             tmpSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * i, 0);
            /* spawnOffset += spawnOffsetStep*/;
         }
-        GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform);
+        GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform.position, transform.rotation, transform);
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * levelCount, 0);
 
         speedHistory = new List<float>();
@@ -214,7 +214,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         //number of turns
@@ -229,7 +229,7 @@ public class LevelManager : Singleton<LevelManager>
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
                 childsToMove.Add(child.GetChild(0));
-                Debug.Log(child.parent.name);
+                Debug.Log(">" + child.parent.name);
             }
 
           

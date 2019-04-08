@@ -282,13 +282,36 @@ public class CartManager : MonoBehaviour
         foreach (Transform child in transform)
         {
             Debug.Log(child.name);
-            Debug.Log(">>>>"+child.GetChild(0).name);
-            if (child.GetChild(0).gameObject.CompareTag("Cart"))
+            if(child.childCount != 0)
             {
-                cartCount++;
-                //Debug.Log(child.GetChild(0).GetComponent<CartModelContoller>().CurrentLevel);
 
+                Debug.Log(">>>>"+child.GetChild(0).name);
+                //Check if there's 2 childs
+                if (child.childCount >= 2 && child.GetChild(1).CompareTag("Blank"))
+                {
+                    Destroy(child.GetChild(1).gameObject);
+                }
+
+                //Cound 1 child for three pop
+                if (child.GetChild(0).gameObject.CompareTag("Cart"))
+                {
+                    cartCount++;
+                    //Debug.Log(child.GetChild(0).GetComponent<CartModelContoller>().CurrentLevel);
+                }
+                
+               
             }
+            else
+            {
+                //Add a blank if it's lost
+                GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, child);
+                tmpBlank.transform.SetSiblingIndex(1);
+                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = child.transform.GetSiblingIndex();
+
+                tmpBlank.transform.position = child.transform.position;
+                tmpBlank.transform.rotation = child.transform.rotation;
+            }
+
         }
 
         if (gameObject.CompareTag("Cart") && cartCount == 0)
