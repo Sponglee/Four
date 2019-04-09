@@ -12,6 +12,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public float spawnTime = 0;
 
+
+    public bool gameMode = true;
+
     // Use this for initialization
     void Start()
     {
@@ -56,14 +59,30 @@ public class SpawnManager : Singleton<SpawnManager>
 
         if(spawnTime>= spawnInterval )
         {
-            if(Input.GetMouseButton(0))
+            //Pressed game mode
+            if(gameMode == true)
             {
+                if (Input.GetMouseButton(0))
+                {
+                    DropSpawn(spawnCartManager.spawnObject);
+
+                    spawnCartManager.spawnedBool = false;
+
+                    spawnTime = 0;
+                }
+            }
+            //Automatic drop game mode
+            else
+            {
+               
                 DropSpawn(spawnCartManager.spawnObject);
 
                 spawnCartManager.spawnedBool = false;
 
                 spawnTime = 0;
+                
             }
+          
            
         }
         

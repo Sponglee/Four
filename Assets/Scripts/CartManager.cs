@@ -122,7 +122,7 @@ public class CartManager : MonoBehaviour
                     //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
                     //Set current for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i;
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
                    
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
@@ -141,7 +141,7 @@ public class CartManager : MonoBehaviour
 
 
                     //Set current for that blank
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = i;
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
 
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
@@ -276,19 +276,20 @@ public class CartManager : MonoBehaviour
     public IEnumerator StopCheckCarts()
     {
         yield return new WaitForSeconds(0.1f);
-      
+        Debug.Log(">>CHECK CARTS ");
         int cartCount = 0;
-        Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
+        //Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
         foreach (Transform child in transform)
         {
-            Debug.Log(child.name);
+            //Debug.Log(child.name);
             if(child.childCount != 0)
             {
 
-                Debug.Log(">>>>"+child.GetChild(0).name);
+                //Debug.Log(">>>>"+child.GetChild(0).name);
                 //Check if there's 2 childs
-                if (child.childCount >= 2 && child.GetChild(1).CompareTag("Blank"))
+                if (child.childCount >= 2)
                 {
+                    Debug.Log("<<< DESTROYED");
                     Destroy(child.GetChild(1).gameObject);
                 }
 
@@ -303,6 +304,7 @@ public class CartManager : MonoBehaviour
             }
             else
             {
+                Debug.Log(">>FOUND CART");
                 //Add a blank if it's lost
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, child);
                 tmpBlank.transform.SetSiblingIndex(1);
@@ -340,7 +342,8 @@ public class CartManager : MonoBehaviour
 
     public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
     {
-        yield return new WaitForSecondsRealtime(0.05f);
+        yield return new WaitForSecondsRealtime(0.15f);
+        Debug.Log(">>HORIZONTAL ");
         int color = 0;
         //Find object named Spawn for reference
         CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
@@ -390,7 +393,7 @@ public class CartManager : MonoBehaviour
                 tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                 go.tag = "Untagged";
 
-                Debug.Log("CH CRTS");
+                //Debug.Log("CH CRTS");
                 CheckCarts();
             }
 

@@ -214,7 +214,8 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.2f);
+        Debug.Log(">>FOLLOW ROTATE ");
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         //number of turns
@@ -228,8 +229,9 @@ public class LevelManager : Singleton<LevelManager>
            
             foreach (Transform child in transform.GetChild(level).GetChild(0))
             {
-                childsToMove.Add(child.GetChild(0));
-                Debug.Log(">" + child.parent.name);
+                if(child.childCount != 0)
+                    childsToMove.Add(child.GetChild(0));
+                //Debug.Log(">" + child.parent.name);
             }
 
           
@@ -239,10 +241,11 @@ public class LevelManager : Singleton<LevelManager>
         foreach (Transform childToMove in childsToMove)
         {
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
-           
-            //Switch parents of carts
+           //Switch parents of carts
             tmp.Current++;
-            tmp.transform.parent.SetParent(tmp.transform.parent.parent.parent.GetChild(tmp.Current));
+            Debug.Log(childToMove.name + " > " + tmp.Current);
+            tmp.transform.parent.SetParent(null);
+            tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
 
             //Start turning sequence
             StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
@@ -259,7 +262,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction)
     {
-
+        yield return new WaitForSeconds(0.1f);
         float rotAngle=0; /*= dest.localRotation.y - cart.localRotation.y;*/
         float timeLimit = Time.time + 2f;
             //Debug.Log(cart.parent.name + " >> " + cart.localRotation.y*Mathf.Rad2Deg + " :::: " + dest.rotation.y*Mathf.Rad2Deg);

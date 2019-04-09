@@ -101,14 +101,14 @@ public class CartModelContoller : MonoBehaviour
                 //Check if other is in the same column if secon hit 
                 if(SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
                 {
-                    Debug.Log("REE");
+                    //Debug.Log("REE");
                     return;
                 }
 
                 //Replace other with blank
                 GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
                 Transform tmpBlankParent = other.transform.parent.parent;
-                int otherIndex = other.transform.parent.GetSiblingIndex();
+                //int otherIndex = other.transform.parent.GetSiblingIndex();
 
                 //remember which level other cart is on 
                 int detatchLevel = other.transform.parent.parent.parent.parent.GetSiblingIndex();
@@ -117,7 +117,7 @@ public class CartModelContoller : MonoBehaviour
 
                 //Set blank orientation
                 tmpBlank.transform.SetParent(tmpBlankParent);
-                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = otherIndex;
+                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
                 tmpBlank.transform.position = other.transform.parent.position;
                 tmpBlank.transform.rotation = other.transform.parent.rotation;
 
@@ -144,7 +144,7 @@ public class CartModelContoller : MonoBehaviour
                 //If there's not same color below
                 if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
-                    Debug.Log("REEEEETATCH");
+                    //Debug.Log("REEEEETATCH");
                     //destroy holder if no dollys
                     //DETACH
                     transform.parent.SetParent(null);
@@ -159,7 +159,7 @@ public class CartModelContoller : MonoBehaviour
                 //Enable next cart collision
                 else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
                 {
-                    Debug.Log("NEXT");  
+                    //Debug.Log("NEXT");  
                     CollidedBool = false;
                     CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
                     SecondCollision = true;
@@ -167,7 +167,7 @@ public class CartModelContoller : MonoBehaviour
                 //if (tmpRay == null && detatchLevel == LevelManager.Instance.levelCount - 2)
                 else
                 {
-                    Debug.Log("REEEEETATCH");
+                    //Debug.Log("REEEEETATCH");
                     //destroy holder if no dollys
                     //DETACH
                     transform.parent.SetParent(null);
@@ -198,7 +198,7 @@ public class CartModelContoller : MonoBehaviour
 
                 //get index of levelHolder above
                 int levelIndex = other.transform.parent.parent.parent.parent.GetSiblingIndex();
-                Debug.Log("LEVEL " + levelIndex);
+                //Debug.Log("LEVEL " + levelIndex);
                 if (levelIndex >= 1)
                 {
                     if (false/*stickRay != null  && !ReferenceEquals(gameObject, stickRay)*/)
@@ -277,7 +277,7 @@ public class CartModelContoller : MonoBehaviour
         int newCurrent = other.gameObject.GetComponent<CartModelContoller>().Current;
 
 
-        Debug.Log("STICK CART " + newCurrent);
+      
         //Remove 1 blank
         //Destroy(LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).Find("BlankHolder(Clone)").gameObject);
 
@@ -311,6 +311,7 @@ public class CartModelContoller : MonoBehaviour
 
         //****??????????
         //Enable Horizontal Check
+ 
         LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1)
                                                         .GetChild(0).GetComponent<CartManager>().HorizontalCheck(spawnColor, levelIndex);
 
