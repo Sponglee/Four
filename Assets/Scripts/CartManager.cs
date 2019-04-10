@@ -21,6 +21,8 @@ public class CartManager : MonoBehaviour
     public List<Color> colorHelper;
 
     public bool spawnedBool = false;
+    public bool spawnInProgress = false;
+
     public Transform center;
     public CartModelContoller[] carts;
 

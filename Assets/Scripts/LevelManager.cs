@@ -88,6 +88,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
+        levelCount = PlayerPrefs.GetInt("LevelCount", 5);
         //LevelCurrentAngles = new Stack<LevelAnglePtr>();
 
 
@@ -252,6 +253,8 @@ public class LevelManager : Singleton<LevelManager>
         }
 
         childsToMove.Clear();
+       
+
         yield return new WaitForSeconds(0.8f);
 
         //*****************
@@ -263,8 +266,11 @@ public class LevelManager : Singleton<LevelManager>
     public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction)
     {
         yield return new WaitForSeconds(0.1f);
+        float debugTime = Time.time;
         float rotAngle=0; /*= dest.localRotation.y - cart.localRotation.y;*/
-        float timeLimit = Time.time + 2f;
+
+
+
             //Debug.Log(cart.parent.name + " >> " + cart.localRotation.y*Mathf.Rad2Deg + " :::: " + dest.rotation.y*Mathf.Rad2Deg);
 
 
@@ -294,7 +300,9 @@ public class LevelManager : Singleton<LevelManager>
         {
             yield return null;
         }
-       
+
+        debugTime = Time.time - debugTime;
+        Debug.Log("<<<<<< " + debugTime);
     }
 
 

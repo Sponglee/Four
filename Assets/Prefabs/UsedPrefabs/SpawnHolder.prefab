@@ -487,6 +487,7 @@ MonoBehaviour:
   spawnCartManager: {fileID: 114349600795921836}
   spawnInterval: 1
   spawnTime: 0
+  gameMode: 0
 --- !u!1 &1707813938713518
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,12 +719,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7baf237a5884b374d903db455c17e709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cartPrefabs:
-  - {fileID: 1061318804531502, guid: ad52b24c2bae12b49be5ee8f7417faa7, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  spawnPrefab: {fileID: 1061318804531502, guid: ad52b24c2bae12b49be5ee8f7417faa7,
+    type: 3}
   paths:
   - {fileID: 114707598492063754}
   - {fileID: 114615098142578930}

@@ -18,6 +18,10 @@ public class SpawnManager : Singleton<SpawnManager>
     // Use this for initialization
     void Start()
     {
+
+        //Grab gameMode 
+        gameMode = (PlayerPrefs.GetInt("GameMode",0) != 0); 
+
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
 
         Spawn();
@@ -47,17 +51,20 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
 
-                
+
 
 
         //    ////Reset spawn cooldown
         //    //spawnTimer = spawnDuration;
         //}
 
-        if(spawnCartManager.spawnedBool)
+        if (spawnCartManager.spawnedBool)
             spawnTime += Time.deltaTime;
 
-        if(spawnTime>= spawnInterval )
+
+
+        //SpawninProgress for levelrotate wait
+        if(spawnTime>= spawnInterval /*&& !spawnCartManager.spawnInProgress*/)
         {
             //Pressed game mode
             if(gameMode == true)
@@ -102,9 +109,21 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public IEnumerator StopSpawn()
     {
-       
         spawnCartManager.spawnedBool = true;
+
         yield return new WaitForSeconds(0.3f);
+        ////Delay dropspawn while spawn is in progress
+        //spawnCartManager.spawnInProgress = true;
+
+
+        //// Wait for levelMove to finish
+        //if (LevelManager.Instance.LevelMoveProgress)
+        //{
+        //    Debug.Log("HERE");
+        //    yield return new WaitForSeconds(0.4f);
+        //}
+         //spawnCartManager.spawnInProgress = false;
+
         spawnCartManager.colorHelper.Clear();
         //set random spawn color\
         List<GameObject> spawnChecks = new List<GameObject>();
