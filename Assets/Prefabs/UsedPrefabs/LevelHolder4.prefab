@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPrefab: {fileID: 0}
+  cartHolderPrefab: {fileID: 1616428663689433614, guid: 09818f2a14a4751458c03b105a269273,
+    type: 3}
   paths:
   - {fileID: 0}
   - {fileID: 0}
@@ -53,6 +55,7 @@ MonoBehaviour:
   spawnManagerRef: {fileID: 0}
   colorHelper: []
   spawnedBool: 0
+  spawnInProgress: 0
   center: {fileID: 224825882545686414}
   carts:
   - {fileID: 0}

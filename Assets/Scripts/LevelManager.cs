@@ -216,7 +216,7 @@ public class LevelManager : Singleton<LevelManager>
     public IEnumerator FollowRotate(int level, float levelAngle)
     {
         yield return new WaitForSeconds(0.2f);
-        Debug.Log(">>FOLLOW ROTATE ");
+        //Debug.Log(">>FOLLOW ROTATE ");
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
         //number of turns
@@ -244,7 +244,7 @@ public class LevelManager : Singleton<LevelManager>
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
            //Switch parents of carts
             tmp.Current++;
-            Debug.Log(childToMove.name + " > " + tmp.Current);
+            //Debug.Log(childToMove.name + " > " + tmp.Current);
             tmp.transform.parent.SetParent(null);
             tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
 
@@ -302,7 +302,7 @@ public class LevelManager : Singleton<LevelManager>
         }
 
         debugTime = Time.time - debugTime;
-        Debug.Log("<<<<<< " + debugTime);
+        //Debug.Log("<<<<<< " + debugTime);
     }
 
 

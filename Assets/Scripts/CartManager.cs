@@ -11,6 +11,7 @@ public class CartManager : MonoBehaviour
 
 
     public GameObject spawnPrefab;
+    public GameObject cartHolderPrefab;
     public CinemachineSmoothPath[] paths;
 
     //For dropping
@@ -73,18 +74,16 @@ public class CartManager : MonoBehaviour
             //Debug.Log(":::::" + carts.Length);
             for (int i = 0; i < carts.Length; i++)
             {
-               
+
+                //Set up cart holder
                 int a = 360 / LevelManager.Instance.cartCount * i;
                 Vector3 cartHolderPos = RandomCircle(transform.position,0f, a);
 
-                GameObject tmpCartHolder = new GameObject(i.ToString());
+                GameObject tmpCartHolder = Instantiate(cartHolderPrefab,cartHolderPos,Quaternion.identity, transform);
 
                 //Set place and orientation for blank holder
-                tmpCartHolder.transform.position = cartHolderPos;
-                tmpCartHolder.transform.SetParent(transform);
-                tmpCartHolder.transform.LookAt(transform.position);
+                tmpCartHolder.name = i.ToString();
                 tmpCartHolder.transform.rotation = tmpCartHolder.transform.rotation * Quaternion.Euler(0, a, 0);
-
 
                 int spawnRandomizer = Random.Range(0, 100);
                 //cart mats + steel
@@ -278,7 +277,7 @@ public class CartManager : MonoBehaviour
     public IEnumerator StopCheckCarts()
     {
         yield return new WaitForSeconds(0.1f);
-        Debug.Log(">>CHECK CARTS ");
+        //Debug.Log(">>CHECK CARTS ");
         int cartCount = 0;
         //Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
         foreach (Transform child in transform)
@@ -345,7 +344,7 @@ public class CartManager : MonoBehaviour
     public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
     {
         yield return new WaitForSecondsRealtime(0.15f);
-        Debug.Log(">>HORIZONTAL ");
+        //Debug.Log(">>HORIZONTAL ");
         int color = 0;
         //Find object named Spawn for reference
         CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
