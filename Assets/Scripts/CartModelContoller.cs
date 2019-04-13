@@ -112,6 +112,8 @@ public class CartModelContoller : MonoBehaviour
 
                 //remember which level other cart is on 
                 int detatchLevel = other.transform.parent.parent.parent.parent.GetSiblingIndex();
+
+
                 //DETACH and set new sibling indexes
                 other.transform.parent.SetParent(null);
 
@@ -121,6 +123,8 @@ public class CartModelContoller : MonoBehaviour
                 tmpBlank.transform.position = other.transform.parent.position;
                 tmpBlank.transform.rotation = other.transform.parent.rotation;
 
+                //SCORE
+                GameManager.Instance.AddScore(1);
 
                 //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
                 tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
@@ -218,6 +222,9 @@ public class CartModelContoller : MonoBehaviour
                 else
                 {
                     FunctionHandler.Instance.OpenGameOver("GAME OVER");
+
+                    //SCORE
+                    GameManager.Instance.Score = 0;
                 }
             }
         }

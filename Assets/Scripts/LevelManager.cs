@@ -535,7 +535,9 @@ public class LevelManager : Singleton<LevelManager>
         else
             yield break;
 
-
+        //Refresh slider progress
+        GameManager.Instance.LevelProgress = 1- (float)(transform.childCount-1)/levelCount;
+     
     }
 
 

@@ -396,7 +396,12 @@ public class CartManager : MonoBehaviour
 
                 //Debug.Log("CH CRTS");
                 CheckCarts();
+
+               
+
             }
+            //SCORE
+            GameManager.Instance.Score += 5 * color;
 
             checkedCarts.Clear();
         }

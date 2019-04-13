@@ -104,4 +104,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
         PlayerPrefs.SetInt("LevelCount", Convert.ToInt32(levels.text));
         SceneManager.LoadScene("Main");
     }
+
+
+
+    public void ResetData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }
