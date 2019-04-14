@@ -407,8 +407,18 @@ public class CartManager : MonoBehaviour
         }
         else
         {
-            //Rotate the lower level
-            LevelManager.Instance.LevelMove(levelIndex);
+            int tmpRange = Random.Range(0, 2);
+            if(tmpRange==0)
+            {
+                //Rotate the lower level
+                LevelManager.Instance.LevelMove(levelIndex);
+            }
+            else
+            {
+                //Rotate the lower level
+                LevelManager.Instance.LevelMove(levelIndex, true);
+            }
+            
         }
 
 

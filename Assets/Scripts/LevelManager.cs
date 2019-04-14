@@ -111,13 +111,13 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-
-    public void LevelMove(int levelIndex)
+    //Move Level direction - clockwise by default
+    public void LevelMove(int levelIndex, bool direction = false)
     {
        if(!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
         {
             LevelMoveProgress = true;
-            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
+            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
         }
 
 
@@ -161,6 +161,8 @@ public class LevelManager : Singleton<LevelManager>
 
         currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
         CurrentAngle += currentAngleSpeed * Time.deltaTime;
+
+
         transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
 
 
@@ -208,12 +210,16 @@ public class LevelManager : Singleton<LevelManager>
     //        levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
     //    }
 
-    //    //StartCoroutine(FollowRotate(level, levelCurrentAngle));
+    //    StartCoroutine(FollowRotate(level, levelCurrentAngle));
 
     //}
+
+
+
     public float levelMoveSpeed = 120f;
 
-    public IEnumerator FollowRotate(int level, float levelAngle)
+    //Move level around  default - CLOCKWISE (LEFT)
+    public IEnumerator FollowRotate(int level, float levelAngle, bool righDirection = false)
     {
         yield return new WaitForSeconds(0.2f);
         //Debug.Log(">>FOLLOW ROTATE ");
@@ -238,18 +244,34 @@ public class LevelManager : Singleton<LevelManager>
           
         }
 
-        //Move them around 
+        //Move them around  default - CLOCKWISE (LEFT)
         foreach (Transform childToMove in childsToMove)
         {
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
-           //Switch parents of carts
-            tmp.Current++;
-            //Debug.Log(childToMove.name + " > " + tmp.Current);
-            tmp.transform.parent.SetParent(null);
-            tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
 
-            //Start turning sequence
-            StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
+            //Switch parents of carts and move (right or left)
+            if(righDirection)
+            {
+                //change currents, set parents 
+                tmp.Current--;
+                tmp.transform.parent.SetParent(null);
+                tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
+                //Start turning sequence to the right
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f, true));
+            }
+            else
+            {
+                //change currents, set parents 
+                tmp.Current++;
+                tmp.transform.parent.SetParent(null);
+                tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
+                //Start turning sequence to the left
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
+            }
+          
+            
+
+           
         }
 
         childsToMove.Clear();
@@ -263,7 +285,8 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction)
+    //Rotate a level to next position clockwise (right == false) or ccw (right == true)
+    public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction, bool right = false)
     {
         yield return new WaitForSeconds(0.1f);
         float debugTime = Time.time;
@@ -280,7 +303,14 @@ public class LevelManager : Singleton<LevelManager>
             {
                 //Debug.Log(tempAngle + " + " + levelAngle
                 rotAngle += fFraction * Time.deltaTime;
-                cart.localRotation = cart.localRotation * Quaternion.Euler(0f, fFraction, 0);
+                if(right)
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, -rotAngle, 0);
+                }
+                else
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+                }
                 yield return null;
             }
             cart.localRotation = Quaternion.Euler(0, 0, 0);
@@ -291,7 +321,15 @@ public class LevelManager : Singleton<LevelManager>
             {
                 //Debug.Log(tempAngle + " + " + levelAngle
                 rotAngle += fFraction * Time.deltaTime;
-                cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+
+                if (right)
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, -rotAngle, 0);
+                }
+                else
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+                }
                 yield return null;
             }
             cart.localRotation = Quaternion.Euler(0,0,0);
@@ -397,7 +435,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    private void UpdateInput()
+    private void UpdateInput(GameObject target = null)
     {
         //
         Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
@@ -447,6 +485,8 @@ public class LevelManager : Singleton<LevelManager>
                 //{
                 //    LevelCurrentAngle -= speed;
                 //}
+
+
                 currentAngleSpeed = speed;
                 startPosition = Input.mousePosition;
                 if (currentAngleSpeed <= 0.02f)
