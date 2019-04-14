@@ -140,15 +140,28 @@ public class LevelManager : Singleton<LevelManager>
         //
         if (Input.GetMouseButtonDown(0))
         {
-            //GameObject rayObj = GrabRayObj("Cart");
+            GameObject rayObj = GrabRayObj("Cart");
 
-            //if (rayObj != null)
-            //{
-            //    Level = rayObj.GetComponent<CartModelContoller>().CurrentLevel;
-            //}
-            //else
-            //Level = -2;
+            if (rayObj != null)
+            {
+                //Debug.Log("RAY " + rayObj.name);
+                if (rayObj.CompareTag("Cart") || rayObj.CompareTag("Steel"))
+                {
+                    CurrentAngle = rayObj.transform.parent.parent.parent.parent.localEulerAngles.z;
 
+
+                  
+                    Level = rayObj.transform.parent.parent.parent.parent.GetSiblingIndex();
+                }
+                
+            }
+            else
+            {
+                CurrentAngle = transform.eulerAngles.y;
+                
+                Debug.Log("TOWER RAY " +  CurrentAngle);
+                Level = -2;
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -157,14 +170,16 @@ public class LevelManager : Singleton<LevelManager>
             StartCoroutine(StopRotate(followDuration));
         }
 
+
         UpdateInput();
 
         currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
         CurrentAngle += currentAngleSpeed * Time.deltaTime;
 
-
-        transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
-
+        if(Level != -2)
+            transform.GetChild(Level).localRotation = Quaternion.Euler(new Vector3(0, CurrentAngle,0 ));
+        else
+            transform.localRotation = Quaternion.Euler(new Vector3(0, CurrentAngle, 0 ));
 
 
     }
@@ -352,7 +367,7 @@ public class LevelManager : Singleton<LevelManager>
 
         float from = CurrentAngle;
         float to = Mathf.Round(CurrentAngle / (360f/cartCount)) * (360f / cartCount);
-        //Debug.Log("FROM: " + from + " TO: " + to);
+        Debug.Log("FROM: " + from + " TO: " + to);
         //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
         //smooth lerp rotation loop
@@ -374,58 +389,58 @@ public class LevelManager : Singleton<LevelManager>
         if (Mathf.Abs(CurrentAngle - to) <= 5f)
         {
             CurrentAngle = to;
-            //remember last rotation
-            if (level == -2)
-                lastCurrentLevel = to;
+            ////remember last rotation
+            //if (level == -2)
+            //    lastCurrentLevel = to;
         }
 
 
     }
-    //for current level finish
-    IEnumerator StopLevelRotate(float levelCur, int tempLevel = -2, float duration = 0.2f, float angle = 0)
-    {
+    ////for current level finish
+    //IEnumerator StopLevelRotate(float levelCur, int tempLevel = -2, float duration = 0.2f, float angle = 0)
+    //{
 
-        float tempLevelAngle = levelCur;
-        float from = tempLevelAngle;
-        float to = Mathf.Round(levelCur / 90f) * 90f;
-        //Debug.Log("FROM: " + from + " TO: " + to);
-        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
+    //    float tempLevelAngle = levelCur;
+    //    float from = tempLevelAngle;
+    //    float to = Mathf.Round(levelCur / 90f) * 90f;
+    //    //Debug.Log("FROM: " + from + " TO: " + to);
+    //    //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
-        //smooth lerp rotation loop
-        float elapsed = 0.0f;
-        while (elapsed < duration)
-        {
-            tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
+    //    //smooth lerp rotation loop
+    //    float elapsed = 0.0f;
+    //    while (elapsed < duration)
+    //    {
+    //        tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
 
-            elapsed += Time.fixedDeltaTime;
-            if (Mathf.Abs(tempLevelAngle - to) <= 3f)
-            {
-                //currentAngleSpeed = 0;
+    //        elapsed += Time.fixedDeltaTime;
+    //        if (Mathf.Abs(tempLevelAngle - to) <= 3f)
+    //        {
+    //            //currentAngleSpeed = 0;
 
-                //Delay rotation bool to avoid extra spawn
-                StartCoroutine(StopRotationProgress());
-                break;
-            }
-            if (tempLevel >= 0)
-            {
-                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
-            }
-            //Debug.Log(tempLevelAngle + " ::: " + to);
+    //            //Delay rotation bool to avoid extra spawn
+    //            StartCoroutine(StopRotationProgress());
+    //            break;
+    //        }
+    //        if (tempLevel >= 0)
+    //        {
+    //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
+    //        }
+    //        //Debug.Log(tempLevelAngle + " ::: " + to);
 
-            yield return null;
-        }
+    //        yield return null;
+    //    }
 
-        if (Mathf.Abs(tempLevelAngle - to) <= 10f)
-        {
-            if (tempLevel >= 0)
-            {
-                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
-            }
-        }
+    //    if (Mathf.Abs(tempLevelAngle - to) <= 10f)
+    //    {
+    //        if (tempLevel >= 0)
+    //        {
+    //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
+    //        }
+    //    }
 
-        //LevelMoveProgress = false;
-        levelStop = false;
-    }
+    //    //LevelMoveProgress = false;
+    //    levelStop = false;
+    //}
 
     //Delay rotation bool
     private IEnumerator StopRotationProgress()
@@ -480,7 +495,7 @@ public class LevelManager : Singleton<LevelManager>
                 {
                     speedHistory.RemoveAt(0);
                 }
-                CurrentAngle += speed;
+                CurrentAngle -= speed;
                 //if(levelStop)
                 //{
                 //    LevelCurrentAngle -= speed;
@@ -503,7 +518,7 @@ public class LevelManager : Singleton<LevelManager>
                 float speedX = 0f;
                 for (int i = 0; i < speedHistory.Count; i++)
                 {
-                    speedX += speedHistory[i];
+                    speedX -= speedHistory[i];
                 }
                 currentAngleSpeed = 6f * speedX;
                 startPosition = Input.mousePosition;
@@ -589,31 +604,31 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    ////Get reference to object hit by ray with tag
-    //private GameObject GrabRayObj(string obj)
-    //{
-    //    RaycastHit hit;
-    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //Get reference to object hit by ray with tag
+    private GameObject GrabRayObj(string obj)
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-    //    if (Physics.Raycast(ray, out hit, 500.0f))
-    //    {
-    //        if (hit.transform)
-    //        {
-    //            Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
-    //            //Debug.Log(hit.transform.name);
-    //            if (hit.transform.gameObject.CompareTag(obj))
-    //            {
-    //                return hit.transform.gameObject;
-    //            }
-    //            return hit.transform.gameObject;
-    //        }
-    //    }
-    //    return null;
+        if (Physics.Raycast(ray, out hit, 500.0f))
+        {
+            if (hit.transform)
+            {
+                Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
+                //Debug.Log(hit.transform.name);
+                if (hit.transform.gameObject.CompareTag(obj))
+                {
+                    return hit.transform.gameObject;
+                }
+                //return hit.transform.gameObject;
+            }
+        }
+        return null;
+
+    }
 
 
-
-
-    //}
+        //}
 
     //Get reference to object hit by ray with tag
     public List<GameObject> ScanCarts(Transform origin, string obj)

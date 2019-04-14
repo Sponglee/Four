@@ -24,7 +24,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
 
-        Spawn();
+        //Spawn();
     }
 
     // Update is called once per frame
