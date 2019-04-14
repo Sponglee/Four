@@ -320,8 +320,8 @@ public class CartManager : MonoBehaviour
         if (gameObject.CompareTag("Cart") && cartCount == 0)
         {
             ////Debug.Log("HERE");
-            //Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
-            //Destroy(transform.parent.gameObject);
+            Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+            Destroy(transform.parent.gameObject);
             //Get some effects 
             LevelManager.Instance.RaiseTower();
         }
