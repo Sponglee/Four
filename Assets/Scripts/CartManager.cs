@@ -324,6 +324,10 @@ public class CartManager : MonoBehaviour
             Destroy(transform.parent.gameObject);
             //Get some effects 
             LevelManager.Instance.RaiseTower();
+            //Speed up the game
+            SpawnManager.Instance.spawnInterval -= 0.6f / (LevelManager.Instance.levelCount - 2);
+            if (SpawnManager.Instance.spawnInterval < 0.4f)
+                SpawnManager.Instance.spawnInterval = 0.4f;
         }
 
         if (!spawnManagerRef.spawnedBool)

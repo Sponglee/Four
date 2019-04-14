@@ -311,7 +311,7 @@ MonoBehaviour:
   LevelMoveProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
-  levelCount: 7
+  levelCount: 15
   lastCurrentLevel: 0
   lastLevelCurrentLevel: 0
   currentAngle: 0
@@ -1368,11 +1368,6 @@ MonoBehaviour:
   m_CharacterLimit: 2
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.InputField+SubmitEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  m_OnValueChanged:
-    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 766814936}
         m_MethodName: SetLevelCount
@@ -1385,6 +1380,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+    m_TypeName: UnityEngine.UI.InputField+SubmitEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
     m_TypeName: UnityEngine.UI.InputField+OnChangeEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
@@ -1976,7 +1976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2074089706, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
       propertyPath: spawnInterval
-      value: 0.4
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
