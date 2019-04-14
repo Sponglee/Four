@@ -52,7 +52,7 @@ public class LevelManager : Singleton<LevelManager>
     public float maxRotateSpeed = 30f;
     public int rotateSpeed;
     public List<float> speedHistory;
-    public float minSwipeDistX = 50f;
+    public float minSwipeDistX = 0.02f;
     public bool RotationProgress = false;
     public bool LevelMoveProgress = false;
     public bool SpawnInProgress = false;
@@ -452,13 +452,22 @@ public class LevelManager : Singleton<LevelManager>
 
     private void UpdateInput(GameObject target = null)
     {
-        //
+        
         Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
         float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
         float screenWidth = ((float)Screen.width);
         float moveXPercent = moveX / screenWidth;
-        float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+        //Debug.Log("% " + moveXPercent);
+        float speed = 0;
+        //Rotation resistance
+        if (moveXPercent > minSwipeDistX)
+        {
 
+            speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+        }
+
+
+      
         if (true /*!SpawnInProgress*/ )
         {
             if (Input.GetMouseButtonDown(0))
@@ -481,9 +490,10 @@ public class LevelManager : Singleton<LevelManager>
 
                 currentAngleSpeed = 0f;
 
-                if (moveXPercent > minSwipeDistX)
+                //Inertia speed decrease
+                if (moveXPercent > 50/*moveXPrecent*/)
                 {
-
+                   
 
                     speedHistory.Add(speed);
                 }
@@ -607,11 +617,18 @@ public class LevelManager : Singleton<LevelManager>
     //Get reference to object hit by ray with tag
     private GameObject GrabRayObj(string obj)
     {
-        RaycastHit hit;
+   
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, 500.0f))
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(ray, 500.0f);
+
+
+       
+
+        if (hits.Length >1)
         {
+            RaycastHit hit = hits[1];
             if (hit.transform)
             {
                 Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
@@ -691,5 +708,45 @@ public class LevelManager : Singleton<LevelManager>
         return pos;
     }
 
+
+    public float rotSpeed = 1f;
+
+    ////Rotate planet
+    //void OnMouseDrag()
+    //{
+
+
+
+    //    float rotY = Input.GetAxis("Mouse Y");
+
+    //    if (Input.touchCount > 0)
+    //    {
+    //        rotY = Input.touches[0].deltaPosition.y;
+
+    //    }
+
+    //    Debug.Log("REEE " + rotY + " : " + Input.GetAxis("Mouse Y") + " = " + rotSpeed);
+
+    //    //if (rotX > rotResistance)
+    //    //{
+    //    //    cameraHolder.transform.Rotate(Vector3.up, rotX, Space.Self);
+    //    //}
+        
+        
+    //    //Scroll camera and elevator
+    //    if (Mathf.Abs(rotY) > 3)
+    //        transform.position += new Vector3(0,  rotY * rotSpeed / 10000, 0);
+    //    //elevatorHolder.transform.position += new Vector3(0, -rotX / 120f, 0);
+
+
+    //}
+
+    //void OnMouseDrag()
+    //{
+    //    float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+    //    Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+    //    transform.position = new Vector3(transform.position.x, -pos_move.y, transform.position.z);
+
+    //}
 
 }

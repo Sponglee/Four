@@ -251,6 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 48147099}
   - component: {fileID: 48147100}
+  - component: {fileID: 48147101}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -306,18 +307,32 @@ MonoBehaviour:
   maxRotateSpeed: 500
   rotateSpeed: 360
   speedHistory: []
-  minSwipeDistX: 10
+  minSwipeDistX: 0.02
   RotationProgress: 0
   LevelMoveProgress: 0
   SpawnInProgress: 0
   followDuration: 0.1
-  levelCount: 7
+  levelCount: 15
   lastCurrentLevel: 0
   lastLevelCurrentLevel: 0
   currentAngle: 0
   moveTime: 5
   levelMoveSpeed: 120
   raiseDuration: 0.2
+  rotSpeed: 1
+--- !u!65 &48147101
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48147098}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 40, y: 500, z: 40}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &120047161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,6 +1992,10 @@ PrefabInstance:
     - target: {fileID: 2074089706, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
       propertyPath: spawnInterval
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1844240556192840, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
