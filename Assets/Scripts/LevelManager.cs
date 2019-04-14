@@ -147,7 +147,7 @@ public class LevelManager : Singleton<LevelManager>
                 //Debug.Log("RAY " + rayObj.name);
                 if (rayObj.CompareTag("Cart") || rayObj.CompareTag("Steel"))
                 {
-                    CurrentAngle = rayObj.transform.parent.parent.parent.parent.localEulerAngles.z;
+                    CurrentAngle = rayObj.transform.parent.parent.parent.parent.eulerAngles.y- transform.eulerAngles.y;
 
 
                   
