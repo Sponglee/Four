@@ -192,6 +192,7 @@ public class LevelManager : Singleton<LevelManager>
                 {
 
                     SpawnManager.Instance.DropSpawn(selectedCart);
+                    transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
                     LevelMoveTrigger = false;
 
                     
