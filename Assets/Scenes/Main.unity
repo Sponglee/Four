@@ -310,6 +310,7 @@ MonoBehaviour:
   minSwipeDistX: 0.02
   RotationProgress: 0
   LevelMoveProgress: 0
+  LevelMoveTrigger: 0
   SpawnInProgress: 0
   followDuration: 0.1
   levelCount: 15

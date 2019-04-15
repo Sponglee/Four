@@ -87,6 +87,7 @@ public class SwipeManager : Singleton<SwipeManager>
         }
 
     }
+
     public bool IsSwiping(SwipeDirection dir)
     {
 
