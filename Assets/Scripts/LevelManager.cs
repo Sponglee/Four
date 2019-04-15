@@ -130,11 +130,11 @@ public class LevelManager : Singleton<LevelManager>
     public float moveTime = 5f;
     //public IEnumerator LevelMover()
     //{
-       
+
 
 
     //}
-
+    public GameObject selectedCart;
 
     // Update is called once per frame
     void Update()
@@ -143,19 +143,19 @@ public class LevelManager : Singleton<LevelManager>
         //
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject rayObj = GrabRayObj("Cart");
+            selectedCart = GrabRayObj("Cart");
 
-            if (rayObj != null)
+            if (selectedCart != null)
             {
                 //Debug.Log("RAY " + rayObj.name);
-                if (rayObj.CompareTag("Cart") || rayObj.CompareTag("Steel"))
+                if (selectedCart.CompareTag("Cart") || selectedCart.CompareTag("Steel"))
                 {
 
                     LevelMoveTrigger = true;
                     
                     
                     //CurrentAngle = rayObj.transform.parent.parent.parent.parent.eulerAngles.y- transform.eulerAngles.y;
-                    Level = rayObj.transform.parent.parent.parent.parent.GetSiblingIndex();
+                    Level = selectedCart.transform.parent.parent.parent.parent.GetSiblingIndex();
                 }
                 
             }
@@ -172,33 +172,46 @@ public class LevelManager : Singleton<LevelManager>
         if (Input.GetMouseButtonUp(0))
         {
            
+            //If cart was pressed
             if(LevelMoveTrigger)
             {
+                //Move level left
                 if(SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
                 {
                     LevelMove(Level, false);
                     LevelMoveTrigger = false;
                 }
+                //move level right
                 else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
                 {
                     LevelMove(Level, true);
                     LevelMoveTrigger = false;
                 }
-                else
+                //Drop pressed cart down
+                else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
                 {
+
+                    SpawnManager.Instance.DropSpawn(selectedCart);
                     LevelMoveTrigger = false;
+
+                    
                 }
+            }
+            else if(DragInProgress)
+            {
+                initialMove = Vector3.zero;
+                DragInProgress = false;
             }
             else
             {
                 Debug.Log("LLLLL");
                 //Finish rotation to even 90 degree slot
-                StartCoroutine(StopRotate(followDuration));
                 //LevelMoveTrigger = false;
             }
-           
+            StartCoroutine(StopRotate(followDuration));
         }
 
+             
 
       
         if(!LevelMoveTrigger)
@@ -402,7 +415,7 @@ public class LevelManager : Singleton<LevelManager>
 
         float from = CurrentAngle;
         float to = Mathf.Round(CurrentAngle / (360f/cartCount)) * (360f / cartCount);
-        Debug.Log("FROM: " + from + " TO: " + to);
+        //Debug.Log("FROM: " + from + " TO: " + to);
         //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
         //smooth lerp rotation loop
@@ -766,8 +779,8 @@ public class LevelManager : Singleton<LevelManager>
     //    //{
     //    //    cameraHolder.transform.Rotate(Vector3.up, rotX, Space.Self);
     //    //}
-        
-        
+
+
     //    //Scroll camera and elevator
     //    if (Mathf.Abs(rotY) > 3)
     //        transform.position += new Vector3(0,  rotY * rotSpeed / 10000, 0);
@@ -775,13 +788,32 @@ public class LevelManager : Singleton<LevelManager>
 
 
     //}
+    Vector3 initialMove = Vector3.zero;
+    public bool DragInProgress = false;
+    void OnMouseDrag()
+    {
+       
+        if (!LevelMoveTrigger)
+        {
 
-    //void OnMouseDrag()
-    //{
-    //    float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-    //    Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
-    //    transform.position = new Vector3(transform.position.x, -pos_move.y, transform.position.z);
+            float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
 
-    //}
+            if (initialMove == Vector3.zero)
+            {
+                initialMove = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+                DragInProgress = true;
+            }
+
+            Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+
+            float pos_moveY = Mathf.Clamp((pos_move.y - initialMove.y) / 10f + transform.position.y, -10f /*+ spawnOffset * levelCount*/, 20f + spawnOffsetStep * levelCount);
+
+            transform.position = new Vector3(transform.position.x, pos_moveY , transform.position.z);
+
+        }
+
+    }
+
+    
 
 }
