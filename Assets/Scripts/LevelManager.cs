@@ -114,20 +114,6 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    //Move Level direction - clockwise by default
-    public void LevelMove(int levelIndex, bool direction = false)
-    {
-       if(!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
-        {
-            LevelMoveProgress = true;
-            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
-        }
-
-
-    }
-
-
-    public float moveTime = 5f;
     //public IEnumerator LevelMover()
     //{
 
@@ -198,11 +184,11 @@ public class LevelManager : Singleton<LevelManager>
                     
                 }
             }
-            else if(DragInProgress)
-            {
-                initialMove = Vector3.zero;
-                DragInProgress = false;
-            }
+            //else if(DragInProgress)
+            //{
+            //    initialMove = Vector3.zero;
+            //    DragInProgress = false;
+            //}
             else
             {
                 Debug.Log("LLLLL");
@@ -279,13 +265,29 @@ public class LevelManager : Singleton<LevelManager>
     //}
 
 
+    //Move Level direction - clockwise by default
+    public void LevelMove(int levelIndex, bool direction = false)
+    {
+        if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
+        {
+            GameManager.Instance.ComboActive = false;
+            GameManager.Instance.Multiplier = 1;
+            LevelMoveProgress = true;
+            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
+        }
 
-    public float levelMoveSpeed = 120f;
+
+    }
+
+
+    public float moveTime = 5f;
+
+    public float levelMoveSpeed = 60f;
 
     //Move level around  default - CLOCKWISE (LEFT)
     public IEnumerator FollowRotate(int level, float levelAngle, bool righDirection = false)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         //Debug.Log(">>FOLLOW ROTATE ");
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
@@ -321,7 +323,7 @@ public class LevelManager : Singleton<LevelManager>
                 tmp.transform.parent.SetParent(null);
                 tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
                 //Start turning sequence to the right
-                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f, true));
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed, true));
             }
             else
             {
@@ -330,7 +332,7 @@ public class LevelManager : Singleton<LevelManager>
                 tmp.transform.parent.SetParent(null);
                 tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
                 //Start turning sequence to the left
-                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed));
             }
           
             
@@ -341,7 +343,7 @@ public class LevelManager : Singleton<LevelManager>
         childsToMove.Clear();
        
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.4f);
 
         //*****************
         LevelMoveProgress = false;
@@ -758,7 +760,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    public float rotSpeed = 1f;
+   
 
     ////Rotate planet
     //void OnMouseDrag()
@@ -789,32 +791,38 @@ public class LevelManager : Singleton<LevelManager>
 
 
     //}
-    Vector3 initialMove = Vector3.zero;
-    public bool DragInProgress = false;
+
+    public float rotSpeed = 20;
+    public float scrollSpeed = 2;
+    public float rotResistance = 5000;
+
+    //Scroll towerf planet
     void OnMouseDrag()
     {
-       
         if (!LevelMoveTrigger)
         {
 
-            float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-
-            if (initialMove == Vector3.zero)
+            float rotX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+            float rotY = Input.GetAxis("Mouse Y") * scrollSpeed;
+            if (Input.touchCount > 0)
             {
-                initialMove = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
-                DragInProgress = true;
+                rotX = Input.touches[0].deltaPosition.x;
+                rotY = Input.touches[0].deltaPosition.y;
             }
 
-            Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+            //Debug.Log("REEE " + rotX + " : " + Input.GetAxis("Mouse Y") + " = " + scrollSpeed);
 
-            float pos_moveY = Mathf.Clamp((pos_move.y - initialMove.y) / 10f + transform.position.y, -10f /*+ spawnOffset * levelCount*/, 20f + spawnOffsetStep * levelCount);
+            //if (rotX > rotResistance)
+            //{
+            //    transform.Rotate(Vector3.up, rotX, Space.Self);
+            //}
 
-            transform.position = new Vector3(transform.position.x, pos_moveY , transform.position.z);
-
+            //Scroll camera and elevator
+            transform.position += new Vector3(0, rotY / 10f, 0);
+            //transform.position += new Vector3(0, -rotY / 120f, 0);
+            Debug.Log(rotY);
         }
-
     }
 
-    
 
 }

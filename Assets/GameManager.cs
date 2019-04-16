@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,9 @@ public class GameManager : Singleton<GameManager>
 
     public TextMeshProUGUI currText;
     public TextMeshProUGUI nextText;
+    public TextMeshProUGUI multiText;
+
+    public GameObject fltText;
 
     public int bestScore;
     private int score;
@@ -29,7 +33,7 @@ public class GameManager : Singleton<GameManager>
             score = value;
             scoreText.text = value.ToString();
             PlayerPrefs.SetInt("Score", value);
-            Debug.Log("<< " + score);
+            //Debug.Log("<< " + score);
             if(value>=bestScore)
             {
                 bestScore = value;
@@ -41,7 +45,35 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-   
+    public bool ComboActive = false;
+    public Color comboColor;
+    public int comboCount = 1;
+    private int multiplier = 1;
+    public int Multiplier
+    {
+        get
+        {
+            return multiplier;
+        }
+
+        set
+        {
+            multiplier = value;
+            if(multiplier == 1)
+            {
+                multiText.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                multiText.transform.parent.gameObject.SetActive(true);
+                multiText.text = string.Format("x{0}", value.ToString());
+            }
+
+           
+        }
+    }
+
+
 
 
     private float levelProgress;
@@ -83,7 +115,6 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -112,10 +143,35 @@ public class GameManager : Singleton<GameManager>
     //}
 
 
-    public bool ComboActive = false;
 
-    public void AddScore(int score)
+    public void AddScore(int scoreAmount, Color color, Transform origin)
     {
+        if(!ComboActive)
+        {
+            comboCount = 1;
+            Multiplier = 1;
+            ComboActive = true;
+            comboColor = color;
+        }
+        else
+        {
+            if(comboColor == color)
+            {
+                Debug.Log("SAMECOLOR");
+                comboCount++;
+            }
+            else
+            {
+                comboColor = color;
+                comboCount= 1;
+                Multiplier++;
+            }
+        }
 
+        GameObject tmpFltText = Instantiate(fltText, origin.TransformPoint(origin.localPosition + new Vector3(0, 7.5f, 0)), Quaternion.identity);
+        tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount*comboCount);
+
+        Debug.Log("ADD " + scoreAmount + " : " + comboCount + " : " + Multiplier);
+        Score += scoreAmount*comboCount*Multiplier;
     }
 }

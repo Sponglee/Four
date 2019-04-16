@@ -124,7 +124,7 @@ public class CartModelContoller : MonoBehaviour
                 tmpBlank.transform.rotation = other.transform.parent.rotation;
 
                 //SCORE
-                GameManager.Instance.AddScore(1);
+                GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, gameObject.transform);
 
                 //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
                 tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
