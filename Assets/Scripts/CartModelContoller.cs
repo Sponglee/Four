@@ -124,7 +124,7 @@ public class CartModelContoller : MonoBehaviour
                 tmpBlank.transform.rotation = other.transform.parent.rotation;
 
                 //SCORE
-                GameManager.Instance.AddScore(1);
+                GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, gameObject.transform);
 
                 //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
                 tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
@@ -238,6 +238,7 @@ public class CartModelContoller : MonoBehaviour
         RaycastHit hit;
 
         Vector3 dir;
+        Vector3 offsetOrigin;
         Vector3 rayDirection;
 
         ////Shoot ray up
@@ -250,12 +251,15 @@ public class CartModelContoller : MonoBehaviour
         //else
         //{
             rayDirection = -Vector3.up;
-            dir = origin.position + new Vector3(0, -20f, -2.5f);
-            Debug.DrawLine(origin.position + new Vector3(0, 0, -2.5f), dir, Color.black, 10f);
+            //Offset origin to get center of a cart
+            offsetOrigin = origin.TransformPoint(origin.localPosition + new Vector3(0, 2.5f, 0));
+            //lowerEnd of debug line
+            dir = offsetOrigin + new Vector3(0, -20f, 0);
+            Debug.DrawLine(origin.TransformPoint(origin.localPosition + new Vector3(0,2.5f,0)), dir, Color.black, 10f);
         //}
 
 
-        if (Physics.Raycast(origin.position + new Vector3(0, 0, -2.5f), rayDirection, out hit))
+        if (Physics.Raycast(offsetOrigin, rayDirection, out hit))
         {
            
             if (hit.transform)

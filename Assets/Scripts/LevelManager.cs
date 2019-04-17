@@ -52,9 +52,12 @@ public class LevelManager : Singleton<LevelManager>
     public float maxRotateSpeed = 30f;
     public int rotateSpeed;
     public List<float> speedHistory;
-    public float minSwipeDistX = 50f;
+    public float minSwipeDistX = 0.02f;
     public bool RotationProgress = false;
     public bool LevelMoveProgress = false;
+
+    public bool LevelMoveTrigger = false;
+
     public bool SpawnInProgress = false;
     public float followDuration;
 
@@ -111,27 +114,13 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-
-    public void LevelMove(int levelIndex)
-    {
-       if(!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
-        {
-            LevelMoveProgress = true;
-            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z));
-        }
-
-
-    }
-
-
-    public float moveTime = 5f;
     //public IEnumerator LevelMover()
     //{
-       
+
 
 
     //}
-
+    public GameObject selectedCart;
 
     // Update is called once per frame
     void Update()
@@ -140,29 +129,92 @@ public class LevelManager : Singleton<LevelManager>
         //
         if (Input.GetMouseButtonDown(0))
         {
-            //GameObject rayObj = GrabRayObj("Cart");
+            //selectedCart = GrabRayObj("Cart");
 
-            //if (rayObj != null)
+            //if (selectedCart != null)
             //{
-            //    Level = rayObj.GetComponent<CartModelContoller>().CurrentLevel;
+            //    //Debug.Log("RAY " + rayObj.name);
+            //    if (selectedCart.CompareTag("Cart") || selectedCart.CompareTag("Steel"))
+            //    {
+
+            //        LevelMoveTrigger = true;
+                    
+                    
+            //        //CurrentAngle = rayObj.transform.parent.parent.parent.parent.eulerAngles.y- transform.eulerAngles.y;
+            //        Level = selectedCart.transform.parent.parent.parent.parent.GetSiblingIndex();
+            //    }
+                
             //}
             //else
-            //Level = -2;
-
+            //{
+            //    CurrentAngle = transform.eulerAngles.y;
+                
+            //    Debug.Log("TOWER RAY " +  CurrentAngle);
+            //    Level = -2;
+                
+            //}
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            //Finish rotation to even 90 degree slot
+           
+            ////If cart was pressed
+            //if(LevelMoveTrigger)
+            //{
+            //    //Move level left
+            //    if(SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
+            //    {
+            //        LevelMove(Level, false);
+            //        LevelMoveTrigger = false;
+            //    }
+            //    //move level right
+            //    else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
+            //    {
+            //        LevelMove(Level, true);
+            //        LevelMoveTrigger = false;
+            //    }
+            //    //Drop pressed cart down
+            //    else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
+            //    {
+
+            //        SpawnManager.Instance.DropSpawn(selectedCart);
+            //        transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
+            //        LevelMoveTrigger = false;
+
+                    
+            //    }
+            //}
+            ////else if(DragInProgress)
+            ////{
+            ////    initialMove = Vector3.zero;
+            ////    DragInProgress = false;
+            ////}
+            //else
+            //{
+            //    Debug.Log("LLLLL");
+            //    //Finish rotation to even 90 degree slot
+            //    //LevelMoveTrigger = false;
+            //}
             StartCoroutine(StopRotate(followDuration));
         }
 
-        UpdateInput();
+             
 
-        currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
-        CurrentAngle += currentAngleSpeed * Time.deltaTime;
-        transform.localRotation = Quaternion.Euler(new Vector3(90f, 0f, CurrentAngle));
+      
+        if(!LevelMoveTrigger)
+        {
+            UpdateInput();
 
+            currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
+            CurrentAngle += currentAngleSpeed * Time.deltaTime;
+            transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
+        }
+
+        //if(Level != -2)
+        //    transform.GetChild(Level).localRotation = Quaternion.Euler(new Vector3(0, CurrentAngle,0 ));
+        //else
+      
+           
 
 
     }
@@ -208,14 +260,34 @@ public class LevelManager : Singleton<LevelManager>
     //        levelCurrentAngle = Mathf.Round(levelCurrentAngle / 90f) * 90f;
     //    }
 
-    //    //StartCoroutine(FollowRotate(level, levelCurrentAngle));
+    //    StartCoroutine(FollowRotate(level, levelCurrentAngle));
 
     //}
-    public float levelMoveSpeed = 120f;
 
-    public IEnumerator FollowRotate(int level, float levelAngle)
+
+    //Move Level direction - clockwise by default
+    public void LevelMove(int levelIndex, bool direction = false)
     {
-        yield return new WaitForSeconds(0.2f);
+        if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
+        {
+            GameManager.Instance.ComboActive = false;
+            GameManager.Instance.Multiplier = 1;
+            LevelMoveProgress = true;
+            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
+        }
+
+
+    }
+
+
+    public float moveTime = 5f;
+
+    public float levelMoveSpeed = 60f;
+
+    //Move level around  default - CLOCKWISE (LEFT)
+    public IEnumerator FollowRotate(int level, float levelAngle, bool righDirection = false)
+    {
+        yield return new WaitForSeconds(0.1f);
         //Debug.Log(">>FOLLOW ROTATE ");
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
@@ -238,24 +310,40 @@ public class LevelManager : Singleton<LevelManager>
           
         }
 
-        //Move them around 
+        //Move them around  default - CLOCKWISE (LEFT)
         foreach (Transform childToMove in childsToMove)
         {
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
-           //Switch parents of carts
-            tmp.Current++;
-            //Debug.Log(childToMove.name + " > " + tmp.Current);
-            tmp.transform.parent.SetParent(null);
-            tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
 
-            //Start turning sequence
-            StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
+            //Switch parents of carts and move (right or left)
+            if(righDirection)
+            {
+                //change currents, set parents 
+                tmp.Current--;
+                tmp.transform.parent.SetParent(null);
+                tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
+                //Start turning sequence to the right
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed, true));
+            }
+            else
+            {
+                //change currents, set parents 
+                tmp.Current++;
+                tmp.transform.parent.SetParent(null);
+                tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
+                //Start turning sequence to the left
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed));
+            }
+          
+            
+
+           
         }
 
         childsToMove.Clear();
        
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.4f);
 
         //*****************
         LevelMoveProgress = false;
@@ -263,7 +351,8 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction)
+    //Rotate a level to next position clockwise (right == false) or ccw (right == true)
+    public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction, bool right = false)
     {
         yield return new WaitForSeconds(0.1f);
         float debugTime = Time.time;
@@ -280,7 +369,14 @@ public class LevelManager : Singleton<LevelManager>
             {
                 //Debug.Log(tempAngle + " + " + levelAngle
                 rotAngle += fFraction * Time.deltaTime;
-                cart.localRotation = cart.localRotation * Quaternion.Euler(0f, fFraction, 0);
+                if(right)
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, -rotAngle, 0);
+                }
+                else
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+                }
                 yield return null;
             }
             cart.localRotation = Quaternion.Euler(0, 0, 0);
@@ -291,7 +387,15 @@ public class LevelManager : Singleton<LevelManager>
             {
                 //Debug.Log(tempAngle + " + " + levelAngle
                 rotAngle += fFraction * Time.deltaTime;
-                cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+
+                if (right)
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, -rotAngle, 0);
+                }
+                else
+                {
+                    cart.localRotation = cart.localRotation * Quaternion.Euler(0f, rotAngle, 0);
+                }
                 yield return null;
             }
             cart.localRotation = Quaternion.Euler(0,0,0);
@@ -336,58 +440,58 @@ public class LevelManager : Singleton<LevelManager>
         if (Mathf.Abs(CurrentAngle - to) <= 5f)
         {
             CurrentAngle = to;
-            //remember last rotation
-            if (level == -2)
-                lastCurrentLevel = to;
+            ////remember last rotation
+            //if (level == -2)
+            //    lastCurrentLevel = to;
         }
 
 
     }
-    //for current level finish
-    IEnumerator StopLevelRotate(float levelCur, int tempLevel = -2, float duration = 0.2f, float angle = 0)
-    {
+    ////for current level finish
+    //IEnumerator StopLevelRotate(float levelCur, int tempLevel = -2, float duration = 0.2f, float angle = 0)
+    //{
 
-        float tempLevelAngle = levelCur;
-        float from = tempLevelAngle;
-        float to = Mathf.Round(levelCur / 90f) * 90f;
-        //Debug.Log("FROM: " + from + " TO: " + to);
-        //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
+    //    float tempLevelAngle = levelCur;
+    //    float from = tempLevelAngle;
+    //    float to = Mathf.Round(levelCur / 90f) * 90f;
+    //    //Debug.Log("FROM: " + from + " TO: " + to);
+    //    //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
-        //smooth lerp rotation loop
-        float elapsed = 0.0f;
-        while (elapsed < duration)
-        {
-            tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
+    //    //smooth lerp rotation loop
+    //    float elapsed = 0.0f;
+    //    while (elapsed < duration)
+    //    {
+    //        tempLevelAngle = Mathf.Lerp(from, to, elapsed / duration);
 
-            elapsed += Time.fixedDeltaTime;
-            if (Mathf.Abs(tempLevelAngle - to) <= 3f)
-            {
-                //currentAngleSpeed = 0;
+    //        elapsed += Time.fixedDeltaTime;
+    //        if (Mathf.Abs(tempLevelAngle - to) <= 3f)
+    //        {
+    //            //currentAngleSpeed = 0;
 
-                //Delay rotation bool to avoid extra spawn
-                StartCoroutine(StopRotationProgress());
-                break;
-            }
-            if (tempLevel >= 0)
-            {
-                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
-            }
-            //Debug.Log(tempLevelAngle + " ::: " + to);
+    //            //Delay rotation bool to avoid extra spawn
+    //            StartCoroutine(StopRotationProgress());
+    //            break;
+    //        }
+    //        if (tempLevel >= 0)
+    //        {
+    //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, tempLevelAngle));
+    //        }
+    //        //Debug.Log(tempLevelAngle + " ::: " + to);
 
-            yield return null;
-        }
+    //        yield return null;
+    //    }
 
-        if (Mathf.Abs(tempLevelAngle - to) <= 10f)
-        {
-            if (tempLevel >= 0)
-            {
-                transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
-            }
-        }
+    //    if (Mathf.Abs(tempLevelAngle - to) <= 10f)
+    //    {
+    //        if (tempLevel >= 0)
+    //        {
+    //            transform.GetChild(tempLevel).localRotation = Quaternion.Euler(new Vector3(0, 0f, to));
+    //        }
+    //    }
 
-        //LevelMoveProgress = false;
-        levelStop = false;
-    }
+    //    //LevelMoveProgress = false;
+    //    levelStop = false;
+    //}
 
     //Delay rotation bool
     private IEnumerator StopRotationProgress()
@@ -487,6 +591,7 @@ public class LevelManager : Singleton<LevelManager>
         //}
     }
 
+
     public float raiseDuration = 0.2f;
 
     public void RaiseTower()
@@ -549,31 +654,38 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    ////Get reference to object hit by ray with tag
-    //private GameObject GrabRayObj(string obj)
-    //{
-    //    RaycastHit hit;
-    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //Get reference to object hit by ray with tag
+    private GameObject GrabRayObj(string obj)
+    {
+   
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-    //    if (Physics.Raycast(ray, out hit, 500.0f))
-    //    {
-    //        if (hit.transform)
-    //        {
-    //            Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
-    //            //Debug.Log(hit.transform.name);
-    //            if (hit.transform.gameObject.CompareTag(obj))
-    //            {
-    //                return hit.transform.gameObject;
-    //            }
-    //            return hit.transform.gameObject;
-    //        }
-    //    }
-    //    return null;
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(ray, 500.0f);
 
 
+       
+
+        if (hits.Length >1)
+        {
+            RaycastHit hit = hits[1];
+            if (hit.transform)
+            {
+                Debug.DrawRay(ray.origin, ray.direction * 500f, Color.red, 10f);
+                //Debug.Log(hit.transform.name);
+                if (hit.transform.gameObject.CompareTag(obj))
+                {
+                    return hit.transform.gameObject;
+                }
+                //return hit.transform.gameObject;
+            }
+        }
+        return null;
+
+    }
 
 
-    //}
+        //}
 
     //Get reference to object hit by ray with tag
     public List<GameObject> ScanCarts(Transform origin, string obj)
@@ -635,6 +747,71 @@ public class LevelManager : Singleton<LevelManager>
         pos.y = center.y;
         return pos;
     }
+
+
+   
+
+    ////Rotate planet
+    //void OnMouseDrag()
+    //{
+
+
+
+    //    float rotY = Input.GetAxis("Mouse Y");
+
+    //    if (Input.touchCount > 0)
+    //    {
+    //        rotY = Input.touches[0].deltaPosition.y;
+
+    //    }
+
+    //    Debug.Log("REEE " + rotY + " : " + Input.GetAxis("Mouse Y") + " = " + rotSpeed);
+
+    //    //if (rotX > rotResistance)
+    //    //{
+    //    //    cameraHolder.transform.Rotate(Vector3.up, rotX, Space.Self);
+    //    //}
+
+
+    //    //Scroll camera and elevator
+    //    if (Mathf.Abs(rotY) > 3)
+    //        transform.position += new Vector3(0,  rotY * rotSpeed / 10000, 0);
+    //    //elevatorHolder.transform.position += new Vector3(0, -rotX / 120f, 0);
+
+
+    //}
+
+    public float rotSpeed = 20;
+    public float scrollSpeed = 2;
+    public float rotResistance = 5000;
+
+    ////Scroll towerf planet
+    //void OnMouseDrag()
+    //{
+    //    if (!LevelMoveTrigger)
+    //    {
+
+    //        float rotX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+    //        float rotY = Input.GetAxis("Mouse Y") * scrollSpeed;
+    //        if (Input.touchCount > 0)
+    //        {
+    //            rotX = Input.touches[0].deltaPosition.x;
+    //            rotY = Input.touches[0].deltaPosition.y;
+    //        }
+
+    //        //Debug.Log("REEE " + rotX + " : " + Input.GetAxis("Mouse Y") + " = " + scrollSpeed);
+
+    //        //if (rotX > rotResistance)
+    //        //{
+    //        //    transform.Rotate(Vector3.up, rotX, Space.Self);
+    //        //}
+
+    //        //Scroll camera and elevator
+    //        transform.position += new Vector3(0, rotY / 10f, 0);
+    //        //transform.position += new Vector3(0, -rotY / 120f, 0);
+    //        Debug.Log(rotY);
+    //    }
+    //}
 
 
 }

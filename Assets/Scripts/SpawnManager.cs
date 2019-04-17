@@ -32,8 +32,8 @@ public class SpawnManager : Singleton<SpawnManager>
     {
 
         //if (Input.GetMouseButtonUp(0)
-        //    && !LevelManager.Instance.RotationProgress 
-        //        && !LevelManager.Instance.SpawnInProgress 
+        //    && !LevelManager.Instance.RotationProgress
+        //        && !LevelManager.Instance.SpawnInProgress
         //            && !LevelManager.Instance.LevelMoveProgress /*&& spawnTimer <= 0*/)
         //{
         //    GameObject tmpRayCart = ScanCarts(transform, "Cart", true);
@@ -312,7 +312,6 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         }
-
 
     }
 }
