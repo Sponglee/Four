@@ -24,7 +24,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
 
-        Spawn();
+        //Spawn();
     }
 
     // Update is called once per frame
@@ -32,8 +32,8 @@ public class SpawnManager : Singleton<SpawnManager>
     {
 
         //if (Input.GetMouseButtonUp(0)
-        //    && !LevelManager.Instance.RotationProgress
-        //        && !LevelManager.Instance.SpawnInProgress
+        //    && !LevelManager.Instance.RotationProgress 
+        //        && !LevelManager.Instance.SpawnInProgress 
         //            && !LevelManager.Instance.LevelMoveProgress /*&& spawnTimer <= 0*/)
         //{
         //    GameObject tmpRayCart = ScanCarts(transform, "Cart", true);
@@ -310,8 +310,35 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         if (spawnCart != null)
         {
-            spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            //Replace other with blank
+            GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
+            Transform tmpBlankParent = spawnCart.transform.parent.parent;
+            //int otherIndex = other.transform.parent.GetSiblingIndex();
+
+            //remember which level other cart is on 
+            int detatchLevel = spawnCart.transform.parent.parent.parent.parent.GetSiblingIndex();
+
+
+            //DETACH and set new sibling indexes
+            spawnCart.transform.parent.SetParent(null);
+
+            //Set blank orientation
+            tmpBlank.transform.SetParent(tmpBlankParent);
+            tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
+            tmpBlank.transform.position = spawnCart.transform.parent.position;
+            tmpBlank.transform.rotation = spawnCart.transform.parent.rotation;
+
+            //Move this cartHolder to spawn transform and let it drop
+            spawnCart.transform.parent.SetParent(spawnCartManager.transform.GetChild(0));
+            //Set spawncolor for stick cart
+            spawnCartManager.spawnMatRandomColor = spawnCart.GetComponent<Renderer>().material.color;
+
+            Rigidbody rb = spawnCart.GetComponent<Rigidbody>();
+            spawnCart.tag = "Spawn";
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
         }
+
 
     }
 }

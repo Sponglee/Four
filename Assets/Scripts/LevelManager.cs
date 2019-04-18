@@ -143,59 +143,60 @@ public class LevelManager : Singleton<LevelManager>
         //
         if (Input.GetMouseButtonDown(0))
         {
-            //selectedCart = GrabRayObj("Cart");
+            selectedCart = GrabRayObj("Cart");
 
-            //if (selectedCart != null)
-            //{
-            //    //Debug.Log("RAY " + rayObj.name);
-            //    if (selectedCart.CompareTag("Cart") || selectedCart.CompareTag("Steel"))
-            //    {
+            if (selectedCart != null)
+            {
+                //Debug.Log("RAY " + rayObj.name);
+                if (selectedCart.CompareTag("Cart") || selectedCart.CompareTag("Steel"))
+                {
 
-            //        LevelMoveTrigger = true;
+                    LevelMoveTrigger = true;
                     
                     
-            //        //CurrentAngle = rayObj.transform.parent.parent.parent.parent.eulerAngles.y- transform.eulerAngles.y;
-            //        Level = selectedCart.transform.parent.parent.parent.parent.GetSiblingIndex();
-            //    }
+                    //CurrentAngle = rayObj.transform.parent.parent.parent.parent.eulerAngles.y- transform.eulerAngles.y;
+                    Level = selectedCart.transform.parent.parent.parent.parent.GetSiblingIndex();
+                }
                 
-            //}
-            //else
-            //{
-            //    CurrentAngle = transform.eulerAngles.y;
+            }
+            else
+            {
+                CurrentAngle = transform.eulerAngles.y;
                 
-            //    Debug.Log("TOWER RAY " +  CurrentAngle);
-            //    Level = -2;
+                Debug.Log("TOWER RAY " +  CurrentAngle);
+                Level = -2;
                 
-            //}
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
            
-            ////If cart was pressed
-            //if(LevelMoveTrigger)
-            //{
-            //    //Move level left
-            //    if(SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
-            //    {
-            //        LevelMove(Level, false);
-            //        LevelMoveTrigger = false;
-            //    }
-            //    //move level right
-            //    else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
-            //    {
-            //        LevelMove(Level, true);
-            //        LevelMoveTrigger = false;
-            //    }
-            //    //Drop pressed cart down
-            //    else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
-            //    {
+            //If cart was pressed
+            if(LevelMoveTrigger)
+            {
+                //Move level left
+                if(SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
+                {
+                    LevelMove(Level, false);
+                    LevelMoveTrigger = false;
+                }
+                //move level right
+                else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
+                {
+                    LevelMove(Level, true);
+                    LevelMoveTrigger = false;
+                }
+                //Drop pressed cart down
+                else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
+                {
 
-            //        SpawnManager.Instance.DropSpawn(selectedCart);
-            //        transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
-            //        LevelMoveTrigger = false;
+                    SpawnManager.Instance.DropSpawn(selectedCart);
+                    transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
+                    LevelMoveTrigger = false;
 
                     
+<<<<<<< HEAD
 <<<<<<< HEAD
             //    }
             //}
@@ -205,11 +206,16 @@ public class LevelManager : Singleton<LevelManager>
             ////    DragInProgress = false;
             ////}
             //else
+=======
+                }
+            }
+            //else if(DragInProgress)
+>>>>>>> parent of ccf1f8c... 17.04.19
             //{
-            //    Debug.Log("LLLLL");
-            //    //Finish rotation to even 90 degree slot
-            //    //LevelMoveTrigger = false;
+            //    initialMove = Vector3.zero;
+            //    DragInProgress = false;
             //}
+<<<<<<< HEAD
 =======
                 }
             }
@@ -218,13 +224,18 @@ public class LevelManager : Singleton<LevelManager>
                 initialMove = Vector3.zero;
                 DragInProgress = false;
             }
+=======
+>>>>>>> parent of ccf1f8c... 17.04.19
             else
             {
                 Debug.Log("LLLLL");
                 //Finish rotation to even 90 degree slot
                 //LevelMoveTrigger = false;
             }
+<<<<<<< HEAD
 >>>>>>> parent of 04c6daf... 16.04.19
+=======
+>>>>>>> parent of ccf1f8c... 17.04.19
             StartCoroutine(StopRotate(followDuration));
         }
 
@@ -237,7 +248,7 @@ public class LevelManager : Singleton<LevelManager>
 
             currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
             CurrentAngle += currentAngleSpeed * Time.deltaTime;
-            transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
+            transform.localRotation = Quaternion.Euler(new Vector3(0, CurrentAngle, 0));
         }
 
         //if(Level != -2)
@@ -515,15 +526,24 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    private void UpdateInput()
+    private void UpdateInput(GameObject target = null)
     {
-        //
+        
         Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
         float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
         float screenWidth = ((float)Screen.width);
         float moveXPercent = moveX / screenWidth;
-        float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+        //Debug.Log("% " + moveXPercent);
+        float speed = 0;
+        //Rotation resistance
+        if (moveXPercent > minSwipeDistX)
+        {
 
+            speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+        }
+
+
+      
         if (true /*!SpawnInProgress*/ )
         {
             if (Input.GetMouseButtonDown(0))
@@ -546,9 +566,10 @@ public class LevelManager : Singleton<LevelManager>
 
                 currentAngleSpeed = 0f;
 
-                if (moveXPercent > minSwipeDistX)
+                //Inertia speed decrease
+                if (moveXPercent > 50/*moveXPrecent*/)
                 {
-
+                   
 
                     speedHistory.Add(speed);
                 }
@@ -560,11 +581,13 @@ public class LevelManager : Singleton<LevelManager>
                 {
                     speedHistory.RemoveAt(0);
                 }
-                CurrentAngle += speed;
+                CurrentAngle -= speed;
                 //if(levelStop)
                 //{
                 //    LevelCurrentAngle -= speed;
                 //}
+
+
                 currentAngleSpeed = speed;
                 startPosition = Input.mousePosition;
                 if (currentAngleSpeed <= 0.02f)
@@ -581,7 +604,7 @@ public class LevelManager : Singleton<LevelManager>
                 float speedX = 0f;
                 for (int i = 0; i < speedHistory.Count; i++)
                 {
-                    speedX += speedHistory[i];
+                    speedX -= speedHistory[i];
                 }
                 currentAngleSpeed = 6f * speedX;
                 startPosition = Input.mousePosition;
@@ -604,7 +627,6 @@ public class LevelManager : Singleton<LevelManager>
 
         //}
     }
-
 
     public float raiseDuration = 0.2f;
 
@@ -800,27 +822,28 @@ public class LevelManager : Singleton<LevelManager>
     public float scrollSpeed = 2;
     public float rotResistance = 5000;
 
-    ////Scroll towerf planet
-    //void OnMouseDrag()
-    //{
-    //    if (!LevelMoveTrigger)
-    //    {
+    //Scroll towerf planet
+    void OnMouseDrag()
+    {
+        if (!LevelMoveTrigger)
+        {
 
-    //        float rotX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
-    //        float rotY = Input.GetAxis("Mouse Y") * scrollSpeed;
-    //        if (Input.touchCount > 0)
-    //        {
-    //            rotX = Input.touches[0].deltaPosition.x;
-    //            rotY = Input.touches[0].deltaPosition.y;
-    //        }
+            float rotX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
+            float rotY = Input.GetAxis("Mouse Y") * scrollSpeed;
+            if (Input.touchCount > 0)
+            {
+                rotX = Input.touches[0].deltaPosition.x;
+                rotY = Input.touches[0].deltaPosition.y;
+            }
 
-    //        //Debug.Log("REEE " + rotX + " : " + Input.GetAxis("Mouse Y") + " = " + scrollSpeed);
+            //Debug.Log("REEE " + rotX + " : " + Input.GetAxis("Mouse Y") + " = " + scrollSpeed);
 
-    //        //if (rotX > rotResistance)
-    //        //{
-    //        //    transform.Rotate(Vector3.up, rotX, Space.Self);
-    //        //}
+            //if (rotX > rotResistance)
+            //{
+            //    transform.Rotate(Vector3.up, rotX, Space.Self);
+            //}
 
+<<<<<<< HEAD
     //        //Scroll camera and elevator
     //        transform.position += new Vector3(0, rotY / 10f, 0);
     //        //transform.position += new Vector3(0, -rotY / 120f, 0);
@@ -854,6 +877,14 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 >>>>>>> parent of 04c6daf... 16.04.19
+=======
+            //Scroll camera and elevator
+            transform.position += new Vector3(0, rotY / 10f, 0);
+            //transform.position += new Vector3(0, -rotY / 120f, 0);
+            Debug.Log(rotY);
+        }
+    }
+>>>>>>> parent of ccf1f8c... 17.04.19
 
     
 
