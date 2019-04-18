@@ -114,6 +114,20 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
+    //Move Level direction - clockwise by default
+    public void LevelMove(int levelIndex, bool direction = false)
+    {
+       if(!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
+        {
+            LevelMoveProgress = true;
+            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
+        }
+
+
+    }
+
+
+    public float moveTime = 5f;
     //public IEnumerator LevelMover()
     //{
 
@@ -182,6 +196,7 @@ public class LevelManager : Singleton<LevelManager>
             //        LevelMoveTrigger = false;
 
                     
+<<<<<<< HEAD
             //    }
             //}
             ////else if(DragInProgress)
@@ -195,6 +210,21 @@ public class LevelManager : Singleton<LevelManager>
             //    //Finish rotation to even 90 degree slot
             //    //LevelMoveTrigger = false;
             //}
+=======
+                }
+            }
+            else if(DragInProgress)
+            {
+                initialMove = Vector3.zero;
+                DragInProgress = false;
+            }
+            else
+            {
+                Debug.Log("LLLLL");
+                //Finish rotation to even 90 degree slot
+                //LevelMoveTrigger = false;
+            }
+>>>>>>> parent of 04c6daf... 16.04.19
             StartCoroutine(StopRotate(followDuration));
         }
 
@@ -265,29 +295,13 @@ public class LevelManager : Singleton<LevelManager>
     //}
 
 
-    //Move Level direction - clockwise by default
-    public void LevelMove(int levelIndex, bool direction = false)
-    {
-        if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
-        {
-            GameManager.Instance.ComboActive = false;
-            GameManager.Instance.Multiplier = 1;
-            LevelMoveProgress = true;
-            StartCoroutine(FollowRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
-        }
 
-
-    }
-
-
-    public float moveTime = 5f;
-
-    public float levelMoveSpeed = 60f;
+    public float levelMoveSpeed = 120f;
 
     //Move level around  default - CLOCKWISE (LEFT)
     public IEnumerator FollowRotate(int level, float levelAngle, bool righDirection = false)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         //Debug.Log(">>FOLLOW ROTATE ");
         //Debug.Log("FOLLOWING");
         float tempAngle = levelAngle;
@@ -323,7 +337,7 @@ public class LevelManager : Singleton<LevelManager>
                 tmp.transform.parent.SetParent(null);
                 tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
                 //Start turning sequence to the right
-                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed, true));
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f, true));
             }
             else
             {
@@ -332,7 +346,7 @@ public class LevelManager : Singleton<LevelManager>
                 tmp.transform.parent.SetParent(null);
                 tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
                 //Start turning sequence to the left
-                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed));
+                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, 10f));
             }
           
             
@@ -343,7 +357,7 @@ public class LevelManager : Singleton<LevelManager>
         childsToMove.Clear();
        
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.8f);
 
         //*****************
         LevelMoveProgress = false;
@@ -749,7 +763,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-   
+    public float rotSpeed = 1f;
 
     ////Rotate planet
     //void OnMouseDrag()
@@ -780,6 +794,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
     //}
+<<<<<<< HEAD
 
     public float rotSpeed = 20;
     public float scrollSpeed = 2;
@@ -812,6 +827,34 @@ public class LevelManager : Singleton<LevelManager>
     //        Debug.Log(rotY);
     //    }
     //}
+=======
+    Vector3 initialMove = Vector3.zero;
+    public bool DragInProgress = false;
+    void OnMouseDrag()
+    {
+       
+        if (!LevelMoveTrigger)
+        {
 
+            float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
+
+            if (initialMove == Vector3.zero)
+            {
+                initialMove = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+                DragInProgress = true;
+            }
+
+            Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
+
+            float pos_moveY = Mathf.Clamp((pos_move.y - initialMove.y) / 10f + transform.position.y, -10f /*+ spawnOffset * levelCount*/, 20f + spawnOffsetStep * levelCount);
+
+            transform.position = new Vector3(transform.position.x, pos_moveY , transform.position.z);
+
+        }
+
+    }
+>>>>>>> parent of 04c6daf... 16.04.19
+
+    
 
 }
