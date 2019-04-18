@@ -187,55 +187,34 @@ public class LevelManager : Singleton<LevelManager>
                     LevelMove(Level, true);
                     LevelMoveTrigger = false;
                 }
-                //Drop pressed cart down
-                else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
-                {
+                ////Drop pressed cart down
+                //else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
+                //{
 
-                    SpawnManager.Instance.DropSpawn(selectedCart);
-                    transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
-                    LevelMoveTrigger = false;
+                //    SpawnManager.Instance.DropSpawn(selectedCart);
+                //    transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
+                //    LevelMoveTrigger = false;
 
                     
-<<<<<<< HEAD
-<<<<<<< HEAD
-            //    }
-            //}
-            ////else if(DragInProgress)
-            ////{
-            ////    initialMove = Vector3.zero;
-            ////    DragInProgress = false;
-            ////}
-            //else
-=======
-                }
+
+                //}
             }
             //else if(DragInProgress)
->>>>>>> parent of ccf1f8c... 17.04.19
             //{
             //    initialMove = Vector3.zero;
             //    DragInProgress = false;
             //}
-<<<<<<< HEAD
-=======
-                }
-            }
-            else if(DragInProgress)
-            {
-                initialMove = Vector3.zero;
-                DragInProgress = false;
-            }
-=======
->>>>>>> parent of ccf1f8c... 17.04.19
+            //else if(DragInProgress)
+            //{
+            //    initialMove = Vector3.zero;
+            //    DragInProgress = false;
+            //}
             else
             {
                 Debug.Log("LLLLL");
                 //Finish rotation to even 90 degree slot
                 //LevelMoveTrigger = false;
             }
-<<<<<<< HEAD
->>>>>>> parent of 04c6daf... 16.04.19
-=======
->>>>>>> parent of ccf1f8c... 17.04.19
             StartCoroutine(StopRotate(followDuration));
         }
 
@@ -526,24 +505,15 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    private void UpdateInput(GameObject target = null)
+    private void UpdateInput()
     {
-        
+        //
         Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
         float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
         float screenWidth = ((float)Screen.width);
         float moveXPercent = moveX / screenWidth;
-        //Debug.Log("% " + moveXPercent);
-        float speed = 0;
-        //Rotation resistance
-        if (moveXPercent > minSwipeDistX)
-        {
+        float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
 
-            speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
-        }
-
-
-      
         if (true /*!SpawnInProgress*/ )
         {
             if (Input.GetMouseButtonDown(0))
@@ -566,10 +536,9 @@ public class LevelManager : Singleton<LevelManager>
 
                 currentAngleSpeed = 0f;
 
-                //Inertia speed decrease
-                if (moveXPercent > 50/*moveXPrecent*/)
+                if (moveXPercent > minSwipeDistX)
                 {
-                   
+
 
                     speedHistory.Add(speed);
                 }
@@ -581,13 +550,11 @@ public class LevelManager : Singleton<LevelManager>
                 {
                     speedHistory.RemoveAt(0);
                 }
-                CurrentAngle -= speed;
+                CurrentAngle += speed;
                 //if(levelStop)
                 //{
                 //    LevelCurrentAngle -= speed;
                 //}
-
-
                 currentAngleSpeed = speed;
                 startPosition = Input.mousePosition;
                 if (currentAngleSpeed <= 0.02f)
@@ -604,7 +571,7 @@ public class LevelManager : Singleton<LevelManager>
                 float speedX = 0f;
                 for (int i = 0; i < speedHistory.Count; i++)
                 {
-                    speedX -= speedHistory[i];
+                    speedX += speedHistory[i];
                 }
                 currentAngleSpeed = 6f * speedX;
                 startPosition = Input.mousePosition;
@@ -627,6 +594,7 @@ public class LevelManager : Singleton<LevelManager>
 
         //}
     }
+
 
     public float raiseDuration = 0.2f;
 
@@ -785,7 +753,6 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    public float rotSpeed = 1f;
 
     ////Rotate planet
     //void OnMouseDrag()
@@ -816,7 +783,6 @@ public class LevelManager : Singleton<LevelManager>
 
 
     //}
-<<<<<<< HEAD
 
     public float rotSpeed = 20;
     public float scrollSpeed = 2;
@@ -843,49 +809,15 @@ public class LevelManager : Singleton<LevelManager>
             //    transform.Rotate(Vector3.up, rotX, Space.Self);
             //}
 
-<<<<<<< HEAD
-    //        //Scroll camera and elevator
-    //        transform.position += new Vector3(0, rotY / 10f, 0);
-    //        //transform.position += new Vector3(0, -rotY / 120f, 0);
-    //        Debug.Log(rotY);
-    //    }
-    //}
-=======
-    Vector3 initialMove = Vector3.zero;
-    public bool DragInProgress = false;
-    void OnMouseDrag()
-    {
-       
-        if (!LevelMoveTrigger)
-        {
 
-            float distance_to_screen = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
 
-            if (initialMove == Vector3.zero)
-            {
-                initialMove = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
-                DragInProgress = true;
-            }
 
-            Vector3 pos_move = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance_to_screen));
-
-            float pos_moveY = Mathf.Clamp((pos_move.y - initialMove.y) / 10f + transform.position.y, -10f /*+ spawnOffset * levelCount*/, 20f + spawnOffsetStep * levelCount);
-
-            transform.position = new Vector3(transform.position.x, pos_moveY , transform.position.z);
-
-        }
-
-    }
->>>>>>> parent of 04c6daf... 16.04.19
-=======
             //Scroll camera and elevator
             transform.position += new Vector3(0, rotY / 10f, 0);
             //transform.position += new Vector3(0, -rotY / 120f, 0);
             Debug.Log(rotY);
         }
     }
->>>>>>> parent of ccf1f8c... 17.04.19
-
     
 
 }
