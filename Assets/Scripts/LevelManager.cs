@@ -99,7 +99,7 @@ public class LevelManager : Singleton<LevelManager>
         speedHistory = new List<float>();
 
 
-        StartCoroutine(LevelMover());
+        //StartCoroutine(LevelMover());
     }
 
     public float moveTime = 1f;

@@ -32,7 +32,7 @@ public class Conveyor : MonoBehaviour
         Debug.DrawLine(otherThing.transform.position, transform.parent.parent.parent.position, Color.red, 5);
 
 
-        direction = Vector3.Cross(direction,new Vector3(0,1,-1));
+        direction = Vector3.Cross(direction,new Vector3(0,0.8f,0));
         Debug.DrawLine(otherThing.transform.position, otherThing.transform.position + direction, Color.green,5);
             /*Quaternion.AngleAxis(90, Vector3.forward) * direction;*/
         direction = direction * speed;
