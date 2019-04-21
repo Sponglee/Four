@@ -148,16 +148,16 @@ public class CartModelContoller : MonoBehaviour
                 //If there's not same color below
                 if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
                 {
-                    //Debug.Log("REEEEETATCH");
-                    //destroy holder if no dollys
-                    //DETACH
-                    transform.parent.SetParent(null);
-                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                    Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                    tmprb.constraints = RigidbodyConstraints.None;
-                    tmprb.useGravity = true;
-                    tmprb.velocity = new Vector3(0, 10f, -50f);
-                    tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
+                    ////Debug.Log("REEEEETATCH");
+                    ////destroy holder if no dollys
+                    ////DETACH
+                    //transform.parent.SetParent(null);
+                    //gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                    //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                    //tmprb.constraints = RigidbodyConstraints.None;
+                    //tmprb.useGravity = true;
+                    //tmprb.velocity = new Vector3(0, 10f, -50f);
+                    //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
 
                 }
                 //Enable next cart collision
@@ -167,20 +167,21 @@ public class CartModelContoller : MonoBehaviour
                     CollidedBool = false;
                     CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
                     SecondCollision = true;
-                } //Detatch spawn if it hit last level (prevent bottom cart bug)
+                } 
+                //Detatch spawn if it hit last level (prevent bottom cart bug)
                 //if (tmpRay == null && detatchLevel == LevelManager.Instance.levelCount - 2)
                 else
                 {
-                    //Debug.Log("REEEEETATCH");
-                    //destroy holder if no dollys
-                    //DETACH
-                    transform.parent.SetParent(null);
-                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                    Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                    tmprb.constraints = RigidbodyConstraints.None;
-                    tmprb.useGravity = true;
-                    tmprb.velocity = new Vector3(0, 10f, -50f);
-                    tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
+                    ////Debug.Log("REEEEETATCH");
+                    ////destroy holder if no dollys
+                    ////DETACH
+                    //transform.parent.SetParent(null);
+                    //gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                    //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                    //tmprb.constraints = RigidbodyConstraints.None;
+                    //tmprb.useGravity = true;
+                    //tmprb.velocity = new Vector3(0, 10f, -50f);
+                    //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                 }
 
             }
@@ -190,13 +191,13 @@ public class CartModelContoller : MonoBehaviour
                 //If this cart was going to go through same color twice- just pop it without sticking
                 if (SecondCollision)
                 {
-                    //DETACH
-                    gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                    Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                    tmprb.constraints = RigidbodyConstraints.None;
-                    tmprb.useGravity = true;
-                    tmprb.velocity = new Vector3(0, 0, -50f);
-                    tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
+                    ////DETACH
+                    //gameObject.GetComponent<BoxCollider>().isTrigger = true;
+                    //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
+                    //tmprb.constraints = RigidbodyConstraints.None;
+                    //tmprb.useGravity = true;
+                    //tmprb.velocity = new Vector3(0, 0, -50f);
+                    //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
                     return;
                 }
 
@@ -215,7 +216,7 @@ public class CartModelContoller : MonoBehaviour
                     {
 
                         //Debug.Log("Sticking levelIndex: " + levelIndex);
-                        StickCart(other, levelIndex);
+                        //StickCart(other, levelIndex);
                     }
 
                 }

@@ -310,7 +310,10 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         if (spawnCart != null)
         {
-            spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
+ 
+
+
         }
 
     }

@@ -332,7 +332,7 @@ public class CartManager : MonoBehaviour
 
         if (!spawnManagerRef.spawnedBool)
         {
-            SpawnManager.Instance.Spawn();
+            //SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
             //yield break;
         }
@@ -430,7 +430,7 @@ public class CartManager : MonoBehaviour
         //GetNew spawn ready
         if (!spawnManagerRef.spawnedBool)
         {
-            SpawnManager.Instance.Spawn();
+            //SpawnManager.Instance.Spawn();
             //Debug.Log("NANI");
         }
     }
