@@ -90,15 +90,18 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
+    public BallController ballRef;
+
     private void Start()
     {
         levelCount = PlayerPrefs.GetInt("LevelCount", 5);
         //LevelCurrentAngles = new Stack<LevelAnglePtr>();
-
+       
 
         ////Initialize blank list for levelMover
         //blanksLevelMove = new List<Transform>();
 
+        //StartCoroutine(LevelTimer());
 
         for (int i = 0; i < levelCount; i++)
         {
@@ -115,12 +118,8 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    //public IEnumerator LevelMover()
-    //{
+    
 
-
-
-    //}
     public GameObject selectedCart;
 
     // Update is called once per frame
@@ -222,27 +221,27 @@ public class LevelManager : Singleton<LevelManager>
 
     public void StartLevelMove(int level)
     {
-        for (int i = level-1; i < level+5; i++)
+        for (int i = level - 1; i < level + 5; i++)
         {
             randomDir = Random.Range(0, 2);
 
-            if (i == level-1)
-            {
-                Debug.Log(SwipeManager.Instance.Direction);
-                if (SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
-                {
-                    LevelMove(i, false);
-                }
-                else if(SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
-                {
-                    LevelMove(i, true);
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            else if(randomDir == 1)
+            //if (i == level - 1)
+            //{
+            //    Debug.Log(SwipeManager.Instance.Direction);
+            //    if (SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
+            //    {
+            //        LevelMove(i, false);
+            //    }
+            //    else if (SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
+            //    {
+            //        LevelMove(i, true);
+            //    }
+            //    else
+            //    {
+            //        continue;
+            //    }
+            //}
+         /*   else*/ if (randomDir == 1)
             {
                 LevelMove(i, false);
             }
@@ -250,10 +249,21 @@ public class LevelManager : Singleton<LevelManager>
             {
                 LevelMove(i, true);
             }
-            
+
         }
     }
 
+
+    public IEnumerator LevelTimer()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f);
+            if(ballRef != null && ballRef.CurrentLevel >0)
+                StartLevelMove(ballRef.CurrentLevel);
+        }
+       
+    }
     //Move Level direction - clockwise by default
     public void LevelMove(int levelIndex, bool direction = false)
     {

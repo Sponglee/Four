@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class BallController : Singleton<BallController>
 {
     ///FROM CARTMODELCONTROLLER 
     /// 
@@ -82,7 +82,10 @@ public class BallController : MonoBehaviour
     private int CollidedCurrent = -1;
 
 
-
+    private void Start()
+    {
+        LevelManager.Instance.ballRef = this;
+    }
 
     private void Update()
     {
@@ -96,7 +99,7 @@ public class BallController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            LevelManager.Instance.StartLevelMove(CurrentLevel);
+            //LevelManager.Instance.StartLevelMove(CurrentLevel);
             ForcePush = false;
         }
     }
@@ -242,6 +245,7 @@ public class BallController : MonoBehaviour
 
                             //Debug.Log("Sticking levelIndex: " + levelIndex);
                             //StickCart(other, levelIndex);
+                            LevelManager.Instance.StartLevelMove(CurrentLevel);
                         }
 
                     }
