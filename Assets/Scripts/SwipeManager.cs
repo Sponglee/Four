@@ -83,7 +83,7 @@ public class SwipeManager : Singleton<SwipeManager>
 
                 Direction |= SwipeDirection.None;
             }
-            Debug.Log(Direction);
+            //Debug.Log(Direction);
         }
 
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 114160773181652870}
   m_Layer: 0
   m_Name: CartManager
-  m_TagString: Cart
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,11 +72,7 @@ MonoBehaviour:
   spawnDuration: 0.5
   canvasIdentifier: {fileID: 0}
   spawnMats:
-  - {fileID: 2100000, guid: 610192e893f67824282de753ea7bee69, type: 2}
   - {fileID: 2100000, guid: 97f3a0a0a565e2b48bfd8ddee873c094, type: 2}
-  - {fileID: 2100000, guid: ee9eb124182f97241bcfc5b248738b04, type: 2}
-  - {fileID: 2100000, guid: fa77fcb6a5cf4f64d868623831542947, type: 2}
-  - {fileID: 2100000, guid: 85654d4adc5c83a4b97b74d56414d866, type: 2}
   - {fileID: 2100000, guid: 4c94ba198b899d146981fdd52b31507c, type: 2}
   NoDollysBool: 0
 --- !u!1 &1329093880384416
@@ -127,9 +123,11 @@ GameObject:
   - component: {fileID: 33105104641588304}
   - component: {fileID: 23189632887559654}
   - component: {fileID: 114585056271413642}
+  - component: {fileID: 5371762297761316686}
+  - component: {fileID: 9066660939719896980}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Level
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -211,6 +209,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!54 &5371762297761316686
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476758005938302}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!65 &9066660939719896980
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476758005938302}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.61, y: 0.98, z: 0.67}
+  m_Center: {x: 0.00000005960466, y: -1.6940659e-21, z: -0.00000008940696}
 --- !u!1 &1794271702706066
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +249,7 @@ GameObject:
   - component: {fileID: 224296882182206202}
   m_Layer: 0
   m_Name: LevelHolder4
-  m_TagString: Cart
+  m_TagString: Level
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

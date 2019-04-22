@@ -9,18 +9,22 @@ public class SpawnManager : Singleton<SpawnManager>
     public CartManager spawnCartManager;
 
     public float spawnInterval = 2;
-
     public float spawnTime = 0;
 
+    //Reference to spawn cart
+    public GameObject tmpCart;
+
+    public CinemachineVirtualCamera vcam;
 
     public bool gameMode = true;
 
+   
     // Use this for initialization
     void Start()
     {
 
         //Grab gameMode 
-        gameMode = (PlayerPrefs.GetInt("GameMode",0) != 0); 
+        gameMode = (PlayerPrefs.GetInt("GameMode", 0) != 0);
 
         spawnCartManager = transform.GetChild(0).GetComponent<CartManager>();
 
@@ -31,43 +35,17 @@ public class SpawnManager : Singleton<SpawnManager>
     void Update()
     {
 
-        //if (Input.GetMouseButtonUp(0)
-        //    && !LevelManager.Instance.RotationProgress
-        //        && !LevelManager.Instance.SpawnInProgress
-        //            && !LevelManager.Instance.LevelMoveProgress /*&& spawnTimer <= 0*/)
-        //{
-        //    GameObject tmpRayCart = ScanCarts(transform, "Cart", true);
-        //    if (tmpRayCart != null && tmpRayCart.GetComponent<Renderer>().material.color != spawnCartManager.spawnMatRandomColor
-        //        && tmpRayCart.transform.parent.parent.childCount >= 4 && tmpRayCart.transform.parent.parent.parent.GetSiblingIndex() == 0)
-        //    {
-        //        //Debug.Log("NOT SAME ");
-        //    }
-        //    else
-        //    {
-        //        DropSpawn(spawnCartManager.spawnObject);
-        //        LevelManager.Instance.SpawnInProgress = true;
-        //        spawnCartManager.spawnedBool = false;
-        //    }
-
-
-
-
-
-
-        //    ////Reset spawn cooldown
-        //    //spawnTimer = spawnDuration;
-        //}
+       
 
         if (spawnCartManager.spawnedBool)
             spawnTime += Time.deltaTime;
 
 
-
         //SpawninProgress for levelrotate wait
-        if(spawnTime>= spawnInterval /*&& !spawnCartManager.spawnInProgress*/)
+        if (spawnTime >= spawnInterval /*&& !spawnCartManager.spawnInProgress*/)
         {
             //Pressed game mode
-            if(gameMode == true)
+            if (gameMode == true)
             {
                 if (Input.GetMouseButton(0))
                 {
@@ -81,21 +59,21 @@ public class SpawnManager : Singleton<SpawnManager>
             //Automatic drop game mode
             else
             {
-               
+
                 DropSpawn(spawnCartManager.spawnObject);
 
                 spawnCartManager.spawnedBool = false;
 
                 spawnTime = 0;
-                
+
             }
-          
-           
+
+
         }
-        
+
     }
 
-    
+
 
     //Spawn new cart
     public void Spawn()
@@ -111,6 +89,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         spawnCartManager.spawnedBool = true;
 
+      
         yield return new WaitForSeconds(0.3f);
         ////Delay dropspawn while spawn is in progress
         //spawnCartManager.spawnInProgress = true;
@@ -137,6 +116,7 @@ public class SpawnManager : Singleton<SpawnManager>
             //GAME OVER CHECK
             if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
             {
+
                 FunctionHandler.Instance.OpenGameOver("YOU WIN");
                 yield break;
             }
@@ -225,24 +205,27 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
         //spawn cart prefab, set random position
-        GameObject tmpCart = Instantiate(spawnCartManager.spawnPrefab, spawnCartManager.transform.GetChild(0));
+        tmpCart = Instantiate(spawnCartManager.spawnPrefab, spawnCartManager.transform.GetChild(0));
         spawnCartManager.spawnObject = tmpCart;
         //Set material to spawn
         tmpCart.transform.GetChild(0).GetComponent<Renderer>().material.color = spawnCartManager.spawnMatRandomColor;
         tmpCart.transform.GetComponent<CinemachineDollyCart>().m_Path = spawnCartManager.paths[2];
-        //Set current for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
-        //set material number
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
-        //Set track references for that cart
-        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = spawnCartManager.paths;
-        //set cart reference for manager
-        spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+        ////Set current for that cart
+        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = 2;
+        ////set material number
+        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().spawnColor = spawnCartManager.spawnMatRandomColor;
+        ////Set track references for that cart
+        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().paths = spawnCartManager.paths;
+        ////set cart reference for manager
+        //spawnCartManager.carts[0] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
         //Set parent of Level manager
         //tmpCart.transform.SetParent(LevelManager.Instance.transform);
+
+        //Follow camera to a ball
+        vcam.m_Follow = tmpCart.transform.GetChild(0);
     }
 
-   
+    
    
   
 
@@ -295,10 +278,8 @@ public class SpawnManager : Singleton<SpawnManager>
             //cart.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
             cart.transform.parent.SetParent(transform);
 
-            rb.constraints = RigidbodyConstraints.None;
-            rb.constraints = RigidbodyConstraints.FreezePositionX;
-            rb.constraints = RigidbodyConstraints.FreezePositionZ;
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+           
             rb.AddForce(0, -100f, 0);
 
         }
@@ -317,7 +298,18 @@ public class SpawnManager : Singleton<SpawnManager>
         }
 
     }
+
+
+
+
+
+
+  
+
+
 }
+
+
 
 
 

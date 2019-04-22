@@ -64,7 +64,7 @@ public class CartManager : MonoBehaviour
 
 
 
-        if (gameObject.CompareTag("Cart") )
+        if (!gameObject.CompareTag("Spawn") )
         {
             int index = 0;
 
@@ -323,7 +323,7 @@ public class CartManager : MonoBehaviour
             Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
             Destroy(transform.parent.gameObject);
             //Get some effects 
-            LevelManager.Instance.RaiseTower();
+            //LevelManager.Instance.RaiseTower();
             //Speed up the game
             SpawnManager.Instance.spawnInterval -= 0.6f / (LevelManager.Instance.levelCount - 2);
             if (SpawnManager.Instance.spawnInterval < 0.4f)

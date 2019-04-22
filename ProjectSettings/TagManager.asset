@@ -16,6 +16,7 @@ TagManager:
   - SpawnManager
   - Steel
   - MenuCanvas
+  - Level
   layers:
   - Default
   - TransparentFX

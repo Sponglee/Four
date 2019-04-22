@@ -12,15 +12,22 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject menuButton;
 
 
-   
+
     public void OpenGameOver(string message)
     {
-     
-       
+
+        StartCoroutine(StopOpenGameOver(message));
+
+
+    }
+
+    public IEnumerator StopOpenGameOver(string message)
+    {
+
         //if there's no message - mid game open or close menu
         if (message == "")
         {
-           
+
             //Close menu if it's open and midgame
             if (menuCanvas.activeSelf)
             {
@@ -32,6 +39,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 menuCanvas.SetActive(true);
                 //Set message
                 menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+                yield return new WaitForSeconds(1f);
                 Time.timeScale = 0;
 
 
@@ -58,8 +66,6 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Disable menu button if game over or win
             menuButton.SetActive(false);
         }
-        
-       
     }
 
 

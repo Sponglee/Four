@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 23129722211878934}
   - component: {fileID: 54321935469522434}
   - component: {fileID: 65132235903708058}
+  - component: {fileID: 3200022692149772417}
   m_Layer: 0
   m_Name: Cart
   m_TagString: Cart
@@ -130,8 +131,22 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 1.39, z: 2.59}
-  m_Center: {x: -0.027273087, y: 2.71, z: -1.52}
+  m_Size: {x: 3, y: 1.39, z: 3.57}
+  m_Center: {x: -0.027273087, y: 2.71, z: -1.77}
+--- !u!136 &3200022692149772417
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422077635645674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  m_Radius: 2.33
+  m_Height: 5.68
+  m_Direction: 0
+  m_Center: {x: 0.000000059604645, y: 2.66, z: -1.7}
 --- !u!1 &1859630849823150
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,12 +220,12 @@ GameObject:
   - component: {fileID: 101059644698579662}
   - component: {fileID: 8127315863513970166}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Trigger
   m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &101059644698579662
 RectTransform:
   m_ObjectHideFlags: 0
