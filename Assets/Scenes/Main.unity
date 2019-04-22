@@ -318,7 +318,9 @@ MonoBehaviour:
   lastLevelCurrentLevel: 0
   currentAngle: 0
   ballRef: {fileID: 0}
-  selectedCart: {fileID: 0}
+  randomDir: 0
+  lastLevel: -1
+  raiseTowerTime: 0.3
   moveTime: 5
   levelMoveSpeed: 60
   raiseDuration: 0.2
@@ -2424,7 +2426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1118910841
 RectTransform:
   m_ObjectHideFlags: 0

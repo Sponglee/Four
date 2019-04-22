@@ -7,7 +7,21 @@ public class BallController : Singleton<BallController>
     ///FROM CARTMODELCONTROLLER 
     /// 
 
-    public int CurrentLevel = -2;
+    private int currentLevel = -2;
+    public int CurrentLevel
+    {
+        get
+        {
+            return currentLevel;
+        }
+
+        set
+        {
+            currentLevel = value;
+            GameManager.Instance.LevelProgress = (float)(currentLevel) / LevelManager.Instance.levelCount;
+        }
+    }
+
     [SerializeField]
     private bool forcePush = false;
     public bool ForcePush
@@ -32,7 +46,7 @@ public class BallController : Singleton<BallController>
                 forcePush = value;
 
 
-                gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * 50;
+                //gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * 30;
 
             }
             else
@@ -71,6 +85,7 @@ public class BallController : Singleton<BallController>
     }
 
   
+
     public IEnumerator StopCollided()
     {
         yield return new WaitForSeconds(0.3f);
@@ -100,10 +115,19 @@ public class BallController : Singleton<BallController>
         else if (Input.GetMouseButtonUp(0))
         {
             //LevelManager.Instance.StartLevelMove(CurrentLevel);
-            ForcePush = false;
+            if (SpawnManager.Instance.gameMode)
+            {
+                ForcePush = false;
+
+            }
+            else
+            {
+                gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
+            }
         }
     }
 
+    //Check what level ball is currently on
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Level"))
@@ -112,8 +136,26 @@ public class BallController : Singleton<BallController>
             CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
         }
     }
+
+    //Process a collision
     private void OnCollisionEnter(Collision other)
     {
+        //Collision with steel carts to the left or to the right
+        //Debug.Log( CurrentLevel + ">>>" + other.transform.parent.parent.parent.parent.GetSiblingIndex() + " (" + other.transform.name  + ")");
+        if (other.gameObject.CompareTag("Steel") && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
+        {
+            Debug.Log("Ball " + transform.position);
+            Debug.Log("Cart " + other.transform.position);
+            if(other.transform.position.x >= transform.position.x)
+            {
+                LevelManager.Instance.LevelMove(CurrentLevel,true);
+            }
+            else
+            {
+                LevelManager.Instance.LevelMove(CurrentLevel,false);
+            }
+            return;
+        }
         //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
         if (other.gameObject.CompareTag("Cart")  || other.gameObject.CompareTag("Steel"))
         {
@@ -245,7 +287,7 @@ public class BallController : Singleton<BallController>
 
                             //Debug.Log("Sticking levelIndex: " + levelIndex);
                             //StickCart(other, levelIndex);
-                            LevelManager.Instance.StartLevelMove(CurrentLevel);
+                            //LevelManager.Instance.StartLevelMove(CurrentLevel);
                         }
 
                     }

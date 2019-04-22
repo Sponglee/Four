@@ -120,7 +120,7 @@ public class GameManager : Singleton<GameManager>
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score",0);
-        Debug.Log(":" + Score + " :: " + bestScore + ":");
+        //Debug.Log(":" + Score + " :: " + bestScore + ":");
 
         if(score >= bestScore)
         {

@@ -73,7 +73,7 @@ MonoBehaviour:
   canvasIdentifier: {fileID: 0}
   spawnMats:
   - {fileID: 2100000, guid: 97f3a0a0a565e2b48bfd8ddee873c094, type: 2}
-  - {fileID: 2100000, guid: 4c94ba198b899d146981fdd52b31507c, type: 2}
+  - {fileID: 2100000, guid: 7d0d3b97bce09f54d94f06ff78450f9e, type: 2}
   NoDollysBool: 0
 --- !u!1 &1329093880384416
 GameObject:
@@ -140,8 +140,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476758005938302}
   m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.23}
+  m_LocalScale: {x: 1, y: 0.73, z: 1}
   m_Children: []
   m_Father: {fileID: 224825882545686414}
   m_RootOrder: 0
@@ -176,7 +176,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4c94ba198b899d146981fdd52b31507c, type: 2}
+  - {fileID: 2100000, guid: 7d0d3b97bce09f54d94f06ff78450f9e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -262,7 +262,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794271702706066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4188479683189412}

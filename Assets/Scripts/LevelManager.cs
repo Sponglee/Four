@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class LevelManager : Singleton<LevelManager>
 {
-
+    //Number of carts
     public int cartCount=4;
     //Level Generator vars
     public GameObject levelPrefab;
@@ -27,15 +27,7 @@ public class LevelManager : Singleton<LevelManager>
 
         set
         {
-
-            // if spawn moved down - rotate levels
-            //if(level < value)
-
-            level = value;
-            //if (value == -2)
-            //CurrentAngle = lastCurrentLevel;
-            //else
-            //    CurrentAngle = transform.GetChild(level).localEulerAngles.z;
+            level = value; 
         }
     }
 
@@ -61,14 +53,8 @@ public class LevelManager : Singleton<LevelManager>
     public bool SpawnInProgress = false;
     public float followDuration;
 
+    
     public int levelCount = 10;
-
-    //public List<Transform> blanksLevelMove;
-
-    //[SerializeField]
-    //private Stack<LevelAnglePtr> LevelCurrentAngles;
-    ////current level ptr
-    //LevelAnglePtr tempLevelAngle;
 
     public float lastCurrentLevel;
     public float lastLevelCurrentLevel;
@@ -84,82 +70,45 @@ public class LevelManager : Singleton<LevelManager>
 
         set
         {
+            //Rotate tower to Current angle
             currentAngle = value % 360;
             transform.eulerAngles = new Vector3(0,currentAngle,0);
         }
     }
 
-
+    //Reference to ball Controller
     public BallController ballRef;
 
     private void Start()
     {
         levelCount = PlayerPrefs.GetInt("LevelCount", 5);
-        //LevelCurrentAngles = new Stack<LevelAnglePtr>();
-       
-
-        ////Initialize blank list for levelMover
-        //blanksLevelMove = new List<Transform>();
-
+      
+        //Start Destruction of levels
         //StartCoroutine(LevelTimer());
 
+        //Generate the level
         for (int i = 0; i < levelCount; i++)
         {
             GameObject tmpSpawn = Instantiate(levelPrefab, transform.position, transform.rotation, transform);
             tmpSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * i, 0);
-           /* spawnOffset += spawnOffsetStep*/;
         }
+        //Add a bottom level
         GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform.position, transform.rotation, transform);
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * levelCount, 0);
-
-        speedHistory = new List<float>();
-
-        
 
     }
 
     
-
-    public GameObject selectedCart;
-
     // Update is called once per frame
     void Update()
     {
 
-        //
+       
         if (Input.GetMouseButtonDown(0))
         {
             LevelMoveTrigger = true;
-            //Level = 
-
-
-            //selectedCart = GrabRayObj("Cart");
-
-            //if (selectedCart != null)
-            //{
-            //    //Debug.Log("RAY " + rayObj.name);
-            //    if (selectedCart.CompareTag("Cart") || selectedCart.CompareTag("Steel"))
-            //    {
-
-            //        
-
-
-            //        //CurrentAngle = rayObj.transform.parent.parent.parent.parent.eulerAngles.y- transform.eulerAngles.y;
-            //        Level = selectedCart.transform.parent.parent.parent.parent.GetSiblingIndex();
-            //    }
-
-            //}
-            //else
-            //{
-            //    CurrentAngle = transform.eulerAngles.y;
-
-            //    Debug.Log("TOWER RAY " +  CurrentAngle);
-            //    Level = -2;
-
-            //}
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
 
             //If cart was pressed
@@ -168,102 +117,90 @@ public class LevelManager : Singleton<LevelManager>
                 //Move level left
                 if (SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
                 {
-
                     LevelMoveTrigger = false;
                     if (!LevelMoveTrigger)
                     {
-                        //UpdateInput();
-
-
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
                         StartCoroutine(StopRotate(followDuration,0,false));
                     }
                 }
-                //move level right
+                //move level to the right
                 else if (SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
                 {
 
                     LevelMoveTrigger = false;
                     if (!LevelMoveTrigger)
                     {
-                        //UpdateInput();
-
-
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
                         StartCoroutine(StopRotate(followDuration,0,true));
                     }
                 }
-                //Drop pressed cart down
-                else if (SwipeManager.Instance.IsSwiping(SwipeDirection.Down))
-                {
-
-                    SpawnManager.Instance.DropSpawn(selectedCart);
-                    transform.GetChild(Level).GetChild(0).GetComponent<CartManager>().CheckCarts();
-                    LevelMoveTrigger = false;
-                }
-
-
-
-
             }
-
-            //if(Level != -2)
-            //    transform.GetChild(Level).localRotation = Quaternion.Euler(new Vector3(0, CurrentAngle,0 ));
-            //else
-
 
         }
   
     }
-    int randomDir;
 
+    //Direction generation int
+    public int randomDir;
+    //Keep track of last CurrentLevel
+    public int lastLevel = -1;
+
+
+    //Move 5 levels on stickcart
     public void StartLevelMove(int level)
     {
-        for (int i = level - 1; i < level + 5; i++)
+        if(level != lastLevel)
         {
-            randomDir = Random.Range(0, 2);
-
-            //if (i == level - 1)
-            //{
-            //    Debug.Log(SwipeManager.Instance.Direction);
-            //    if (SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
-            //    {
-            //        LevelMove(i, false);
-            //    }
-            //    else if (SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
-            //    {
-            //        LevelMove(i, true);
-            //    }
-            //    else
-            //    {
-            //        continue;
-            //    }
-            //}
-         /*   else*/ if (randomDir == 1)
+            lastLevel = level;
+            for (int i = level+1; i < level + 5; i++)
             {
-                LevelMove(i, false);
-            }
-            else
-            {
-                LevelMove(i, true);
-            }
+                randomDir = Random.Range(0, 2);
+                
+                if (randomDir == 1)
+                {
+                    LevelMove(i, false);
+                }
+                else
+                {
+                    LevelMove(i, true);
+                }
 
+            }
         }
+        
     }
 
-
+    public float raiseTowerTime = 0.25f;
+    //Level Destruction sequence
     public IEnumerator LevelTimer()
     {
+        int i = 0;
+        yield return new WaitForSeconds(4f);
+       
         while (true)
         {
-            yield return new WaitForSeconds(2f);
-            if(ballRef != null && ballRef.CurrentLevel >0)
-                StartLevelMove(ballRef.CurrentLevel);
+            yield return new WaitForSeconds(raiseTowerTime);
+            if (true/*ballRef != null && ballRef.CurrentLevel > 0*/)
+            {
+                Instantiate(cylinderPrefab, transform.GetChild(i).position + new Vector3(0, -5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+                transform.GetChild(i).gameObject.SetActive(false);
+                //Destroy(transform.GetChild(0).gameObject);
+                RaiseTower();
+                if(raiseTowerTime >= 0.25f)
+                {
+                    //raiseTowerTime -= 0.05f;
+                }
+                i++;
+            }
         }
        
     }
+
+
+
     //Move Level direction - clockwise by default
     public void LevelMove(int levelIndex, bool direction = false)
     {
@@ -286,9 +223,8 @@ public class LevelManager : Singleton<LevelManager>
     //Move level around  default - CLOCKWISE (LEFT)
     public IEnumerator LevelMoveRotate(int level, float levelAngle, bool righDirection = false)
     {
-        yield return new WaitForSeconds(0.1f);
-        //Debug.Log(">>FOLLOW ROTATE ");
-        //Debug.Log("FOLLOWING");
+        //yield return new WaitForSeconds(0.1f);
+        
         float tempAngle = levelAngle;
         //number of turns
         int turnCount = Random.Range(1, 2);
@@ -353,7 +289,7 @@ public class LevelManager : Singleton<LevelManager>
     //Rotate a level to next position clockwise (right == false) or ccw (right == true)
     public IEnumerator StopCircLerp(Transform cart, Transform dest, float fFraction, bool right = false)
     {
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
         float debugTime = Time.time;
         float rotAngle=0; /*= dest.localRotation.y - cart.localRotation.y;*/
 
@@ -468,7 +404,7 @@ public class LevelManager : Singleton<LevelManager>
         RotationProgress = false;
     }
 
-
+    // For tower movement *NOT USED*
     private void UpdateInput()
     {
         //
@@ -541,27 +477,15 @@ public class LevelManager : Singleton<LevelManager>
                 startPosition = Input.mousePosition;
 
             }
-            //else if (Input.GetMouseButtonUp(0) && (moveX < minSwipeDistX))
-            //{
-            //    if (SwipeManager.Instance.Direction == SwipeDirection.Down)
-            //    {
-            //        level++;
-            //    }
-            //    else if (SwipeManager.Instance.Direction == SwipeDirection.Up)
-            //    {
-            //        level--;
-            //    }
-            //}
+           
         }
-        //if(currentAngleSpeed == 0)
-        //{
-
-        //}
+     
     }
 
 
     public float raiseDuration = 0.2f;
 
+    //Destroy a single level
     public void RaiseTower()
     {
 
@@ -576,7 +500,7 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-
+    //Raise tower enum
     public IEnumerator StopRaiseTower(Transform child, Vector3 toDesto, float duration = 0.2f)
     {
 
@@ -613,7 +537,7 @@ public class LevelManager : Singleton<LevelManager>
      
     }
 
-
+    //For pizzaz
     public IEnumerator TiDi(float timeDelay)
     {
         Time.timeScale = 0;
@@ -651,9 +575,6 @@ public class LevelManager : Singleton<LevelManager>
         return null;
 
     }
-
-
-        //}
 
     //Get reference to object hit by ray with tag
     public List<GameObject> ScanCarts(Transform origin, string obj)
@@ -717,69 +638,11 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-   
-
-    ////Rotate planet
-    //void OnMouseDrag()
-    //{
-
-
-
-    //    float rotY = Input.GetAxis("Mouse Y");
-
-    //    if (Input.touchCount > 0)
-    //    {
-    //        rotY = Input.touches[0].deltaPosition.y;
-
-    //    }
-
-    //    Debug.Log("REEE " + rotY + " : " + Input.GetAxis("Mouse Y") + " = " + rotSpeed);
-
-    //    //if (rotX > rotResistance)
-    //    //{
-    //    //    cameraHolder.transform.Rotate(Vector3.up, rotX, Space.Self);
-    //    //}
-
-
-    //    //Scroll camera and elevator
-    //    if (Mathf.Abs(rotY) > 3)
-    //        transform.position += new Vector3(0,  rotY * rotSpeed / 10000, 0);
-    //    //elevatorHolder.transform.position += new Vector3(0, -rotX / 120f, 0);
-
-
-    //}
-
+  
+    
     public float rotSpeed = 20;
     public float scrollSpeed = 2;
     public float rotResistance = 5000;
-
-    ////Scroll towerf planet
-    //void OnMouseDrag()
-    //{
-    //    if (!LevelMoveTrigger)
-    //    {
-
-    //        float rotX = Input.GetAxis("Mouse X") * rotSpeed * Mathf.Deg2Rad;
-    //        float rotY = Input.GetAxis("Mouse Y") * scrollSpeed;
-    //        if (Input.touchCount > 0)
-    //        {
-    //            rotX = Input.touches[0].deltaPosition.x;
-    //            rotY = Input.touches[0].deltaPosition.y;
-    //        }
-
-    //        //Debug.Log("REEE " + rotX + " : " + Input.GetAxis("Mouse Y") + " = " + scrollSpeed);
-
-    //        //if (rotX > rotResistance)
-    //        //{
-    //        //    transform.Rotate(Vector3.up, rotX, Space.Self);
-    //        //}
-
-    //        //Scroll camera and elevator
-    //        transform.position += new Vector3(0, rotY / 10f, 0);
-    //        //transform.position += new Vector3(0, -rotY / 120f, 0);
-    //        Debug.Log(rotY);
-    //    }
-    //}
 
 
 }
