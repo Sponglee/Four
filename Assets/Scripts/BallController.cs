@@ -33,35 +33,19 @@ public class BallController : Singleton<BallController>
 
         set
         {
-          
-            if (value == true)
+
+            forcePush = value;
+            if(value == true)
             {
-                //Jump only if changes state
-                if(forcePush != value)
-                {
-
-                    gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
-                }
-
-                forcePush = value;
-
-
-                //gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * 30;
-
+               
             }
             else
             {
-                StartCoroutine(StopForceBool());
+                //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
         }
     }
 
-    public IEnumerator StopForceBool()
-    {
-        yield return new WaitForSeconds(0.5f);
-        if(!Input.GetMouseButton(0))
-            forcePush = false;
-    }
    
 
     [SerializeField]
@@ -102,27 +86,34 @@ public class BallController : Singleton<BallController>
         LevelManager.Instance.ballRef = this;
     }
 
+    [SerializeField]
+    private float forceMultiplier = 13;
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)
+        if (Input.GetMouseButton(0)
            && !LevelManager.Instance.RotationProgress
                && !LevelManager.Instance.SpawnInProgress
                    && !LevelManager.Instance.LevelMoveProgress && SwipeManager.Instance.IsSwiping(SwipeDirection.None)/*&& spawnTimer <= 0*/)
         {
             
             ForcePush = true;
+            forceMultiplier += 1;
+            forceMultiplier = Mathf.Clamp(forceMultiplier, 0,30);
+            gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            forceMultiplier = 13;
             //LevelManager.Instance.StartLevelMove(CurrentLevel);
             if (SpawnManager.Instance.gameMode)
             {
                 ForcePush = false;
-
+                //gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
             }
             else
             {
-                gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
+                ForcePush = false;
+                //gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
             }
         }
     }
@@ -140,165 +131,33 @@ public class BallController : Singleton<BallController>
     //Process a collision
     private void OnCollisionEnter(Collision other)
     {
-        //Collision with steel carts to the left or to the right
-        //Debug.Log( CurrentLevel + ">>>" + other.transform.parent.parent.parent.parent.GetSiblingIndex() + " (" + other.transform.name  + ")");
-        if (other.gameObject.CompareTag("Steel") && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
+        //Debug.Log("COLLIDED " + this.tag);
+        //Collision with steel carts or cart carts that are to the left or to the right
+        if (other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart") && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
         {
-            Debug.Log("Ball " + transform.position);
-            Debug.Log("Cart " + other.transform.position);
-            if(other.transform.position.x >= transform.position.x)
+            if (CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
             {
-                LevelManager.Instance.LevelMove(CurrentLevel,true);
+                Debug.Log("Ball " + transform.position);
+                Debug.Log("Cart " + other.transform.position);
+                if (other.transform.position.x >= transform.position.x)
+                {
+                    LevelManager.Instance.LevelMove(CurrentLevel, true);
+                }
+                else
+                {
+                    LevelManager.Instance.LevelMove(CurrentLevel, false);
+                }
+                return;
             }
-            else
-            {
-                LevelManager.Instance.LevelMove(CurrentLevel,false);
-            }
-            return;
+              
         }
         //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
         if (other.gameObject.CompareTag("Cart")  || other.gameObject.CompareTag("Steel"))
         {
             if (ForcePush && !CollidedBool)
             {
-                
-                //Debug.Log("SHIKARI");
-                CollidedBool = true;
-                if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
-                {
-                    //Check if other is in the same column if secon hit 
-                    if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
-                    {
-                        //Debug.Log("REE");
-                        return;
-                    }
 
-                    //Replace other with blank
-                    GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
-                    //Debug.Log(other.transform.parent.parent.name);
-                    Transform tmpBlankParent = other.transform.parent.parent;
-                    //int otherIndex = other.transform.parent.GetSiblingIndex();
-
-                    //remember which level other cart is on 
-                    //int detatchLevel = other.transform.parent.parent.parent.parent.GetSiblingIndex();
-
-
-                    //DETACH and set new sibling indexes
-                    other.transform.parent.SetParent(null);
-
-                    //Set blank orientation
-                    tmpBlank.transform.SetParent(tmpBlankParent);
-                    tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
-                    tmpBlank.transform.position = other.transform.parent.position;
-                    tmpBlank.transform.rotation = other.transform.parent.rotation;
-
-                    //SCORE
-                    GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, gameObject.transform);
-
-                    //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
-                    tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
-
-                    //Second cart pop sequence
-                    other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                    other.gameObject.GetComponent<CapsuleCollider>().enabled = false;
-                    Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-                    rb.constraints = RigidbodyConstraints.None;
-                    rb.useGravity = true;
-                    rb.velocity = new Vector3(Random.Range(-20f, 20f), 50f, -50f);
-                    rb.AddRelativeTorque(new Vector3(5000f, 0, 0));
-
-                    //Get some effects 
-                    Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
-                    //For pizzaz
-                    //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
-
-                    //Second cart below check for color - if not the same - pop Spawn out
-                    GameObject tmpRay = DownCheckRay(other.transform);
-
-                    //If there's not same color below
-                    if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
-                    {
-                        //Debug.Log("REEEEETATCH");
-                        ////destroy holder if no dollys
-                        ////DETACH
-                        //transform.parent.SetParent(null);
-                        //gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                        //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                        //tmprb.constraints = RigidbodyConstraints.None;
-                        //tmprb.useGravity = true;
-                        //tmprb.velocity = new Vector3(0, 10f, -50f);
-                        //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-
-                    }
-                    //Enable next cart collision
-                    else if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
-                    {
-                        //Debug.Log("NEXT");
-                        CollidedBool = false;
-                        CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
-                        //SecondCollision = true;
-                    }
-                    //Detatch spawn if it hit last level (prevent bottom cart bug)
-                    //if (tmpRay == null && detatchLevel == LevelManager.Instance.levelCount - 2)
-                    else
-                    {
-                        ////Debug.Log("REEEEETATCH");
-                        ////destroy holder if no dollys
-                        ////DETACH
-                        //transform.parent.SetParent(null);
-                        //gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                        //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                        //tmprb.constraints = RigidbodyConstraints.None;
-                        //tmprb.useGravity = true;
-                        //tmprb.velocity = new Vector3(0, 10f, -50f);
-                        //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-                    }
-
-                }
-                //If not the same color
-                else if (other.transform.parent != null)
-                {
-                    //If this cart was going to go through same color twice- just pop it without sticking
-                    if (SecondCollision)
-                    {
-                        ////DETACH
-                        //gameObject.GetComponent<BoxCollider>().isTrigger = true;
-                        //Rigidbody tmprb = gameObject.GetComponent<Rigidbody>();
-                        //tmprb.constraints = RigidbodyConstraints.None;
-                        //tmprb.useGravity = true;
-                        //tmprb.velocity = new Vector3(0, 0, -50f);
-                        //tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-                        return;
-                    }
-
-                    //get index of levelHolder above
-                    int levelIndex = other.transform.parent.parent.parent.parent.GetSiblingIndex();
-                    //Debug.Log("LEVEL " + levelIndex);
-                    if (levelIndex >= 1)
-                    {
-                        if (false/*stickRay != null  && !ReferenceEquals(gameObject, stickRay)*/)
-                        {
-                            CollidedBool = false;
-                            //SecondCollision = true;
-                            return;
-                        }
-                        else
-                        {
-
-                            //Debug.Log("Sticking levelIndex: " + levelIndex);
-                            //StickCart(other, levelIndex);
-                            //LevelManager.Instance.StartLevelMove(CurrentLevel);
-                        }
-
-                    }
-                    else
-                    {
-                        FunctionHandler.Instance.OpenGameOver("GAME OVER");
-
-                        //SCORE
-                        GameManager.Instance.Score = 0;
-                    }
-                }
+                PushDown(other);
             }
         }
         else if (other.gameObject.CompareTag("Bottom"))
@@ -307,6 +166,84 @@ public class BallController : Singleton<BallController>
         }
     }
 
+
+    public void PushDown(Collision other)
+    {
+       
+        //Debug.Log("SHIKARI");
+        CollidedBool = true;
+        if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
+        {
+            ForcePush = false;
+            //Check if other is in the same column if secon hit 
+            if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
+            {
+                //Debug.Log("REE");
+                return;
+            }
+
+            //Replace other with blank
+            GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
+            //Debug.Log(other.transform.parent.parent.name);
+            Transform tmpBlankParent = other.transform.parent.parent;
+        
+            //DETACH and set new sibling indexes
+            other.transform.parent.SetParent(null);
+
+            //Set blank orientation
+            tmpBlank.transform.SetParent(tmpBlankParent);
+            tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
+            tmpBlank.transform.position = other.transform.parent.position;
+            tmpBlank.transform.rotation = other.transform.parent.rotation;
+            //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
+            tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+
+
+
+            //Second cart pop sequence
+            other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+            other.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+            rb.constraints = RigidbodyConstraints.None;
+            rb.useGravity = true;
+            rb.velocity = new Vector3(Random.Range(-20f, 20f), 50f, -50f);
+            rb.AddRelativeTorque(new Vector3(5000f, 0, 0));
+            //Get some effects 
+            Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+
+            //For pizzaz
+            //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
+
+            //SCORE
+            GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, gameObject.transform);
+            //Second cart below check for color - if not the same - pop Spawn out
+            GameObject tmpRay = DownCheckRay(other.transform);
+
+            if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
+            {
+                //Debug.Log("NEXT");
+                CollidedBool = false;
+                CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
+               //SecondCollision = true;
+            }
+
+
+        }
+        //If not the same color
+        else if (other.transform.parent != null && other.gameObject.CompareTag("Cart"))
+        {
+            //CollidedBool = false;
+            if(ForcePush)
+            {
+                gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
+                ForcePush = false;
+                PushDown(other);
+                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+
+
+        }
+    }
 
     //Get reference to object hit by ray with tag
     private GameObject DownCheckRay(Transform origin, string obj = "")

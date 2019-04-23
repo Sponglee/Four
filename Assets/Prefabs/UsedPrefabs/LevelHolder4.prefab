@@ -73,6 +73,7 @@ MonoBehaviour:
   canvasIdentifier: {fileID: 0}
   spawnMats:
   - {fileID: 2100000, guid: 97f3a0a0a565e2b48bfd8ddee873c094, type: 2}
+  - {fileID: 2100000, guid: ee9eb124182f97241bcfc5b248738b04, type: 2}
   - {fileID: 2100000, guid: 7d0d3b97bce09f54d94f06ff78450f9e, type: 2}
   NoDollysBool: 0
 --- !u!1 &1329093880384416

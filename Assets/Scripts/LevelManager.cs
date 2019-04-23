@@ -207,7 +207,7 @@ public class LevelManager : Singleton<LevelManager>
         if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
         {
             GameManager.Instance.ComboActive = false;
-            GameManager.Instance.Multiplier = 1;
+            //GameManager.Instance.Multiplier = 1;
             LevelMoveProgress = true;
             StartCoroutine(LevelMoveRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
         }

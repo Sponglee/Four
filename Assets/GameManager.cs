@@ -159,12 +159,13 @@ public class GameManager : Singleton<GameManager>
             {
                 //Debug.Log("SAMECOLOR");
                 comboCount++;
+                Multiplier++;
             }
             else
             {
                 comboColor = color;
                 comboCount= 1;
-                Multiplier++;
+                Multiplier = 1;
             }
         }
 
