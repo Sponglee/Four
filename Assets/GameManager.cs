@@ -119,10 +119,10 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        Score = PlayerPrefs.GetInt("Score",0);
+        Score = PlayerPrefs.GetInt("Score", 0);
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
 
-        if(score >= bestScore)
+        if (score >= bestScore)
         {
             bestText.gameObject.SetActive(false);
            
@@ -132,6 +132,7 @@ public class GameManager : Singleton<GameManager>
             bestText.text = bestScore.ToString();
         }
 
+        Score = 0;
         LevelProgress = 0;
         CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
     }

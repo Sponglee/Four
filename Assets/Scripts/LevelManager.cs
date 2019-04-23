@@ -81,7 +81,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
-        levelCount = PlayerPrefs.GetInt("LevelCount", 5);
+        levelCount = PlayerPrefs.GetInt("LevelCount", 15);
       
         //Start Destruction of levels
         //StartCoroutine(LevelTimer());
@@ -112,7 +112,7 @@ public class LevelManager : Singleton<LevelManager>
         {
 
             //If cart was pressed
-            if (LevelMoveTrigger)
+            if (LevelMoveTrigger/* && !ballRef.ForcePush*/)
             {
                 //Move level left
                 if (SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
@@ -206,7 +206,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
         {
-            GameManager.Instance.ComboActive = false;
+            //GameManager.Instance.ComboActive = false;
             //GameManager.Instance.Multiplier = 1;
             LevelMoveProgress = true;
             StartCoroutine(LevelMoveRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));

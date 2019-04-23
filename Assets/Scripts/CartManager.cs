@@ -64,7 +64,7 @@ public class CartManager : MonoBehaviour
 
 
 
-        if (!gameObject.CompareTag("Spawn") )
+        if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
         {
             int index = 0;
 

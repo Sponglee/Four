@@ -87,8 +87,10 @@ public class BallController : Singleton<BallController>
     }
 
     [SerializeField]
-    private float forceMultiplier = 13;
-    private void Update()
+    private float forceMultiplier = 10;
+    public float forceTreshold = 20f;
+    public Vector3 downVelocity = Vector3.down*13f;
+    private void FixedUpdate()
     {
         if (Input.GetMouseButton(0)
            && !LevelManager.Instance.RotationProgress
@@ -96,25 +98,24 @@ public class BallController : Singleton<BallController>
                    && !LevelManager.Instance.LevelMoveProgress && SwipeManager.Instance.IsSwiping(SwipeDirection.None)/*&& spawnTimer <= 0*/)
         {
             
-            ForcePush = true;
+            
             forceMultiplier += 1;
             forceMultiplier = Mathf.Clamp(forceMultiplier, 0,30);
             gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            forceMultiplier = 13;
-            //LevelManager.Instance.StartLevelMove(CurrentLevel);
-            if (SpawnManager.Instance.gameMode)
+            if(forceMultiplier>= forceTreshold)
             {
-                ForcePush = false;
-                //gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
+                ForcePush = true;
             }
             else
             {
                 ForcePush = false;
-                //gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 50);
             }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            forceMultiplier = 10;
+            ForcePush = false;
+            gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
         }
     }
 
@@ -131,11 +132,11 @@ public class BallController : Singleton<BallController>
     //Process a collision
     private void OnCollisionEnter(Collision other)
     {
-        //Debug.Log("COLLIDED " + this.tag);
+        Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
-        if (other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart") && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
+        if ((other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
         {
-            if (CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
+            if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
             {
                 Debug.Log("Ball " + transform.position);
                 Debug.Log("Cart " + other.transform.position);
@@ -163,6 +164,7 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("Bottom"))
         {
             FunctionHandler.Instance.OpenGameOver("YOU WIN");
+            PlayerPrefs.SetInt("LevelCount", PlayerPrefs.GetInt("LevelCount", 15) + 5);
         }
     }
 
@@ -178,7 +180,7 @@ public class BallController : Singleton<BallController>
             //Check if other is in the same column if secon hit 
             if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
             {
-                //Debug.Log("REE");
+                Debug.Log("REE");
                 return;
             }
 
@@ -221,10 +223,16 @@ public class BallController : Singleton<BallController>
 
             if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
             {
-                //Debug.Log("NEXT");
+                Debug.Log("NEXT");
                 CollidedBool = false;
                 CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
                //SecondCollision = true;
+            }
+            else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
+            {
+                Debug.Log("HEREERERERERERERER");
+                ForcePush = false;
+                forceMultiplier = 5;
             }
 
 
@@ -235,10 +243,10 @@ public class BallController : Singleton<BallController>
             //CollidedBool = false;
             if(ForcePush)
             {
+              //ForcePush = false;
                 gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
-                ForcePush = false;
                 PushDown(other);
-                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
             }
 
 

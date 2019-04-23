@@ -191,6 +191,7 @@ MonoBehaviour:
   SecondCollision: 0
   collidedBool: 0
   forceMultiplier: 0
+  forceTreshold: 20
 --- !u!135 &8960532622689904156
 SphereCollider:
   m_ObjectHideFlags: 0

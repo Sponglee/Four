@@ -118,6 +118,7 @@ public class SpawnManager : Singleton<SpawnManager>
             {
 
                 FunctionHandler.Instance.OpenGameOver("YOU WIN");
+               
                 yield break;
             }
             //Last level helper
@@ -223,6 +224,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         //Follow camera to a ball
         vcam.m_Follow = tmpCart.transform.GetChild(0);
+        vcam.m_LookAt = tmpCart.transform.GetChild(0);
     }
 
     
