@@ -2177,6 +2177,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114349600795921836, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: spawnMats.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 97f3a0a0a565e2b48bfd8ddee873c094, type: 2}
+    - target: {fileID: 114349600795921836, guid: dbcc59e4fdb02b44999c4aa86140d884,
+        type: 3}
+      propertyPath: spawnMats.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 610192e893f67824282de753ea7bee69, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbcc59e4fdb02b44999c4aa86140d884, type: 3}
 --- !u!1 &1100402873

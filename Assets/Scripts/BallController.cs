@@ -244,8 +244,8 @@ public class BallController : Singleton<BallController>
             if(ForcePush)
             {
               //ForcePush = false;
-                gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
-                PushDown(other);
+                //gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
+                //PushDown(other);
                 gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
             }
 

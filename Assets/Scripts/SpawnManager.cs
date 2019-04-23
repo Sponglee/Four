@@ -103,108 +103,109 @@ public class SpawnManager : Singleton<SpawnManager>
         //}
          //spawnCartManager.spawnInProgress = false;
 
-        spawnCartManager.colorHelper.Clear();
-        //set random spawn color\
-        List<GameObject> spawnChecks = new List<GameObject>();
-        spawnChecks = LevelManager.Instance.ScanCarts(LevelManager.Instance.transform, "Cart");
+        ///////////////////////////////////////////////////////////////////////////////////////////////////SPAWN HELER
+        //spawnCartManager.colorHelper.Clear();
+        ////set random spawn color\
+        //List<GameObject> spawnChecks = new List<GameObject>();
+        //spawnChecks = LevelManager.Instance.ScanCarts(LevelManager.Instance.transform, "Cart");
 
-        //Debug.Log(spawnChecks.Count);
-        //Debug.Log(spawnCheck.name);
-        if (spawnChecks != null)
-        {
+        ////Debug.Log(spawnChecks.Count);
+        ////Debug.Log(spawnCheck.name);
+        //if (spawnChecks != null)
+        //{
            
-            //GAME OVER CHECK
-            if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
-            {
+        //    //GAME OVER CHECK
+        //    if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Bottom"))
+        //    {
 
-                FunctionHandler.Instance.OpenGameOver("YOU WIN");
+        //        FunctionHandler.Instance.OpenGameOver("YOU WIN");
                
-                yield break;
-            }
-            //Last level helper
-            else if (LevelManager.Instance.transform.GetChild(1).GetChild(0).CompareTag("Bottom"))
-            {
-                //Debug.Log("LAST LEVEL HELPER");
-                foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
-                {
+        //        yield break;
+        //    }
+        //    //Last level helper
+        //    else if (LevelManager.Instance.transform.GetChild(1).GetChild(0).CompareTag("Bottom"))
+        //    {
+        //        //Debug.Log("LAST LEVEL HELPER");
+        //        foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+        //        {
                     
-                    if (!dolly.GetChild(0).CompareTag("Blank") && !dolly.GetChild(0).CompareTag("Steel"))
-                    {
-                        //Debug.Log(dolly.GetChild(0).GetChild(0).name + " HELPER");
-                        //Grab material from cart
-                        spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color);
+        //            if (!dolly.GetChild(0).CompareTag("Blank") && !dolly.GetChild(0).CompareTag("Steel"))
+        //            {
+        //                //Debug.Log(dolly.GetChild(0).GetChild(0).name + " HELPER");
+        //                //Grab material from cart
+        //                spawnCartManager.colorHelper.Add(dolly.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color);
 
-                    }
+        //            }
 
-                }
-                spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
-                spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-            }
-            else 
-            {
-                //Debug.Log(" YEEEE " + spawnChecks.Count);
-                foreach (GameObject spawnCheck in spawnChecks)
-                {
-                    //Debug.Log("POINK " + spawnCheck.name);
-                    if (spawnCheck/* && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0*/)
-                    {
-                        //Debug.Log("FIRST LEVEL");
-                        //if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
-                        if (spawnCheck.CompareTag("Cart") /*|| spawnCheck.CompareTag("Steel")*/)
-                        {
-                            //Debug.Log("HELPER ENABLED");
-                            //First level Helper
-                            if (true /*CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) >= 0*/)
-                            {
-                                //Debug.Log("4 dollys");
-                                //foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
-                                //{
-                                    //Debug.Log("HELPER");
-                                    if (spawnCheck.CompareTag("Cart"))
-                                    {
-                                        //**************************************
-                                        spawnCartManager.colorHelper.Add(spawnCheck.GetComponent<Renderer>().material.color);
-                                    }
-                                    else
-                                    {
-                                        //spawnCartManager.colorHelper.Add(spawnCartManager.colorHelper[spawnCartManager.colorHelper.Count-1]);
-                                    }
+        //        }
+        //        spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+        //        spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //    }
+        //    else 
+        //    {
+        //        //Debug.Log(" YEEEE " + spawnChecks.Count);
+        //        foreach (GameObject spawnCheck in spawnChecks)
+        //        {
+        //            //Debug.Log("POINK " + spawnCheck.name);
+        //            if (spawnCheck/* && spawnCheck.transform.parent.parent.parent.GetSiblingIndex() == 0*/)
+        //            {
+        //                //Debug.Log("FIRST LEVEL");
+        //                //if (LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Cart") || LevelManager.Instance.transform.GetChild(0).GetChild(0).CompareTag("Steel"))
+        //                if (spawnCheck.CompareTag("Cart") /*|| spawnCheck.CompareTag("Steel")*/)
+        //                {
+        //                    //Debug.Log("HELPER ENABLED");
+        //                    //First level Helper
+        //                    if (true /*CheckDollyCount(LevelManager.Instance.transform.GetChild(0).GetChild(0)) >= 0*/)
+        //                    {
+        //                        //Debug.Log("4 dollys");
+        //                        //foreach (Transform dolly in LevelManager.Instance.transform.GetChild(0).GetChild(0))
+        //                        //{
+        //                            //Debug.Log("HELPER");
+        //                            if (spawnCheck.CompareTag("Cart"))
+        //                            {
+        //                                //**************************************
+        //                                spawnCartManager.colorHelper.Add(spawnCheck.GetComponent<Renderer>().material.color);
+        //                            }
+        //                            else
+        //                            {
+        //                                //spawnCartManager.colorHelper.Add(spawnCartManager.colorHelper[spawnCartManager.colorHelper.Count-1]);
+        //                            }
 
 
-                                //}
+        //                        //}
                               
-                            }
+        //                    }
                            
-                        }
-                    }
-                }
+        //                }
+        //            }
+        //        }
 
-                //If colorHelper was populated - use it to spawn
-                if(spawnCartManager.colorHelper.Count == 0)
-                {
-                    //Debug.Log("RANDOM COLOR");
-                    spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
-                    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-                }
-                else
-                {
-                    spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
-                    spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
-                }
+        //        //If colorHelper was populated - use it to spawn
+        //        if(spawnCartManager.colorHelper.Count == 0)
+        //        {
+        //            //Debug.Log("RANDOM COLOR");
+        //            spawnCartManager.spawnMatRandomColor = spawnCartManager.spawnMats[Random.Range(0, spawnCartManager.spawnMats.Length)].color;
+        //            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //        }
+        //        else
+        //        {
+        //            spawnCartManager.spawnMatRandomColor = spawnCartManager.colorHelper[Random.Range(0, spawnCartManager.colorHelper.Count)];
+        //            spawnCartManager.canvasIdentifier.color = spawnCartManager.spawnMatRandomColor;
+        //        }
 
 
-            }
+        //    }
            
 
 
-        }
+        //}
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        spawnCartManager.spawnMatRandomColor = transform.GetChild(0).GetComponent<CartManager>().spawnMats[0].color ;
 
 
 
-
-
-
-
+        
         //spawn cart prefab, set random position
         tmpCart = Instantiate(spawnCartManager.spawnPrefab, spawnCartManager.transform.GetChild(0));
         spawnCartManager.spawnObject = tmpCart;
