@@ -45,9 +45,9 @@ public class CartManager : MonoBehaviour
     public Color spawnMatRandomColor;
     public float spawnTimer;
     public float spawnDuration = 0.5f;
-
+    public Material[] spawnMatsRef;
     public Image canvasIdentifier;
-    public Material[] spawnMats;
+
 
     //for RaiseTower check if no carts
     public bool NoDollysBool = false;
@@ -58,10 +58,9 @@ public class CartManager : MonoBehaviour
     private void Start()
     {
 
-        spawnManagerRef = SpawnManager.Instance.spawnCartManager;
+        //spawnManagerRef = SpawnManager.Instance.spawnCartManager;
         colorHelper = new List<Color>();
-
-
+        spawnMatsRef = LevelManager.Instance.spawnMats;
 
 
         if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
@@ -90,7 +89,7 @@ public class CartManager : MonoBehaviour
 
                 int materialRandomizer;
                 //Check if it's required Cart- don't include steel mat
-                materialRandomizer = i == requiredCart ? 0 : Random.Range(0,spawnMats.Length);
+                materialRandomizer = i == requiredCart ? 0 : Random.Range(1,spawnMatsRef.Length);
                 
 
                 //If randomizer proc or this is a required cart
@@ -99,7 +98,7 @@ public class CartManager : MonoBehaviour
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
                     //check if it's steel
-                    if(materialRandomizer == spawnMats.Length - 1)
+                    if(materialRandomizer == 0)
                     {
                         
                         tmpCart.tag = "Steel";
@@ -107,7 +106,7 @@ public class CartManager : MonoBehaviour
                     }
 
                     //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMats[materialRandomizer];
+                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
 
                     //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
@@ -335,96 +334,96 @@ public class CartManager : MonoBehaviour
     //Check for more than 3
     public void HorizontalCheck(Color checkColor, int levelIndex)
     {
-        StartCoroutine(StopHorizontalCheck(checkColor, levelIndex));
+        //StartCoroutine(StopHorizontalCheck(checkColor, levelIndex));
     }
 
-    public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
-    {
-        yield return new WaitForSecondsRealtime(0.15f);
-        //Debug.Log(">>HORIZONTAL ");
-        int color = 0;
-        //Find object named Spawn for reference
-        CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
-        List<GameObject> checkedCarts;
-        checkedCarts = new List<GameObject>();
+    //public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
+    //{
+    //    yield return new WaitForSecondsRealtime(0.15f);
+    //    //Debug.Log(">>HORIZONTAL ");
+    //    int color = 0;
+    //    //Find object named Spawn for reference
+    //    //CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
+    //    List<GameObject> checkedCarts;
+    //    checkedCarts = new List<GameObject>();
 
 
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            //Debug.Log("I " + i + " : " + transform.childCount);
-            if (transform.GetChild(i).GetChild(0).gameObject.CompareTag("Cart"))
-            {
-                if (transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Renderer>().material.color
-                    == spawnColorsRef.spawnMatRandomColor)
-                {
-                    //Add cart to list
-                    checkedCarts.Add(transform.GetChild(i).GetChild(0).GetChild(0).gameObject);
-                    color++;
-                }
+    //    for (int i = 0; i < transform.childCount; i++)
+    //    {
+    //        //Debug.Log("I " + i + " : " + transform.childCount);
+    //        if (transform.GetChild(i).GetChild(0).gameObject.CompareTag("Cart"))
+    //        {
+    //            if (transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Renderer>().material.color
+    //                == spawnColorsRef.spawnMatRandomColor)
+    //            {
+    //                //Add cart to list
+    //                checkedCarts.Add(transform.GetChild(i).GetChild(0).GetChild(0).gameObject);
+    //                color++;
+    //            }
 
 
-                //Debug.Log("Checking " + i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
-            }
-        }
+    //            //Debug.Log("Checking " + i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
+    //        }
+    //    }
 
-        if (color >= 3)
-        {
-            //Debug.Log("MORE THAN 3");
-            foreach (GameObject go in checkedCarts)
-            {
-                //Get some effects at effect position (1st child)
-                Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
+    //    if (color >= 3)
+    //    {
+    //        //Debug.Log("MORE THAN 3");
+    //        foreach (GameObject go in checkedCarts)
+    //        {
+    //            //Get some effects at effect position (1st child)
+    //            Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
                 
-                GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, go.transform.parent.parent);
-                tmpBlank.transform.SetSiblingIndex(1);
-                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetSiblingIndex();
+    //            GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, go.transform.parent.parent);
+    //            tmpBlank.transform.SetSiblingIndex(1);
+    //            tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetSiblingIndex();
 
-                tmpBlank.transform.position = go.transform.parent.transform.position;
-                tmpBlank.transform.rotation = go.transform.parent.transform.rotation;
+    //            tmpBlank.transform.position = go.transform.parent.transform.position;
+    //            tmpBlank.transform.rotation = go.transform.parent.transform.rotation;
 
-                go.transform.parent.SetParent(null);
-                go.GetComponent<BoxCollider>().isTrigger = true;
-                Rigidbody tmprb = go.GetComponent<Rigidbody>();
-                tmprb.constraints = RigidbodyConstraints.None;
-                tmprb.useGravity = true;
-                tmprb.AddRelativeForce(new Vector3(0, 100f, 0));
-                tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-                go.tag = "Untagged";
+    //            go.transform.parent.SetParent(null);
+    //            go.GetComponent<BoxCollider>().isTrigger = true;
+    //            Rigidbody tmprb = go.GetComponent<Rigidbody>();
+    //            tmprb.constraints = RigidbodyConstraints.None;
+    //            tmprb.useGravity = true;
+    //            tmprb.AddRelativeForce(new Vector3(0, 100f, 0));
+    //            tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
+    //            go.tag = "Untagged";
 
-                //Debug.Log("CH CRTS");
-                CheckCarts();
+    //            //Debug.Log("CH CRTS");
+    //            CheckCarts();
 
                
 
-            }
-            //SCORE
-            GameManager.Instance.Score += 5 * color;
+    //        }
+    //        //SCORE
+    //        GameManager.Instance.Score += 5 * color;
 
-            checkedCarts.Clear();
-        }
-        else
-        {
-            //int tmpRange = Random.Range(0, 2);
-            //if(tmpRange==0)
-            //{
-            //    //Rotate the lower level
-            //    LevelManager.Instance.LevelMove(levelIndex);
-            //}
-            //else
-            //{
-            //    //Rotate the lower level
-            //    LevelManager.Instance.LevelMove(levelIndex, true);
-            //}
+    //        checkedCarts.Clear();
+    //    }
+    //    else
+    //    {
+    //        //int tmpRange = Random.Range(0, 2);
+    //        //if(tmpRange==0)
+    //        //{
+    //        //    //Rotate the lower level
+    //        //    LevelManager.Instance.LevelMove(levelIndex);
+    //        //}
+    //        //else
+    //        //{
+    //        //    //Rotate the lower level
+    //        //    LevelManager.Instance.LevelMove(levelIndex, true);
+    //        //}
             
-        }
+    //    }
 
 
 
-        //GetNew spawn ready
-        if (!spawnManagerRef.spawnedBool)
-        {
-            //SpawnManager.Instance.Spawn();
-            //Debug.Log("NANI");
-        }
-    }
+    //    //GetNew spawn ready
+    //    if (!spawnManagerRef.spawnedBool)
+    //    {
+    //        //SpawnManager.Instance.Spawn();
+    //        //Debug.Log("NANI");
+    //    }
+    //}
 }

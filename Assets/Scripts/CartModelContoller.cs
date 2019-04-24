@@ -86,7 +86,7 @@ public class CartModelContoller : MonoBehaviour
         GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(newCurrent).transform);
         //Set material and orientation
         tmpCart.transform.SetSiblingIndex(0);
-        tmpCart.transform.GetComponentInChildren<Renderer>().material.color = SpawnManager.Instance.spawnCartManager.spawnMatRandomColor;
+        tmpCart.transform.GetComponentInChildren<Renderer>().material.color = SpawnManager.Instance.spawnMatRandomColor;
         tmpCart.transform.position = LevelManager.Instance.gameObject.transform.GetChild(levelIndex - 1).GetChild(0).GetChild(newCurrent).position;
         tmpCart.transform.rotation = tmpCart.transform.parent.rotation;
         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = newCurrent;

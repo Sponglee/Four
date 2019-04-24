@@ -13,9 +13,11 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
     public GameObject cartPrefab;
-    public float spawnOffset = 35f;
+    public Material[] spawnMatPool;
+    public Material[] spawnMats;
+    public Material towerMat;
+    public float spawnOffset = 0;
     public float spawnOffsetStep = 5f;
-
     [SerializeField]
     private int level = -2;
     public int Level
@@ -81,6 +83,14 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
+        spawnMats = new Material[3];
+
+        spawnMats[0] = Instance.towerMat;
+        spawnMats[1] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
+        spawnMats[2] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
+
+        //spawnMats[2] = spawnMatPool[0];
+
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
       
         //Start Destruction of levels
