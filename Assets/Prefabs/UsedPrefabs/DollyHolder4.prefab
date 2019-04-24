@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 54321935469522434}
   - component: {fileID: 65132235903708058}
   - component: {fileID: 3200022692149772417}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cart
   m_TagString: Cart
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4385715651048490}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DollyHolder4
   m_TagString: Cart
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4595427554279762}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EffectRef
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,13 +219,13 @@ GameObject:
   m_Component:
   - component: {fileID: 101059644698579662}
   - component: {fileID: 8127315863513970166}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trigger
-  m_TagString: Cart
+  m_TagString: CartTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &101059644698579662
 RectTransform:
   m_ObjectHideFlags: 0

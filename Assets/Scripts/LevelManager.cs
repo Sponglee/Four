@@ -364,7 +364,7 @@ public class LevelManager : Singleton<LevelManager>
 
         //Debug.Log("STOP " + from + " :: " + to);
 
-        Debug.Log("FROM: " + from + " TO: " + to);
+        //Debug.Log("FROM: " + from + " TO: " + to);
         //Quaternion to = from * Quaternion.Euler(0f, 0, angle);
 
         //smooth lerp rotation loop

@@ -93,14 +93,15 @@ public class BallController : Singleton<BallController>
     private void FixedUpdate()
     {
         if (Input.GetMouseButton(0)
-           && !LevelManager.Instance.RotationProgress
-               && !LevelManager.Instance.SpawnInProgress
-                   && !LevelManager.Instance.LevelMoveProgress && SwipeManager.Instance.IsSwiping(SwipeDirection.None)/*&& spawnTimer <= 0*/)
+           //&& !LevelManager.Instance.RotationProgress
+           //    && !LevelManager.Instance.SpawnInProgress
+           //        && !LevelManager.Instance.LevelMoveProgress 
+           && SwipeManager.Instance.IsSwiping(SwipeDirection.None)/*&& spawnTimer <= 0*/)
         {
             
             
             forceMultiplier += 1;
-            forceMultiplier = Mathf.Clamp(forceMultiplier, 0,30);
+            forceMultiplier = Mathf.Clamp(forceMultiplier, 0,50);
             gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
             if(forceMultiplier>= forceTreshold)
             {
@@ -117,8 +118,13 @@ public class BallController : Singleton<BallController>
             ForcePush = false;
             gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
         }
+
+
+
     }
 
+    [SerializeField]
+    private bool WarningCheck = false;
     //Check what level ball is currently on
     private void OnTriggerEnter(Collider other)
     {
@@ -127,19 +133,33 @@ public class BallController : Singleton<BallController>
             //Debug.Log(other.name);
             CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
         }
+        if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
+        {
+            if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
+                WarningCheck = true;
+        }
+           
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.CompareTag("CartTrigger"))
+        {
+            if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
+                WarningCheck = false;
+        }
+    }
     //Process a collision
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log("COLLIDED " + other.gameObject.name);
+        //Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
         if ((other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
         {
             if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
             {
-                Debug.Log("Ball " + transform.position);
-                Debug.Log("Cart " + other.transform.position);
+                //Debug.Log("Ball " + transform.position);
+                //Debug.Log("Cart " + other.transform.position);
                 if (other.transform.position.x >= transform.position.x)
                 {
                     LevelManager.Instance.LevelMove(CurrentLevel, true);
@@ -155,7 +175,7 @@ public class BallController : Singleton<BallController>
         //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
         if (other.gameObject.CompareTag("Cart")  || other.gameObject.CompareTag("Steel"))
         {
-            if (ForcePush && !CollidedBool)
+            if (ForcePush /*&& !CollidedBool*/)
             {
 
                 PushDown(other);
@@ -223,35 +243,82 @@ public class BallController : Singleton<BallController>
 
             if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
             {
-                Debug.Log("NEXT");
+                //Debug.Log("NEXT");
                 CollidedBool = false;
                 CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
                //SecondCollision = true;
             }
-            else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
-            {
-                Debug.Log("HEREERERERERERERER");
-                ForcePush = false;
-                forceMultiplier = 5;
-            }
+            //else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
+            //{
+            //    Debug.Log("HEREERERERERERERER");
+            //    ForcePush = false;
+            //    forceMultiplier = 5;
+            //}
 
 
         }
         //If not the same color
         else if (other.transform.parent != null && other.gameObject.CompareTag("Cart"))
         {
+           
             //CollidedBool = false;
             if(ForcePush)
             {
               //ForcePush = false;
                 //gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
                 //PushDown(other);
+                
                 gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
+                forceMultiplier = 5;
+                ForcePush = false;
+                //Debug.Log("POINK " + ForcePush);
+                
+                if (!warning)
+                {
+                    StopCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.red));
+                    StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.red));
+                }
+                else
+                {
+                    FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                }
+
+                    
+                       
+               
             }
 
+            
 
         }
     }
+
+    [SerializeField]
+    private bool warning = false;
+    private IEnumerator StopColor(Renderer render, Color color)
+    {
+        warning = true;
+        Color initColor = render.material.color;
+        render.material.color = color;
+        //Debug.Log(render.material.color + " >> " + initColor);
+       
+
+        float ElapsedTime = 0.0f;
+        float TotalTime = 0.3f;
+        while (ElapsedTime < TotalTime)
+        {
+            ElapsedTime += Time.deltaTime;
+            render.material.color = Color.Lerp(color, initColor, (ElapsedTime / TotalTime));
+
+            //if (ElapsedTime / TotalTime >= 0.5f)
+
+            yield return null;
+        }
+
+        warning = false;
+        
+    }
+
 
     //Get reference to object hit by ray with tag
     private GameObject DownCheckRay(Transform origin, string obj = "")

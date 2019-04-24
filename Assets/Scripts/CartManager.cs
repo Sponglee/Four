@@ -90,14 +90,7 @@ public class CartManager : MonoBehaviour
 
                 int materialRandomizer;
                 //Check if it's required Cart- don't include steel mat
-                if (i== requiredCart)
-                {
-                    materialRandomizer = 0;/* Random.Range(0, spawnMats.Length-1);*/
-                }
-                else
-                {
-                     materialRandomizer = Random.Range(0, spawnMats.Length);
-                }
+                materialRandomizer = i == requiredCart ? 0 : Random.Range(0,spawnMats.Length);
                 
 
                 //If randomizer proc or this is a required cart

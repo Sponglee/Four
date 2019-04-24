@@ -11,7 +11,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject menuCanvas;
     public GameObject menuButton;
 
-
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
 
     public void OpenGameOver(string message)
     {
@@ -71,16 +74,22 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void CloseGameOver(bool menuClose = false)
     {
+       
         //If menu is already open
-        if(menuCanvas.activeSelf)
+        if (menuCanvas.activeSelf)
         {
-            Time.timeScale = 1;
+            
 
             //GameOver menu close
             if (!menuClose)
+            {
+                Time.timeScale = 1;
+
                 SceneManager.LoadScene("Main");
+            }
             else
-            { 
+            {
+                Time.timeScale = 1;
                 //Disable menu screen
                 menuCanvas.SetActive(false);
                 menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);

@@ -17,6 +17,7 @@ TagManager:
   - Steel
   - MenuCanvas
   - Level
+  - CartTrigger
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - 
   - PostProcessing
   - IgnoreCollision
-  - 
+  - Circles
   - 
   - 
   - 
