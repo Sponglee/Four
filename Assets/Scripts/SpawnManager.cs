@@ -64,7 +64,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
         //spawn cart prefab, set random position
-        tmpCart = Instantiate(spawnPrefab, transform.position, Quaternion.identity);
+        tmpCart = Instantiate(spawnPrefab, transform.position, Quaternion.identity, transform);
 
         //Set material to spawn
         tmpCart.GetComponent<Renderer>().material.color = spawnMatRandomColor;
@@ -74,49 +74,51 @@ public class SpawnManager : Singleton<SpawnManager>
         //Follow camera to a ball
         vcam.m_Follow = tmpCart.transform;
         vcam.m_LookAt = tmpCart.transform;
+
+        DropCart(transform.GetChild(0).gameObject);
     }
 
     
    
   
 
-    //GrabSpawnObj reload for spawn check only
-    public GameObject ScanCarts(Transform origin, string obj, bool SpawnGrab)
-    {
-        RaycastHit hit;
-        Vector3 dir = origin.position + new Vector3(0, -100f, -3f);
+    ////GrabSpawnObj reload for spawn check only
+    //public GameObject ScanCarts(Transform origin, string obj, bool SpawnGrab)
+    //{
+    //    RaycastHit hit;
+    //    Vector3 dir = origin.position + new Vector3(0, -100f, -3f);
 
-        Debug.DrawLine(origin.position + new Vector3(0, -3f, -3f), dir, Color.red, 10f);
+    //    Debug.DrawLine(origin.position + new Vector3(0, -3f, -3f), dir, Color.red, 10f);
 
-        if (Physics.Raycast(origin.position + new Vector3(0, -3f, -3f), -Vector3.up, out hit))
-        {
-            if (hit.transform)
-            {
-                if (hit.transform.gameObject.CompareTag(obj))
-                {
-                    return hit.transform.gameObject;
-                }
-            }
-        }
-        return null;
+    //    if (Physics.Raycast(origin.position + new Vector3(0, -3f, -3f), -Vector3.up, out hit))
+    //    {
+    //        if (hit.transform)
+    //        {
+    //            if (hit.transform.gameObject.CompareTag(obj))
+    //            {
+    //                return hit.transform.gameObject;
+    //            }
+    //        }
+    //    }
+    //    return null;
 
-    }
+    //}
 
 
-    //Check how many carts on the level
-    public int CheckDollyCount(Transform origin)
-    {
-        int dollyCount = 0;
-        for (int i = 0; i < origin.childCount; i++)
-        {
-            //Debug.Log("I " + i + " : " + transform.childCount);
-            if (origin.GetChild(i).gameObject.CompareTag("Cart") || origin.GetChild(i).gameObject.CompareTag("Steel"))
-            {
-                dollyCount++;
-            }
-        }
-        return dollyCount;
-    }
+    ////Check how many carts on the level
+    //public int CheckDollyCount(Transform origin)
+    //{
+    //    int dollyCount = 0;
+    //    for (int i = 0; i < origin.childCount; i++)
+    //    {
+    //        //Debug.Log("I " + i + " : " + transform.childCount);
+    //        if (origin.GetChild(i).gameObject.CompareTag("Cart") || origin.GetChild(i).gameObject.CompareTag("Steel"))
+    //        {
+    //            dollyCount++;
+    //        }
+    //    }
+    //    return dollyCount;
+    //}
 
     //Drop spawned cart
     public void DropCart(GameObject cart)
@@ -130,7 +132,7 @@ public class SpawnManager : Singleton<SpawnManager>
             cart.transform.parent.SetParent(transform);
 
             rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
-           
+
             rb.AddForce(0, -100f, 0);
 
         }

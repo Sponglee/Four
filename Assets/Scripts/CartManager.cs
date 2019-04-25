@@ -89,11 +89,11 @@ public class CartManager : MonoBehaviour
 
                 int materialRandomizer;
                 //Check if it's required Cart- don't include steel mat
-                materialRandomizer = i == requiredCart ? 0 : Random.Range(1,spawnMatsRef.Length);
+                materialRandomizer = i == requiredCart ? 1 : Random.Range(0,spawnMatsRef.Length);
                 
 
                 //If randomizer proc or this is a required cart
-                if (i == requiredCart || spawnRandomizer <= 60)
+                if (i == requiredCart || spawnRandomizer <= 100)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
@@ -322,12 +322,12 @@ public class CartManager : MonoBehaviour
                 SpawnManager.Instance.spawnInterval = 0.4f;
         }
 
-        if (!spawnManagerRef.spawnedBool)
-        {
-            //SpawnManager.Instance.Spawn();
-            //Debug.Log("NANI");
-            //yield break;
-        }
+        //if (!spawnManagerRef.spawnedBool)
+        //{
+        //    //SpawnManager.Instance.Spawn();
+        //    //Debug.Log("NANI");
+        //    //yield break;
+        //}
 
     }
 
