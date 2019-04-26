@@ -83,12 +83,12 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
-        spawnMats = new Material[3];
+        spawnMats = new Material[4];
 
         spawnMats[0] = Instance.towerMat;
         spawnMats[1] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
         spawnMats[2] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
-
+        spawnMats[3] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
         //spawnMats[2] = spawnMatPool[0];
 
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);

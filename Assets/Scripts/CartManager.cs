@@ -93,17 +93,13 @@ public class CartManager : MonoBehaviour
                 
 
                 //If randomizer proc or this is a required cart
-                if (i == requiredCart || spawnRandomizer <= 100)
+                if (i == requiredCart)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
                     //check if it's steel
-                    if(materialRandomizer == 0)
-                    {
-                        
-                        tmpCart.tag = "Steel";
-                        tmpCart.transform.GetChild(0).tag = "Steel";
-                    }
+                  
+                    
 
                     //Set a material
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
@@ -121,23 +117,56 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                    
                 }
-                else
+                else if(i != requiredCart && spawnRandomizer <= 40)
                 {
-                    //spawn blank prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.blankCartPrefab);
+                    //spawn cart prefab, set random position
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
 
-                    //Set position and orientation for blank
+                    if (materialRandomizer == 0)
+                    {
+
+                        tmpCart.tag = "Steel";
+                        tmpCart.transform.GetChild(0).tag = "Steel";
+                    }
+
+                    //Set a material
+                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
+
+                    //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
-                    tmpCart.transform.localRotation = Quaternion.Euler(0,0,0);
+                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
                     //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
-
-                    //Set current for that blank
+                    //Set current for that cart
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
 
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                }
+                else
+                {
+                    //spawn cart prefab, set random position
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
+                    //check if it's steel
+
+
+
+                    //Set a material
+                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[1];
+
+                    //Set position and orientation for dolly
+                    tmpCart.transform.SetParent(tmpCartHolder.transform);
+                    tmpCart.transform.position = tmpCartHolder.transform.position;
+                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
+                    //Set current for that cart
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+
+                    //set cart reference for manager
+                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+
                 }
                 index++;
             }
