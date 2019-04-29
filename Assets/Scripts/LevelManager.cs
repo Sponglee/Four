@@ -81,20 +81,34 @@ public class LevelManager : Singleton<LevelManager>
     //Reference to ball Controller
     public BallController ballRef;
 
+    public int[] requiredPos;
+
     private void Start()
     {
-        spawnMats = new Material[4];
+        spawnMats = new Material[3];
 
         spawnMats[0] = Instance.towerMat;
         spawnMats[1] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
         spawnMats[2] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
-        spawnMats[3] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
+        //spawnMats[3] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
         //spawnMats[2] = spawnMatPool[0];
 
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
-      
+
         //Start Destruction of levels
         //StartCoroutine(LevelTimer());
+
+
+
+        //Generate array of random requiredPos
+        requiredPos = new int[5];
+
+        for (int i = 0; i < 5; i++)
+        {
+            requiredPos[i] = Random.Range(0, cartCount);
+        }
+
+
 
         //Generate the level
         for (int i = 0; i < levelCount; i++)
@@ -365,11 +379,11 @@ public class LevelManager : Singleton<LevelManager>
 
         if (rightDirection)
         {
-            to = Mathf.Round((CurrentAngle + (360f / cartCount) )/ (360f / cartCount)) * (360f / cartCount);
+            to = Mathf.Round((CurrentAngle - (360f / cartCount) )/ (360f / cartCount)) * (360f / cartCount);
         }
         else
         {
-            to = Mathf.Round((CurrentAngle - (360f / cartCount)) / (360f / cartCount)) * (360f / cartCount);
+            to = Mathf.Round((CurrentAngle + (360f / cartCount)) / (360f / cartCount)) * (360f / cartCount);
         }
 
         //Debug.Log("STOP " + from + " :: " + to);

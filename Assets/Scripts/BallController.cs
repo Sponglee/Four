@@ -362,10 +362,8 @@ public class BallController : Singleton<BallController>
             //CollidedBool = false;
             if(ForcePush)
             {
-              //ForcePush = false;
-                //gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
-                //PushDown(other);
-                
+              
+
                 gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
                 forceMultiplier = 5;
                 ForcePush = false;
@@ -378,7 +376,11 @@ public class BallController : Singleton<BallController>
                 }
                 else
                 {
-                    FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                    //ForcePush = false;
+                    gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
+
+                    PushDown(other);
+                    //FunctionHandler.Instance.OpenGameOver("GAME OVER");
                 }
 
                     

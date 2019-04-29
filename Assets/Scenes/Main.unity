@@ -326,6 +326,7 @@ MonoBehaviour:
   lastLevelCurrentLevel: 0
   currentAngle: 0
   ballRef: {fileID: 0}
+  requiredPos: 
   randomDir: 0
   lastLevel: -1
   raiseTowerTime: 0.3
@@ -2464,8 +2465,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1178556463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 202.8}
-  m_LocalScale: {x: 4478.7065, y: 4478.7065, z: 4478.7065}
+  m_LocalPosition: {x: 0, y: 1, z: 1075}
+  m_LocalScale: {x: 17466.955, y: 17466.955, z: 17466.955}
   m_Children: []
   m_Father: {fileID: 786702173}
   m_RootOrder: 0
@@ -3764,7 +3765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -3.188043, y: 29.84209, z: -51.74442}
+  m_FollowOffset: {x: 52.63, y: 64.60699, z: -184.87}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -4460,7 +4461,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549900856330970}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

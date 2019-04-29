@@ -28,7 +28,7 @@ public class SwipeManager : Singleton<SwipeManager>
 
 
 
-    private float swipeResistance = 5f;
+    private float swipeResistance = 50f;
 
 
     public bool SwipeC = true;

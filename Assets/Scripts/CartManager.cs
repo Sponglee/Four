@@ -53,7 +53,11 @@ public class CartManager : MonoBehaviour
     public bool NoDollysBool = false;
 
 
+    int requiredCart1;
+    int requiredCart2;
 
+
+    int currentRequiredPos;
 
     private void Start()
     {
@@ -67,10 +71,25 @@ public class CartManager : MonoBehaviour
         {
             int index = 0;
 
-            //Required 1 cart per level
-            int requiredCart = Random.Range(0, carts.Length);
 
-            //Debug.Log(":::::" + carts.Length);
+            //***********************************TODO****************************************
+            //
+            //
+            //
+            //                  Every 5 (mod 5 != 0) transform.parents check - more one color rows
+
+            if(transform.parent.GetSiblingIndex()%5 == 0)
+            {
+                
+                  
+            }
+
+            currentRequiredPos = transform.parent.GetSiblingIndex() / (LevelManager.Instance.levelCount / 5);
+            Debug.Log(currentRequiredPos + ": " + transform.parent.GetSiblingIndex() + "/" + LevelManager.Instance.levelCount / 5);
+
+
+
+            //Debug.Log(":::::" + requiredCart1 + " : " + requiredCart2);
             for (int i = 0; i < carts.Length; i++)
             {
 
@@ -88,12 +107,25 @@ public class CartManager : MonoBehaviour
                 //cart mats + steel
 
                 int materialRandomizer;
-                //Check if it's required Cart- don't include steel mat
-                materialRandomizer = i == requiredCart ? 1 : Random.Range(0,spawnMatsRef.Length);
+                //Check if it's required Cart- same color as the ball (don't include steel mat)
+                //materialRandomizer = i == requiredCart1 ? 1 : Random.Range(0,spawnMatsRef.Length);
                 
+                if(i == currentRequiredPos)
+                {
+                    materialRandomizer = 1;
+                }
+                //else if(i== requiredCart2)
+                //{
+                //    materialRandomizer = 2/*Random.Range(2,spawnMatsRef.Length)*/;
+                //}
+                else
+                {
+                    materialRandomizer = Random.Range(0, spawnMatsRef.Length);
+                }
 
+                //Debug.Log(">>>>>>>"+materialRandomizer);
                 //If randomizer proc or this is a required cart
-                if (i == requiredCart)
+                if (i == currentRequiredPos)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
@@ -117,17 +149,11 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                    
                 }
-                else if(i != requiredCart && spawnRandomizer <= 40)
+                else if(i == requiredCart2)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
 
-                    if (materialRandomizer == 0)
-                    {
-
-                        tmpCart.tag = "Steel";
-                        tmpCart.transform.GetChild(0).tag = "Steel";
-                    }
 
                     //Set a material
                     tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
@@ -144,16 +170,23 @@ public class CartManager : MonoBehaviour
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
-                else
+                else if (materialRandomizer == 0)
                 {
+                    
+                   
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
                     //check if it's steel
 
+                    //if (materialRandomizer == 0)
+                    //{
 
+                        tmpCart.tag = "Steel";
+                        tmpCart.transform.GetChild(0).tag = "Steel";
+                    //}
 
                     //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[1];
+                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
 
                     //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
@@ -167,6 +200,33 @@ public class CartManager : MonoBehaviour
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
+                }
+                else
+                {
+
+                    //spawn cart prefab, set random position
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
+                    //check if it's steel
+
+                    //if (materialRandomizer == 0)
+                    //{
+
+                  
+
+                    //Set a material
+                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
+
+                    //Set position and orientation for dolly
+                    tmpCart.transform.SetParent(tmpCartHolder.transform);
+                    tmpCart.transform.position = tmpCartHolder.transform.position;
+                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
+                    //Set current for that cart
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+
+                    //set cart reference for manager
+                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
                 index++;
             }
