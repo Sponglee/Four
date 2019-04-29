@@ -276,7 +276,7 @@ public class BallController : Singleton<BallController>
             if (ForcePush /*&& !CollidedBool*/)
             {
 
-                PushDown(other);
+                PushDown(other, other.transform.parent.parent.parent.parent.GetSiblingIndex());
             }
         }
         else if (other.gameObject.CompareTag("Bottom"))
@@ -287,7 +287,7 @@ public class BallController : Singleton<BallController>
     }
 
 
-    public void PushDown(Collision other)
+    public void PushDown(Collision other, int siblingIndex)
     {
        
         //Debug.Log("SHIKARI");
@@ -326,8 +326,23 @@ public class BallController : Singleton<BallController>
             Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
-            rb.velocity = new Vector3(Random.Range(-20f, 20f), 50f, -50f);
-            rb.AddRelativeTorque(new Vector3(5000f, 0, 0));
+
+            //if(siblingIndex%2 == 0)
+            //    rb.velocity = new Vector3(Random.Range(-150f, -50f), 50f, -50f);
+            //else
+            //    rb.velocity = new Vector3(Random.Range(150f, 50f), 50f, -50f);
+
+
+            int detatchDir = Random.Range(0, 2);
+
+            if(detatchDir == 0)
+                rb.velocity = new Vector3(Random.Range(-50f, -30f), 80f, -50f);
+            else
+                rb.velocity = new Vector3(Random.Range(50f, 30f), 80f, -50f);
+
+
+
+            rb.AddRelativeTorque(new Vector3(500f, 20f, 0));
             //Get some effects 
             Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
 
@@ -335,7 +350,7 @@ public class BallController : Singleton<BallController>
             //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
 
             //SCORE
-            GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, gameObject.transform);
+            GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
             //Second cart below check for color - if not the same - pop Spawn out
             GameObject tmpRay = DownCheckRay(other.transform);
 
@@ -379,7 +394,7 @@ public class BallController : Singleton<BallController>
                     //ForcePush = false;
                     gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
 
-                    PushDown(other);
+                    PushDown(other, other.transform.parent.parent.parent.parent.GetSiblingIndex());
                     //FunctionHandler.Instance.OpenGameOver("GAME OVER");
                 }
 

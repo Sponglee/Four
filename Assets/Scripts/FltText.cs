@@ -8,20 +8,26 @@ public class FltText : MonoBehaviour {
 
     public bool destroyBool = true;
 
+    //Float offset x
+    private float xDirection;
+
     public void Start()
     {
         transform.LookAt(Camera.main.transform);
-        {
-            timer = Random.Range(1f,1.2f);
-        }
+       
+        //timer = Random.Range(0.5f,0.8f);
+        xDirection = Random.Range(-0.55f*timer, 0.551f*timer);
+
+
+        transform.localPosition += new Vector3 (xDirection, 0, 0);
     }
     // Update is called once per frame
     void Update () {
 		if (timer > 0)
         {
             timer -= Time.deltaTime;
-            transform.localPosition -= new Vector3 (0, -0.005f, 0);
-            transform.localScale += new Vector3(0.001f, 0.001f, 0);
+            transform.localPosition += new Vector3 (-xDirection, -0.1f, 0);
+            transform.localScale -= new Vector3(0.015f, 0.015f, 0);
         }
         else
         {

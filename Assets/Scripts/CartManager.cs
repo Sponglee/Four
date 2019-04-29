@@ -78,14 +78,14 @@ public class CartManager : MonoBehaviour
             //
             //                  Every 5 (mod 5 != 0) transform.parents check - more one color rows
 
-            if(transform.parent.GetSiblingIndex()%5 == 0)
-            {
+            //if(transform.parent.GetSiblingIndex()%5 == 0)
+            //{
                 
                   
-            }
+            //}
 
-            currentRequiredPos = transform.parent.GetSiblingIndex() / (LevelManager.Instance.levelCount / 5);
-            Debug.Log(currentRequiredPos + ": " + transform.parent.GetSiblingIndex() + "/" + LevelManager.Instance.levelCount / 5);
+            //currentRequiredPos = transform.parent.GetSiblingIndex() / (LevelManager.Instance.levelCount / 5);
+            //Debug.Log(currentRequiredPos + ": " + transform.parent.GetSiblingIndex() + "/" + LevelManager.Instance.levelCount / 5);
 
 
 
@@ -114,10 +114,10 @@ public class CartManager : MonoBehaviour
                 {
                     materialRandomizer = 1;
                 }
-                //else if(i== requiredCart2)
-                //{
-                //    materialRandomizer = 2/*Random.Range(2,spawnMatsRef.Length)*/;
-                //}
+                else if (i == requiredCart2)
+                {
+                    materialRandomizer = 2/*Random.Range(2,spawnMatsRef.Length)*/;
+                }
                 else
                 {
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
@@ -125,7 +125,7 @@ public class CartManager : MonoBehaviour
 
                 //Debug.Log(">>>>>>>"+materialRandomizer);
                 //If randomizer proc or this is a required cart
-                if (i == currentRequiredPos)
+                if (i == requiredCart1/*currentRequiredPos*/)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
