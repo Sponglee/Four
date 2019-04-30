@@ -125,11 +125,11 @@ public class BallController : Singleton<BallController>
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
 
-        if (Input.GetMouseButton(0))
-        {
+        //if (Input.GetMouseButton(0))
+        //{
             if(PoweredUp)
             {
-                forceMultiplier += 1;
+                forceMultiplier += 10;
                 forceMultiplier = Mathf.Clamp(forceMultiplier, 0, 100);
                 gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
                 if (forceMultiplier >= forceTreshold)
@@ -146,19 +146,21 @@ public class BallController : Singleton<BallController>
             }
             else
             {
+                forceMultiplier = 10;
                 ForcePush = false;
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
             }
           
           
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            forceMultiplier = 10;
-            ForcePush = false;
+        //}
+        //else if (Input.GetMouseButtonUp(0))
+        //{
+        //    forceMultiplier = 10;
+        //    ForcePush = false;
 
-            SpawnManager.Instance.vcamSpeedy.m_Priority = 09;
+        //    SpawnManager.Instance.vcamSpeedy.m_Priority = 09;
 
-        }
+        //}
 
 
 
@@ -323,6 +325,7 @@ public class BallController : Singleton<BallController>
         CollidedBool = true;
         if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
         {
+            GameManager.Instance.Multiplier++;
             ForcePush = false;
             //Check if other is in the same column if secon hit 
             if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)

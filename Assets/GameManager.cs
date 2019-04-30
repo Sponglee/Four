@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
 
     //Fill amount of powerbar
     public float fillRate = 5;
+    [SerializeField]
     private float powerFill = 0;
     public float PowerFill
     {
@@ -34,17 +35,19 @@ public class GameManager : Singleton<GameManager>
 
         set
         {
+            //powerFill = Mathf.Clamp(0f,1f,value);
             powerFill = value;
+            
             powerFiller.fillAmount = powerFill;
             if (powerFill >= 1)
             {
                 BallController.Instance.PoweredUp = true;
-                //Fade down
-                StartCoroutine(StopPoweredUp());
+                GameManager.Instance.ComboActive = true;
             }
-            else if(PowerFill<=0)
+            else if(powerFill<=0)
             {
                 BallController.Instance.PoweredUp = false;
+                ComboActive = false;
             }
         }
     }
@@ -184,7 +187,7 @@ public class GameManager : Singleton<GameManager>
         {
             comboCount = 1;
             Multiplier = 1;
-            ComboActive = true;
+            //ComboActive = true;
             comboColor = color;
         }
         else
@@ -193,7 +196,7 @@ public class GameManager : Singleton<GameManager>
             {
                 //Debug.Log("SAMECOLOR");
                 comboCount++;
-                Multiplier++;
+                
             }
             else
             {
@@ -214,17 +217,26 @@ public class GameManager : Singleton<GameManager>
     public void GrabCollectable()
     {
         PowerFill += 1/fillRate;
+        if(powerFill>=1)
+        {
+            powerFill = 1;
+            powerFiller.color = Color.yellow;
+            //Fade down
+            StopCoroutine(StopPoweredUp());
+            StartCoroutine(StopPoweredUp());
+        }
     }
 
 
     private IEnumerator StopPoweredUp()
     {
-        while(PowerFill>0)
+        while(powerFill>0)
         {
-            PowerFill -= Time.deltaTime/100f;
+            PowerFill -= Time.deltaTime/20f;
             powerFiller.fillAmount = PowerFill;
             yield return null;
         }
-        
+        powerFiller.color = Color.white;
+        Multiplier = 1;
     }
 }
