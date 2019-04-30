@@ -1509,12 +1509,11 @@ MonoBehaviour:
   scoreText: {fileID: 1261545403}
   bestText: {fileID: 1621908386}
   progresSlider: {fileID: 120047163}
-  PowerFiller: {fileID: 1270731996}
+  powerFiller: {fileID: 1270731996}
   currText: {fileID: 1685531851}
   nextText: {fileID: 435973916}
   multiText: {fileID: 1286456365}
   fltText: {fileID: 1001251165192770, guid: a45335c98c69dcf45ac304fa3416ac4e, type: 3}
-  powerFill: 0
   fillRate: 5
   bestScore: 0
   ComboActive: 0

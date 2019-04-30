@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager>
 
     public Slider progresSlider;
 
-    public Image PowerFiller;
+    public Image powerFiller;
 
     public TextMeshProUGUI currText;
     public TextMeshProUGUI nextText;
@@ -35,8 +35,8 @@ public class GameManager : Singleton<GameManager>
         set
         {
             powerFill = value;
-            PowerFiller.fillAmount = powerFill;
-            if (PowerFill >= 1)
+            powerFiller.fillAmount = powerFill;
+            if (powerFill >= 1)
             {
                 BallController.Instance.PoweredUp = true;
                 //Fade down
@@ -150,7 +150,7 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        PowerFiller.fillAmount = PowerFill;
+        powerFiller.fillAmount = powerFill;
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
@@ -222,7 +222,7 @@ public class GameManager : Singleton<GameManager>
         while(PowerFill>0)
         {
             PowerFill -= Time.deltaTime/100f;
-            PowerFiller.fillAmount = PowerFill;
+            powerFiller.fillAmount = PowerFill;
             yield return null;
         }
         
