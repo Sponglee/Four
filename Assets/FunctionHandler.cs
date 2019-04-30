@@ -120,6 +120,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
         SceneManager.LoadScene("Main");
     }
 
+    public void SetSpeed(InputField speed)
+    {
+        PlayerPrefs.SetFloat("Speed", float.Parse(speed.text));
+        SceneManager.LoadScene("Main");
+    }
 
 
     public void ResetData()

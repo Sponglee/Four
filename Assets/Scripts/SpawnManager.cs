@@ -35,9 +35,7 @@ public class SpawnManager : Singleton<SpawnManager>
     // Update is called once per frame
     void Update()
     {
-
-     
-
+       
     }
 
 
@@ -61,26 +59,26 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
         //initialize Spawn Color
-        spawnMatRandomColor = LevelManager.Instance.spawnMats[1].color;
+        //spawnMatRandomColor = LevelManager.Instance.towerMat.color;
 
 
         //spawn cart prefab, set random position
         tmpCart = Instantiate(spawnPrefab, transform.position, Quaternion.identity, transform);
 
         //Set material to spawn
-        tmpCart.GetComponent<Renderer>().material.color = spawnMatRandomColor;
+        //tmpCart.GetComponent<Renderer>().material.color = spawnMatRandomColor;
 
         //spawnObject = tmpCart;
 
         //Follow camera to a ball
-        vcam.m_Follow = tmpCart.transform;
-        vcam.m_LookAt = tmpCart.transform;
+        vcam.m_Follow = transform;
+        vcam.m_LookAt = transform;
 
-        vcamSpeedy.m_Follow = tmpCart.transform;
-        vcamSpeedy.m_LookAt = tmpCart.transform;
+        vcamSpeedy.m_Follow = transform;
+        vcamSpeedy.m_LookAt = transform;
 
 
-        DropCart(transform.GetChild(0).gameObject);
+        
     }
 
     
@@ -135,10 +133,11 @@ public class SpawnManager : Singleton<SpawnManager>
             //DETACH
             //cart.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
             cart.transform.parent.SetParent(transform);
+            cart.transform.SetSiblingIndex(0);
 
-            rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+            //rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
 
-            rb.AddForce(0, -100f, 0);
+            //rb.AddForce(0, -100f, 0);
 
         }
 

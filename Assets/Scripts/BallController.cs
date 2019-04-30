@@ -84,8 +84,10 @@ public class BallController : Singleton<BallController>
 
     [SerializeField]
     private float forceMultiplier = 10;
-    public float forceTreshold = 20f;
-    public Vector3 downVelocity = Vector3.down * 13f;
+    [SerializeField]
+    private float forceTreshold = 3f;
+    [SerializeField]
+    private Vector3 downVelocity = Vector3.down * 0.1f;
 
 
 
@@ -107,6 +109,8 @@ public class BallController : Singleton<BallController>
 
     void Start()
     {
+        downVelocity = new Vector3(0, -PlayerPrefs.GetFloat("Speed", 0.3f), 0);
+
         rb = GetComponent<Rigidbody>();
         level = FindObjectOfType<LevelManager>();
 
@@ -117,53 +121,54 @@ public class BallController : Singleton<BallController>
     }
 
    
-    private void Update()
+    private void FixedUpdate()
     {
         if(!CollidedBool && !ForcePush)
-            gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
-        else
-            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        {
+            transform.parent.position += downVelocity;
+        }
+  
 
-
-        //if (Input.GetMouseButton(0))
-        //{
-            if(PoweredUp)
+        //Delay ball if stuck
+        if(transform.localPosition.y > 0)
+        {
+            if(transform.localPosition.y >20)
             {
-                forceMultiplier += 10;
-                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, 100);
-                gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
-                if (forceMultiplier >= forceTreshold)
-                {
+                FunctionHandler.Instance.OpenGameOver("GAME OVER");
 
-                    ForcePush = true;
-                    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+            }
+            transform.localPosition += downVelocity;
+        }
 
-                }
-                else
-                {
-                    ForcePush = false;
-                }
+
+        //If power bar is full - accelerate, switch camera
+        if (PoweredUp)
+        {
+            forceMultiplier += 1;
+            forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
+            transform.parent.position += downVelocity * forceMultiplier;
+
+            if (forceMultiplier >= forceTreshold)
+            {
+
+                ForcePush = true;
+                //transform.parent.position -= downVelocity;
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+
             }
             else
             {
-                forceMultiplier = 10;
                 ForcePush = false;
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
             }
-          
-          
-        //}
-        //else if (Input.GetMouseButtonUp(0))
-        //{
-        //    forceMultiplier = 10;
-        //    ForcePush = false;
-
-        //    SpawnManager.Instance.vcamSpeedy.m_Priority = 09;
-
-        //}
-
-
-
+        }
+        else
+        {
+            forceMultiplier = 10;
+            ForcePush = false;
+            SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
+           
+        }
+         
     }
 
 
