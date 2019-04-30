@@ -12,6 +12,9 @@ public class CartManager : MonoBehaviour
 
     public GameObject spawnPrefab;
     public GameObject cartHolderPrefab;
+   
+
+
     public CinemachineSmoothPath[] paths;
 
     //For dropping
@@ -66,26 +69,11 @@ public class CartManager : MonoBehaviour
         colorHelper = new List<Color>();
         spawnMatsRef = LevelManager.Instance.spawnMats;
 
+        requiredCart1 = Random.Range(0, LevelManager.Instance.cartCount);
 
         if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
         {
             int index = 0;
-
-
-            //***********************************TODO****************************************
-            //
-            //
-            //
-            //                  Every 5 (mod 5 != 0) transform.parents check - more one color rows
-
-            //if(transform.parent.GetSiblingIndex()%5 == 0)
-            //{
-                
-                  
-            //}
-
-            //currentRequiredPos = transform.parent.GetSiblingIndex() / (LevelManager.Instance.levelCount / 5);
-            //Debug.Log(currentRequiredPos + ": " + transform.parent.GetSiblingIndex() + "/" + LevelManager.Instance.levelCount / 5);
 
 
 
@@ -109,71 +97,26 @@ public class CartManager : MonoBehaviour
                 int materialRandomizer;
                 //Check if it's required Cart- same color as the ball (don't include steel mat)
                 //materialRandomizer = i == requiredCart1 ? 1 : Random.Range(0,spawnMatsRef.Length);
-                
-                if(i == currentRequiredPos)
+
+                if (i == requiredCart1)
                 {
                     materialRandomizer = 1;
                 }
-                else if (i == requiredCart2)
-                {
-                    materialRandomizer = 2/*Random.Range(2,spawnMatsRef.Length)*/;
-                }
-                else
-                {
-                    materialRandomizer = Random.Range(0, spawnMatsRef.Length);
-                }
+                //else if (i == requiredCart2)
+                //{
+                //    materialRandomizer = 2/*Random.Range(2,spawnMatsRef.Length)*/;
+                //}
+                //else
+                //{
+                materialRandomizer = Random.Range(0, spawnMatsRef.Length);
+                //}
 
                 //Debug.Log(">>>>>>>"+materialRandomizer);
                 //If randomizer proc or this is a required cart
-                if (i == requiredCart1/*currentRequiredPos*/)
+                if (materialRandomizer == 0 && spawnRandomizer <= 60)
                 {
-                    //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
-                    //check if it's steel
-                  
-                    
-
-                    //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
-
-                    //Set position and orientation for dolly
-                    tmpCart.transform.SetParent(tmpCartHolder.transform);
-                    tmpCart.transform.position = tmpCartHolder.transform.position;
-                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
-
-                    //Set current for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
-                   
-                    //set cart reference for manager
-                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-                   
-                }
-                else if(i == requiredCart2)
-                {
-                    //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
 
 
-                    //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
-
-                    //Set position and orientation for dolly
-                    tmpCart.transform.SetParent(tmpCartHolder.transform);
-                    tmpCart.transform.position = tmpCartHolder.transform.position;
-                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
-
-                    //Set current for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
-
-                    //set cart reference for manager
-                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-                }
-                else if (materialRandomizer == 0)
-                {
-                    
-                   
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
                     //check if it's steel
@@ -181,8 +124,8 @@ public class CartManager : MonoBehaviour
                     //if (materialRandomizer == 0)
                     //{
 
-                        tmpCart.tag = "Steel";
-                        tmpCart.transform.GetChild(0).tag = "Steel";
+                    tmpCart.tag = "Steel";
+                    tmpCart.transform.GetChild(0).tag = "Steel";
                     //}
 
                     //Set a material
@@ -201,20 +144,21 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
                 }
-                else
+                else if (spawnRandomizer <= 10)
                 {
-
                     //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
                     //check if it's steel
 
                     //if (materialRandomizer == 0)
                     //{
 
-                  
+                    //tmpCart.tag = "Steel";
+                    //tmpCart.transform.GetChild(0).tag = "Steel";
+                    //}
 
-                    //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
+                    ////Set a material
+                    //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
 
                     //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
@@ -223,11 +167,12 @@ public class CartManager : MonoBehaviour
                     //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
                     //Set current for that cart
-                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+                    //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
 
                     //set cart reference for manager
-                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                    //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
+              
                 index++;
             }
         }

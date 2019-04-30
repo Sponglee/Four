@@ -14,9 +14,9 @@ public class FltText : MonoBehaviour {
     public void Start()
     {
         transform.LookAt(Camera.main.transform);
-       
-        //timer = Random.Range(0.5f,0.8f);
-        xDirection = Random.Range(-0.55f*timer, 0.551f*timer);
+
+        timer = Random.Range(0.5f, 1.8f);
+        xDirection = Random.Range(-0.15f*timer, 0.151f*timer);
 
 
         transform.localPosition += new Vector3 (xDirection, 0, 0);

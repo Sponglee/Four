@@ -16,6 +16,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public GameObject tmpCart;
 
     public CinemachineVirtualCamera vcam;
+    public CinemachineVirtualCamera vcamSpeedy;
 
     public bool gameMode = true;
 
@@ -74,6 +75,10 @@ public class SpawnManager : Singleton<SpawnManager>
         //Follow camera to a ball
         vcam.m_Follow = tmpCart.transform;
         vcam.m_LookAt = tmpCart.transform;
+
+        vcamSpeedy.m_Follow = tmpCart.transform;
+        vcamSpeedy.m_LookAt = tmpCart.transform;
+
 
         DropCart(transform.GetChild(0).gameObject);
     }

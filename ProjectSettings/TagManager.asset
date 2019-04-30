@@ -18,6 +18,7 @@ TagManager:
   - MenuCanvas
   - Level
   - CartTrigger
+  - Collectable
   layers:
   - Default
   - TransparentFX

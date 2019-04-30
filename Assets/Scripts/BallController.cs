@@ -19,6 +19,10 @@ public class BallController : Singleton<BallController>
         {
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / LevelManager.Instance.levelCount;
+            //SCORE
+            GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
+
+
         }
     }
 
@@ -96,6 +100,11 @@ public class BallController : Singleton<BallController>
     int skippedCounter = 0;
     float vel;
 
+
+
+    public bool PoweredUp = false;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -110,31 +119,45 @@ public class BallController : Singleton<BallController>
    
     private void Update()
     {
-        if (Input.GetMouseButton(0)
-           //&& !LevelManager.Instance.RotationProgress
-           //    && !LevelManager.Instance.SpawnInProgress
-           //        && !LevelManager.Instance.LevelMoveProgress 
-           && SwipeManager.Instance.IsSwiping(SwipeDirection.None)/*&& spawnTimer <= 0*/)
+        if(!CollidedBool && !ForcePush)
+            gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
+        else
+            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+
+        if (Input.GetMouseButton(0))
         {
-            
-            
-            forceMultiplier += 1;
-            forceMultiplier = Mathf.Clamp(forceMultiplier, 0,50);
-            gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
-            if(forceMultiplier>= forceTreshold)
+            if(PoweredUp)
             {
-                ForcePush = true;
+                forceMultiplier += 1;
+                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, 100);
+                gameObject.GetComponent<Rigidbody>().velocity = -Vector3.up * forceMultiplier;
+                if (forceMultiplier >= forceTreshold)
+                {
+
+                    ForcePush = true;
+                    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+
+                }
+                else
+                {
+                    ForcePush = false;
+                }
             }
             else
             {
                 ForcePush = false;
             }
+          
+          
         }
         else if (Input.GetMouseButtonUp(0))
         {
             forceMultiplier = 10;
             ForcePush = false;
-            gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
+
+            SpawnManager.Instance.vcamSpeedy.m_Priority = 09;
+
         }
 
 
@@ -145,75 +168,75 @@ public class BallController : Singleton<BallController>
 
 
 
-    void FixedUpdate()
-    {
-        if (!Move)
-            return;
+    //void FixedUpdate()
+    //{
+    //    if (!Move)
+    //        return;
 
-        vel = -gravityForce * Time.deltaTime;
+    //    vel = -gravityForce * Time.deltaTime;
 
-        float overlap = nextBallPosToJump - (transform.position.y + vel);
-        if (overlap >= 0)
-        {
-            transform.Translate(Vector3.up * (vel + overlap));
-            CheckCollision();
-        }
-        transform.Translate(Vector3.up * vel);
-    }
+    //    float overlap = nextBallPosToJump - (transform.position.y + vel);
+    //    if (overlap >= 0)
+    //    {
+    //        transform.Translate(Vector3.up * (vel + overlap));
+    //        CheckCollision();
+    //    }
+    //    transform.Translate(Vector3.up * vel);
+    //}
 
 
-    void CheckCollision()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, level.spawnOffsetStep / 2,
-            LayerMask.GetMask("Circles")))
-        {
-            if (hit.collider.CompareTag("Cart"))
-            {
-                if (skippedCounter >= 2)
-                {
-                    //// TODO: Apply good-looking break force.
-                    //if (hit.collider.transform.parent.CompareTag("Cylinder Object"))
-                    //{
-                    //    Destroy(hit.collider.gameObject);
-                    //}
-                    //else
-                    //{
-                    //    Destroy(hit.collider.transform.parent.gameObject);
-                    //}
-                }
+    //void CheckCollision()
+    //{
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(transform.position, Vector3.down, out hit, level.spawnOffsetStep / 2,
+    //        LayerMask.GetMask("Circles")))
+    //    {
+    //        if (hit.collider.CompareTag("Cart"))
+    //        {
+    //            if (skippedCounter >= 2)
+    //            {
+    //                //// TODO: Apply good-looking break force.
+    //                //if (hit.collider.transform.parent.CompareTag("Cylinder Object"))
+    //                //{
+    //                //    Destroy(hit.collider.gameObject);
+    //                //}
+    //                //else
+    //                //{
+    //                //    Destroy(hit.collider.transform.parent.gameObject);
+    //                //}
+    //            }
 
-                skippedCounter = 0;
-                Jump();
-                Debug.Log("Good.");
-            }
-            //else if (hit.collider.CompareTag("Bad"))
-            //{
-            //    Debug.Log("END GAME.");
-            //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            //}
-            //else if (hit.collider.CompareTag("Finish"))
-            //{
-            //    Debug.Log("YOU WON.");
-            //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            //}
-            else
-            {
-                Debug.LogWarning("COLLIDED WITH UNKNOWN OBJECT.");
-            }
-        }
-        else
-        {
-            ++skippedCounter;
-            nextBallPosToJump -= level.spawnOffsetStep;
-        }
-    }
+    //            skippedCounter = 0;
+    //            Jump();
+    //            Debug.Log("Good.");
+    //        }
+    //        //else if (hit.collider.CompareTag("Bad"))
+    //        //{
+    //        //    Debug.Log("END GAME.");
+    //        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //        //}
+    //        //else if (hit.collider.CompareTag("Finish"))
+    //        //{
+    //        //    Debug.Log("YOU WON.");
+    //        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //        //}
+    //        else
+    //        {
+    //            Debug.LogWarning("COLLIDED WITH UNKNOWN OBJECT.");
+    //        }
+    //    }
+    //    else
+    //    {
+    //        ++skippedCounter;
+    //        nextBallPosToJump -= level.spawnOffsetStep;
+    //    }
+    //}
 
-    void Jump()
-    {
-        Debug.Log("Jump");
-        vel = jumpStrength;
-    }
+    //void Jump()
+    //{
+    //    Debug.Log("Jump");
+    //    vel = jumpStrength;
+    //}
     
 
 
@@ -227,10 +250,16 @@ public class BallController : Singleton<BallController>
             //Debug.Log(other.name);
             CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
         }
-        if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
+        else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
         {
             if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
                 WarningCheck = true;
+        }
+        else if(other.gameObject.CompareTag("Collectable"))
+        {
+            Destroy(other.gameObject);
+            GameManager.Instance.GrabCollectable();
+            Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
         }
            
     }
@@ -292,7 +321,7 @@ public class BallController : Singleton<BallController>
        
         //Debug.Log("SHIKARI");
         CollidedBool = true;
-        if (gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color)
+        if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
         {
             ForcePush = false;
             //Check if other is in the same column if secon hit 
@@ -349,8 +378,10 @@ public class BallController : Singleton<BallController>
             //For pizzaz
             //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
 
-            //SCORE
-            GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
+            ////SCORE
+            //GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
+
+
             //Second cart below check for color - if not the same - pop Spawn out
             GameObject tmpRay = DownCheckRay(other.transform);
 

@@ -13,11 +13,43 @@ public class GameManager : Singleton<GameManager>
 
     public Slider progresSlider;
 
+    public Image PowerFiller;
+
     public TextMeshProUGUI currText;
     public TextMeshProUGUI nextText;
     public TextMeshProUGUI multiText;
 
     public GameObject fltText;
+
+
+    //Fill amount of powerbar
+    public float fillRate = 5;
+    private float powerFill = 0;
+    public float PowerFill
+    {
+        get
+        {
+            return powerFill;
+        }
+
+        set
+        {
+            powerFill = value;
+            PowerFiller.fillAmount = powerFill;
+            if (PowerFill >= 1)
+            {
+                BallController.Instance.PoweredUp = true;
+                //Fade down
+                StartCoroutine(StopPoweredUp());
+            }
+            else if(PowerFill<=0)
+            {
+                BallController.Instance.PoweredUp = false;
+            }
+        }
+    }
+
+
 
     public int bestScore;
     private int score;
@@ -118,6 +150,7 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        PowerFiller.fillAmount = PowerFill;
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
@@ -175,5 +208,23 @@ public class GameManager : Singleton<GameManager>
 
         //Debug.Log("ADD " + scoreAmount + " : " + comboCount + " : " + Multiplier);
         Score += scoreAmount/**comboCount*Multiplier*/;
+    }
+
+
+    public void GrabCollectable()
+    {
+        PowerFill += 1/fillRate;
+    }
+
+
+    private IEnumerator StopPoweredUp()
+    {
+        while(PowerFill>0)
+        {
+            PowerFill -= Time.deltaTime/100f;
+            PowerFiller.fillAmount = PowerFill;
+            yield return null;
+        }
+        
     }
 }
