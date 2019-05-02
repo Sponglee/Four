@@ -23,8 +23,10 @@ public class FltText : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
+        
 		if (timer > 0)
         {
+           
             timer -= Time.deltaTime;
             transform.localPosition += new Vector3 (-xDirection, -0.1f, 0);
             transform.localScale -= new Vector3(0.015f, 0.015f, 0);

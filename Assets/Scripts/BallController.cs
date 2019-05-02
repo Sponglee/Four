@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallController : Singleton<BallController>
 {
@@ -109,6 +110,8 @@ public class BallController : Singleton<BallController>
 
     void Start()
     {
+        
+
         downVelocity = new Vector3(0, -PlayerPrefs.GetFloat("Speed", 0.3f), 0);
 
         rb = GetComponent<Rigidbody>();
@@ -123,7 +126,10 @@ public class BallController : Singleton<BallController>
    
     private void FixedUpdate()
     {
-        if(!CollidedBool && !ForcePush)
+
+      
+
+        if (!CollidedBool && !ForcePush)
         {
             transform.parent.position += downVelocity;
         }
@@ -132,7 +138,7 @@ public class BallController : Singleton<BallController>
         //Delay ball if stuck
         if(transform.localPosition.y > 0)
         {
-            if(transform.localPosition.y >20)
+            if(transform.localPosition.y >30)
             {
                 FunctionHandler.Instance.OpenGameOver("GAME OVER");
 
@@ -383,8 +389,10 @@ public class BallController : Singleton<BallController>
             //Get some effects 
             Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
 
+
             //For pizzaz
             //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
+            StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.yellow));
 
             ////SCORE
             //GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));

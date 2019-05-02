@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
             if (powerFill >= 1)
             {
                 BallController.Instance.PoweredUp = true;
-                GameManager.Instance.ComboActive = true;
+                ComboActive = true;
             }
             else if(powerFill<=0)
             {
@@ -73,8 +73,7 @@ public class GameManager : Singleton<GameManager>
             {
                 bestScore = value;
                 PlayerPrefs.SetInt("BestScore", value);
-                Debug.Log(bestScore + ">>" + score);
-                bestText.gameObject.SetActive(false);
+              
             }
         }
     }
@@ -158,15 +157,7 @@ public class GameManager : Singleton<GameManager>
         Score = PlayerPrefs.GetInt("Score", 0);
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
 
-        if (score >= bestScore)
-        {
-            bestText.gameObject.SetActive(false);
-           
-        }
-        else
-        {
-            bestText.text = bestScore.ToString();
-        }
+       
 
         Score = 0;
         LevelProgress = 0;
@@ -213,30 +204,46 @@ public class GameManager : Singleton<GameManager>
         Score += scoreAmount*Multiplier/**comboCount*Multiplier*/;
     }
 
+    private bool PowerUpDecreasing = false;
 
     public void GrabCollectable()
     {
+       
         PowerFill += 1/fillRate;
         if(powerFill>=1)
         {
+
             powerFill = 1;
             powerFiller.color = Color.yellow;
+
             //Fade down
-            StopCoroutine(StopPoweredUp());
-            StartCoroutine(StopPoweredUp());
+            if (!PowerUpDecreasing)
+            {
+                BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+               
+                StartCoroutine(StopPoweredUp(20));
+            }
+            else
+            {
+                StartCoroutine(StopPoweredUp(40));
+            }
+           
         }
     }
 
 
-    private IEnumerator StopPoweredUp()
+    private IEnumerator StopPoweredUp(float fraction)
     {
+        PowerUpDecreasing = true;
         while(powerFill>0)
         {
-            PowerFill -= Time.deltaTime/20f;
+            PowerFill -= Time.fixedDeltaTime/fraction;
             powerFiller.fillAmount = PowerFill;
             yield return null;
         }
         powerFiller.color = Color.white;
         Multiplier = 1;
+
+        BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 }

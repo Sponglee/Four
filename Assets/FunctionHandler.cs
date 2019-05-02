@@ -26,6 +26,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopOpenGameOver(string message)
     {
+        
+        GameManager.Instance.bestText.text = GameManager.Instance.bestScore.ToString();
+        
 
         //if there's no message - mid game open or close menu
         if (message == "")
@@ -42,9 +45,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 menuCanvas.SetActive(true);
                 //Set message
                 menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
-                yield return new WaitForSeconds(1f);
-                Time.timeScale = 0;
-
+               
 
                 menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
 
@@ -64,10 +65,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
             menuCanvas.SetActive(true);
             //Set message
             menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
-            Time.timeScale = 0;
 
             //Disable menu button if game over or win
             menuButton.SetActive(false);
+            yield return new WaitForSeconds(0.21f);
+            Time.timeScale = 0;
+
         }
     }
 
