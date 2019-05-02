@@ -55,16 +55,15 @@ public class CartModelContoller : MonoBehaviour
         //Current = gameObject.transform.parent.parent.GetSiblingIndex();
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Cart"))
+      
+        if (other.gameObject.CompareTag("Bottom"))
         {
+            Debug.Log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             Destroy(transform.parent.gameObject);
         }
-        else if (other.gameObject.CompareTag("Bottom") && gameObject.CompareTag("Spawn"))
-        {
-            Destroy(gameObject.transform.parent.gameObject);
-        }
+       
     }
 
 

@@ -13,6 +13,7 @@ public class FltText : MonoBehaviour {
 
     public void Start()
     {
+        transform.SetParent(LevelManager.Instance.EffectHolder);
         transform.LookAt(Camera.main.transform);
 
         timer = Random.Range(0.5f, 1.8f);

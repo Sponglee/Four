@@ -61,6 +61,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
         else if (message != "")
         {
+            LevelManager.Instance.EffectHolder.gameObject.SetActive(false);
             //Activate Menu screen
             menuCanvas.SetActive(true);
             //Set message

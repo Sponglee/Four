@@ -101,15 +101,12 @@ public class CartManager : MonoBehaviour
                 if (i == requiredCart1)
                 {
                     materialRandomizer = 1;
+                    
                 }
-                //else if (i == requiredCart2)
-                //{
-                //    materialRandomizer = 2/*Random.Range(2,spawnMatsRef.Length)*/;
-                //}
-                //else
-                //{
-                materialRandomizer = Random.Range(0, spawnMatsRef.Length);
-                //}
+                else
+                {
+                    materialRandomizer = Random.Range(0, spawnMatsRef.Length);
+                }
 
                 //Debug.Log(">>>>>>>"+materialRandomizer);
                 //If randomizer proc or this is a required cart
@@ -297,7 +294,7 @@ public class CartManager : MonoBehaviour
     public void CheckCarts()
     {
        
-            StartCoroutine(StopCheckCarts());
+            //StartCoroutine(StopCheckCarts());
     }
 
     public IEnumerator StopCheckCarts()
@@ -371,6 +368,14 @@ public class CartManager : MonoBehaviour
         //StartCoroutine(StopHorizontalCheck(checkColor, levelIndex));
     }
 
+
+
+   
+
+
+
+
+
     //public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
     //{
     //    yield return new WaitForSecondsRealtime(0.15f);
@@ -407,7 +412,7 @@ public class CartManager : MonoBehaviour
     //        {
     //            //Get some effects at effect position (1st child)
     //            Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
-                
+
     //            GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, go.transform.parent.parent);
     //            tmpBlank.transform.SetSiblingIndex(1);
     //            tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetSiblingIndex();
@@ -427,7 +432,7 @@ public class CartManager : MonoBehaviour
     //            //Debug.Log("CH CRTS");
     //            CheckCarts();
 
-               
+
 
     //        }
     //        //SCORE
@@ -448,7 +453,7 @@ public class CartManager : MonoBehaviour
     //        //    //Rotate the lower level
     //        //    LevelManager.Instance.LevelMove(levelIndex, true);
     //        //}
-            
+
     //    }
 
 

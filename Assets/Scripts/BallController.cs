@@ -323,7 +323,7 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
-            FunctionHandler.Instance.OpenGameOver("YOU WIN");
+            FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
             PlayerPrefs.SetInt("LevelCount", PlayerPrefs.GetInt("LevelCount", 15) + 5);
         }
     }
