@@ -24,6 +24,9 @@ public class GameManager : Singleton<GameManager>
 
     //Fill amount of powerbar
     public float fillRate = 5;
+    //Decrease rate for powerFill
+    public float powerDecreaseSpeed = 1000;
+    public float powerDecreaseRate = 1000;
     [SerializeField]
     private float powerFill = 0;
     public float PowerFill
@@ -221,29 +224,34 @@ public class GameManager : Singleton<GameManager>
             {
                 BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
                
-                StartCoroutine(StopPoweredUp(20));
+                StartCoroutine(StopPoweredUp(500,Time.timeSinceLevelLoad));
             }
             else
             {
-                StartCoroutine(StopPoweredUp(40));
+                powerDecreaseRate += 100;
             }
            
         }
     }
 
 
-    private IEnumerator StopPoweredUp(float fraction)
+    private IEnumerator StopPoweredUp(float fraction, float startTime)
     {
+      
         PowerUpDecreasing = true;
-        while(powerFill>0)
+        while (powerFill > 0)  
         {
-            PowerFill -= Time.fixedDeltaTime/fraction;
+            Debug.Log(">>>>" + powerDecreaseRate);
+            Debug.Log(Time.timeSinceLevelLoad + " - " + startTime);
+            PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseRate;
             powerFiller.fillAmount = PowerFill;
             yield return null;
         }
+        //powerFill = 0;
         powerFiller.color = Color.white;
         Multiplier = 1;
-
+        PowerUpDecreasing = false;
+        powerDecreaseRate = powerDecreaseSpeed;
         BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 }

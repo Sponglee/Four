@@ -1454,6 +1454,7 @@ MonoBehaviour:
   multiText: {fileID: 1286456365}
   fltText: {fileID: 1001251165192770, guid: a45335c98c69dcf45ac304fa3416ac4e, type: 3}
   fillRate: 5
+  powerDecreaseRate: 1500
   powerFill: 0
   bestScore: 0
   ComboActive: 0
@@ -2701,7 +2702,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.9433962, g: 0.5941681, b: 0.3960484, a: 1}
+  m_Color: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

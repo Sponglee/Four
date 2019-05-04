@@ -42,7 +42,7 @@ public class BallController : Singleton<BallController>
             forcePush = value;
             if(value == true)
             {
-                Debug.Log("POWERUP");
+                //Debug.Log("POWERUP");
                 GameObject otherTrans = DownCheckRay(transform, "");
 
                 if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Steel"))
@@ -352,17 +352,18 @@ public class BallController : Singleton<BallController>
             }
               
         }
-        Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
+        //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
         if (/*other.gameObject.CompareTag("Cart")  || */other.gameObject.CompareTag("Steel"))
         {
             if (ForcePush /*&& !CollidedBool*/)
             {
-                Debug.Log(other + "COLLISION");
-                Debug.Log(other.transform.name + "Transform");
-
+                //Debug.Log(other + "COLLISION");
+                //Debug.Log(other.transform.name + "Transform");
 
 
                 PushDown(other.transform, other.transform.parent.parent.parent.parent.GetSiblingIndex());
+
+
             }
         }
         else if (other.gameObject.CompareTag("Bottom"))
