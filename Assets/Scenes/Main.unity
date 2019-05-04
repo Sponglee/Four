@@ -1455,7 +1455,8 @@ MonoBehaviour:
   fltText: {fileID: 1001251165192770, guid: a45335c98c69dcf45ac304fa3416ac4e, type: 3}
   fillRate: 5
   powerDecreaseSpeed: 500
-  powerDecreaseRate: 500
+  powerDecreaseAmount: 1000
+  powerRestoreRate: 50
   powerFill: 0
   bestScore: 0
   ComboActive: 0

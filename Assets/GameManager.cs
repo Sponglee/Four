@@ -26,7 +26,8 @@ public class GameManager : Singleton<GameManager>
     public float fillRate = 5;
     //Decrease rate for powerFill
     public float powerDecreaseSpeed = 1000;
-    public float powerDecreaseRate = 1000;
+    public float powerDecreaseAmount = 1000;
+    public float powerRestoreRate = 50;
     [SerializeField]
     private float powerFill = 0;
     public float PowerFill
@@ -177,34 +178,19 @@ public class GameManager : Singleton<GameManager>
 
     public void AddScore(int scoreAmount, Color color, Transform origin)
     {
-        if(!ComboActive)
-        {
-            comboCount = 1;
-            Multiplier = 1;
-            //ComboActive = true;
-            comboColor = color;
-        }
-        else
-        {
-            if(comboColor == color)
-            {
-                //Debug.Log("SAMECOLOR");
-                comboCount++;
-                
-            }
-            else
-            {
-                comboColor = color;
-                comboCount= 1;
-                Multiplier = 1;
-            }
-        }
+       
 
         GameObject tmpFltText = Instantiate(fltText, origin.position, Quaternion.identity);
+        tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = color;
         tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount/**comboCount*/);
 
         //Debug.Log("ADD " + scoreAmount + " : " + comboCount + " : " + Multiplier);
         Score += scoreAmount/**comboCount*Multiplier*/;
+
+        if (scoreAmount == multiplier)
+        {
+            Multiplier++;
+        }
     }
 
     private bool PowerUpDecreasing = false;
@@ -228,7 +214,7 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                powerDecreaseRate += 100;
+                powerDecreaseAmount += powerRestoreRate;
             }
            
         }
@@ -241,9 +227,9 @@ public class GameManager : Singleton<GameManager>
         PowerUpDecreasing = true;
         while (powerFill > 0)  
         {
-            Debug.Log(">>>>" + powerDecreaseRate);
+            Debug.Log(">>>>" + powerDecreaseAmount);
             Debug.Log(Time.timeSinceLevelLoad + " - " + startTime);
-            PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseRate;
+            PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseAmount;
             powerFiller.fillAmount = PowerFill;
             yield return null;
         }
@@ -251,7 +237,7 @@ public class GameManager : Singleton<GameManager>
         powerFiller.color = Color.white;
         Multiplier = 1;
         PowerUpDecreasing = false;
-        powerDecreaseRate = powerDecreaseSpeed;
+        powerDecreaseAmount = powerDecreaseSpeed;
         BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 }

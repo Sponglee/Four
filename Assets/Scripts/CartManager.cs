@@ -65,7 +65,6 @@ public class CartManager : MonoBehaviour
     private void Start()
     {
 
-        //spawnManagerRef = SpawnManager.Instance.spawnCartManager;
         colorHelper = new List<Color>();
         spawnMatsRef = LevelManager.Instance.spawnMats;
 
@@ -134,7 +133,7 @@ public class CartManager : MonoBehaviour
                     tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
                     //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
-                    //Set current for that cart
+                    //Set Current
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
 
                     //set cart reference for manager
@@ -190,20 +189,6 @@ public class CartManager : MonoBehaviour
 
 
 
-    ////Check if u point to nearest current
-    //private bool IsNearCurrent(int checkCurr, int curr, int moveDir)
-    //{
-
-    //    int checking = Mathf.Abs(checkCurr - curr);
-    //    if (checking == 1)
-    //        return true;
-    //    //when moving clockwise check if coursor not at 3 and vice-versa
-    //    else if (checking != 1 && moveDir == 1 && checkCurr == 0 && curr == 3)
-    //        return true;
-    //    else if (checking != 1 && moveDir == -1 && checkCurr == 3 && curr == 0)
-    //        return true;
-    //    else return false;
-    //}
 
     // Get angle for mousePosition
     private float GetFirstClickAngle()
@@ -290,179 +275,5 @@ public class CartManager : MonoBehaviour
     }
 
 
-    //Check to RaiseTower
-    public void CheckCarts()
-    {
-       
-            //StartCoroutine(StopCheckCarts());
-    }
-
-    public IEnumerator StopCheckCarts()
-    {
-        yield return new WaitForSeconds(0.1f);
-        //Debug.Log(">>CHECK CARTS ");
-        int cartCount = 0;
-        //Debug.Log("++++++++++ " + transform.parent.GetSiblingIndex());
-        foreach (Transform child in transform)
-        {
-            //Debug.Log(child.name);
-            if(child.childCount != 0)
-            {
-
-                //Debug.Log(">>>>"+child.GetChild(0).name);
-                //Check if there's 2 childs
-                if (child.childCount >= 2)
-                {
-                    Debug.Log("<<< DESTROYED");
-                    Destroy(child.GetChild(1).gameObject);
-                }
-
-                //Cound 1 child for three pop
-                if (child.GetChild(0).gameObject.CompareTag("Cart"))
-                {
-                    cartCount++;
-                    //Debug.Log(child.GetChild(0).GetComponent<CartModelContoller>().CurrentLevel);
-                }
-                
-               
-            }
-            else
-            {
-                Debug.Log(">>FOUND CART");
-                //Add a blank if it's lost
-                GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, child);
-                tmpBlank.transform.SetSiblingIndex(1);
-                tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = child.transform.GetSiblingIndex();
-
-                tmpBlank.transform.position = child.transform.position;
-                tmpBlank.transform.rotation = child.transform.rotation;
-            }
-
-        }
-
-        if (gameObject.CompareTag("Cart") && cartCount == 0)
-        {
-            ////Debug.Log("HERE");
-            //Instantiate(LevelManager.Instance.cylinderPrefab, transform.parent.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
-            Destroy(transform.parent.gameObject);
-            //Get some effects 
-            //LevelManager.Instance.RaiseTower();
-            //Speed up the game
-            SpawnManager.Instance.spawnInterval -= 0.6f / (LevelManager.Instance.levelCount - 2);
-            if (SpawnManager.Instance.spawnInterval < 0.4f)
-                SpawnManager.Instance.spawnInterval = 0.4f;
-        }
-
-        //if (!spawnManagerRef.spawnedBool)
-        //{
-        //    //SpawnManager.Instance.Spawn();
-        //    //Debug.Log("NANI");
-        //    //yield break;
-        //}
-
-    }
-
-    //Check for more than 3
-    public void HorizontalCheck(Color checkColor, int levelIndex)
-    {
-        //StartCoroutine(StopHorizontalCheck(checkColor, levelIndex));
-    }
-
-
-
-   
-
-
-
-
-
-    //public IEnumerator StopHorizontalCheck(Color checkColor, int levelIndex)
-    //{
-    //    yield return new WaitForSecondsRealtime(0.15f);
-    //    //Debug.Log(">>HORIZONTAL ");
-    //    int color = 0;
-    //    //Find object named Spawn for reference
-    //    //CartManager spawnColorsRef = SpawnManager.Instance.spawnCartManager;
-    //    List<GameObject> checkedCarts;
-    //    checkedCarts = new List<GameObject>();
-
-
-    //    for (int i = 0; i < transform.childCount; i++)
-    //    {
-    //        //Debug.Log("I " + i + " : " + transform.childCount);
-    //        if (transform.GetChild(i).GetChild(0).gameObject.CompareTag("Cart"))
-    //        {
-    //            if (transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<Renderer>().material.color
-    //                == spawnColorsRef.spawnMatRandomColor)
-    //            {
-    //                //Add cart to list
-    //                checkedCarts.Add(transform.GetChild(i).GetChild(0).GetChild(0).gameObject);
-    //                color++;
-    //            }
-
-
-    //            //Debug.Log("Checking " + i + "|" + transform.GetChild(i).GetSiblingIndex() + " " + checkedDollys.Count);
-    //        }
-    //    }
-
-    //    if (color >= 3)
-    //    {
-    //        //Debug.Log("MORE THAN 3");
-    //        foreach (GameObject go in checkedCarts)
-    //        {
-    //            //Get some effects at effect position (1st child)
-    //            Instantiate(LevelManager.Instance.threePrefab, go.transform.parent.GetChild(1).position, Quaternion.identity, LevelManager.Instance.EffectHolder);
-
-    //            GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab, go.transform.parent.parent);
-    //            tmpBlank.transform.SetSiblingIndex(1);
-    //            tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = go.transform.GetSiblingIndex();
-
-    //            tmpBlank.transform.position = go.transform.parent.transform.position;
-    //            tmpBlank.transform.rotation = go.transform.parent.transform.rotation;
-
-    //            go.transform.parent.SetParent(null);
-    //            go.GetComponent<BoxCollider>().isTrigger = true;
-    //            Rigidbody tmprb = go.GetComponent<Rigidbody>();
-    //            tmprb.constraints = RigidbodyConstraints.None;
-    //            tmprb.useGravity = true;
-    //            tmprb.AddRelativeForce(new Vector3(0, 100f, 0));
-    //            tmprb.AddRelativeTorque(new Vector3(1000f, 0, 0));
-    //            go.tag = "Untagged";
-
-    //            //Debug.Log("CH CRTS");
-    //            CheckCarts();
-
-
-
-    //        }
-    //        //SCORE
-    //        GameManager.Instance.Score += 5 * color;
-
-    //        checkedCarts.Clear();
-    //    }
-    //    else
-    //    {
-    //        //int tmpRange = Random.Range(0, 2);
-    //        //if(tmpRange==0)
-    //        //{
-    //        //    //Rotate the lower level
-    //        //    LevelManager.Instance.LevelMove(levelIndex);
-    //        //}
-    //        //else
-    //        //{
-    //        //    //Rotate the lower level
-    //        //    LevelManager.Instance.LevelMove(levelIndex, true);
-    //        //}
-
-    //    }
-
-
-
-    //    //GetNew spawn ready
-    //    if (!spawnManagerRef.spawnedBool)
-    //    {
-    //        //SpawnManager.Instance.Spawn();
-    //        //Debug.Log("NANI");
-    //    }
-    //}
+    
 }

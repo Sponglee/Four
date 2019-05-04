@@ -21,7 +21,7 @@ public class BallController : Singleton<BallController>
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / LevelManager.Instance.levelCount;
             //SCORE
-            GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
+            GameManager.Instance.AddScore(1, Color.grey, transform.GetChild(0));
 
 
         }
@@ -333,7 +333,7 @@ public class BallController : Singleton<BallController>
     {
         //Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
-        if (!CollidedBool && (other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
+        if (/*!CollidedBool && */(other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
         {
             CollidedBool = true;
             if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
@@ -368,10 +368,10 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
-          
+            int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
             FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
             PlayerPrefs.SetInt("CurrentRank", GameManager.Instance.CurrentRank + 1);
-            //PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5/*(int)((tmpLvlCount/(1+tmpLvlCount))*10 + tmpLvlCount)*/);
+            PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5/*(int)((tmpLvlCount/(1+tmpLvlCount))*10 + tmpLvlCount)*/);
         }
     }
 
@@ -405,8 +405,8 @@ public class BallController : Singleton<BallController>
             tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
             tmpBlank.transform.position = other.transform.parent.position;
             tmpBlank.transform.rotation = other.transform.parent.rotation;
-            //Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
-            tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
+            ////Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
+            //tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
 
 
 
@@ -462,7 +462,8 @@ public class BallController : Singleton<BallController>
             //    forceMultiplier = 5;
             //}
 
-            GameManager.Instance.AddScore(GameManager.Instance.Multiplier, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
+            
+            GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
         }
         //If not the same color
         else if (other.transform.parent != null && other.gameObject.CompareTag("Cart"))
