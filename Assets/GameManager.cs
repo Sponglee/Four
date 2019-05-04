@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-
+    public TextMeshProUGUI tapText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestText;
 
@@ -184,12 +184,17 @@ public class GameManager : Singleton<GameManager>
         tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = color;
         tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount/**comboCount*/);
 
-        //Debug.Log("ADD " + scoreAmount + " : " + comboCount + " : " + Multiplier);
-        Score += scoreAmount/**comboCount*Multiplier*/;
+       
 
         if (scoreAmount == multiplier)
         {
+            Score += scoreAmount * Multiplier;
             Multiplier++;
+        }
+        else
+        {
+            //Debug.Log("ADD " + scoreAmount + " : " + comboCount + " : " + Multiplier);
+            Score += scoreAmount;
         }
     }
 

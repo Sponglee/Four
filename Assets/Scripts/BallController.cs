@@ -113,6 +113,7 @@ public class BallController : Singleton<BallController>
     int skippedCounter = 0;
     float vel;
 
+    public bool TapToStart = false;
 
     [SerializeField]
     private bool poweredUp = false;
@@ -134,7 +135,7 @@ public class BallController : Singleton<BallController>
             }
         }
 
-     //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
+   
      
     }
 
@@ -157,11 +158,19 @@ public class BallController : Singleton<BallController>
     private void FixedUpdate()
     {
 
-      
+        
 
-        if (/*!CollidedBool &&*/ !ForcePush)
+        if (TapToStart && !ForcePush)
         {
             transform.parent.position += downVelocity;
+        }
+        else if(!TapToStart)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                TapToStart = true;
+                GameManager.Instance.tapText.gameObject.SetActive(false);
+            }
         }
   
 
@@ -207,12 +216,6 @@ public class BallController : Singleton<BallController>
             SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
            
         }
-
-
-
-
-       
-
 
     }
 
@@ -383,7 +386,7 @@ public class BallController : Singleton<BallController>
         //CollidedBool = true;
         if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
         {
-            GameManager.Instance.Multiplier++;
+          
             //ForcePush = false;
             //Check if other is in the same column if secon hit 
             if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
