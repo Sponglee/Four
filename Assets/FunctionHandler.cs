@@ -121,7 +121,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void SetLevelCount (InputField levels)
     {
-        PlayerPrefs.SetInt("LevelCount", Convert.ToInt32(levels.text));
+        PlayerPrefs.SetInt("CurrentRank", Convert.ToInt32(levels.text));
         SceneManager.LoadScene("Main");
     }
 

@@ -201,10 +201,10 @@ public class GameManager : Singleton<GameManager>
         }
 
         GameObject tmpFltText = Instantiate(fltText, origin.position, Quaternion.identity);
-        tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount*Multiplier/**comboCount*/);
+        tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount/**comboCount*/);
 
         //Debug.Log("ADD " + scoreAmount + " : " + comboCount + " : " + Multiplier);
-        Score += scoreAmount*Multiplier/**comboCount*Multiplier*/;
+        Score += scoreAmount/**comboCount*Multiplier*/;
     }
 
     private bool PowerUpDecreasing = false;

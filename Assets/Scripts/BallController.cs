@@ -368,10 +368,10 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
-            int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
+          
             FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
             PlayerPrefs.SetInt("CurrentRank", GameManager.Instance.CurrentRank + 1);
-            PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5/*(int)((tmpLvlCount/(1+tmpLvlCount))*10 + tmpLvlCount)*/);
+            //PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5/*(int)((tmpLvlCount/(1+tmpLvlCount))*10 + tmpLvlCount)*/);
         }
     }
 
@@ -462,7 +462,7 @@ public class BallController : Singleton<BallController>
             //    forceMultiplier = 5;
             //}
 
-
+            GameManager.Instance.AddScore(GameManager.Instance.Multiplier, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
         }
         //If not the same color
         else if (other.transform.parent != null && other.gameObject.CompareTag("Cart"))
