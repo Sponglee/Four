@@ -99,6 +99,7 @@ public class LevelManager : Singleton<LevelManager>
 
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
 
+        Debug.Log("LOADED " + levelCount);
         //Start Destruction of levels
         //StartCoroutine(LevelTimer());
 
@@ -251,8 +252,8 @@ public class LevelManager : Singleton<LevelManager>
     //Move level around  default - CLOCKWISE (LEFT)
     public IEnumerator LevelMoveRotate(int level, float levelAngle, bool righDirection = false)
     {
-        //yield return new WaitForSeconds(0.1f);
-        
+        yield return new WaitForSeconds(0.1f);
+       
         float tempAngle = levelAngle;
         //number of turns
         int turnCount = Random.Range(1, 2);

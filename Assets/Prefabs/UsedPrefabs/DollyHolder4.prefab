@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 54321935469522434}
   - component: {fileID: 65132235903708058}
   - component: {fileID: 3200022692149772417}
+  - component: {fileID: 728930494056382135}
   m_Layer: 10
   m_Name: Cart
   m_TagString: Cart
@@ -129,9 +130,9 @@ BoxCollider:
   m_GameObject: {fileID: 1422077635645674}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 1.39, z: 3.57}
+  m_Size: {x: 4, y: 1.39, z: 3.57}
   m_Center: {x: -0.027273087, y: 2.71, z: -1.77}
 --- !u!136 &3200022692149772417
 CapsuleCollider:
@@ -147,6 +148,20 @@ CapsuleCollider:
   m_Height: 5.68
   m_Direction: 0
   m_Center: {x: 0.000000059604645, y: 2.66, z: -1.7}
+--- !u!64 &728930494056382135
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422077635645674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300004, guid: 5ab55277e8fdd114bb0c8a381a01eb28, type: 3}
 --- !u!1 &1859630849823150
 GameObject:
   m_ObjectHideFlags: 0

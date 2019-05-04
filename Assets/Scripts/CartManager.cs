@@ -69,7 +69,7 @@ public class CartManager : MonoBehaviour
         colorHelper = new List<Color>();
         spawnMatsRef = LevelManager.Instance.spawnMats;
 
-        requiredCart1 = Random.Range(0, LevelManager.Instance.cartCount);
+        requiredCart1 = Random.Range(0, carts.Length);
 
         if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
         {
@@ -101,24 +101,24 @@ public class CartManager : MonoBehaviour
                 if (i == requiredCart1)
                 {
                     materialRandomizer = 1;
-                    
+                    continue;
                 }
                 else
                 {
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
                 }
 
-                //Debug.Log(">>>>>>>"+materialRandomizer);
+         
                 //If randomizer proc or this is a required cart
-                if (materialRandomizer == 0 && spawnRandomizer <= 60)
+                if (spawnRandomizer <= 40)
                 {
-
+                    materialRandomizer = 0;
 
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
                     //check if it's steel
 
-                    //if (materialRandomizer == 0)
+                    //if ()
                     //{
 
                     tmpCart.tag = "Steel";
@@ -141,7 +141,7 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
                 }
-                else if (spawnRandomizer <= 10)
+                else if (spawnRandomizer > 40 && spawnRandomizer <= 50)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);

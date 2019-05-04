@@ -60,7 +60,7 @@ public class CartModelContoller : MonoBehaviour
       
         if (other.gameObject.CompareTag("Bottom"))
         {
-            Debug.Log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+            //Debug.Log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             Destroy(transform.parent.gameObject);
         }
        

@@ -89,6 +89,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             {
                 Time.timeScale = 1;
 
+              
                 SceneManager.LoadScene("Main");
             }
             else

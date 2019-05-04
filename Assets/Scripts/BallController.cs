@@ -42,7 +42,17 @@ public class BallController : Singleton<BallController>
             forcePush = value;
             if(value == true)
             {
-               
+                Debug.Log("POWERUP");
+                GameObject otherTrans = DownCheckRay(transform, "");
+
+                if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Steel"))
+                {
+                    if (ForcePush /*&& !CollidedBool*/)
+                    {
+
+                        PushDown(otherTrans.transform, otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
+                    }
+                }
             }
             else
             {
@@ -104,9 +114,29 @@ public class BallController : Singleton<BallController>
     float vel;
 
 
+    [SerializeField]
+    private bool poweredUp = false;
+    public bool PoweredUp
+    {
+        get
+        {
+            return poweredUp;
+        }
 
-    public bool PoweredUp = false;
+        set
+        {
 
+            poweredUp = value;
+            if(value == true)
+            {
+
+              
+            }
+        }
+
+     //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
+     
+    }
 
     void Start()
     {
@@ -129,7 +159,7 @@ public class BallController : Singleton<BallController>
 
       
 
-        if (!CollidedBool && !ForcePush)
+        if (/*!CollidedBool &&*/ !ForcePush)
         {
             transform.parent.position += downVelocity;
         }
@@ -153,13 +183,16 @@ public class BallController : Singleton<BallController>
             forceMultiplier += 1;
             forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
             transform.parent.position += downVelocity * forceMultiplier;
-
+           
             if (forceMultiplier >= forceTreshold)
             {
-
-                ForcePush = true;
-                //transform.parent.position -= downVelocity;
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+                if(!ForcePush)
+                {
+                    ForcePush = true;
+                    //transform.parent.position -= downVelocity;
+                    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+                }
+             
 
             }
             else
@@ -174,7 +207,13 @@ public class BallController : Singleton<BallController>
             SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
            
         }
-         
+
+
+
+
+       
+
+
     }
 
 
@@ -250,7 +289,7 @@ public class BallController : Singleton<BallController>
     //    Debug.Log("Jump");
     //    vel = jumpStrength;
     //}
-    
+
 
 
     [SerializeField]
@@ -294,8 +333,9 @@ public class BallController : Singleton<BallController>
     {
         //Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
-        if ((other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
+        if (!CollidedBool && (other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
         {
+            CollidedBool = true;
             if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
             {
                 //Debug.Log("Ball " + transform.position);
@@ -312,32 +352,38 @@ public class BallController : Singleton<BallController>
             }
               
         }
-        //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
-        if (other.gameObject.CompareTag("Cart")  || other.gameObject.CompareTag("Steel"))
+        Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
+        if (/*other.gameObject.CompareTag("Cart")  || */other.gameObject.CompareTag("Steel"))
         {
             if (ForcePush /*&& !CollidedBool*/)
             {
+                Debug.Log(other + "COLLISION");
+                Debug.Log(other.transform.name + "Transform");
 
-                PushDown(other, other.transform.parent.parent.parent.parent.GetSiblingIndex());
+
+
+                PushDown(other.transform, other.transform.parent.parent.parent.parent.GetSiblingIndex());
             }
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
+            int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
             FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
-            PlayerPrefs.SetInt("LevelCount", PlayerPrefs.GetInt("LevelCount", 15) + 5);
+            PlayerPrefs.SetInt("CurrentRank", GameManager.Instance.CurrentRank + 1);
+            PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5/*(int)((tmpLvlCount/(1+tmpLvlCount))*10 + tmpLvlCount)*/);
         }
     }
 
 
-    public void PushDown(Collision other, int siblingIndex)
+    public void PushDown(Transform other, int siblingIndex)
     {
        
         //Debug.Log("SHIKARI");
-        CollidedBool = true;
+        //CollidedBool = true;
         if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
         {
             GameManager.Instance.Multiplier++;
-            ForcePush = false;
+            //ForcePush = false;
             //Check if other is in the same column if secon hit 
             if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
             {
@@ -364,7 +410,7 @@ public class BallController : Singleton<BallController>
 
 
             //Second cart pop sequence
-            other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+            other.gameObject.GetComponent<MeshCollider>().isTrigger = true;
             other.gameObject.GetComponent<CapsuleCollider>().enabled = false;
             Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;

@@ -41,6 +41,7 @@ public class GameManager : Singleton<GameManager>
             powerFiller.fillAmount = powerFill;
             if (powerFill >= 1)
             {
+              
                 BallController.Instance.PoweredUp = true;
                 ComboActive = true;
             }
@@ -124,7 +125,8 @@ public class GameManager : Singleton<GameManager>
             progresSlider.value = value;
             if(progresSlider.value>=1)
             {
-                CurrentRank++;
+                
+                
                 progresSlider.value = 0;
             }
         }
@@ -141,8 +143,9 @@ public class GameManager : Singleton<GameManager>
 
         set
         {
+           
             currentRank = value;
-            PlayerPrefs.SetInt("CurrentRank", value);
+            
             currText.text = value.ToString();
             nextText.text = (value + 1).ToString();
         }
@@ -164,13 +167,10 @@ public class GameManager : Singleton<GameManager>
         CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
     }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-
-
+    private void OnLevelWasLoaded(int level)
+    {
+        
+    }
 
     public void AddScore(int scoreAmount, Color color, Transform origin)
     {
