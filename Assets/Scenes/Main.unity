@@ -1680,6 +1680,7 @@ MonoBehaviour:
     type: 3}
   unlockedMapColor: {r: 0.9719083, g: 1, b: 0.47641504, a: 1}
   lockedMapColor: {r: 0.4245283, g: 0.41451585, b: 0.41451585, a: 1}
+  finishedColor: {r: 0.5882353, g: 0.9921569, b: 0.7176471, a: 1}
 --- !u!4 &766814937
 Transform:
   m_ObjectHideFlags: 0

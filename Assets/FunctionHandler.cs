@@ -15,7 +15,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject mapElemRef;
     public Color unlockedMapColor;
     public Color lockedMapColor;
-
+    public Color finishedColor;
 
     private void Start()
     {
@@ -103,31 +103,26 @@ public class FunctionHandler : Singleton<FunctionHandler>
             
             if(mapSegment != null)
             {
-                if(i != tmpRank)
+                
+                if (i != tmpRank)
                 {
-                    mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = unlockedMapColor;
+                    mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = finishedColor;
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
+                    //Color current level as finished
+                    //if (i == tmpRank - 1)
+                    //{
+                    //    Debug.Log("YEET");
+                    //    yield return StopMapPan();
+                    //    mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
+                    //    yield return StopColorLerp(mapSegment.transform.GetChild(i % 4), finishedColor);
+                    //}
                 }
+              
                 else
                 {
                     yield return StopMapPan();
-                    float elapsed = 0;
-                    float duration = 5f;
-
-                    while (elapsed < duration)
-                    {
-                        
-
-                        elapsed += 0.1f;
-
-                       
-                        mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color
-                            = Color.Lerp(lockedMapColor, 
-                            unlockedMapColor, elapsed/duration);
-
-                        //Debug.Log(">><<");
-                        yield return null;
-                    }
+                    //Unlock next level
+                    yield return StopColorLerp(mapSegment.transform.GetChild(i % 4), unlockedMapColor);
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
 
 
@@ -162,10 +157,34 @@ public class FunctionHandler : Singleton<FunctionHandler>
             map.transform.localPosition = Vector3.Lerp(startPos, 
                         - Vector3.right*(PlayerPrefs.GetInt("CurrentRank", 1)/4) * 97f, elapsed / duration);
 
-            Debug.Log("XXXXX " + (PlayerPrefs.GetInt("CurrentRank", 1) / 4 - 3) * 97f);
+            //Debug.Log("XXXXX " + (PlayerPrefs.GetInt("CurrentRank", 1) / 4 - 3) * 97f);
             yield return null;
         }
     }
+    
+
+    //Lerp the color
+    private IEnumerator StopColorLerp(Transform target, Color destColor)
+    {
+        float elapsed = 0;
+        float duration = 5f;
+
+        while (elapsed < duration)
+        {
+
+
+            elapsed += 0.1f;
+
+
+            target.GetComponent<Image>().color
+                = Color.Lerp(lockedMapColor,
+                destColor, elapsed / duration);
+
+            //Debug.Log(">><<");
+            yield return null;
+        }
+    }
+
 
     public void CloseGameOver(bool menuClose = false)
     {
