@@ -163,8 +163,7 @@ public class BallController : Singleton<BallController>
     {
         if(Input.GetMouseButtonDown(2))
         {
-            GameObject otherTrans = DownCheckRay(transform, "");
-            Debug.Log(otherTrans.name);
+            GameManager.Instance.LevelComplete();
         }
         
 
@@ -384,7 +383,7 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("Bottom"))
         {
             //Add more levels for progression
-            GameManager.Instance.IncrementLevel();
+            GameManager.Instance.LevelComplete();
         }
     }
 

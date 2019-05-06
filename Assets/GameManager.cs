@@ -171,11 +171,7 @@ public class GameManager : Singleton<GameManager>
         CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
     }
 
-    private void OnLevelWasLoaded(int level)
-    {
-        
-    }
-
+  
     public void AddScore(int scoreAmount, Color color, Transform origin)
     {
        
@@ -232,7 +228,7 @@ public class GameManager : Singleton<GameManager>
         PowerUpDecreasing = true;
         while (powerFill > 0)  
         {
-            Debug.Log(">>>>" + powerDecreaseAmount);
+            //Debug.Log(">>>>" + powerDecreaseAmount);
             //Debug.Log(Time.timeSinceLevelLoad + " - " + startTime);
             PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseAmount;
             powerFiller.fillAmount = PowerFill;
@@ -248,7 +244,7 @@ public class GameManager : Singleton<GameManager>
 
 
 
-    public void IncrementLevel()
+    public void LevelComplete()
     {
         int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
         FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");

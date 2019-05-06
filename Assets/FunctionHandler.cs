@@ -11,6 +11,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject menuCanvas;
     public GameObject menuButton;
 
+    public Transform map;
+    public GameObject mapElemRef;
+    public Color unlockedMapColor;
+    public Color lockedMapColor;
+
+
     private void Start()
     {
         Time.timeScale = 1;
@@ -21,6 +27,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         StartCoroutine(StopOpenGameOver(message));
 
+       
 
     }
 
@@ -57,6 +64,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 {
                     menuCanvas.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<Image>().color = Color.white;
                 }
+
+                
             }
         }
         else if (message != "")
@@ -70,12 +79,93 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Disable menu button if game over or win
             menuButton.SetActive(false);
             //yield return new WaitForSeconds(0.21f);
+            StartCoroutine(StopMapProgression());
             Time.timeScale = 0;
-
         }
         yield return null;
     }
 
+
+    public IEnumerator StopMapProgression()
+    {
+        int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
+        GameObject mapSegment = null;
+
+       
+
+        for (int i = 0; i < tmpRank+1; i++)
+        {
+           
+            if (i % 4 == 0)
+            {
+                mapSegment = Instantiate(mapElemRef, map);
+            }
+            
+            if(mapSegment != null)
+            {
+                if(i != tmpRank)
+                {
+                    mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = unlockedMapColor;
+                    mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
+                }
+                else
+                {
+                    yield return StopMapPan();
+                    float elapsed = 0;
+                    float duration = 5f;
+
+                    while (elapsed < duration)
+                    {
+                        
+
+                        elapsed += 0.1f;
+
+                       
+                        mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color
+                            = Color.Lerp(lockedMapColor, 
+                            unlockedMapColor, elapsed/duration);
+
+                        //Debug.Log(">><<");
+                        yield return null;
+                    }
+                    mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
+
+
+                }
+            }
+               
+           
+          
+        }
+
+
+
+
+        yield return null;
+    }
+
+
+
+    public IEnumerator StopMapPan()
+    {
+        //yield return new WaitForSeconds(0.2f);
+        float elapsed = 0;
+        float duration = 5f;
+
+        map.transform.localPosition = Vector3.zero;
+
+        while (elapsed < duration)
+        {
+
+            Vector3 startPos = map.transform.localPosition;
+            elapsed += 0.2f;
+            map.transform.localPosition = Vector3.Lerp(startPos, 
+                        - Vector3.right*(PlayerPrefs.GetInt("CurrentRank", 1)/4) * 97f, elapsed / duration);
+
+            Debug.Log("XXXXX " + (PlayerPrefs.GetInt("CurrentRank", 1) / 4 - 3) * 97f);
+            yield return null;
+        }
+    }
 
     public void CloseGameOver(bool menuClose = false)
     {
