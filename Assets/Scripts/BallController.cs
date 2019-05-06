@@ -157,7 +157,10 @@ public class BallController : Singleton<BallController>
    
     private void FixedUpdate()
     {
-
+        if(Input.GetMouseButtonDown(2))
+        {
+            GameManager.Instance.IncrementLevel();
+        }
         
 
         if (TapToStart && !ForcePush)
@@ -371,10 +374,8 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
-            int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
-            FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
-            PlayerPrefs.SetInt("CurrentRank", GameManager.Instance.CurrentRank + 1);
-            PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5/*(int)((tmpLvlCount/(1+tmpLvlCount))*10 + tmpLvlCount)*/);
+            //Add more levels for progression
+            GameManager.Instance.IncrementLevel();
         }
     }
 

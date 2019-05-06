@@ -97,7 +97,16 @@ public class LevelManager : Singleton<LevelManager>
         //spawnMats[3] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
         //spawnMats[2] = spawnMatPool[0];
 
-        levelCount = Mathf.Clamp(PlayerPrefs.GetInt("CurrentRank", 1) * 5, 15, 500);
+
+
+        //Level Count curve (500 maximum - after that +1);
+        levelCount = PlayerPrefs.GetInt("LevelCount", 15);
+
+
+        
+
+
+
 
         Debug.Log("LOADED " + levelCount);
         //Start Destruction of levels

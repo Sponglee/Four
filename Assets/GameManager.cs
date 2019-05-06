@@ -245,4 +245,24 @@ public class GameManager : Singleton<GameManager>
         powerDecreaseAmount = powerDecreaseSpeed;
         BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
+
+
+
+    public void IncrementLevel()
+    {
+        int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
+        FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
+        PlayerPrefs.SetInt("CurrentRank", CurrentRank + 1);
+        if (tmpLvlCount <= 500)
+            PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5);
+        else
+        {
+
+            if (PlayerPrefs.GetInt("CurrentRank", 1) % 10 == 0)
+            {
+                tmpLvlCount++;
+                PlayerPrefs.SetInt("LevelCount", tmpLvlCount);
+            }
+        }
+    }
 }
