@@ -47,10 +47,11 @@ public class BallController : Singleton<BallController>
 
                 if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Steel"))
                 {
-                    Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
-                    if (ForcePush && (CurrentLevel - otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex()  == 1))
+                    //Сheck if cart is close to push it out if needed
+                    if (ForcePush && (otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex() - CurrentLevel <= 2))
                     {
                       
+                        Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
                         PushDown(otherTrans.transform, otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
                     }
                 }
@@ -564,7 +565,7 @@ public class BallController : Singleton<BallController>
         //Offset origin to get center of a cart
         offsetOrigin = origin.position + new Vector3(0, -2.51f, 0);
         //lowerEnd of debug line
-        dir = origin.position + new Vector3(0, -20f, 0);
+        dir = origin.position + new Vector3(0, -5f, 0);
         Debug.DrawLine(origin.position + new Vector3(0, -2.51f, 0), dir, Color.black, 10f);
         //}
 

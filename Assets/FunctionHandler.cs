@@ -33,7 +33,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         //if there's no message - mid game open or close menu
         if (message == "")
         {
-
+            Time.timeScale = 0;
             //Close menu if it's open and midgame
             if (menuCanvas.activeSelf)
             {
@@ -69,10 +69,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
             //Disable menu button if game over or win
             menuButton.SetActive(false);
-            yield return new WaitForSeconds(0.21f);
+            //yield return new WaitForSeconds(0.21f);
             Time.timeScale = 0;
 
         }
+        yield return null;
     }
 
 
