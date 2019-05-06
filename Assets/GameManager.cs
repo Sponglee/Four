@@ -73,7 +73,7 @@ public class GameManager : Singleton<GameManager>
             score = value;
             scoreText.text = value.ToString();
             PlayerPrefs.SetInt("Score", value);
-            Debug.Log("<< " + score);
+            //Debug.Log("<< " + score);
             if (value>=bestScore)
             {
                 bestScore = value;

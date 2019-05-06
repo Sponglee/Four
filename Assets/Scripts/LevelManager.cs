@@ -99,10 +99,15 @@ public class LevelManager : Singleton<LevelManager>
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
 
-        //Set background
-        backGround.position =new Vector3(0, -levelCount * 7/2 + 50, 23);
-        backGround.localScale = new Vector3(100, levelCount * 7, 1);
+        int bckHeight =  levelCount * 7;
+        if (bckHeight < 550)
+            bckHeight = 550;
 
+        //Set background
+        backGround.position =new Vector3(0, -bckHeight/2 + 50, 23);
+        backGround.localScale = new Vector3(100, bckHeight, 1);
+
+        Debug.Log("LOADED " + levelCount);
 
 
         //Generate the level

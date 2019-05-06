@@ -7,7 +7,7 @@ public class BallController : Singleton<BallController>
 {
     ///FROM CARTMODELCONTROLLER 
     /// 
-
+    [SerializeField]
     private int currentLevel = -2;
     public int CurrentLevel
     {
@@ -42,14 +42,15 @@ public class BallController : Singleton<BallController>
             forcePush = value;
             if(value == true)
             {
-                //Debug.Log("POWERUP");
                 GameObject otherTrans = DownCheckRay(transform, "");
+                Debug.Log(otherTrans.name);
 
                 if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Steel"))
                 {
-                    if (ForcePush /*&& !CollidedBool*/)
+                    Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
+                    if (ForcePush && (CurrentLevel - otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex()  == 1))
                     {
-
+                      
                         PushDown(otherTrans.transform, otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
                     }
                 }
@@ -107,6 +108,8 @@ public class BallController : Singleton<BallController>
     [SerializeField] float jumpStrength = 100;
     [SerializeField] float gravityForce = 10;
 
+
+
     LevelManager level;
     Rigidbody rb;
     float nextBallPosToJump;
@@ -150,7 +153,7 @@ public class BallController : Singleton<BallController>
 
         nextBallPosToJump = -level.spawnOffset /*+ GetComponent<SphereCollider>().bounds.size.y / 2*/ + level.spawnOffsetStep / 2;
 
-        Debug.Log(nextBallPosToJump);
+        //Debug.Log(nextBallPosToJump);
         LevelManager.Instance.ballRef = this;
     }
 
@@ -159,12 +162,17 @@ public class BallController : Singleton<BallController>
     {
         if(Input.GetMouseButtonDown(2))
         {
-            GameManager.Instance.IncrementLevel();
+            GameObject otherTrans = DownCheckRay(transform, "");
+            Debug.Log(otherTrans.name);
         }
         
 
         if (TapToStart && !ForcePush)
         {
+            if(rb.velocity.y != 0)
+            {
+                rb.velocity = Vector3.zero;
+            }
             transform.parent.position += downVelocity;
         }
         else if(!TapToStart)
@@ -449,22 +457,22 @@ public class BallController : Singleton<BallController>
             //GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
 
 
-            //Second cart below check for color - if not the same - pop Spawn out
-            GameObject tmpRay = DownCheckRay(other.transform);
+            ////Second cart below check for color - if not the same - pop Spawn out
+            //GameObject tmpRay = DownCheckRay(other.transform);
 
-            if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
-            {
-                //Debug.Log("NEXT");
-                CollidedBool = false;
-                CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
-               //SecondCollision = true;
-            }
-            //else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
+            //if (tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color == gameObject.GetComponent<Renderer>().material.color)
             //{
-            //    Debug.Log("HEREERERERERERERER");
-            //    ForcePush = false;
-            //    forceMultiplier = 5;
+            //    //Debug.Log("NEXT");
+            //    CollidedBool = false;
+            //    CollidedCurrent = other.transform.GetComponent<CartModelContoller>().Current;
+            //   //SecondCollision = true;
             //}
+            ////else if(tmpRay != null && tmpRay.CompareTag("Cart") && tmpRay.GetComponent<Renderer>().material.color != gameObject.GetComponent<Renderer>().material.color)
+            ////{
+            ////    Debug.Log("HEREERERERERERERER");
+            ////    ForcePush = false;
+            ////    forceMultiplier = 5;
+            ////}
 
             
             GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
@@ -554,10 +562,10 @@ public class BallController : Singleton<BallController>
         //{
         rayDirection = -Vector3.up;
         //Offset origin to get center of a cart
-        offsetOrigin = origin.TransformPoint(origin.localPosition + new Vector3(0, 2.5f, 0));
+        offsetOrigin = origin.position + new Vector3(0, -2.51f, 0);
         //lowerEnd of debug line
-        dir = offsetOrigin + new Vector3(0, -20f, 0);
-        Debug.DrawLine(origin.TransformPoint(origin.localPosition + new Vector3(0, 2.5f, 0)), dir, Color.black, 10f);
+        dir = origin.position + new Vector3(0, -20f, 0);
+        Debug.DrawLine(origin.position + new Vector3(0, -2.51f, 0), dir, Color.black, 10f);
         //}
 
 
