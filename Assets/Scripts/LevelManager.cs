@@ -14,7 +14,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject blankCartPrefab;
     public GameObject cartPrefab;
     public GameObject collectablePrefab;
-
+    public Transform backGround;
 
 
     public Material[] spawnMatPool;
@@ -102,8 +102,9 @@ public class LevelManager : Singleton<LevelManager>
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
 
+        backGround.position =new Vector3(0, -levelCount * 7/2 + 50, 23);
 
-        
+        backGround.localScale = new Vector3(100, levelCount * 7, 1);
 
 
 
