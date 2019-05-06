@@ -94,34 +94,14 @@ public class LevelManager : Singleton<LevelManager>
         spawnMats[0] = Instance.towerMat;
         spawnMats[1] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
         spawnMats[2] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
-        //spawnMats[3] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
-        //spawnMats[2] = spawnMatPool[0];
-
-
+        
 
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
 
+        //Set background
         backGround.position =new Vector3(0, -levelCount * 7/2 + 50, 23);
-
         backGround.localScale = new Vector3(100, levelCount * 7, 1);
-
-
-
-
-        Debug.Log("LOADED " + levelCount);
-        //Start Destruction of levels
-        //StartCoroutine(LevelTimer());
-
-
-
-        ////Generate array of random requiredPos
-        //requiredPos = new int[5];
-
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    requiredPos[i] = Random.Range(0, cartCount);
-        //}
 
 
 

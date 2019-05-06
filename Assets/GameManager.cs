@@ -73,8 +73,8 @@ public class GameManager : Singleton<GameManager>
             score = value;
             scoreText.text = value.ToString();
             PlayerPrefs.SetInt("Score", value);
-            //Debug.Log("<< " + score);
-            if(value>=bestScore)
+            Debug.Log("<< " + score);
+            if (value>=bestScore)
             {
                 bestScore = value;
                 PlayerPrefs.SetInt("BestScore", value);
@@ -233,7 +233,7 @@ public class GameManager : Singleton<GameManager>
         while (powerFill > 0)  
         {
             Debug.Log(">>>>" + powerDecreaseAmount);
-            Debug.Log(Time.timeSinceLevelLoad + " - " + startTime);
+            //Debug.Log(Time.timeSinceLevelLoad + " - " + startTime);
             PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseAmount;
             powerFiller.fillAmount = PowerFill;
             yield return null;
