@@ -95,7 +95,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
        
 
-        for (int i = 0; i < tmpRank+1; i++)
+        for (int i = Mathf.Clamp(tmpRank-100,0,tmpRank); i < tmpRank+1; i++)
         {
            
             if (i % 4 == 0)
@@ -179,7 +179,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                         endPos, elapsed / duration);
 
             //Debug.Log("XXXXX " + (PlayerPrefs.GetInt("CurrentRank", 1) / 4 - 3) * 97f);
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
     }
     
