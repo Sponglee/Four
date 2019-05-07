@@ -164,9 +164,13 @@ public class BallController : Singleton<BallController>
         if(Input.GetMouseButtonDown(2))
         {
 
-            PoweredUp = true;
-            GameManager.Instance.ComboActive = true;
-            //GameManager.Instance.LevelComplete();
+            //PoweredUp = true;
+            //GameManager.Instance.ComboActive = true;
+            GameManager.Instance.LevelComplete();
+        }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            StartCoroutine(FunctionHandler.Instance.StopMapPan());
         }
         
 

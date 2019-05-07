@@ -163,7 +163,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
         else
         {
-            endPos = -Vector3.right * (tmpRank /4 - 3) * 100;
+            endPos = -Vector3.right * (tmpRank /4 - 2) * 100;
 
         }
 
