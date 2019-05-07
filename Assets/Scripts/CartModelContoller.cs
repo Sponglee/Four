@@ -11,7 +11,23 @@ public class CartModelContoller : MonoBehaviour
  
 
     private CinemachineDollyCart tempCart;
-    public CinemachineSmoothPath[] paths;
+
+
+    [SerializeField]
+    private int levelIndex;
+    public int LevelIndex
+    {
+        get
+        {
+            return levelIndex;
+        }
+
+        set
+        {
+            levelIndex = value;
+        }
+    }
+
 
     public SpawnManager spawnManager;
     [SerializeField]
@@ -45,10 +61,12 @@ public class CartModelContoller : MonoBehaviour
         }
     }
 
+  
 
     private void Start()
     {
         spawnManager = SpawnManager.Instance;
+      
         //Current = gameObject.transform.parent.parent.GetSiblingIndex();
     }
 

@@ -48,11 +48,11 @@ public class BallController : Singleton<BallController>
                 if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Steel"))
                 {
                     //Сheck if cart is close to push it out if needed
-                    if (ForcePush && (otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex() - CurrentLevel <= 2))
+                    Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
+                    if (ForcePush && (otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= 2))
                     {
                       
-                        Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
-                        PushDown(otherTrans.transform, otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
+                        PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
                     }
                 }
             }
@@ -163,7 +163,10 @@ public class BallController : Singleton<BallController>
     {
         if(Input.GetMouseButtonDown(2))
         {
-            GameManager.Instance.LevelComplete();
+
+            PoweredUp = true;
+            GameManager.Instance.ComboActive = true;
+            //GameManager.Instance.LevelComplete();
         }
         
 
@@ -375,7 +378,7 @@ public class BallController : Singleton<BallController>
                 //Debug.Log(other.transform.name + "Transform");
 
 
-                PushDown(other.transform, other.transform.parent.parent.parent.parent.GetSiblingIndex());
+                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
 
 
             }
@@ -404,19 +407,22 @@ public class BallController : Singleton<BallController>
                 return;
             }
 
-            //Replace other with blank
-            GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
-            //Debug.Log(other.transform.parent.parent.name);
-            Transform tmpBlankParent = other.transform.parent.parent;
+            ////Replace other with blank
+            //GameObject tmpBlank = Instantiate(LevelManager.Instance.blankCartPrefab);
+            ////Debug.Log(other.transform.parent.parent.name);
+            //Transform tmpBlankParent = other.transform.parent.parent;
         
-            //DETACH and set new sibling indexes
-            other.transform.parent.SetParent(null);
+            ////DETACH and set new sibling indexes
+            //other.transform.parent.SetParent(null);
 
-            //Set blank orientation
-            tmpBlank.transform.SetParent(tmpBlankParent);
-            tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
-            tmpBlank.transform.position = other.transform.parent.position;
-            tmpBlank.transform.rotation = other.transform.parent.rotation;
+            ////Set blank orientation
+            //tmpBlank.transform.SetParent(tmpBlankParent);
+            //tmpBlank.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpBlankParent.GetSiblingIndex();
+            //tmpBlank.transform.position = other.transform.parent.position;
+            //tmpBlank.transform.rotation = other.transform.parent.rotation;
+
+
+
             ////Debug.Log("BLANK FIRST " + tmpBlank.transform.parent.parent.parent.GetSiblingIndex());
             //tmpBlank.transform.parent.parent.GetComponent<CartManager>().CheckCarts();
 
@@ -560,16 +566,16 @@ public class BallController : Singleton<BallController>
         //}
         //else
         //{
-        rayDirection = -Vector3.up;
+        
         //Offset origin to get center of a cart
-        offsetOrigin = origin.position + new Vector3(0, -2.51f, 0);
+        offsetOrigin = origin.position /*+ new Vector3(0, -2.51f, 0)*/;
         //lowerEnd of debug line
-        dir = origin.position + new Vector3(0, -5f, 0);
-        Debug.DrawLine(origin.position + new Vector3(0, -2.51f, 0), dir, Color.black, 10f);
+        dir = origin.position + new Vector3(0, -15f, 0);
+        Debug.DrawLine(offsetOrigin, dir, Color.black, 10f);
         //}
 
 
-        if (Physics.Raycast(offsetOrigin, rayDirection, out hit))
+        if (Physics.Raycast(offsetOrigin, dir, out hit))
         {
 
             if (hit.transform)

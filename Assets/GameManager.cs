@@ -182,9 +182,9 @@ public class GameManager : Singleton<GameManager>
 
        
 
-        if (scoreAmount == multiplier)
+        if (scoreAmount == multiplier )
         {
-            Score += scoreAmount * Multiplier;
+            Score += Multiplier;
             Multiplier++;
         }
         else

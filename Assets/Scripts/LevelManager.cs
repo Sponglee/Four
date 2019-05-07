@@ -136,7 +136,7 @@ public class LevelManager : Singleton<LevelManager>
         {
 
             //If cart was pressed
-            if (LevelMoveTrigger/* && !ballRef.ForcePush*/)
+            if (LevelMoveTrigger && !FunctionHandler.Instance.menuCanvas.activeSelf/* && !ballRef.ForcePush*/)
             {
                 //Move level left
                 if (SwipeManager.Instance.IsSwiping(SwipeDirection.Left))

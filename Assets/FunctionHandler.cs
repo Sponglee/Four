@@ -79,7 +79,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Disable menu button if game over or win
             menuButton.SetActive(false);
             //yield return new WaitForSeconds(0.21f);
-            StartCoroutine(StopMapProgression());
+            if(message == "LEVEL COMPLETE")
+                StartCoroutine(StopMapProgression());
             Time.timeScale = 0;
         }
         yield return null;
@@ -88,6 +89,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopMapProgression()
     {
+        Debug.Log("Opened");
         int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
         GameObject mapSegment = null;
 
@@ -146,16 +148,35 @@ public class FunctionHandler : Singleton<FunctionHandler>
         //yield return new WaitForSeconds(0.2f);
         float elapsed = 0;
         float duration = 5f;
+        int tmpRank = PlayerPrefs.GetInt("CurrentRank", 1);
+        
+        Vector3 startPos = map.transform.localPosition;
+        Vector3 endPos;
+
+
+
+        if (tmpRank < 12)
+            yield break;
+        else if(tmpRank % 4 != 0)
+        {
+            endPos = -Vector3.right * (tmpRank / 4 -2)*100;
+        }
+        else
+        {
+            endPos = -Vector3.right * (tmpRank /4 - 3) * 100;
+
+        }
+
+        Debug.Log(endPos);
 
         map.transform.localPosition = Vector3.zero;
 
-        while (elapsed < duration)
+        while (elapsed<duration)
         {
-
-            Vector3 startPos = map.transform.localPosition;
+            Debug.Log(map.transform.localPosition.x);
             elapsed += 0.2f;
-            map.transform.localPosition = Vector3.Lerp(startPos, 
-                        - Vector3.right*(PlayerPrefs.GetInt("CurrentRank", 1)/4) * 97f, elapsed / duration);
+            map.transform.localPosition = Vector3.Lerp(map.transform.localPosition, 
+                        endPos, elapsed / duration);
 
             //Debug.Log("XXXXX " + (PlayerPrefs.GetInt("CurrentRank", 1) / 4 - 3) * 97f);
             yield return null;
