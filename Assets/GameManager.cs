@@ -27,7 +27,7 @@ public class GameManager : Singleton<GameManager>
     //Fill amount of powerbar
     public float fillRate = 5;
     //Decrease rate for powerFill
-    public float powerDecreaseSpeed = 1000;
+    
     public float powerDecreaseAmount = 1000;
     public float powerRestoreRate = 50;
     [SerializeField]
@@ -187,7 +187,7 @@ public class GameManager : Singleton<GameManager>
         if (scoreAmount == multiplier && scoreAmount != 1)
         {
             Score += Multiplier;
-            Multiplier++;
+            
         }
         else
         {
@@ -209,30 +209,44 @@ public class GameManager : Singleton<GameManager>
             powerFiller.color = Color.yellow;
 
             //Fade down
+            BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+            powerDecreaseAmount += powerRestoreRate;
+            
+           
+        }
+        else
+        {
+            //Fade down
             if (!PowerUpDecreasing)
             {
-                BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-               
-                StartCoroutine(StopPoweredUp(500,Time.timeSinceLevelLoad));
-            }
-            else
-            {
-                powerDecreaseAmount += powerRestoreRate;
+                StartCoroutine(StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
+
+
             }
            
         }
     }
 
 
-    private IEnumerator StopPoweredUp(float fraction, float startTime)
+    private IEnumerator StopPoweredUp(float fraction, float startTime, float powerDecreaseSpeed)
     {
+
       
+
         PowerUpDecreasing = true;
+
         while (powerFill > 0)  
         {
-            //Debug.Log(">>>>" + powerDecreaseAmount);
-            //Debug.Log(Time.timeSinceLevelLoad + " - " + startTime);
-            PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseAmount;
+            if(ComboActive)
+            {
+                
+                PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseAmount;
+            }
+            else
+            {
+                PowerFill -= 1 / (powerDecreaseSpeed);
+            }
+
             powerFiller.fillAmount = PowerFill;
             yield return null;
         }

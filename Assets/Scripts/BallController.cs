@@ -486,7 +486,7 @@ public class BallController : Singleton<BallController>
             ////    forceMultiplier = 5;
             ////}
 
-            
+            GameManager.Instance.Multiplier++;
             GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
         }
         //If not the same color

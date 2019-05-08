@@ -125,14 +125,14 @@ public class LevelManager : Singleton<LevelManager>
 
             tmpSave[0] = prefCurrentRank.ToString();
 
-            Debug.Log("HERE");
+            //Debug.Log("HERE");
          
             for (int i = 0; i < spawnMatsIndex.Length; i++)
             {
                 
                 spawnMatsIndex[i] = Random.Range(0, spawnMatPool.Length);
 
-                Debug.Log("!!! " + spawnMatsIndex[i]);
+                //Debug.Log("!!! " + spawnMatsIndex[i]);
                 tmpSave[i+1] = spawnMatsIndex[i].ToString();
                
             }
@@ -148,15 +148,15 @@ public class LevelManager : Singleton<LevelManager>
         }
         else
         {
-            Debug.Log("<< " + prefSpawnMats);
+            //Debug.Log("<< " + prefSpawnMats);
 
             for (int i = 0; i < spawnMatsIndex.Length; i++)
             {
                 spawnMatsIndex[i] = System.Convert.ToInt32(prefSpawnMatsArray[i + 1]); 
-                Debug.Log(spawnMatsIndex[i]);
+                //Debug.Log(spawnMatsIndex[i]);
             }
 
-            Debug.Log(" NO HERE " + spawnMatsIndex[0] + spawnMatsIndex[1] + spawnMatsIndex[2] + spawnMatsIndex[3] /* spawnMatsSave[4]*/);
+            //Debug.Log(" NO HERE " + spawnMatsIndex[0] + spawnMatsIndex[1] + spawnMatsIndex[2] + spawnMatsIndex[3] /* spawnMatsSave[4]*/);
             //spawnMatsSave = System.Array.ConvertAll(PlayerPrefs.GetString("SpawnMats","1,0,0,0,0").Split(','), int.Parse);
         }
 
@@ -171,7 +171,7 @@ public class LevelManager : Singleton<LevelManager>
         
         Camera.main.backgroundColor = spawnMats[3].color + new Color(-0.1f,-0.1f,-0.1f);
 
-       
+
         //int bckHeight =  levelCount * 7;
         //if (bckHeight < 550)
         //    bckHeight = 550;
@@ -180,7 +180,7 @@ public class LevelManager : Singleton<LevelManager>
         //backGround.position =new Vector3(0, -bckHeight/2 + 50, 23);
         //backGround.localScale = new Vector3(100, bckHeight, 1);
 
-       
+
 
         Debug.Log("LOADED " + levelCount);
 
