@@ -28,8 +28,8 @@ public class GameManager : Singleton<GameManager>
     public float fillRate = 5;
     //Decrease rate for powerFill
     
-    public float powerDecreaseAmount = 1000;
-    public float powerRestoreRate = 50;
+    public float powerDecreaseAmount;
+    public float powerRestoreRate;
     [SerializeField]
     private float powerFill = 0;
     public float PowerFill

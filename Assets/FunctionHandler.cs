@@ -188,7 +188,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     private IEnumerator StopColorLerp(Transform target, Color destColor)
     {
         float elapsed = 0;
-        float duration = 5f;
+        float duration = 2f;
 
         while (elapsed < duration)
         {
