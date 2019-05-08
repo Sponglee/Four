@@ -1,4 +1,4 @@
-﻿using Cinemachine;
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +19,8 @@ public class LevelManager : Singleton<LevelManager>
 
     public Material[] spawnMatPool;
     public Material[] spawnMats;
+    public int[] spawnMatsIndex;
+
     public Material towerMat;
     public float spawnOffset = 0;
     public float spawnOffsetStep = 5f;
@@ -89,23 +91,96 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
-        spawnMats = new Material[3];
-
-        spawnMats[0] = Instance.towerMat;
-        spawnMats[1] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
-        spawnMats[2] = spawnMatPool[Random.Range(0, LevelManager.Instance.spawnMats.Length)];
-        
-
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount", 15);
+        //Level values generator
+        spawnMats = new Material[4];
+        spawnMatsIndex = new int[4];
 
-        int bckHeight =  levelCount * 7;
-        if (bckHeight < 550)
-            bckHeight = 550;
+        //reference to saved leveldata string
+        string prefSpawnMats = PlayerPrefs.GetString("SpawnMats", "0,0,0,0,0");
+        int prefCurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
 
-        //Set background
-        backGround.position =new Vector3(0, -bckHeight/2 + 50, 23);
-        backGround.localScale = new Vector3(100, bckHeight, 1);
+        string[] prefSpawnMatsArray = new string[5];
+        prefSpawnMatsArray = prefSpawnMats.Split(',');
+
+
+
+
+        int prefSpawnMatsRank = System.Convert.ToInt32(prefSpawnMatsArray[0]);
+
+
+
+
+
+
+
+        Debug.Log(spawnMatPool.Length);
+        //Get random string of indexes and save it, or load it from prefs
+        if (prefCurrentRank != prefSpawnMatsRank)
+        {
+            string[] tmpSave = new string[5];
+            string tmpSaveString = "";
+
+
+            tmpSave[0] = prefCurrentRank.ToString();
+
+            Debug.Log("HERE");
+         
+            for (int i = 0; i < spawnMatsIndex.Length; i++)
+            {
+                
+                spawnMatsIndex[i] = Random.Range(0, spawnMatPool.Length);
+
+                Debug.Log("!!! " + spawnMatsIndex[i]);
+                tmpSave[i+1] = spawnMatsIndex[i].ToString();
+               
+            }
+
+          
+            foreach (var item in tmpSave)
+            {
+                tmpSaveString += item + ",";
+            }
+
+            PlayerPrefs.SetString("SpawnMats", tmpSaveString);
+            Debug.Log(tmpSaveString);
+        }
+        else
+        {
+            Debug.Log("<< " + prefSpawnMats);
+
+            for (int i = 0; i < spawnMatsIndex.Length; i++)
+            {
+                spawnMatsIndex[i] = System.Convert.ToInt32(prefSpawnMatsArray[i + 1]); 
+                Debug.Log(spawnMatsIndex[i]);
+            }
+
+            Debug.Log(" NO HERE " + spawnMatsIndex[0] + spawnMatsIndex[1] + spawnMatsIndex[2] + spawnMatsIndex[3] /* spawnMatsSave[4]*/);
+            //spawnMatsSave = System.Array.ConvertAll(PlayerPrefs.GetString("SpawnMats","1,0,0,0,0").Split(','), int.Parse);
+        }
+
+
+        //Populate spawnMats array
+        for (int i = 0; i < spawnMats.Length; i++)
+        {
+            spawnMats[i] = spawnMatPool[spawnMatsIndex[i]];
+        }
+       
+
+        
+        Camera.main.backgroundColor = spawnMats[3].color + new Color(-0.1f,-0.1f,-0.1f);
+
+       
+        //int bckHeight =  levelCount * 7;
+        //if (bckHeight < 550)
+        //    bckHeight = 550;
+
+        ////Set background
+        //backGround.position =new Vector3(0, -bckHeight/2 + 50, 23);
+        //backGround.localScale = new Vector3(100, bckHeight, 1);
+
+       
 
         Debug.Log("LOADED " + levelCount);
 

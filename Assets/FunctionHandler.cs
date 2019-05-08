@@ -35,7 +35,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     {
         
         GameManager.Instance.bestText.text = GameManager.Instance.bestScore.ToString();
-        
+        GameManager.Instance.menuScoreText.text = GameManager.Instance.Score.ToString();
 
         //if there's no message - mid game open or close menu
         if (message == "")

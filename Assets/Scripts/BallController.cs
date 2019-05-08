@@ -156,6 +156,8 @@ public class BallController : Singleton<BallController>
 
         //Debug.Log(nextBallPosToJump);
         LevelManager.Instance.ballRef = this;
+
+        //gameObject.GetComponent<Renderer>().material.color = LevelManager.Instance.spawnMats[0].color;
     }
 
    

@@ -12,17 +12,11 @@ public class CartManager : MonoBehaviour
 
     public GameObject spawnPrefab;
     public GameObject cartHolderPrefab;
+
+
+
    
-
-
-    public CinemachineSmoothPath[] paths;
-
-    //For dropping
-    public GameObject spawnObject;
-    //Reference to spawnManager
-    public CartManager spawnManagerRef;
-    //For spawn helping
-    public List<Color> colorHelper;
+   
 
     public bool spawnedBool = false;
     public bool spawnInProgress = false;
@@ -65,10 +59,13 @@ public class CartManager : MonoBehaviour
     private void Start()
     {
 
-        colorHelper = new List<Color>();
+
+       
         spawnMatsRef = LevelManager.Instance.spawnMats;
 
         requiredCart1 = Random.Range(0, carts.Length);
+
+        transform.parent.GetChild(1).GetChild(0).GetComponent<Renderer>().material.color = spawnMatsRef[1].color;
 
         if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
         {
@@ -125,7 +122,7 @@ public class CartManager : MonoBehaviour
                     //}
 
                     //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
+                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
 
                     //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);

@@ -28,7 +28,6 @@ Transform:
   m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children:
   - {fileID: 2867313837315147886}
-  - {fileID: 2867188446355286738}
   - {fileID: 2870449485696237224}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -93,9 +92,10 @@ Transform:
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2867188446355286738}
   m_Father: {fileID: 5976334437689113078}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!65 &2823091741895603314
 BoxCollider:
@@ -217,11 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paths:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  levelIndex: 0
   spawnManager: {fileID: 0}
   cartNumber: 1
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
@@ -348,11 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paths:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  levelIndex: 0
   spawnManager: {fileID: 0}
   cartNumber: 4
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
@@ -550,12 +542,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2864616263799838180}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 0.5, z: 10}
+  m_LocalScale: {x: 10, y: 0.5000001, z: 10}
   m_Children: []
-  m_Father: {fileID: 5976334437689113078}
-  m_RootOrder: 1
+  m_Father: {fileID: 2870449485696237224}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &2860355728752397524
 MeshFilter:
@@ -649,11 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paths:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  levelIndex: 0
   spawnManager: {fileID: 0}
   cartNumber: 2
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
@@ -780,11 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f528ea34f7941e849b287fff6e5085c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paths:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  levelIndex: 0
   spawnManager: {fileID: 0}
   cartNumber: 3
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
@@ -913,14 +897,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPrefab: {fileID: 0}
   cartHolderPrefab: {fileID: 0}
-  paths:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  spawnObject: {fileID: 0}
-  spawnManagerRef: {fileID: 0}
-  colorHelper: []
   spawnedBool: 0
   spawnInProgress: 0
   center: {fileID: 0}

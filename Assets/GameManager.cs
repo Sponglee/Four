@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     public TextMeshProUGUI tapText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestText;
+    public TextMeshProUGUI menuScoreText;
+
 
     public Slider progresSlider;
 
@@ -182,7 +184,7 @@ public class GameManager : Singleton<GameManager>
 
        
 
-        if (scoreAmount == multiplier )
+        if (scoreAmount == multiplier && scoreAmount != 1)
         {
             Score += Multiplier;
             Multiplier++;
