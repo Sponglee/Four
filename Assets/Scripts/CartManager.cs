@@ -137,7 +137,7 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
                 }
-                else if (spawnRandomizer > 40 && spawnRandomizer <= 50)
+                else if (spawnRandomizer > 40 && spawnRandomizer <= 50 && PlayerPrefs.GetInt("CurrentRank",1)>3)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
@@ -146,8 +146,8 @@ public class CartManager : MonoBehaviour
                     //if (materialRandomizer == 0)
                     //{
 
-                    //tmpCart.tag = "Steel";
-                    //tmpCart.transform.GetChild(0).tag = "Steel";
+                    tmpCart.tag = "Collectable";
+                    tmpCart.transform.GetChild(0).tag = "Collectable";
                     //}
 
                     ////Set a material
