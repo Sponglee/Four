@@ -13,6 +13,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
     public GameObject cartPrefab;
+    public GameObject dangerPrefab;
     public GameObject collectablePrefab;
     public Transform backGround;
 
@@ -92,7 +93,7 @@ public class LevelManager : Singleton<LevelManager>
     private void Start()
     {
         //Level Count curve (500 maximum - after that +1);
-        levelCount = PlayerPrefs.GetInt("LevelCount", 15);
+        levelCount = PlayerPrefs.GetInt("LevelCount",50);
         //Level values generator
         spawnMats = new Material[4];
         spawnMatsIndex = new int[4];

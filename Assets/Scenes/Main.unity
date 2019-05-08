@@ -295,6 +295,8 @@ MonoBehaviour:
   blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
     type: 3}
   cartPrefab: {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 3}
+  dangerPrefab: {fileID: 1859630849823150, guid: 69ef6610725e08d46b7837b4636d24e0,
+    type: 3}
   collectablePrefab: {fileID: 7726349034571893014, guid: 30c89a95b2f6d8343a645b8a5585f4aa,
     type: 3}
   backGround: {fileID: 1178556464}
@@ -307,7 +309,7 @@ MonoBehaviour:
   spawnMats: []
   spawnMatsIndex: 
   towerMat: {fileID: 2100000, guid: 7d0d3b97bce09f54d94f06ff78450f9e, type: 2}
-  spawnOffset: 5
+  spawnOffset: 10
   spawnOffsetStep: 5
   level: 0
   levelStop: 0
@@ -4813,7 +4815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 17.2, z: -195.24}
+  m_FollowOffset: {x: 0, y: 100, z: -195.24}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -4840,11 +4842,11 @@ MonoBehaviour:
   m_ScreenX: 0.5039526
   m_ScreenY: 0.366
   m_DeadZoneWidth: 0.2106719
-  m_DeadZoneHeight: 0.4377777
+  m_DeadZoneHeight: 0.156
   m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_SoftZoneHeight: 0.66
   m_BiasX: 0
-  m_BiasY: 0.0000001645526
+  m_BiasY: 0
 --- !u!114 &1714017220
 MonoBehaviour:
   m_ObjectHideFlags: 3

@@ -19,6 +19,7 @@ TagManager:
   - Level
   - CartTrigger
   - Collectable
+  - Danger
   layers:
   - Default
   - TransparentFX

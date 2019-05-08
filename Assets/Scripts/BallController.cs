@@ -20,8 +20,7 @@ public class BallController : Singleton<BallController>
         {
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / LevelManager.Instance.levelCount;
-            //SCORE
-            GameManager.Instance.AddScore(1, Color.grey, transform.GetChild(0));
+          
 
 
         }
@@ -97,6 +96,8 @@ public class BallController : Singleton<BallController>
 
     [SerializeField]
     private float forceMultiplier = 10;
+    [SerializeField]
+    public float comboMultiplier = 1;
     [SerializeField]
     private float forceTreshold = 3f;
     [SerializeField]
@@ -176,13 +177,72 @@ public class BallController : Singleton<BallController>
         }
         
 
-        if (TapToStart && !ForcePush)
+        if (TapToStart/* && !ForcePush*/)
         {
-            if(rb.velocity.y != 0)
+            if (PoweredUp)
+            {
+                forceMultiplier += 1;
+                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
+                transform.parent.position += downVelocity * forceMultiplier*comboMultiplier;
+
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+
+                if (forceMultiplier >= forceTreshold)
+                {
+                    if (!ForcePush)
+                    {
+                        ForcePush = true;
+                        //transform.parent.position -= downVelocity;
+                        //SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+                    }
+
+
+                }
+                else
+                {
+                    ForcePush = false;
+                }
+            }
+            else
+            {
+                forceMultiplier += 1;
+                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
+                transform.parent.position += downVelocity * forceMultiplier;
+
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
+                if (forceMultiplier >= forceTreshold)
+                {
+                    if (!ForcePush)
+                    {
+                        ForcePush = true;
+                        //transform.parent.position -= downVelocity;
+                        
+                    }
+
+
+                }
+                else
+                {
+                    ForcePush = false;
+                }
+               
+
+            }
+          
+
+            //FailSafe for a ball
+            if (rb.velocity != Vector3.zero)
             {
                 rb.velocity = Vector3.zero;
             }
-            transform.parent.position += downVelocity;
+            if (transform.localPosition.y > 0)
+            {
+                transform.localPosition = Vector3.zero;
+            }
+
+
+           
+
         }
         else if(!TapToStart)
         {
@@ -190,52 +250,45 @@ public class BallController : Singleton<BallController>
             {
                 TapToStart = true;
                 GameManager.Instance.tapText.gameObject.SetActive(false);
+                //PoweredUp = true;
+              
             }
         }
-  
 
-        //Delay ball if stuck
-        if(transform.localPosition.y > 0)
+
+        //==========================================
+
+        if (TapToStart && !ForcePush)
         {
-            if(transform.localPosition.y >30)
+            if (rb.velocity.y != 0)
             {
-                FunctionHandler.Instance.OpenGameOver("GAME OVER");
-
+                rb.velocity = Vector3.zero;
             }
-            transform.localPosition += downVelocity;
+            if (transform.localPosition.y > 0)
+            {
+                if (transform.localPosition.y > 30)
+                {
+                    FunctionHandler.Instance.OpenGameOver("GAME OVER");
+
+                }
+                transform.localPosition += downVelocity;
+            }
+           
+        }
+        else if (!TapToStart)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                TapToStart = true;
+                GameManager.Instance.tapText.gameObject.SetActive(false);
+            }
         }
 
+
+       
 
         //If power bar is full - accelerate, switch camera
-        if (PoweredUp)
-        {
-            forceMultiplier += 1;
-            forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
-            transform.parent.position += downVelocity * forceMultiplier;
-           
-            if (forceMultiplier >= forceTreshold)
-            {
-                if(!ForcePush)
-                {
-                    ForcePush = true;
-                    //transform.parent.position -= downVelocity;
-                    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
-                }
-             
-
-            }
-            else
-            {
-                ForcePush = false;
-            }
-        }
-        else
-        {
-            forceMultiplier = 10;
-            ForcePush = false;
-            SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
-           
-        }
+       
 
     }
 
@@ -375,6 +428,9 @@ public class BallController : Singleton<BallController>
             }
               
         }
+
+
+
         //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
         if (/*other.gameObject.CompareTag("Cart")  || */other.gameObject.CompareTag("Steel"))
         {
@@ -388,6 +444,16 @@ public class BallController : Singleton<BallController>
 
 
             }
+        }
+        else if (other.gameObject.CompareTag("Danger"))
+        {
+            if(!PoweredUp)
+            {
+                FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                
+            }
+            else
+                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
@@ -462,8 +528,8 @@ public class BallController : Singleton<BallController>
 
 
             //For pizzaz
-            //StartCoroutine(LevelManager.Instance.TiDi(0.05f));
-            StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.yellow));
+            ////StartCoroutine(LevelManager.Instance.TiDi(0.05f));
+            //StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.yellow));
 
             ////SCORE
             //GameManager.Instance.AddScore(1, gameObject.GetComponent<Renderer>().material.color, transform.GetChild(0));
@@ -485,46 +551,58 @@ public class BallController : Singleton<BallController>
             ////    ForcePush = false;
             ////    forceMultiplier = 5;
             ////}
+            if(PoweredUp)
+            {
+                GameManager.Instance.Multiplier++;
+                GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
+                StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.yellow));
 
-            GameManager.Instance.Multiplier++;
-            GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
+              
+            }
+            else
+            {
+                //SCORE
+                GameManager.Instance.AddScore(1, Color.grey, transform.GetChild(0));
+                StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.white));
+            }
+           
         }
         //If not the same color
-        else if (other.transform.parent != null && other.gameObject.CompareTag("Cart"))
-        {
+        //else if (other.transform.parent != null && other.gameObject.CompareTag("Cart"))
+        //{
            
-            //CollidedBool = false;
-            if(ForcePush)
-            {
+        //    //CollidedBool = false;
+        //    if(ForcePush)
+        //    {
               
 
-                gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
-                forceMultiplier = 5;
-                ForcePush = false;
-                //Debug.Log("POINK " + ForcePush);
+        //        gameObject.GetComponent<Rigidbody>().velocity = downVelocity;
+        //        forceMultiplier = 5;
+        //        ForcePush = false;
+        //        //Debug.Log("POINK " + ForcePush);
                 
-                if (!warning)
-                {
-                    StopCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.red));
-                    StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.red));
-                }
-                else
-                {
-                    //ForcePush = false;
-                    gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
+        //        if (!warning)
+        //        {
+        //            StopCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.red));
+        //            StartCoroutine(StopColor(other.gameObject.GetComponent<Renderer>(), Color.red));
+        //        }
+        //        else
+        //        {
+        //            //ForcePush = false;
+        //            gameObject.GetComponent<Renderer>().material = other.gameObject.GetComponent<Renderer>().material;
 
-                    PushDown(other, other.transform.parent.parent.parent.parent.GetSiblingIndex());
-                    //FunctionHandler.Instance.OpenGameOver("GAME OVER");
-                }
+        //            PushDown(other, other.transform.parent.parent.parent.parent.GetSiblingIndex());
+        //            //FunctionHandler.Instance.OpenGameOver("GAME OVER");
+        //        }
 
                     
                        
                
-            }
+        //    }
 
             
 
-        }
+        //}
     }
 
     [SerializeField]
@@ -534,16 +612,16 @@ public class BallController : Singleton<BallController>
         warning = true;
         Color initColor = render.material.color;
         render.material.color = color;
-        //Debug.Log(render.material.color + " >> " + initColor);
        
 
+
         float ElapsedTime = 0.0f;
-        float TotalTime = 0.3f;
+        float TotalTime = 1f;
         while (ElapsedTime < TotalTime)
         {
-            ElapsedTime += Time.deltaTime;
             render.material.color = Color.Lerp(color, initColor, (ElapsedTime / TotalTime));
-
+            ElapsedTime += Time.fixedDeltaTime;
+            //Debug.Log(render.gameObject.name + " >> " + initColor.r);
             //if (ElapsedTime / TotalTime >= 0.5f)
 
             yield return null;

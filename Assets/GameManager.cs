@@ -47,7 +47,7 @@ public class GameManager : Singleton<GameManager>
             powerFiller.fillAmount = powerFill;
             if (powerFill >= 1)
             {
-              
+
                 BallController.Instance.PoweredUp = true;
                 ComboActive = true;
             }
@@ -168,7 +168,7 @@ public class GameManager : Singleton<GameManager>
 
        
 
-        Score = 0;
+  
         LevelProgress = 0;
         CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
     }
@@ -207,7 +207,7 @@ public class GameManager : Singleton<GameManager>
 
             powerFill = 1;
             powerFiller.color = Color.yellow;
-
+            BallController.Instance.comboMultiplier = 1.5f;
             //Fade down
             BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             powerDecreaseAmount += powerRestoreRate;
@@ -239,19 +239,24 @@ public class GameManager : Singleton<GameManager>
         {
             if(ComboActive)
             {
-                
-                PowerFill -= (Time.timeSinceLevelLoad- startTime) / powerDecreaseAmount;
+
+                PowerFill -= 15 * (1) / ( powerDecreaseSpeed);
             }
             else
             {
                 PowerFill -= 1 / (powerDecreaseSpeed);
+
             }
 
             powerFiller.fillAmount = PowerFill;
-            yield return null;
+            if (powerFill <= 0.1)
+                yield return new WaitForSeconds(0.02f);
+            else
+                yield return null;
         }
         //powerFill = 0;
         powerFiller.color = Color.white;
+        BallController.Instance.comboMultiplier = 1;
         Multiplier = 1;
         PowerUpDecreasing = false;
         powerDecreaseAmount = powerDecreaseSpeed;
@@ -262,7 +267,7 @@ public class GameManager : Singleton<GameManager>
 
     public void LevelComplete()
     {
-        int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 15);
+        int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 50);
         FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
         PlayerPrefs.SetInt("CurrentRank", CurrentRank + 1);
         if (tmpLvlCount <= 500)

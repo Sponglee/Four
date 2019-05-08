@@ -106,8 +106,10 @@ public class CartManager : MonoBehaviour
 
          
                 //If randomizer proc or this is a required cart
-                if (spawnRandomizer <= 40)
+                if (spawnRandomizer <= 40 && spawnRandomizer>5)
                 {
+
+                   
                     materialRandomizer = 0;
 
                     //spawn cart prefab, set random position
@@ -137,7 +139,37 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
                 }
-                else if (spawnRandomizer > 40 && spawnRandomizer <= 50 && PlayerPrefs.GetInt("CurrentRank",1)>3)
+                else if(spawnRandomizer<=3 && transform.parent.GetSiblingIndex()>5)
+                {
+                    materialRandomizer = 0;
+
+                    //spawn cart prefab, set random position
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.dangerPrefab, transform);
+                    //check if it's steel
+
+                    //if ()
+                    //{
+
+                    tmpCart.tag = "Danger";
+                    tmpCart.transform.GetChild(0).tag = "Danger";
+                    //}
+
+                    ////Set a material
+                    //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
+
+                    //Set position and orientation for dolly
+                    tmpCart.transform.SetParent(tmpCartHolder.transform);
+                    tmpCart.transform.position = tmpCartHolder.transform.position;
+                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
+                    //Set Current
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+                    tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().LevelIndex = transform.parent.GetSiblingIndex();
+                    //set cart reference for manager
+                    carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                }
+                else if (spawnRandomizer > 40 && spawnRandomizer <= 50 && PlayerPrefs.GetInt("CurrentRank",1)>2)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);

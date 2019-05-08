@@ -81,6 +81,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //yield return new WaitForSeconds(0.21f);
             if(message == "LEVEL COMPLETE")
                 StartCoroutine(StopMapProgression());
+            else
+                PlayerPrefs.SetInt("Score", 0);
             Time.timeScale = 0;
         }
         yield return null;
@@ -188,7 +190,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     private IEnumerator StopColorLerp(Transform target, Color destColor)
     {
         float elapsed = 0;
-        float duration = 2f;
+        float duration = 1f;
 
         while (elapsed < duration)
         {
