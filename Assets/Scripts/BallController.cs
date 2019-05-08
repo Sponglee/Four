@@ -258,36 +258,36 @@ public class BallController : Singleton<BallController>
 
         //==========================================
 
-        if (TapToStart && !ForcePush)
-        {
-            if (rb.velocity.y != 0)
-            {
-                rb.velocity = Vector3.zero;
-            }
-            if (transform.localPosition.y > 0)
-            {
-                if (transform.localPosition.y > 30)
-                {
-                    FunctionHandler.Instance.OpenGameOver("GAME OVER");
+        //if (TapToStart && !ForcePush)
+        //{
+        //    if (rb.velocity.y != 0)
+        //    {
+        //        rb.velocity = Vector3.zero;
+        //    }
+        //    if (transform.localPosition.y > 0)
+        //    {
+        //        if (transform.localPosition.y > 30)
+        //        {
+        //            FunctionHandler.Instance.OpenGameOver("GAME OVER");
 
-                }
-                transform.localPosition += downVelocity;
-            }
+        //        }
+        //        transform.localPosition += downVelocity;
+        //    }
            
-        }
-        else if (!TapToStart)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                TapToStart = true;
-                GameManager.Instance.tapText.gameObject.SetActive(false);
-            }
-        }
+        //}
+        //else if (!TapToStart)
+        //{
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        TapToStart = true;
+        //        GameManager.Instance.tapText.gameObject.SetActive(false);
+        //    }
+        //}
 
 
        
 
-        //If power bar is full - accelerate, switch camera
+        ////If power bar is full - accelerate, switch camera
        
 
     }
@@ -507,22 +507,22 @@ public class BallController : Singleton<BallController>
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
 
-            //if(siblingIndex%2 == 0)
-            //    rb.velocity = new Vector3(Random.Range(-150f, -50f), 50f, -50f);
-            //else
-            //    rb.velocity = new Vector3(Random.Range(150f, 50f), 50f, -50f);
-
-
-            int detatchDir = Random.Range(0, 2);
-
-            if(detatchDir == 0)
+            if (siblingIndex % 2 == 0)
                 rb.velocity = new Vector3(Random.Range(-50f, -30f), 80f, -50f);
             else
                 rb.velocity = new Vector3(Random.Range(50f, 30f), 80f, -50f);
 
 
+            //int detatchDir = Random.Range(0, 2);
 
-            rb.AddRelativeTorque(new Vector3(500f, 20f, 0));
+            //if(detatchDir == 0)
+            //    rb.velocity = new Vector3(Random.Range(-50f, -30f), 80f, -50f);
+            //else
+            //    rb.velocity = new Vector3(Random.Range(50f, 30f), 80f, -50f);
+
+
+
+            rb.AddRelativeTorque(new Vector3(-500f, 20f, 0));
             //Get some effects 
             Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
 

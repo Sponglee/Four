@@ -240,7 +240,7 @@ public class GameManager : Singleton<GameManager>
             if(ComboActive)
             {
 
-                PowerFill -= 15 * (1) / ( powerDecreaseSpeed);
+                PowerFill -= 15f * (1) / ( powerDecreaseSpeed);
             }
             else
             {
