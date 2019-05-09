@@ -124,7 +124,8 @@ public class CartManager : MonoBehaviour
                     //}
 
                     //Set a material
-                    tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
+                    tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
+                    tmpCart.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
 
                     //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);

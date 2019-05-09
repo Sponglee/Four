@@ -46,14 +46,6 @@ MonoBehaviour:
   spawnPrefab: {fileID: 0}
   cartHolderPrefab: {fileID: 1616428663689433614, guid: 09818f2a14a4751458c03b105a269273,
     type: 3}
-  paths:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  spawnObject: {fileID: 0}
-  spawnManagerRef: {fileID: 0}
-  colorHelper: []
   spawnedBool: 0
   spawnInProgress: 0
   center: {fileID: 224825882545686414}
@@ -139,7 +131,7 @@ RectTransform:
   m_GameObject: {fileID: 1476758005938302}
   m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: -0.23}
-  m_LocalScale: {x: 3, y: 0.73, z: 3}
+  m_LocalScale: {x: 2.5, y: 0.73, z: 2.5}
   m_Children: []
   m_Father: {fileID: 224825882545686414}
   m_RootOrder: 0
