@@ -221,7 +221,7 @@ public class GameManager : Singleton<GameManager>
             {
                 BallController.Instance.comboMultiplier = 3f;
                 StartCoroutine(StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
-                BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+                BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
             }
             //else
             //{
@@ -278,7 +278,7 @@ public class GameManager : Singleton<GameManager>
         Multiplier = 1;
         PowerUpDecreasing = false;
         powerDecreaseAmount = powerDecreaseSpeed;
-        BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.white;
+        BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
     }
 
 

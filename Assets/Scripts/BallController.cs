@@ -295,25 +295,25 @@ public class BallController : Singleton<BallController>
     {
         //Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
-        if (/*!CollidedBool && */(other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
-        {
-            CollidedBool = true;
-            if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
-            {
-                //Debug.Log("Ball " + transform.position);
-                //Debug.Log("Cart " + other.transform.position);
-                if (other.transform.position.x >= transform.position.x)
-                {
-                    LevelManager.Instance.LevelMove(CurrentLevel, true);
-                }
-                else
-                {
-                    LevelManager.Instance.LevelMove(CurrentLevel, false);
-                }
-                return;
-            }
+        //if (/*!CollidedBool && */(other.gameObject.CompareTag("Steel") || (other.gameObject.CompareTag("Cart")) && gameObject.GetComponent<Renderer>().material != other.gameObject.GetComponent<Renderer>().material))
+        //{
+        //    CollidedBool = true;
+        //    if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
+        //    {
+        //        //Debug.Log("Ball " + transform.position);
+        //        //Debug.Log("Cart " + other.transform.position);
+        //        if (other.transform.position.x >= transform.position.x)
+        //        {
+        //            //LevelManager.Instance.LevelMove(CurrentLevel, true);
+        //        }
+        //        else
+        //        {
+        //            //LevelManager.Instance.LevelMove(CurrentLevel, false);
+        //        }
+        //        return;
+        //    }
               
-        }
+        //}
 
 
 
@@ -367,7 +367,7 @@ public class BallController : Singleton<BallController>
 
            
             //Second cart pop sequence
-            other.gameObject.GetComponent<MeshCollider>().isTrigger = true;
+            other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             other.gameObject.GetComponent<CapsuleCollider>().enabled = false;
             Rigidbody rb = other.transform.GetChild(1).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
