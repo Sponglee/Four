@@ -2065,7 +2065,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 20
+    FieldOfView: 16
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 450
@@ -3623,7 +3623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 189.43, z: -195.24}
+  m_FollowOffset: {x: 0, y: 202.8, z: -195.24}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -3648,13 +3648,13 @@ MonoBehaviour:
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
   m_ScreenX: 0.5039526
-  m_ScreenY: 0.277
+  m_ScreenY: 0.27
   m_DeadZoneWidth: 0.1
   m_DeadZoneHeight: 0.1
   m_SoftZoneWidth: 0.8
   m_SoftZoneHeight: 0.8
   m_BiasX: 0
-  m_BiasY: -0.000000042574747
+  m_BiasY: -0.00000008514949
 --- !u!114 &1293276699
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -4815,7 +4815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 100, z: -195.24}
+  m_FollowOffset: {x: 0, y: 78.39, z: -195.24}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -4840,13 +4840,13 @@ MonoBehaviour:
   m_HorizontalDamping: 0.5
   m_VerticalDamping: 0.5
   m_ScreenX: 0.5039526
-  m_ScreenY: 0.366
+  m_ScreenY: 0.303
   m_DeadZoneWidth: 0.2106719
   m_DeadZoneHeight: 0.156
   m_SoftZoneWidth: 0.8
   m_SoftZoneHeight: 0.66
   m_BiasX: 0
-  m_BiasY: 0
+  m_BiasY: -0.00000005913159
 --- !u!114 &1714017220
 MonoBehaviour:
   m_ObjectHideFlags: 3

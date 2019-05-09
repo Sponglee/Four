@@ -200,32 +200,47 @@ public class GameManager : Singleton<GameManager>
 
     public void GrabCollectable()
     {
-       
-        PowerFill += 1/fillRate;
-        if(powerFill>=1)
+       if(!PowerUpDecreasing)
+        {
+            PowerFill += 1/fillRate;
+            //Debug.Log(">> " + 1 / fillRate);
+        }
+       else
+        {
+            PowerFill += 1 / (2f*fillRate);
+            //Debug.Log("<< " + 1 / 15f * fillRate);
+        }
+
+
+        if (powerFill >= 1)
         {
 
             powerFill = 1;
             powerFiller.color = Color.yellow;
-            BallController.Instance.comboMultiplier = 1.5f;
-            //Fade down
-            BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-            powerDecreaseAmount += powerRestoreRate;
-            
-           
-        }
-        else
-        {
-            //Fade down
             if (!PowerUpDecreasing)
             {
+                BallController.Instance.comboMultiplier = 3f;
                 StartCoroutine(StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
-
-
+                BallController.Instance.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             }
-           
+            //else
+            //{
+            //    BallController.Instance.comboMultiplier += 0.2f;
+            //}
+
+          
+            ////Fade down
+            //powerDecreaseAmount += powerRestoreRate;
+
+          
         }
+       
+
+     
     }
+
+
+
 
 
     private IEnumerator StopPoweredUp(float fraction, float startTime, float powerDecreaseSpeed)
@@ -239,8 +254,8 @@ public class GameManager : Singleton<GameManager>
         {
             if(ComboActive)
             {
-
-                PowerFill -= 15f * (1) / ( powerDecreaseSpeed);
+                
+                PowerFill -= 15f  / ( powerDecreaseSpeed);
             }
             else
             {
@@ -250,7 +265,10 @@ public class GameManager : Singleton<GameManager>
 
             powerFiller.fillAmount = PowerFill;
             if (powerFill <= 0.1)
+            {
+                BallController.Instance.comboMultiplier = 1f;
                 yield return new WaitForSeconds(0.02f);
+            }
             else
                 yield return null;
         }

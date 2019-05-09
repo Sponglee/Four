@@ -17,6 +17,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public Color lockedMapColor;
     public Color finishedColor;
 
+
+ 
+
     private void Start()
     {
         Time.timeScale = 1;
@@ -24,7 +27,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
-
+        BallController.Instance.MenuOpened = true;
         StartCoroutine(StopOpenGameOver(message));
 
        
@@ -175,7 +178,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         while (elapsed<duration)
         {
-            Debug.Log(map.transform.localPosition.x);
+            //Debug.Log(map.transform.localPosition.x);
             elapsed += 0.2f;
             map.transform.localPosition = Vector3.Lerp(map.transform.localPosition, 
                         endPos, elapsed / duration);
@@ -211,7 +214,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void CloseGameOver(bool menuClose = false)
     {
-       
+        BallController.Instance.MenuOpened = false;
         //If menu is already open
         if (menuCanvas.activeSelf)
         {

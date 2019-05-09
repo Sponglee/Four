@@ -102,7 +102,7 @@ public class BallController : Singleton<BallController>
     private float forceTreshold = 3f;
     [SerializeField]
     private Vector3 downVelocity = Vector3.down * 0.1f;
-
+    public bool MenuOpened = false;
 
 
     [SerializeField]
@@ -144,6 +144,7 @@ public class BallController : Singleton<BallController>
      
     }
 
+
     void Start()
     {
         
@@ -162,7 +163,7 @@ public class BallController : Singleton<BallController>
     }
 
    
-    private void FixedUpdate()
+    private void Update()
     {
         if(Input.GetMouseButtonDown(2))
         {
@@ -177,58 +178,46 @@ public class BallController : Singleton<BallController>
         }
         
 
-        if (TapToStart/* && !ForcePush*/)
+        if (TapToStart && !MenuOpened)
         {
             if (PoweredUp)
             {
-                forceMultiplier += 1;
-                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
-                transform.parent.position += downVelocity * forceMultiplier*comboMultiplier;
 
+               
                 SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
-
-                if (forceMultiplier >= forceTreshold)
-                {
-                    if (!ForcePush)
-                    {
-                        ForcePush = true;
-                        //transform.parent.position -= downVelocity;
-                        //SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
-                    }
-
-
-                }
-                else
-                {
-                    ForcePush = false;
-                }
+                comboMultiplier -= Time.deltaTime;
+                comboMultiplier = Mathf.Clamp(comboMultiplier,2.5f,3f);
+                //Debug.Log(comboMultiplier);
+               
             }
             else
             {
-                forceMultiplier += 1;
-                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
-                transform.parent.position += downVelocity * forceMultiplier;
-
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
-                if (forceMultiplier >= forceTreshold)
-                {
-                    if (!ForcePush)
-                    {
-                        ForcePush = true;
-                        //transform.parent.position -= downVelocity;
-                        
-                    }
-
-
-                }
-                else
-                {
-                    ForcePush = false;
-                }
                
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
+             
 
             }
-          
+
+            if (forceMultiplier >= forceTreshold)
+            {
+                if (!ForcePush)
+                {
+                    ForcePush = true;
+
+                }
+
+
+            }
+            else
+            {
+                ForcePush = false;
+            }
+
+            //Move
+            forceMultiplier += 1;
+            forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
+            transform.parent.position += downVelocity * forceMultiplier * comboMultiplier;
+
 
             //FailSafe for a ball
             if (rb.velocity != Vector3.zero)
@@ -387,6 +376,10 @@ public class BallController : Singleton<BallController>
         {
             Destroy(other.gameObject);
             GameManager.Instance.GrabCollectable();
+            if(PoweredUp)
+            {
+                comboMultiplier += 0.3f;
+            }
             Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
         }
            
