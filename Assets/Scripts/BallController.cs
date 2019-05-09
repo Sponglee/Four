@@ -253,30 +253,30 @@ public class BallController : Singleton<BallController>
     [SerializeField]
     private bool WarningCheck = false;
     //Check what level ball is currently on
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.CompareTag("Level"))
-        {
-            //Debug.Log(other.name);
-            CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
-        }
-        else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
-        {
-            //if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
-            //    WarningCheck = true;
-        }
-        else if(other.gameObject.CompareTag("Collectable"))
-        {
-            Destroy(other.gameObject);
-            GameManager.Instance.GrabCollectable();
-            if(PoweredUp)
-            {
-                comboMultiplier += 0.3f;
-            }
-            Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
-        }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.gameObject.CompareTag("Level"))
+    //    {
+    //        //Debug.Log(other.name);
+    //        CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
+    //    }
+    //    else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
+    //    {
+    //        //if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
+    //        //    WarningCheck = true;
+    //    }
+    //    else if(other.gameObject.CompareTag("Collectable"))
+    //    {
+    //        Destroy(other.gameObject);
+    //        GameManager.Instance.GrabCollectable();
+    //        if(PoweredUp)
+    //        {
+    //            comboMultiplier += 0.3f;
+    //        }
+    //        Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
+    //    }
            
-    }
+    //}
 
     private void OnTriggerExit(Collider other)
     {
@@ -291,7 +291,7 @@ public class BallController : Singleton<BallController>
 
 
     //Process a collision
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         //Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
@@ -312,8 +312,32 @@ public class BallController : Singleton<BallController>
         //        }
         //        return;
         //    }
-              
+
         //}
+
+
+        if (other.gameObject.CompareTag("Level"))
+        {
+            //Debug.Log(other.name);
+            CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
+        }
+        else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
+        {
+            //if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
+            //    WarningCheck = true;
+        }
+        else if (other.gameObject.CompareTag("Collectable"))
+        {
+            Destroy(other.gameObject);
+            GameManager.Instance.GrabCollectable();
+            if (PoweredUp)
+            {
+                comboMultiplier += 0.3f;
+            }
+            Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
+        }
+
+
 
 
 

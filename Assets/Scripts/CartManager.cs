@@ -56,16 +56,25 @@ public class CartManager : MonoBehaviour
 
     int currentRequiredPos;
 
+    int cartsLength;
+
+    float angStep = 10f;
+
     private void Start()
     {
 
 
-       
+        cartsLength = LevelManager.Instance.cartCount;
+        carts = new CartModelContoller[cartsLength];
+
+
         spawnMatsRef = LevelManager.Instance.spawnMats;
 
-        requiredCart1 = Random.Range(0, carts.Length);
+        requiredCart1 = Random.Range(0, cartsLength);
 
         transform.parent.GetChild(1).GetChild(0).GetComponent<Renderer>().material.color = spawnMatsRef[1].color;
+
+       
 
         if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
         {
@@ -74,7 +83,7 @@ public class CartManager : MonoBehaviour
 
 
             //Debug.Log(":::::" + requiredCart1 + " : " + requiredCart2);
-            for (int i = 0; i < carts.Length; i++)
+            for (int i = 0; i < cartsLength; i++)
             {
 
                 //Set up cart holder
@@ -94,19 +103,21 @@ public class CartManager : MonoBehaviour
                 //Check if it's required Cart- same color as the ball (don't include steel mat)
                 //materialRandomizer = i == requiredCart1 ? 1 : Random.Range(0,spawnMatsRef.Length);
 
-                if (i == requiredCart1)
-                {
-                    materialRandomizer = 1;
-                    continue;
-                }
-                else
-                {
+
+
+                //if (i == requiredCart1)
+                //{
+                //    materialRandomizer = 1;
+                //    continue;
+                //}
+                //else
+                //{
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
-                }
+                //}
 
          
                 //If randomizer proc or this is a required cart
-                if (spawnRandomizer <= 40 && spawnRandomizer>5)
+                if (spawnRandomizer <= 30 && spawnRandomizer>5 && i == 1)
                 {
 
                    
@@ -170,7 +181,7 @@ public class CartManager : MonoBehaviour
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
-                else if (spawnRandomizer > 40 && spawnRandomizer <= 50 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
+                else if (spawnRandomizer > 30 && spawnRandomizer <= 40 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
@@ -201,7 +212,12 @@ public class CartManager : MonoBehaviour
               
                 index++;
             }
+
         }
+
+
+        //transform.parent.eulerAngles = new Vector3(0, angStep * transform.parent.GetSiblingIndex(), 0);
+
     }
 
 
