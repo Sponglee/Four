@@ -139,7 +139,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1281284798}
   - {fileID: 1118910841}
   - {fileID: 632385033}
   - {fileID: 1556132149}
@@ -306,6 +305,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ee9eb124182f97241bcfc5b248738b04, type: 2}
   - {fileID: 2100000, guid: fa77fcb6a5cf4f64d868623831542947, type: 2}
   - {fileID: 2100000, guid: 85654d4adc5c83a4b97b74d56414d866, type: 2}
+  - {fileID: 2100000, guid: f7c235af908f9b741b98e0935cf32571, type: 2}
+  - {fileID: 2100000, guid: 499a6faabc711c543b24f7a1067a592f, type: 2}
+  - {fileID: 2100000, guid: 7e9a302bc909a464fa918f49928c2c5b, type: 2}
+  - {fileID: 2100000, guid: 6c50c1acd877ef340a04b99f305fd128, type: 2}
+  - {fileID: 2100000, guid: 23a8a7ce7248bec45837ebf47f395451, type: 2}
   spawnMats: []
   spawnMatsIndex: 
   towerMat: {fileID: 2100000, guid: 7d0d3b97bce09f54d94f06ff78450f9e, type: 2}
@@ -573,7 +577,7 @@ RectTransform:
   m_Children:
   - {fileID: 337132746}
   m_Father: {fileID: 167055665}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -802,8 +806,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1103030239}
-  - {fileID: 130801428}
+  - {fileID: 1281284798}
   - {fileID: 14588284}
+  - {fileID: 130801428}
   m_Father: {fileID: 159181789}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1376,7 +1381,7 @@ RectTransform:
   - {fileID: 965092433}
   - {fileID: 1787604651}
   m_Father: {fileID: 14588284}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1830,8 +1835,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 600
-  field of view: 16
+  far clip plane: 350
+  field of view: 20
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -1856,8 +1861,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786702170}
-  m_LocalRotation: {x: 0.41965887, y: 0, z: 0, w: 0.90768194}
-  m_LocalPosition: {x: 0, y: -449.22327, z: -203.74}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2003,7 +2008,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 9
+  m_Priority: 10
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
@@ -2061,7 +2066,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 9
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
@@ -2874,7 +2879,7 @@ RectTransform:
   m_Children:
   - {fileID: 783535433}
   m_Father: {fileID: 14588284}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3051,8 +3056,8 @@ MonoBehaviour:
   spawnInterval: 1
   spawnTime: 0
   tmpCart: {fileID: 0}
-  vcam: {fileID: 864867073}
-  vcamSpeedy: {fileID: 825723382}
+  vcam: {fileID: 825723382}
+  vcamSpeedy: {fileID: 864867073}
   gameMode: 0
 --- !u!1 &1261545401
 GameObject:
@@ -3319,8 +3324,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2012980703}
-  m_Father: {fileID: 14588284}
-  m_RootOrder: 0
+  m_Father: {fileID: 167055665}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4163,7 +4168,7 @@ RectTransform:
   - {fileID: 103747903}
   - {fileID: 1896333161}
   m_Father: {fileID: 14588284}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4314,7 +4319,7 @@ RectTransform:
   m_Children:
   - {fileID: 1303261827}
   m_Father: {fileID: 14588284}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4905,7 +4910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 78.39, z: -195.24}
+  m_FollowOffset: {x: 0, y: 143.6, z: -195.24}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -5816,7 +5821,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: RESUME
+  m_Text: CONTINUE?
 --- !u!222 &2012980705
 CanvasRenderer:
   m_ObjectHideFlags: 0

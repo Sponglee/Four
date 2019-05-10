@@ -38,13 +38,12 @@ public class BallController : Singleton<BallController>
         set
         {
 
-            forcePush = value;
-            if(value == true)
+            if(value == true && forcePush == false)
             {
                 GameObject otherTrans = DownCheckRay(transform, "");
-                Debug.Log(otherTrans.name);
+                Debug.Log("F>>>>>" + otherTrans.name);
 
-                if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Steel"))
+                if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
                 {
                     //Сheck if cart is close to push it out if needed
                     Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
@@ -59,6 +58,7 @@ public class BallController : Singleton<BallController>
             {
                 //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
+            forcePush = value;
         }
     }
 
@@ -132,17 +132,39 @@ public class BallController : Singleton<BallController>
         set
         {
 
-            poweredUp = value;
-            if(value == true)
+
+            if (value == true && poweredUp == false)
             {
 
-              
             }
+            else if (value == false && poweredUp == true) 
+            {
+                RemoveCartBelow(5);
+            }
+            poweredUp = value;
         }
 
    
      
     }
+
+    public void RemoveCartBelow(int range)
+    {
+        GameObject otherTrans = DownCheckRay(transform, "");
+        Debug.Log(">>>>" + otherTrans.name);
+
+        if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
+        {
+            Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
+            //Сheck if cart is close to push it out if needed
+            if (ForcePush && (otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= range))
+            {
+                
+                PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
+            }
+        }
+    }
+
 
 
     void Start()
@@ -360,7 +382,9 @@ public class BallController : Singleton<BallController>
             if(!PoweredUp)
             {
                 FunctionHandler.Instance.OpenGameOver("GAME OVER");
-                
+                TapToStart = false;
+                forceMultiplier = 1;
+                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);    
             }
             else
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
@@ -391,7 +415,7 @@ public class BallController : Singleton<BallController>
 
            
             //Second cart pop sequence
-            other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+            other.gameObject.GetComponent<BoxCollider>().tag = "Untagged";
             other.gameObject.GetComponent<CapsuleCollider>().enabled = false;
             Rigidbody rb = other.transform.GetChild(1).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;

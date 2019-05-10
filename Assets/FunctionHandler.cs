@@ -34,6 +34,38 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     }
 
+    public void CloseGameOver(bool menuClose = false)
+    {
+        BallController.Instance.MenuOpened = false;
+        //If menu is already open
+        if (menuCanvas.activeSelf)
+        {
+
+
+            //GameOver menu close
+            if (!menuClose)
+            {
+                Time.timeScale = 1;
+
+
+                SceneManager.LoadScene("Main");
+            }
+            else
+            {
+
+                Time.timeScale = 1;
+                //Disable menu screen
+                menuCanvas.SetActive(false);
+                menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                BallController.Instance.TapToStart = false;
+                BallController.Instance.RemoveCartBelow(15);
+                GameManager.Instance.tapText.gameObject.SetActive(true);
+            }
+        }
+
+
+    }
+
     public IEnumerator StopOpenGameOver(string message)
     {
         
@@ -83,7 +115,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
             menuButton.SetActive(false);
             //yield return new WaitForSeconds(0.21f);
             if(message == "LEVEL COMPLETE")
+            {
+                menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
                 StartCoroutine(StopMapProgression());
+            }
             else
                 PlayerPrefs.SetInt("Score", 0);
             Time.timeScale = 0;
@@ -212,35 +247,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     }
 
 
-    public void CloseGameOver(bool menuClose = false)
-    {
-        BallController.Instance.MenuOpened = false;
-        //If menu is already open
-        if (menuCanvas.activeSelf)
-        {
-            
-
-            //GameOver menu close
-            if (!menuClose)
-            {
-                Time.timeScale = 1;
-
-              
-                SceneManager.LoadScene("Main");
-            }
-            else
-            {
-                Time.timeScale = 1;
-                //Disable menu screen
-                menuCanvas.SetActive(false);
-                menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
-                
-            }
-        }
-       
-       
-    }
-
+  
 
     public void SwitchMode()
     {
