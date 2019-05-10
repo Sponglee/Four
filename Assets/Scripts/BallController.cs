@@ -20,7 +20,7 @@ public class BallController : Singleton<BallController>
         {
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / LevelManager.Instance.levelCount;
-          
+            StartCoroutine(StopLerpAngle(0.5f));
 
 
         }
@@ -84,7 +84,18 @@ public class BallController : Singleton<BallController>
         }
     }
 
-  
+  public IEnumerator StopLerpAngle(float duration)
+    {
+        float elapsed = 0;
+        Vector3 startAngle = LevelManager.Instance.transform.localEulerAngles;
+        while (elapsed < duration)
+        {
+            LevelManager.Instance.transform.localEulerAngles = Vector3.Lerp(startAngle, LevelManager.Instance.transform.localEulerAngles + new Vector3(0,-5,0),elapsed/duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+     
+    }
 
     public IEnumerator StopCollided()
     {

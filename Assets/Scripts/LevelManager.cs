@@ -203,7 +203,7 @@ public class LevelManager : Singleton<LevelManager>
     void Update()
     {
 
-       
+
         if (Input.GetMouseButtonDown(0))
         {
             LevelMoveTrigger = true;
@@ -222,7 +222,7 @@ public class LevelManager : Singleton<LevelManager>
                     {
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
-                        StartCoroutine(StopRotate(followDuration,0,false));
+                        StartCoroutine(StopRotate(followDuration, 0, false));
                     }
                 }
                 //move level to the right
@@ -234,13 +234,27 @@ public class LevelManager : Singleton<LevelManager>
                     {
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
-                        StartCoroutine(StopRotate(followDuration,0,true));
+                        StartCoroutine(StopRotate(followDuration, 0, true));
                     }
                 }
             }
 
         }
-  
+
+        
+
+
+        ///========================ACTION HANDLING===========================
+        ///
+
+
+        //UpdateInput();
+
+        //currentAngleSpeed = Mathf.Lerp(currentAngleSpeed, 0f, 5f * Time.deltaTime);
+        //CurrentAngle += currentAngleSpeed * Time.deltaTime;
+        //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
+
+
     }
 
     //Direction generation int
@@ -504,8 +518,13 @@ public class LevelManager : Singleton<LevelManager>
         RotationProgress = false;
     }
 
+
+
+
+
+
     // For tower movement *NOT USED*
-    private void UpdateInput()
+    private void UpdateInputNew()
     {
         //
         Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
@@ -583,7 +602,96 @@ public class LevelManager : Singleton<LevelManager>
     }
 
 
-    public float raiseDuration = 0.2f;
+    private void UpdateInput()
+    {
+
+        Vector3 moveVector = new Vector3(Input.mousePosition.x, 0f, 0f) - new Vector3(startPosition.x, 0f, 0f);
+        float moveX = Mathf.Clamp(moveVector.magnitude, 0f, this.maxRotateSpeed);
+        float screenWidth = ((float)Screen.width);
+        float moveXPercent = moveX / screenWidth;
+        float speed = (Mathf.Sign(Input.mousePosition.x - startPosition.x) * moveXPercent) * rotateSpeed;
+
+        if (true /*!SpawnInProgress*/ )
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+
+                speedHistory.Clear();
+                currentAngleSpeed = 0f;
+                startPosition = Input.mousePosition;
+            }
+            else if (Input.GetMouseButton(0) /*&& !LevelMoveProgress*/)
+            {
+
+
+                if (SwipeManager.Instance.Direction != SwipeDirection.None)
+                {
+                    //To avoid interruptions
+                    RotationProgress = true;
+                }
+
+
+                currentAngleSpeed = 0f;
+
+                if (moveXPercent > minSwipeDistX)
+                {
+
+
+                    speedHistory.Add(speed);
+                }
+                else
+                {
+                    speedHistory.Add(0f);
+                }
+                if (speedHistory.Count > 4)
+                {
+                    speedHistory.RemoveAt(0);
+                }
+                CurrentAngle += speed;
+                //if(levelStop)
+                //{
+                //    LevelCurrentAngle -= speed;
+                //}
+                currentAngleSpeed = speed;
+                startPosition = Input.mousePosition;
+                if (currentAngleSpeed <= 0.02f)
+                {
+                    currentAngleSpeed = 0;
+
+                    //currentAngle = Mathf.Round(CurrentAngle / 90f) * 90f;
+                }
+
+            }
+            else if (Input.GetMouseButtonUp(0) && (moveX > minSwipeDistX))
+            {
+                //
+                float speedX = 0f;
+                for (int i = 0; i < speedHistory.Count; i++)
+                {
+                    speedX += speedHistory[i];
+                }
+                currentAngleSpeed = 6f * speedX;
+                startPosition = Input.mousePosition;
+
+            }
+            //else if (Input.GetMouseButtonUp(0) && (moveX < minSwipeDistX))
+            //{
+            //    if (SwipeManager.Instance.Direction == SwipeDirection.Down)
+            //    {
+            //        level++;
+            //    }
+            //    else if (SwipeManager.Instance.Direction == SwipeDirection.Up)
+            //    {
+            //        level--;
+            //    }
+            //}
+        }
+        //if(currentAngleSpeed == 0)
+        //{
+
+        //}
+    }
+public float raiseDuration = 0.2f;
 
     //Destroy a single level
     public void RaiseTower()

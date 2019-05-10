@@ -58,7 +58,7 @@ public class CartManager : MonoBehaviour
 
     int cartsLength;
 
-    float angStep = 10f;
+    float angStep = 5f;
 
     private void Start()
     {
@@ -117,7 +117,7 @@ public class CartManager : MonoBehaviour
 
          
                 //If randomizer proc or this is a required cart
-                if (spawnRandomizer <= 30 && spawnRandomizer>5 && i == 1)
+                if (spawnRandomizer <= 30 && spawnRandomizer>5 && i == transform.parent.GetSiblingIndex()%cartsLength)
                 {
 
                    
@@ -216,7 +216,7 @@ public class CartManager : MonoBehaviour
         }
 
 
-        //transform.parent.eulerAngles = new Vector3(0, angStep * transform.parent.GetSiblingIndex(), 0);
+        transform.parent.eulerAngles = new Vector3(0, angStep * transform.parent.GetSiblingIndex(), 0);
 
     }
 
