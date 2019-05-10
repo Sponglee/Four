@@ -117,7 +117,7 @@ public class CartManager : MonoBehaviour
 
          
                 //If randomizer proc or this is a required cart
-                if (spawnRandomizer <= 30 && spawnRandomizer>5 && i == 1)
+                if (spawnRandomizer <= 30 && spawnRandomizer>5 /*&& i == 1*/)
                 {
 
                    
