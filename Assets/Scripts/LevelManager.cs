@@ -17,6 +17,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject collectablePrefab;
     public Transform backGround;
 
+    public List<Transform> dangerList;
 
     public Material[] spawnMatPool;
     public Material[] spawnMats;
@@ -92,6 +93,10 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
+        dangerList = new List<Transform>();
+
+
+
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount",50);
         //Level values generator
@@ -203,7 +208,8 @@ public class LevelManager : Singleton<LevelManager>
     void Update()
     {
 
-       
+        //transform.localEulerAngles += new Vector3(0, 1f, 0);
+
         if (Input.GetMouseButtonDown(0))
         {
             LevelMoveTrigger = true;
@@ -222,7 +228,7 @@ public class LevelManager : Singleton<LevelManager>
                     {
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
-                        StartCoroutine(StopRotate(followDuration,0,false));
+                        StartCoroutine(StopRotate(followDuration, 0, false));
                     }
                 }
                 //move level to the right
@@ -234,13 +240,13 @@ public class LevelManager : Singleton<LevelManager>
                     {
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
-                        StartCoroutine(StopRotate(followDuration,0,true));
+                        StartCoroutine(StopRotate(followDuration, 0, true));
                     }
                 }
             }
 
         }
-  
+
     }
 
     //Direction generation int

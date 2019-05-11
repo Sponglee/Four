@@ -58,7 +58,7 @@ public class CartManager : MonoBehaviour
 
     int cartsLength;
 
-    float angStep = 10f;
+    float angStep =5f;
 
     private void Start()
     {
@@ -105,19 +105,19 @@ public class CartManager : MonoBehaviour
 
 
 
-                //if (i == requiredCart1)
-                //{
-                //    materialRandomizer = 1;
-                //    continue;
-                //}
-                //else
-                //{
+                if (i == requiredCart1)
+                {
+                    materialRandomizer = 1;
+                    continue;
+                }
+                else
+                {
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
-                //}
+                }
 
-         
+
                 //If randomizer proc or this is a required cart
-                if (spawnRandomizer <= 30 && spawnRandomizer>5 /*&& i == 1*/)
+                if (spawnRandomizer <= 40 && spawnRandomizer>5 /*&& i == 1*/)
                 {
 
                    
@@ -166,6 +166,7 @@ public class CartManager : MonoBehaviour
                     tmpCart.transform.GetChild(0).tag = "Danger";
                     //}
 
+                    LevelManager.Instance.dangerList.Add(transform.parent);
                     ////Set a material
                     //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
 
@@ -181,7 +182,7 @@ public class CartManager : MonoBehaviour
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
-                else if (spawnRandomizer > 30 && spawnRandomizer <= 40 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
+                else if (spawnRandomizer > 70 && spawnRandomizer <= 80 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
@@ -216,9 +217,14 @@ public class CartManager : MonoBehaviour
         }
 
 
-        //transform.parent.eulerAngles = new Vector3(0, angStep * transform.parent.GetSiblingIndex(), 0);
+        //transform.parent.eulerAngles = new Vector3(0, -angStep * transform.parent.GetSiblingIndex(), 0);
 
+        //if(transform.parent.GetSiblingIndex()>25)
+        //    transform.parent.gameObject.SetActive(false);
     }
+
+
+   
 
 
     //Build circle for spots

@@ -64,11 +64,11 @@ public class SpawnManager : Singleton<SpawnManager>
         //spawnObject = tmpCart;
 
         //Follow camera to a ball
-        vcam.m_Follow = transform;
-        vcam.m_LookAt = transform;
+        vcam.m_Follow = tmpCart.transform;
+        vcam.m_LookAt = tmpCart.transform;
 
-        vcamSpeedy.m_Follow = transform;
-        vcamSpeedy.m_LookAt = transform;
+        vcamSpeedy.m_Follow = tmpCart.transform;
+        vcamSpeedy.m_LookAt = tmpCart.transform;
 
 
         

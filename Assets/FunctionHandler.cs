@@ -129,7 +129,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopMapProgression()
     {
-        Debug.Log("Opened");
+       
         int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
         GameObject mapSegment = null;
 

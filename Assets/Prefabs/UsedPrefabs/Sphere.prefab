@@ -136,7 +136,6 @@ MonoBehaviour:
   Move: 0
   jumpStrength: 0
   gravityForce: 0
-  TapToStart: 0
   poweredUp: 0
   WarningCheck: 0
   warning: 0
@@ -167,7 +166,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!65 &3861889724857273329
 BoxCollider:

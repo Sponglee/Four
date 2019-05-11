@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BallController : Singleton<BallController>
 {
+
     ///FROM CARTMODELCONTROLLER 
     /// 
     [SerializeField]
@@ -19,9 +20,16 @@ public class BallController : Singleton<BallController>
         set
         {
             currentLevel = value;
-            GameManager.Instance.LevelProgress = (float)(currentLevel) / LevelManager.Instance.levelCount;
-          
+            GameManager.Instance.LevelProgress = (float)(currentLevel) / levelManager.levelCount;
 
+
+            //OPTIMIZATION
+            //levelManager.transform.GetChild((currentLevel + 25) % levelManager.transform.childCount).gameObject.SetActive(true);
+
+            if (currentLevel>13)
+            {
+                levelManager.transform.GetChild(currentLevel - 13).gameObject.SetActive(false);
+            }
 
         }
     }
@@ -41,9 +49,9 @@ public class BallController : Singleton<BallController>
             if(value == true && forcePush == false)
             {
                 GameObject otherTrans = DownCheckRay(transform, "");
-                Debug.Log("F>>>>>" + otherTrans.name);
+                //Debug.Log("F>>>>>" + otherTrans.name);
 
-                if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
+                if (otherTrans != null && /*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
                 {
                     //Сheck if cart is close to push it out if needed
                     Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
@@ -101,7 +109,7 @@ public class BallController : Singleton<BallController>
     [SerializeField]
     private float forceTreshold = 3f;
     [SerializeField]
-    private Vector3 downVelocity = Vector3.down * 0.1f;
+    private Vector3 downVelocity = Vector3.down;
     public bool MenuOpened = false;
 
 
@@ -112,13 +120,32 @@ public class BallController : Singleton<BallController>
 
 
 
-    LevelManager level;
+    LevelManager levelManager;
     Rigidbody rb;
     float nextBallPosToJump;
     int skippedCounter = 0;
     float vel;
 
-    public bool TapToStart = false;
+    private bool tapToStart = false;
+
+    public bool TapToStart
+    {
+        get
+        {
+            return tapToStart;
+        }
+
+        set
+        {
+
+            if (value == true && tapToStart == false)
+            {
+                StartCoroutine(StopLevelRotator());
+            }
+            tapToStart = value;
+        }
+    }
+
 
     [SerializeField]
     private bool poweredUp = false;
@@ -135,7 +162,7 @@ public class BallController : Singleton<BallController>
 
             if (value == true && poweredUp == false)
             {
-
+                //StartCoroutine(StopLevelRotator());
             }
             else if (value == false && poweredUp == true) 
             {
@@ -148,12 +175,13 @@ public class BallController : Singleton<BallController>
      
     }
 
+
     public void RemoveCartBelow(int range)
     {
         GameObject otherTrans = DownCheckRay(transform, "");
-        Debug.Log(">>>>" + otherTrans.name);
+        //Debug.Log(">>>>" + otherTrans.name);
 
-        if (/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
+        if (otherTrans != null &&/*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
         {
             Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
             //Сheck if cart is close to push it out if needed
@@ -165,18 +193,48 @@ public class BallController : Singleton<BallController>
         }
     }
 
+    public IEnumerator StopLevelRotator()
+    {
+        while (true)
+        {
+
+            int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
+            Debug.Log("ROTATING " + rotatorInd);
+            if(LevelManager.Instance.dangerList[rotatorInd].GetSiblingIndex()>CurrentLevel)
+                StartCoroutine(StopLevelTurn(LevelManager.Instance.dangerList[rotatorInd], 1f, Random.Range(-2,3)*90f));
+
+            yield return new WaitForSeconds(2);
+        }
+    }
+
+
+    public IEnumerator StopLevelTurn(Transform target, float duration, float angle)
+    {
+        float elapsed = 0;
+        Vector3 startEul = target.localEulerAngles;
+        Vector3 destEul = startEul + new Vector3(0, angle, 0);
+
+        while ( target != null && Mathf.Abs(target.localEulerAngles.y - destEul.y) >= 0.05f)
+        {
+            target.localEulerAngles = Vector3.Lerp(startEul, destEul , elapsed / duration);
+            //Debug.Log(">R> " + target.eulerAngles);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+    }
+
 
 
     void Start()
     {
         
-
+        
         downVelocity = new Vector3(0, -PlayerPrefs.GetFloat("Speed", 0.3f), 0);
 
         rb = GetComponent<Rigidbody>();
-        level = FindObjectOfType<LevelManager>();
+        levelManager = FindObjectOfType<LevelManager>();
 
-        nextBallPosToJump = -level.spawnOffset /*+ GetComponent<SphereCollider>().bounds.size.y / 2*/ + level.spawnOffsetStep / 2;
+        nextBallPosToJump = -levelManager.spawnOffset /*+ GetComponent<SphereCollider>().bounds.size.y / 2*/ + levelManager.spawnOffsetStep / 2;
 
         //Debug.Log(nextBallPosToJump);
         LevelManager.Instance.ballRef = this;
@@ -187,38 +245,41 @@ public class BallController : Singleton<BallController>
    
     private void Update()
     {
-        if(Input.GetMouseButtonDown(2))
-        {
+        //if(Input.GetMouseButtonDown(2))
+        //{
 
-            //PoweredUp = true;
-            //GameManager.Instance.ComboActive = true;
-            GameManager.Instance.LevelComplete();
-        }
-        else if(Input.GetMouseButtonDown(1))
-        {
-            StartCoroutine(FunctionHandler.Instance.StopMapPan());
-        }
+        //    //PoweredUp = true;
+        //    //GameManager.Instance.ComboActive = true;
+        //    GameManager.Instance.LevelComplete();
+        //}
+        //else if(Input.GetMouseButtonDown(1))
+        //{
+        //    StartCoroutine(FunctionHandler.Instance.StopMapPan());
+        //}
         
 
         if (TapToStart && !MenuOpened)
         {
-            if (PoweredUp)
-            {
+            //if (PoweredUp)
+            //{
 
                
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
-                comboMultiplier -= Time.deltaTime;
-                comboMultiplier = Mathf.Clamp(comboMultiplier,2.5f,3f);
-                //Debug.Log(comboMultiplier);
+            //    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+            //    comboMultiplier -= Time.deltaTime;
+            //    comboMultiplier = Mathf.Clamp(comboMultiplier,2.5f,3f);
+            //    //Debug.Log(comboMultiplier);
                
-            }
-            else
-            {
+            //}
+            //else
+            //{
                
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
+            //    SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
              
 
-            }
+            //}
+
+           
+
 
             if (forceMultiplier >= forceTreshold)
             {
@@ -235,35 +296,46 @@ public class BallController : Singleton<BallController>
                 ForcePush = false;
             }
 
+
+
+
             //Move
-            forceMultiplier += 1;
+            forceMultiplier += 0.5f;
             forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
-            transform.parent.position += downVelocity * forceMultiplier * comboMultiplier;
+
+            rb.velocity = downVelocity * forceMultiplier * comboMultiplier*100f;
 
 
-            //FailSafe for a ball
-            if (rb.velocity != Vector3.zero)
-            {
-                rb.velocity = Vector3.zero;
-            }
-            if (transform.localPosition.y > 0)
-            {
-                transform.localPosition = Vector3.zero;
-            }
+
+            ////FailSafe for a ball
+            //if (rb.velocity != Vector3.zero)
+            //{
+            //    rb.velocity = Vector3.zero;
+            //}
+            //if (transform.localPosition.y > 0)
+            //{
+            //    transform.localPosition = Vector3.zero;
+            //}
 
 
-           
+
 
         }
         else if(!TapToStart)
         {
-            if(Input.GetMouseButtonDown(0))
+            rb.velocity = Vector3.zero;
+
+            if (Input.GetMouseButtonDown(0))
             {
                 TapToStart = true;
                 GameManager.Instance.tapText.gameObject.SetActive(false);
                 //PoweredUp = true;
-              
+                
             }
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
         }
 
 
@@ -340,6 +412,7 @@ public class BallController : Singleton<BallController>
 
         if (other.gameObject.CompareTag("Level"))
         {
+            
             //Debug.Log(other.name);
             CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
         }
