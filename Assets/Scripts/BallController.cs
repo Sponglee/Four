@@ -151,16 +151,20 @@ public class BallController : Singleton<BallController>
         {
 
 
-            if (value == true && powerUpTrigger == false)
+            if (value == true && powerUpTrigger == false && !PoweredUp)
             {
                 //StartCoroutine(StopLevelRotator());
+                powerUpTrigger = value;
             }
-            else if (value == false && powerUpTrigger == true) 
+            else if (value == false && powerUpTrigger == true)
             {
-                
-                RemoveCartBelow(5);
+                Debug.Log("TOOT");
+                //RemoveCartBelow(5);
+                powerUpTrigger = value;
             }
-            powerUpTrigger = value;
+            else
+                return;
+            
         }
 
    
@@ -257,6 +261,7 @@ public class BallController : Singleton<BallController>
             //REPLACE THIS WITH A BUTTON PRESS
             if (PowerUpTrigger && Input.GetMouseButtonDown(0))
             {
+                
                 PowerUpTrigger = false;
                 comboMultiplier = 7f;
                 PoweredUp = true;
@@ -310,18 +315,18 @@ public class BallController : Singleton<BallController>
 
 
 
-            if (Input.GetMouseButton(0) && !PoweredUp)
-            {
-                //Move
-                forceMultiplier += 1.5f;
-                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
+            //if (Input.GetMouseButton(0) && !PoweredUp)
+            //{
+            //    //Move
+            //    forceMultiplier += 1.5f;
+            //    forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
 
-            }
-            else
-            {
-                forceMultiplier = 1f;
-                forceMultiplier = Mathf.Clamp(forceMultiplier, 10, forceTreshold);
-            }
+            //}
+            //else
+            //{
+                //forceMultiplier = 1f;
+                //forceMultiplier = Mathf.Clamp(forceMultiplier, 10, forceTreshold);
+            //}
 
 
             

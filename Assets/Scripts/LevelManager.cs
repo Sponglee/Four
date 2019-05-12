@@ -311,7 +311,7 @@ public class LevelManager : Singleton<LevelManager>
         {
 
             int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
-            Debug.Log("ROTATING " + rotatorInd);
+            //Debug.Log("ROTATING " + rotatorInd);
             if (dangerList[rotatorInd].GetSiblingIndex() > ballRef.CurrentLevel)
                 LevelMove(dangerList[rotatorInd].GetSiblingIndex());
 

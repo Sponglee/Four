@@ -182,7 +182,7 @@ public class CartManager : MonoBehaviour
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
-                else if (spawnRandomizer > 70 && spawnRandomizer <= 80 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
+                else if (spawnRandomizer > 70 && spawnRandomizer <= 100 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
                 {
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);

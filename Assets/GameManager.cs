@@ -42,25 +42,22 @@ public class GameManager : Singleton<GameManager>
         set
         {
             //powerFill = Mathf.Clamp(0f,1f,value);
-            
-            powerFiller.fillAmount = powerFill;
-            if (powerFill >= 1 && BallController.Instance.PowerUpTrigger == false)
-            {
-                powerFill = 1;
-                powerFiller.color = Color.yellow;
-                BallController.Instance.PowerUpTrigger = true;
-                //ComboActive = true;
-            }
-            else if (powerFill <= 0 )
-            {
-                BallController.Instance.PoweredUp = false;
-                
-                powerFill = 0;
-                powerFiller.color = Color.white;
-                //ComboActive = false;
-            }
+          
 
             powerFill = value;
+            powerFiller.fillAmount = powerFill;
+
+
+
+            if (powerFill >= 1 && BallController.Instance.PowerUpTrigger == false)
+            {
+                BallController.Instance.PowerUpTrigger = true;
+                //powerFill = 0.9f;
+
+                powerFiller.color = Color.yellow;
+                //ComboActive = true;
+            }
+
         }
     }
 
@@ -166,8 +163,8 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        powerFill = 0;
-        powerFiller.fillAmount = powerFill;
+        PowerFill = 0;
+       
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
@@ -209,13 +206,13 @@ public class GameManager : Singleton<GameManager>
        if(!PowerUpDecreasing)
         {
             PowerFill += 1/fillRate;
-            //Debug.Log(">> " + 1 / fillRate);
+           
         }
-       else
-        {
-            PowerFill += 1 / (2f*fillRate);
-            //Debug.Log("<< " + 1 / 15f * fillRate);
-        }
+       //else
+       // {
+       //     PowerFill += 1 / (2f*fillRate);
+       //     //Debug.Log("<< " + 1 / 15f * fillRate);
+       // }
 
 
         //if (powerFill >= 1)
@@ -259,7 +256,15 @@ public class GameManager : Singleton<GameManager>
 
         while (powerFill > 0)  
         {
-            if(ComboActive)
+            if (powerFill <= 0.1)
+            {
+                BallController.Instance.comboMultiplier = 1f;
+                yield return new WaitForSeconds(0.02f);
+            }
+            else
+                yield return null;
+
+            if (ComboActive)
             {
                 
                 PowerFill -= 15f  / ( powerDecreaseSpeed);
@@ -270,22 +275,20 @@ public class GameManager : Singleton<GameManager>
 
             }
 
-            powerFiller.fillAmount = PowerFill;
-            if (powerFill <= 0.1)
-            {
-                BallController.Instance.comboMultiplier = 1f;
-                yield return new WaitForSeconds(0.02f);
-            }
-            else
-                yield return null;
+          
+
         }
-        //powerFill = 0;
+
+        BallController.Instance.PoweredUp = false;
+        PowerFill = 0;
         powerFiller.color = Color.white;
-      
+
         Multiplier = 1;
         PowerUpDecreasing = false;
         powerDecreaseAmount = powerDecreaseSpeed;
         BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+
+
     }
 
 
