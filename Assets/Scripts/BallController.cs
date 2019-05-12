@@ -48,7 +48,8 @@ public class BallController : Singleton<BallController>
 
             if(value == true && forcePush == false)
             {
-                PoweredUp = true;
+               
+             
                 //GameManager.Instance.PowerFill -= 15f / (GameManager.Instance.powerDecreaseSpeed);
                 //rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
             }
@@ -130,7 +131,7 @@ public class BallController : Singleton<BallController>
 
             if (value == true && tapToStart == false)
             {
-                StartCoroutine(StopLevelRotator());
+                StartCoroutine(LevelManager.Instance.StopLevelRotator());
             }
             tapToStart = value;
         }
@@ -156,6 +157,7 @@ public class BallController : Singleton<BallController>
             }
             else if (value == false && powerUpTrigger == true) 
             {
+                
                 RemoveCartBelow(5);
             }
             powerUpTrigger = value;
@@ -184,19 +186,19 @@ public class BallController : Singleton<BallController>
         }
     }
 
-    public IEnumerator StopLevelRotator()
-    {
-        while (true)
-        {
+    //public IEnumerator StopLevelRotator()
+    //{
+    //    while (true)
+    //    {
 
-            int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
-            Debug.Log("ROTATING " + rotatorInd);
-            if(LevelManager.Instance.dangerList[rotatorInd].GetSiblingIndex()>CurrentLevel)
-                StartCoroutine(StopLevelTurn(LevelManager.Instance.dangerList[rotatorInd], 1f, Random.Range(-2,3)*90f));
+    //        int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
+    //        Debug.Log("ROTATING " + rotatorInd);
+    //        if(LevelManager.Instance.dangerList[rotatorInd].GetSiblingIndex()>CurrentLevel)
+    //            StartCoroutine(StopLevelTurn(LevelManager.Instance.dangerList[rotatorInd], 1f, Random.Range(-2,3)*90f));
 
-            yield return new WaitForSeconds(2);
-        }
-    }
+    //        yield return new WaitForSeconds(2);
+    //    }
+    //}
 
 
     public IEnumerator StopLevelTurn(Transform target, float duration, float angle)
@@ -251,25 +253,38 @@ public class BallController : Singleton<BallController>
 
         if (TapToStart && !MenuOpened)
         {
+            //Launch powerup
+            //REPLACE THIS WITH A BUTTON PRESS
+            if (PowerUpTrigger && Input.GetMouseButtonDown(0))
+            {
+                PowerUpTrigger = false;
+                comboMultiplier = 7f;
+                PoweredUp = true;
+                StartCoroutine(GameManager.Instance.StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
+            }
+
+
+
+
             //if (PoweredUp)
             //{
 
-               
+
             //    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
             //    comboMultiplier -= Time.deltaTime;
             //    comboMultiplier = Mathf.Clamp(comboMultiplier,2.5f,3f);
             //    //Debug.Log(comboMultiplier);
-               
+
             //}
             //else
             //{
-               
+
             //    SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
-             
+
 
             //}
 
-           
+
 
 
             if (forceMultiplier >= forceTreshold)
@@ -277,6 +292,7 @@ public class BallController : Singleton<BallController>
                 if (!ForcePush)
                 {
                     transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
+                   
                     ForcePush = true;
                     rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
                 }
@@ -287,12 +303,14 @@ public class BallController : Singleton<BallController>
             {
                 transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
                 ForcePush = false;
+                
                 rb.velocity = downVelocity * comboMultiplier * 100f;
+
             }
 
 
 
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !PoweredUp)
             {
                 //Move
                 forceMultiplier += 1.5f;
@@ -301,7 +319,7 @@ public class BallController : Singleton<BallController>
             }
             else
             {
-                forceMultiplier -= 1f;
+                forceMultiplier = 1f;
                 forceMultiplier = Mathf.Clamp(forceMultiplier, 10, forceTreshold);
             }
 
@@ -454,12 +472,12 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Danger"))
         {
-            if(!PowerUpTrigger)
+            if(!PoweredUp)
             {
                 FunctionHandler.Instance.OpenGameOver("GAME OVER");
                 TapToStart = false;
                 forceMultiplier = 1;
-                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);    
+                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
             }
             else
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);

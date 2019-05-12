@@ -54,8 +54,8 @@ public class CartModelContoller : MonoBehaviour
             current = value;
             //Check if passes 0 and set to value again
             if (current < 0)
-                current = 3;
-            else if (current > 3)
+                current = LevelManager.Instance.cartCount-1;
+            else if (current > LevelManager.Instance.cartCount-1)
                 current = 0;
 
         }

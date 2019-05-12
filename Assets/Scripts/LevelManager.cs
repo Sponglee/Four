@@ -214,7 +214,7 @@ public class LevelManager : Singleton<LevelManager>
         {
             LevelMoveTrigger = true;
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0) && !ballRef.ForcePush)
         {
 
             //If cart was pressed
@@ -280,12 +280,12 @@ public class LevelManager : Singleton<LevelManager>
     }
 
     public float raiseTowerTime = 0.25f;
-    //Level Destruction sequence
+    //Level Move sequence
     public IEnumerator LevelTimer()
     {
         int i = 0;
         yield return new WaitForSeconds(4f);
-       
+
         while (true)
         {
             yield return new WaitForSeconds(raiseTowerTime);
@@ -295,17 +295,29 @@ public class LevelManager : Singleton<LevelManager>
                 transform.GetChild(i).gameObject.SetActive(false);
                 //Destroy(transform.GetChild(0).gameObject);
                 RaiseTower();
-                if(raiseTowerTime >= 0.25f)
+                if (raiseTowerTime >= 0.25f)
                 {
                     //raiseTowerTime -= 0.05f;
                 }
                 i++;
             }
         }
-       
+
     }
 
+    public IEnumerator StopLevelRotator()
+    {
+        while (true)
+        {
 
+            int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
+            Debug.Log("ROTATING " + rotatorInd);
+            if (dangerList[rotatorInd].GetSiblingIndex() > ballRef.CurrentLevel)
+                LevelMove(dangerList[rotatorInd].GetSiblingIndex());
+
+            yield return new WaitForSeconds(2);
+        }
+    }
 
     //Move Level direction - clockwise by default
     public void LevelMove(int levelIndex, bool direction = false)
@@ -371,9 +383,13 @@ public class LevelManager : Singleton<LevelManager>
                 //change currents, set parents 
                 tmp.Current++;
                 tmp.transform.parent.SetParent(null);
-                tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
-                //Start turning sequence to the left
-                StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed));
+                if(transform.GetChild(level) != null)
+                {
+                    tmp.transform.parent.SetParent(transform.GetChild(level).GetChild(0).GetChild(tmp.Current));
+                    //Start turning sequence to the left
+                    StartCoroutine(StopCircLerp(tmp.transform.parent, tmp.transform.parent.parent, levelMoveSpeed));
+
+                }
             }
           
             

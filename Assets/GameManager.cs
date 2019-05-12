@@ -51,11 +51,14 @@ public class GameManager : Singleton<GameManager>
                 BallController.Instance.PowerUpTrigger = true;
                 //ComboActive = true;
             }
-            //else if(powerFill<=0 && BallController.Instance.Com == true)
-            //{
-            //    BallController.Instance.PoweredUp = false;
-            //    //ComboActive = false;
-            //}
+            else if (powerFill <= 0 )
+            {
+                BallController.Instance.PoweredUp = false;
+                
+                powerFill = 0;
+                powerFiller.color = Color.white;
+                //ComboActive = false;
+            }
 
             powerFill = value;
         }
@@ -163,6 +166,7 @@ public class GameManager : Singleton<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        powerFill = 0;
         powerFiller.fillAmount = powerFill;
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
@@ -246,7 +250,7 @@ public class GameManager : Singleton<GameManager>
 
 
 
-    private IEnumerator StopPoweredUp(float fraction, float startTime, float powerDecreaseSpeed)
+    public IEnumerator StopPoweredUp(float fraction, float startTime, float powerDecreaseSpeed)
     {
 
       
@@ -262,7 +266,7 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                PowerFill -= 1 / (powerDecreaseSpeed);
+                PowerFill -= 15 / (powerDecreaseSpeed);
 
             }
 
@@ -277,7 +281,7 @@ public class GameManager : Singleton<GameManager>
         }
         //powerFill = 0;
         powerFiller.color = Color.white;
-        BallController.Instance.comboMultiplier = 1;
+      
         Multiplier = 1;
         PowerUpDecreasing = false;
         powerDecreaseAmount = powerDecreaseSpeed;
