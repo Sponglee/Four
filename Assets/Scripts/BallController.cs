@@ -48,21 +48,11 @@ public class BallController : Singleton<BallController>
 
             if(value == true && forcePush == false)
             {
-                GameObject otherTrans = DownCheckRay(transform, "");
-                //Debug.Log("F>>>>>" + otherTrans.name);
-
-                if (otherTrans != null && /*otherTrans.gameObject.CompareTag("Cart") ||*/ otherTrans.gameObject.CompareTag("Danger"))
-                {
-                    //Сheck if cart is close to push it out if needed
-                    Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
-                    if (ForcePush && (otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= 2))
-                    {
-                      
-                        PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
-                    }
-                }
+                PoweredUp = true;
+                //GameManager.Instance.PowerFill -= 15f / (GameManager.Instance.powerDecreaseSpeed);
+                //rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
             }
-            else
+            else if(value == false && forcePush == true)
             {
                 //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
@@ -148,33 +138,34 @@ public class BallController : Singleton<BallController>
 
 
     [SerializeField]
-    private bool poweredUp = false;
-    public bool PoweredUp
+    private bool powerUpTrigger = false;
+    public bool PowerUpTrigger
     {
         get
         {
-            return poweredUp;
+            return powerUpTrigger;
         }
 
         set
         {
 
 
-            if (value == true && poweredUp == false)
+            if (value == true && powerUpTrigger == false)
             {
                 //StartCoroutine(StopLevelRotator());
             }
-            else if (value == false && poweredUp == true) 
+            else if (value == false && powerUpTrigger == true) 
             {
                 RemoveCartBelow(5);
             }
-            poweredUp = value;
+            powerUpTrigger = value;
         }
 
    
      
     }
 
+    public bool PoweredUp = false;
 
     public void RemoveCartBelow(int range)
     {
@@ -185,7 +176,7 @@ public class BallController : Singleton<BallController>
         {
             Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
             //Сheck if cart is close to push it out if needed
-            if (ForcePush && (otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= range))
+            if ((otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= range))
             {
                 
                 PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
@@ -246,7 +237,7 @@ public class BallController : Singleton<BallController>
     private void Update()
     {
         //if(Input.GetMouseButtonDown(2))
-        //{
+        //{ 
 
         //    //PoweredUp = true;
         //    //GameManager.Instance.ComboActive = true;
@@ -285,26 +276,37 @@ public class BallController : Singleton<BallController>
             {
                 if (!ForcePush)
                 {
+                    transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
                     ForcePush = true;
-
+                    rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
                 }
 
 
             }
             else
             {
+                transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
                 ForcePush = false;
+                rb.velocity = downVelocity * comboMultiplier * 100f;
             }
 
 
 
+            if (Input.GetMouseButton(0))
+            {
+                //Move
+                forceMultiplier += 1.5f;
+                forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
 
-            //Move
-            forceMultiplier += 0.5f;
-            forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
+            }
+            else
+            {
+                forceMultiplier -= 1f;
+                forceMultiplier = Mathf.Clamp(forceMultiplier, 10, forceTreshold);
+            }
 
-            rb.velocity = downVelocity * forceMultiplier * comboMultiplier*100f;
 
+            
 
 
             ////FailSafe for a ball
@@ -427,7 +429,7 @@ public class BallController : Singleton<BallController>
             GameManager.Instance.GrabCollectable();
             if (PoweredUp)
             {
-                comboMultiplier += 0.3f;
+                //comboMultiplier += 0.3f;
             }
             Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
         }
@@ -439,7 +441,7 @@ public class BallController : Singleton<BallController>
         //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
         if (/*other.gameObject.CompareTag("Cart")  || */other.gameObject.CompareTag("Steel"))
         {
-            if (ForcePush /*&& !CollidedBool*/)
+            if (true /*&& !CollidedBool*/)
             {
                 //Debug.Log(other + "COLLISION");
                 //Debug.Log(other.transform.name + "Transform");
@@ -452,7 +454,7 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Danger"))
         {
-            if(!PoweredUp)
+            if(!PowerUpTrigger)
             {
                 FunctionHandler.Instance.OpenGameOver("GAME OVER");
                 TapToStart = false;
@@ -508,7 +510,7 @@ public class BallController : Singleton<BallController>
             Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
 
 
-            if(PoweredUp)
+            if(PowerUpTrigger)
             {
                 GameManager.Instance.Multiplier++;
                 GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
