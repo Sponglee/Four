@@ -159,24 +159,22 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     //    yield return StopColorLerp(mapSegment.transform.GetChild(i % 4), finishedColor);
                     //}
                 }
-              
                 else
                 {
-                    yield return StopMapPan();
                     //Unlock next level
                     yield return StopColorLerp(mapSegment.transform.GetChild(i % 4), unlockedMapColor);
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
 
-
                 }
+
             }
                
            
           
         }
 
-
-
+        yield return StopMapPan();
+       
 
         yield return null;
     }
