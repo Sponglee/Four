@@ -208,20 +208,8 @@ public class BallController : Singleton<BallController>
         }
     }
 
-    //public IEnumerator StopLevelRotator()
-    //{
-    //    while (true)
-    //    {
 
-    //        int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
-    //        Debug.Log("ROTATING " + rotatorInd);
-    //        if(LevelManager.Instance.dangerList[rotatorInd].GetSiblingIndex()>CurrentLevel)
-    //            StartCoroutine(StopLevelTurn(LevelManager.Instance.dangerList[rotatorInd], 1f, Random.Range(-2,3)*90f));
-
-    //        yield return new WaitForSeconds(2);
-    //    }
-    //}
-
+   
 
     public IEnumerator StopLevelTurn(Transform target, float duration, float angle)
     {
@@ -420,17 +408,69 @@ public class BallController : Singleton<BallController>
     //        }
     //        Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
     //    }
-           
+
     //}
 
-    private void OnTriggerExit(Collider other)
+
+
+
+    //Rays to move or not
+    public void CheckMovement()
     {
-        if(!PoweredUp && other.gameObject.CompareTag("Steel"))
+        //Grab obj below
+        GameObject otherTrans = DownCheckRay(transform, "");
+      
+
+        if (otherTrans != null && otherTrans.gameObject.CompareTag("Steel"))
         {
-            //Debug.Log(other + "COLLISION");
-            CollidedBool = false;   
+            Debug.Log(">>> " + CurrentLevel + " : " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
+            if (Mathf.Abs(otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex() - CurrentLevel) > 1 )
+            {
+                CollidedBool = false;
+            }
+            //else
+            //{
+            //    CollidedBool = true;
+            //}
         }
+        else
+        {
+            CollidedBool = false;
+        }
+      
+
+        ////Debug.Log("COLLIDED " + other.gameObject.name);
+        ////Collision with steel carts or cart carts that are to the left or to the right
+        //if (!PoweredUp && (other.gameObject.CompareTag("Steel") || other.gameObject.CompareTag("Cart")))
+        //{
+
+        //    if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
+        //    {
+               
+        //        if (other.transform.position.x >= transform.position.x)
+        //        {
+        //            LevelManager.Instance.LevelMove(CurrentLevel, true);
+        //        }
+        //        else
+        //        {
+        //            LevelManager.Instance.LevelMove(CurrentLevel, false);
+        //        }
+        //        return;
+        //    }
+
+        //}
     }
+
+
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if(!PoweredUp && other.gameObject.CompareTag("Steel"))
+    //    {
+    //        //Debug.Log(other + "COLLISION");
+    //        CollidedBool = false;   
+    //    }
+    //}
 
     //private void OnTriggerStay(Collider other)
     //{
@@ -446,28 +486,17 @@ public class BallController : Singleton<BallController>
     //Process a collision
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("COLLIDED " + other.gameObject.name);
-        //Collision with steel carts or cart carts that are to the left or to the right
-        if (!PoweredUp && (other.gameObject.CompareTag("Steel") || other.gameObject.CompareTag("Cart")))
+
+        if (!PoweredUp && other.gameObject.CompareTag("Steel"))
         {
-           
-            if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
+            if (true /*&& !CollidedBool*/)
             {
-                Debug.Log("Ball " + transform.position);
-                Debug.Log("Cart " + other.transform.position);
-                if (other.transform.position.x >= transform.position.x)
-                {
-                    LevelManager.Instance.LevelMove(CurrentLevel, true);
-                }
-                else
-                {
-                    LevelManager.Instance.LevelMove(CurrentLevel, false);
-                }
-                return;
+                //Debug.Log(other + "COLLISION");
+                //Debug.Log(other.transform.name + "Transform");
+
+                CollidedBool = true;
             }
-
         }
-
 
         if (other.gameObject.CompareTag("Level"))
         {
@@ -494,19 +523,7 @@ public class BallController : Singleton<BallController>
 
 
 
-
-        //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
-        if (!PoweredUp && other.gameObject.CompareTag("Steel"))
-        {
-            if (true /*&& !CollidedBool*/)
-            {
-                //Debug.Log(other + "COLLISION");
-                //Debug.Log(other.transform.name + "Transform");
-
-                CollidedBool = true;
-            }
-        }
-        else if (PoweredUp && other.gameObject.CompareTag("Steel"))
+         if (PoweredUp && other.gameObject.CompareTag("Steel"))
         {
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
         }
@@ -616,7 +633,7 @@ public class BallController : Singleton<BallController>
     }
 
 
-    //Get reference to object hit by ray with tag
+    //Get reference to  2ND object  UNDER BALL hit by ray with tag
     private GameObject DownCheckRay(Transform origin, string obj = "")
     {
         RaycastHit hit;
@@ -626,25 +643,29 @@ public class BallController : Singleton<BallController>
         Vector3 rayDirection;
 
         //Offset origin to get center of a cart
-        offsetOrigin = origin.position /*+ new Vector3(0, -2.51f, 0)*/;
+        offsetOrigin = origin.position + new Vector3(0, 3.51f, 0);
         //lowerEnd of debug line
         dir = origin.position + new Vector3(0, -15f, 0);
         Debug.DrawLine(offsetOrigin, dir, Color.black, 10f);
         //}
 
 
-        if (Physics.Raycast(offsetOrigin, dir, out hit))
-        {
+        var hits = Physics.RaycastAll(offsetOrigin, dir);
 
-            if (hit.transform)
+        Debug.Log(hits[0].transform.tag);
+
+        if (hits.Length > 1)
+        {
+            Debug.Log(hits[1].transform.tag);
+            if (hits[1].transform)
             {
                 //Return any tag object if ""
                 if (obj == "")
-                    return hit.transform.gameObject;
+                    return hits[1].transform.gameObject;
                 //Return only objects with obj tag
-                if (hit.transform.gameObject.CompareTag(obj))
+                if (hits[1].transform.gameObject.CompareTag(obj))
                 {
-                    return hit.transform.gameObject;
+                    return hits[1].transform.gameObject;
                 }
 
             }

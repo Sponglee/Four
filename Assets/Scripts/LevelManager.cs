@@ -58,7 +58,7 @@ public class LevelManager : Singleton<LevelManager>
     public bool RotationProgress = false;
     public bool LevelMoveProgress = false;
 
-    public bool LevelMoveTrigger = false;
+    public bool levelInputTrigger = false;
 
     public bool SpawnInProgress = false;
     public float followDuration;
@@ -212,19 +212,19 @@ public class LevelManager : Singleton<LevelManager>
 
         if (Input.GetMouseButtonDown(0))
         {
-            LevelMoveTrigger = true;
+            levelInputTrigger = true;
         }
         else if (Input.GetMouseButtonUp(0) && !ballRef.ForcePush)
         {
 
             //If cart was pressed
-            if (LevelMoveTrigger && !FunctionHandler.Instance.menuCanvas.activeSelf/* && !ballRef.ForcePush*/)
+            if (levelInputTrigger && !FunctionHandler.Instance.menuCanvas.activeSelf/* && !ballRef.ForcePush*/)
             {
                 //Move level left
                 if (SwipeManager.Instance.IsSwiping(SwipeDirection.Left))
                 {
-                    LevelMoveTrigger = false;
-                    if (!LevelMoveTrigger)
+                    levelInputTrigger = false;
+                    if (!levelInputTrigger)
                     {
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
@@ -235,8 +235,8 @@ public class LevelManager : Singleton<LevelManager>
                 else if (SwipeManager.Instance.IsSwiping(SwipeDirection.Right))
                 {
 
-                    LevelMoveTrigger = false;
-                    if (!LevelMoveTrigger)
+                    levelInputTrigger = false;
+                    if (!levelInputTrigger)
                     {
                         CurrentAngle = transform.eulerAngles.y;
                         //transform.localRotation = Quaternion.Euler(new Vector3(0, -CurrentAngle, 0));
@@ -471,6 +471,7 @@ public class LevelManager : Singleton<LevelManager>
     IEnumerator StopRotate(float duration = 0.2f, float angle = 0, bool rightDirection = false)
     {
 
+       
 
         float from = CurrentAngle;
         float to;
@@ -516,7 +517,7 @@ public class LevelManager : Singleton<LevelManager>
             //    lastCurrentLevel = to;
         }
 
-
+        BallController.Instance.CheckMovement();
     }
     
     //Delay rotation bool

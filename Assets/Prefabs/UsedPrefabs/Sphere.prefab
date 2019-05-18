@@ -136,6 +136,7 @@ MonoBehaviour:
   Move: 0
   jumpStrength: 0
   gravityForce: 0
+  powerUpTrigger: 0
   poweredUp: 0
   WarningCheck: 0
   warning: 0
