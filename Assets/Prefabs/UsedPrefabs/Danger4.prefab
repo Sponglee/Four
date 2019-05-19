@@ -65,8 +65,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.65, y: 1.39, z: 1.6}
-  m_Center: {x: 0, y: 2.38, z: -1.1}
+  m_Size: {x: 3.65, y: 1.39, z: 0.52}
+  m_Center: {x: 0, y: 2.38, z: -0.33}
 --- !u!54 &2522011171895027
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385715651048490}
   m_Layer: 10
-  m_Name: Danger5
+  m_Name: Danger4
   m_TagString: Danger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

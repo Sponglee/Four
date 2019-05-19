@@ -574,8 +574,8 @@ public class BallController : Singleton<BallController>
     public void PushDown(Transform other, int siblingIndex)
     {
        
-        if(PoweredUp)
-            GameManager.Instance.PowerFill -= 15f / 200f; 
+        //if(PoweredUp)
+        //    GameManager.Instance.PowerFill -= 15f / 200f; 
         //Debug.Log("SHIKARI");
         //CollidedBool = true;
         if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
