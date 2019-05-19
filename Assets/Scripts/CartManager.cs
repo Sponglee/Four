@@ -63,6 +63,9 @@ public class CartManager : MonoBehaviour
     private void Start()
     {
 
+        //StartCoroutine(StopLevelRotator());
+
+
 
         cartsLength = LevelManager.Instance.cartCount;
         carts = new CartModelContoller[cartsLength];
@@ -130,8 +133,8 @@ public class CartManager : MonoBehaviour
                     //if ()
                     //{
 
-                    tmpCart.tag = "Steel";
-                    tmpCart.transform.GetChild(0).tag = "Steel";
+                    //tmpCart.tag = "Steel";
+                    //tmpCart.transform.GetChild(0).tag = "Steel";
                     //}
 
                     //Set a material
@@ -258,6 +261,11 @@ public class CartManager : MonoBehaviour
         return Mathf.Atan2(Vector3.Dot(Vector3.up, Vector3.Cross(firstCartTouch - center.position, direction)),
                                         Vector3.Dot(firstCartTouch - center.position, direction)) * Mathf.Rad2Deg;
     }
+
+
+
+
+   
 
 
 

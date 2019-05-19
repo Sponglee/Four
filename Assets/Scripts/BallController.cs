@@ -77,8 +77,27 @@ public class BallController : Singleton<BallController>
 
         set
         {
+            if(collidedBool == false && value == true)
+            {
+                //for (int i = 2; i < Random.Range(0,10); i++)
+                //{
+                //    int randomDir = Random.Range(0, 2);
+
+                //    if (randomDir == 1)
+                //    {
+                //        StartCoroutine(LevelManager.Instance.transform.GetChild(CurrentLevel + i).GetChild(0).GetComponent<CartManager>().StopLevelRotator());
+
+                //    }
+                //    else
+                //    {
+                //        StartCoroutine(LevelManager.Instance.transform.GetChild(CurrentLevel + i).GetChild(0).GetComponent<CartManager>().StopLevelRotator(true));
+
+                //    }
+
+                //}
+            }
             collidedBool = value;
-            //StartCoroutine(StopCollided());
+           
 
         }
     }
@@ -117,6 +136,7 @@ public class BallController : Singleton<BallController>
     int skippedCounter = 0;
     float vel;
 
+    [SerializeField]
     private bool tapToStart = false;
 
     public bool TapToStart
@@ -131,7 +151,7 @@ public class BallController : Singleton<BallController>
 
             if (value == true && tapToStart == false)
             {
-                StartCoroutine(LevelManager.Instance.StopLevelRotator());
+                //StartCoroutine(LevelManager.Instance.StopLevelRotator());
             }
             tapToStart = value;
         }
@@ -193,8 +213,8 @@ public class BallController : Singleton<BallController>
 
     public void RemoveCartBelow(int range)
     {
-        GameObject otherTrans = DownCheckRay(transform, "");
-        //Debug.Log(">>>>" + otherTrans.name);
+        GameObject otherTrans = DownCheckRay(transform, "Cart");
+        Debug.Log(">>>>" + otherTrans.name);
 
         if (otherTrans != null && otherTrans.gameObject.CompareTag("Cart") || otherTrans.gameObject.CompareTag("Danger"))
         {
@@ -243,6 +263,10 @@ public class BallController : Singleton<BallController>
         LevelManager.Instance.ballRef = this;
 
         //gameObject.GetComponent<Renderer>().material.color = LevelManager.Instance.spawnMats[0].color;
+
+
+
+        StartCoroutine(LevelManager.Instance.StopLevelRotator());
     }
 
    
@@ -418,10 +442,11 @@ public class BallController : Singleton<BallController>
     public void CheckMovement()
     {
         //Grab obj below
-        GameObject otherTrans = DownCheckRay(transform, "");
-      
+        GameObject otherTrans = DownCheckRay(transform, "Cart");
 
-        if (otherTrans != null && otherTrans.gameObject.CompareTag("Steel"))
+
+       
+        if (otherTrans != null && otherTrans.gameObject.CompareTag("Cart"))
         {
             Debug.Log(">>> " + CurrentLevel + " : " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
             if (Mathf.Abs(otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex() - CurrentLevel) > 1 )
@@ -435,6 +460,8 @@ public class BallController : Singleton<BallController>
         }
         else
         {
+            Debug.Log("NULL");
+
             CollidedBool = false;
         }
       
@@ -487,11 +514,11 @@ public class BallController : Singleton<BallController>
     private void OnTriggerEnter(Collider other)
     {
 
-        if (!PoweredUp && other.gameObject.CompareTag("Steel"))
+        if (!PoweredUp && other.gameObject.CompareTag("Cart"))
         {
             if (true /*&& !CollidedBool*/)
             {
-                //Debug.Log(other + "COLLISION");
+                Debug.Log(other + "COLLISION");
                 //Debug.Log(other.transform.name + "Transform");
 
                 CollidedBool = true;
@@ -504,11 +531,11 @@ public class BallController : Singleton<BallController>
             //Debug.Log(other.name);
             CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
         }
-        else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
-        {
-            //if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
-            //    WarningCheck = true;
-        }
+        //else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
+        //{
+        //    //if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
+        //    //    WarningCheck = true;
+        //}
         else if (other.gameObject.CompareTag("Collectable"))
         {
             Destroy(other.gameObject);
@@ -523,7 +550,7 @@ public class BallController : Singleton<BallController>
 
 
 
-         if (PoweredUp && other.gameObject.CompareTag("Steel"))
+         if (PoweredUp && other.gameObject.CompareTag("Cart"))
         {
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
         }
@@ -652,20 +679,20 @@ public class BallController : Singleton<BallController>
 
         var hits = Physics.RaycastAll(offsetOrigin, dir);
 
-        Debug.Log(hits[0].transform.tag);
+        
 
-        if (hits.Length > 1)
+        if (hits.Length > 0)
         {
-            Debug.Log(hits[1].transform.tag);
-            if (hits[1].transform)
+
+            foreach (var hitElem in hits)
             {
                 //Return any tag object if ""
-                if (obj == "")
-                    return hits[1].transform.gameObject;
+                //if (obj == "")
+                //    return hitElem.transform.gameObject;
                 //Return only objects with obj tag
-                if (hits[1].transform.gameObject.CompareTag(obj))
+                if (hitElem.transform.gameObject.CompareTag(obj))
                 {
-                    return hits[1].transform.gameObject;
+                    return hitElem.transform.gameObject;
                 }
 
             }

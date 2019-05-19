@@ -86,16 +86,14 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    //Reference to ball Controller
     public BallController ballRef;
-
     public int[] requiredPos;
 
     private void Start()
     {
         dangerList = new List<Transform>();
 
-
+        
 
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount",50);
@@ -255,29 +253,29 @@ public class LevelManager : Singleton<LevelManager>
     public int lastLevel = -1;
 
 
-    //Move 5 levels on stickcart
-    public void StartLevelMove(int level)
-    {
-        if(level != lastLevel)
-        {
-            lastLevel = level;
-            for (int i = level+1; i < level + 5; i++)
-            {
-                randomDir = Random.Range(0, 2);
+    ////Move 5 levels on stickcart
+    //public void StartLevelMove(int level)
+    //{
+    //    if(level != lastLevel)
+    //    {
+    //        lastLevel = level;
+    //        for (int i = level+1; i < level + 5; i++)
+    //        {
+    //            randomDir = Random.Range(0, 2);
                 
-                if (randomDir == 1)
-                {
-                    LevelMove(i, false);
-                }
-                else
-                {
-                    LevelMove(i, true);
-                }
+    //            if (randomDir == 1)
+    //            {
+    //                LevelMove(i, false);
+    //            }
+    //            else
+    //            {
+    //                LevelMove(i, true);
+    //            }
 
-            }
-        }
+    //        }
+    //    }
         
-    }
+    //}
 
     public float raiseTowerTime = 0.25f;
     //Level Move sequence
@@ -305,29 +303,58 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    public IEnumerator StopLevelRotator()
+
+    public IEnumerator StopLevelRotator(bool rightDir = false)
     {
+        
         while (true)
         {
+            for (int i = 1; i < Random.Range(0, 10); i++)
+            {
+                int randomDir = Random.Range(0, 2);
+                int rotatorInd = Random.Range(0, 100);
 
-            int rotatorInd = Random.Range(0, LevelManager.Instance.dangerList.Count);
-            //Debug.Log("ROTATING " + rotatorInd);
-            if (dangerList[rotatorInd].GetSiblingIndex() > ballRef.CurrentLevel)
-                LevelMove(dangerList[rotatorInd].GetSiblingIndex());
 
+
+                if (rotatorInd > 30 && randomDir == 1)
+                {
+                    if (BallController.Instance != null && BallController.Instance.TapToStart)
+                    {
+                        
+                        LevelMove(ballRef.CurrentLevel + i);
+
+                    }
+
+                }
+                else if(rotatorInd >30 && randomDir == 0)
+                {
+
+                    if (BallController.Instance != null && BallController.Instance.TapToStart)
+                    {
+                       
+                        LevelMove(ballRef.CurrentLevel + i, rightDir);
+
+                    }
+                }
+
+            }
+           
             yield return new WaitForSeconds(2);
         }
     }
 
+
+
+
     //Move Level direction - clockwise by default
-    public void LevelMove(int levelIndex, bool direction = false)
+    public void LevelMove(int levelIndex, bool directionControl = false)
     {
         if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
         {
             //GameManager.Instance.ComboActive = false;
             //GameManager.Instance.Multiplier = 1;
             LevelMoveProgress = true;
-            StartCoroutine(LevelMoveRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, direction));
+            StartCoroutine(LevelMoveRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, directionControl));
         }
 
 
@@ -339,7 +366,7 @@ public class LevelManager : Singleton<LevelManager>
     public float levelMoveSpeed = 60f;
 
     //Move level around  default - CLOCKWISE (LEFT)
-    public IEnumerator LevelMoveRotate(int level, float levelAngle, bool righDirection = false)
+    public IEnumerator LevelMoveRotate(int level, float levelAngle, bool rightDirection = false)
     {
         yield return new WaitForSeconds(0.1f);
        
@@ -369,7 +396,7 @@ public class LevelManager : Singleton<LevelManager>
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
 
             //Switch parents of carts and move (right or left)
-            if(righDirection)
+            if(rightDirection)
             {
                 //change currents, set parents 
                 tmp.Current--;
@@ -503,6 +530,8 @@ public class LevelManager : Singleton<LevelManager>
             {
                 currentAngleSpeed = 0;
 
+                BallController.Instance.CheckMovement();
+
                 //Delay rotation bool to avoid extra spawn
                 StartCoroutine(StopRotationProgress());
                 break;
@@ -517,7 +546,7 @@ public class LevelManager : Singleton<LevelManager>
             //    lastCurrentLevel = to;
         }
 
-        BallController.Instance.CheckMovement();
+      
     }
     
     //Delay rotation bool

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2522011171895027}
   m_Layer: 10
   m_Name: Cart
-  m_TagString: Steel
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4385715651048490}
   m_Layer: 10
   m_Name: DollyHolder4
-  m_TagString: Steel
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 4595427554279762}
   m_Layer: 10
   m_Name: EffectRef
-  m_TagString: Steel
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 5230136341377132323}
   m_Layer: 10
   m_Name: RgodyHolderLeft
-  m_TagString: Steel
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 8127315863513970166}
   m_Layer: 10
   m_Name: Trigger
-  m_TagString: Steel
+  m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -304,7 +304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 18584bc38e3349647ad9c2c611686f69, type: 3}
       propertyPath: m_TagString
-      value: Steel
+      value: Cart
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 18584bc38e3349647ad9c2c611686f69, type: 3}
       propertyPath: m_LocalPosition.x
@@ -383,7 +383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 18584bc38e3349647ad9c2c611686f69, type: 3}
       propertyPath: m_TagString
-      value: Steel
+      value: Cart
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 18584bc38e3349647ad9c2c611686f69, type: 3}
       propertyPath: m_LocalPosition.x
