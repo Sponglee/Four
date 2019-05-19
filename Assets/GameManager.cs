@@ -19,8 +19,8 @@ public class GameManager : Singleton<GameManager>
 
     public TextMeshProUGUI currText;
     public TextMeshProUGUI nextText;
-    public TextMeshProUGUI multiText;
 
+    public GameObject multiButton;
     public GameObject fltText;
 
 
@@ -51,6 +51,7 @@ public class GameManager : Singleton<GameManager>
 
             if (powerFill >= 1 && BallController.Instance.PowerUpTrigger == false)
             {
+                
                 BallController.Instance.PowerUpTrigger = true;
                 //powerFill = 0.9f;
 
@@ -104,12 +105,12 @@ public class GameManager : Singleton<GameManager>
             multiplier = value;
             if(multiplier == 1)
             {
-                multiText.transform.parent.gameObject.SetActive(false);
+                //multiText.transform.parent.gameObject.SetActive(false);
             }
             else
             {
-                multiText.transform.parent.gameObject.SetActive(true);
-                multiText.text = string.Format("x{0}", value.ToString());
+                //multiText.transform.parent.gameObject.SetActive(true);
+                //multiText.text = string.Format("x{0}", value.ToString());
             }
 
            
@@ -208,39 +209,39 @@ public class GameManager : Singleton<GameManager>
             PowerFill += 1/fillRate;
            
         }
-       //else
-       // {
-       //     PowerFill += 1 / (2f*fillRate);
-       //     //Debug.Log("<< " + 1 / 15f * fillRate);
-       // }
+        else
+        {
+            PowerFill += 1 / (2f * fillRate);
+            //Debug.Log("<< " + 1 / 15f * fillRate);
+        }
 
 
         //if (powerFill >= 1)
         //{
 
         //    powerFill = 1;
-            //powerFiller.color = Color.yellow;
-            //if (!PowerUpDecreasing)
-            //{
-            //    BallController.Instance.PoweredUp = true;
-            //    //BallController.Instance.comboMultiplier = 3f;
-            //    //StartCoroutine(StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
-            //    //BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
-            //}
-            ////else
-            ////{
-            ////    BallController.Instance.comboMultiplier += 0.2f;
-            //}
-
-          
-            ////Fade down
-            //powerDecreaseAmount += powerRestoreRate;
-
-          
+        //powerFiller.color = Color.yellow;
+        //if (!PowerUpDecreasing)
+        //{
+        //    BallController.Instance.PoweredUp = true;
+        //    //BallController.Instance.comboMultiplier = 3f;
+        //    //StartCoroutine(StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
+        //    //BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
         //}
-       
+        ////else
+        ////{
+        ////    BallController.Instance.comboMultiplier += 0.2f;
+        //}
 
-     
+
+        ////Fade down
+        //powerDecreaseAmount += powerRestoreRate;
+
+
+        //}
+
+
+
     }
 
 
@@ -267,11 +268,11 @@ public class GameManager : Singleton<GameManager>
             if (ComboActive)
             {
                 
-                PowerFill -= 15f  / ( powerDecreaseSpeed);
+                //PowerFill -= 15f  / ( powerDecreaseSpeed);
             }
             else
             {
-                PowerFill -= 15 / (powerDecreaseSpeed);
+                //PowerFill -= 15 / (powerDecreaseSpeed);
 
             }
 

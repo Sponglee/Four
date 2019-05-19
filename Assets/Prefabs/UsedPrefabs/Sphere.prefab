@@ -43,7 +43,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.11
-  m_Center: {x: 0, y: -1.39, z: 0}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!1 &2717458789631937085
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +136,7 @@ MonoBehaviour:
   Move: 0
   jumpStrength: 0
   gravityForce: 0
+  tapToStart: 0
   powerUpTrigger: 0
   poweredUp: 0
   WarningCheck: 0

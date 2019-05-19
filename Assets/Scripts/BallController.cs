@@ -26,9 +26,9 @@ public class BallController : Singleton<BallController>
             //OPTIMIZATION
             //levelManager.transform.GetChild((currentLevel + 25) % levelManager.transform.childCount).gameObject.SetActive(true);
 
-            if (currentLevel>13)
+            if (currentLevel>20)
             {
-                levelManager.transform.GetChild(currentLevel - 13).gameObject.SetActive(false);
+                levelManager.transform.GetChild(currentLevel - 20).gameObject.SetActive(false);
             }
 
         }
@@ -173,6 +173,7 @@ public class BallController : Singleton<BallController>
 
             if (value == true && powerUpTrigger == false && !PoweredUp)
             {
+                GameManager.Instance.multiButton.SetActive(true);
                 //StartCoroutine(StopLevelRotator());
                 powerUpTrigger = value;
             }
@@ -214,7 +215,7 @@ public class BallController : Singleton<BallController>
     public void RemoveCartBelow(int range)
     {
         GameObject otherTrans = DownCheckRay(transform, "Cart");
-        Debug.Log(">>>>" + otherTrans.name);
+        //Debug.Log(">>>>" + otherTrans.name);
 
         if (otherTrans != null && otherTrans.gameObject.CompareTag("Cart") || otherTrans.gameObject.CompareTag("Danger"))
         {
@@ -289,35 +290,28 @@ public class BallController : Singleton<BallController>
         {
             //Launch powerup
             //REPLACE THIS WITH A BUTTON PRESS
-            if (PowerUpTrigger && Input.GetMouseButtonDown(0))
+
+
+
+
+
+            if (PoweredUp)
             {
-                
-                PowerUpTrigger = false;
-                comboMultiplier = 3f;
-                PoweredUp = true;
-                StartCoroutine(GameManager.Instance.StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
+
+
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+                //comboMultiplier -= Time.deltaTime;
+                //comboMultiplier = Mathf.Clamp(comboMultiplier, 2.5f, 3f);
+                ////Debug.Log(comboMultiplier);
+
             }
+            else
+            {
+
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
 
 
-
-
-            //if (PoweredUp)
-            //{
-
-
-            //    SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
-            //    comboMultiplier -= Time.deltaTime;
-            //    comboMultiplier = Mathf.Clamp(comboMultiplier,2.5f,3f);
-            //    //Debug.Log(comboMultiplier);
-
-            //}
-            //else
-            //{
-
-            //    SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
-
-
-            //}
+            }
 
 
 
@@ -564,7 +558,10 @@ public class BallController : Singleton<BallController>
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
             }
             else
+            {
+
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+            }
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
@@ -577,6 +574,8 @@ public class BallController : Singleton<BallController>
     public void PushDown(Transform other, int siblingIndex)
     {
        
+        if(PoweredUp)
+            GameManager.Instance.PowerFill -= 15f / 200f; 
         //Debug.Log("SHIKARI");
         //CollidedBool = true;
         if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)

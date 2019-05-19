@@ -425,9 +425,9 @@ public class LevelManager : Singleton<LevelManager>
         }
 
         childsToMove.Clear();
-       
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.2f);
+        BallController.Instance.CheckMovement();
 
         //*****************
         LevelMoveProgress = false;
@@ -530,12 +530,15 @@ public class LevelManager : Singleton<LevelManager>
             {
                 currentAngleSpeed = 0;
 
-                BallController.Instance.CheckMovement();
+                
 
                 //Delay rotation bool to avoid extra spawn
                 StartCoroutine(StopRotationProgress());
                 break;
             }
+
+
+           
             yield return null;
         }
         if (Mathf.Abs(CurrentAngle - to) <= 5f)
@@ -546,7 +549,7 @@ public class LevelManager : Singleton<LevelManager>
             //    lastCurrentLevel = to;
         }
 
-      
+        BallController.Instance.CheckMovement();
     }
     
     //Delay rotation bool

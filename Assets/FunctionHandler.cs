@@ -120,8 +120,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 StartCoroutine(StopMapProgression());
             }
             else
+            {
                 PlayerPrefs.SetInt("Score", 0);
-            Time.timeScale = 0;
+                Time.timeScale = 0;
+            }
+          
         }
         yield return null;
     }
@@ -245,7 +248,18 @@ public class FunctionHandler : Singleton<FunctionHandler>
     }
 
 
-  
+   public void StartPowerUp()
+    {
+        GameManager.Instance.multiButton.SetActive(false);
+        if (BallController.Instance.PowerUpTrigger)
+        {
+
+            BallController.Instance.PowerUpTrigger = false;
+            BallController.Instance.comboMultiplier = 3f;
+            BallController.Instance.PoweredUp = true;
+            StartCoroutine(GameManager.Instance.StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
+        }
+    }
 
     public void SwitchMode()
     {
