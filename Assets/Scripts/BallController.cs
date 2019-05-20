@@ -179,6 +179,7 @@ public class BallController : Singleton<BallController>
             }
             else if (value == false && powerUpTrigger == true)
             {
+               
                 Debug.Log("TOOT");
                 //RemoveCartBelow(5);
                 powerUpTrigger = value;
@@ -273,18 +274,18 @@ public class BallController : Singleton<BallController>
    
     private void Update()
     {
-        //if(Input.GetMouseButtonDown(2))
-        //{ 
-
-        //    //PoweredUp = true;
-        //    //GameManager.Instance.ComboActive = true;
-        //    GameManager.Instance.LevelComplete();
-        //}
-        //else if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(2))
+        {
+            comboMultiplier = 3;
+            PoweredUp = true;
+            //GameManager.Instance.ComboActive = true;
+            //GameManager.Instance.LevelComplete();
+        }
+        //else if (Input.GetMouseButtonDown(1))
         //{
         //    StartCoroutine(FunctionHandler.Instance.StopMapPan());
         //}
-        
+
 
         if (TapToStart && !MenuOpened)
         {
@@ -458,28 +459,9 @@ public class BallController : Singleton<BallController>
 
             CollidedBool = false;
         }
-      
 
-        ////Debug.Log("COLLIDED " + other.gameObject.name);
-        ////Collision with steel carts or cart carts that are to the left or to the right
-        //if (!PoweredUp && (other.gameObject.CompareTag("Steel") || other.gameObject.CompareTag("Cart")))
-        //{
 
-        //    if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex())
-        //    {
-               
-        //        if (other.transform.position.x >= transform.position.x)
-        //        {
-        //            LevelManager.Instance.LevelMove(CurrentLevel, true);
-        //        }
-        //        else
-        //        {
-        //            LevelManager.Instance.LevelMove(CurrentLevel, false);
-        //        }
-        //        return;
-        //    }
-
-        //}
+       
     }
 
 
@@ -507,6 +489,28 @@ public class BallController : Singleton<BallController>
     //Process a collision
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("COLLIDED " + other.gameObject.name);
+        //Collision with steel carts or cart carts that are to the left or to the right
+        if (!PoweredUp && other.gameObject.CompareTag("Cart"))
+        {
+
+            if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
+            {
+
+                if (other.transform.position.x >= transform.position.x )
+                {
+                    other.transform.GetComponent<CartModelContoller>().Moving = true;
+                    LevelManager.Instance.LevelMove(CurrentLevel, true);
+                }
+                else
+                {
+                    other.transform.GetComponent<CartModelContoller>().Moving = true;
+                    LevelManager.Instance.LevelMove(CurrentLevel, false);
+                }
+                return;
+            }
+
+        }
 
         if (!PoweredUp && other.gameObject.CompareTag("Cart"))
         {
@@ -550,6 +554,7 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Danger"))
         {
+            //8888888888888888888//
             if(!PoweredUp)
             {
                 FunctionHandler.Instance.OpenGameOver("GAME OVER");
@@ -559,8 +564,11 @@ public class BallController : Singleton<BallController>
             }
             else
             {
-
+        
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                PoweredUp = false;
+                comboMultiplier = 1;
+                GameManager.Instance.PowerFill = 0;
             }
         }
         else if (other.gameObject.CompareTag("Bottom"))
@@ -611,7 +619,7 @@ public class BallController : Singleton<BallController>
             Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
 
 
-            if(PowerUpTrigger)
+            if(PoweredUp)
             {
                 GameManager.Instance.Multiplier++;
                 GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));

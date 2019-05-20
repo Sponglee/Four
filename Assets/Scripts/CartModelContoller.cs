@@ -34,7 +34,22 @@ public class CartModelContoller : MonoBehaviour
     private int cartNumber;
 
     public Color spawnColor;
-    public bool IsLowered = false;
+    private bool moving = false;
+    public bool Moving
+    {
+        get
+        {
+            return moving;
+        }
+
+        set
+        {
+            moving = value;
+            StartCoroutine(StopMovingBool());
+        }
+    }
+
+
 
     ////for Direction control
     //public int lastDirection;
@@ -61,7 +76,7 @@ public class CartModelContoller : MonoBehaviour
         }
     }
 
-  
+ 
 
     private void Start()
     {
@@ -81,5 +96,10 @@ public class CartModelContoller : MonoBehaviour
        
     }
 
+    private IEnumerator StopMovingBool()
+    {
+        yield return new WaitForSecondsRealtime(0.25f);
+        moving = false;
+    }
   
 }

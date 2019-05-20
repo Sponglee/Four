@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     public TextMeshProUGUI tapText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestText;
+    public TextMeshProUGUI multiText;
     public TextMeshProUGUI menuScoreText;
 
 
@@ -42,22 +43,24 @@ public class GameManager : Singleton<GameManager>
         set
         {
             //powerFill = Mathf.Clamp(0f,1f,value);
+            if(!BallController.Instance.PoweredUp)
+            {
+                powerFill = value;
+                powerFiller.fillAmount = powerFill;
+            }
           
-
-            powerFill = value;
-            powerFiller.fillAmount = powerFill;
-
 
 
             if (powerFill >= 1 && BallController.Instance.PowerUpTrigger == false)
             {
-                
                 BallController.Instance.PowerUpTrigger = true;
+                powerFiller.fillAmount = 0;
                 //powerFill = 0.9f;
 
-                powerFiller.color = Color.yellow;
+                //powerFiller.color = Color.yellow;
                 //ComboActive = true;
             }
+          
 
         }
     }
@@ -105,12 +108,12 @@ public class GameManager : Singleton<GameManager>
             multiplier = value;
             if(multiplier == 1)
             {
-                //multiText.transform.parent.gameObject.SetActive(false);
+                multiText.transform.gameObject.SetActive(false);
             }
             else
             {
-                //multiText.transform.parent.gameObject.SetActive(true);
-                //multiText.text = string.Format("x{0}", value.ToString());
+                multiText.transform.gameObject.SetActive(true);
+                multiText.text = string.Format("x{0}", value.ToString());
             }
 
            
@@ -211,7 +214,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            PowerFill += 1 / (1.5f * fillRate);
+            //PowerFill += 1 / (1.5f * fillRate);
             //Debug.Log("<< " + 1 / 15f * fillRate);
         }
 
@@ -268,11 +271,11 @@ public class GameManager : Singleton<GameManager>
             if (ComboActive)
             {
 
-                PowerFill -= 10f / (powerDecreaseSpeed);
+                //PowerFill -= 10f / (powerDecreaseSpeed);
             }
             else
             {
-                PowerFill -= 10f / (powerDecreaseSpeed);
+                //PowerFill -= 10f / (powerDecreaseSpeed);
 
             }
 
@@ -284,7 +287,7 @@ public class GameManager : Singleton<GameManager>
         BallController.Instance.comboMultiplier = 1f;
 
         PowerFill = 0;
-        powerFiller.color = Color.white;
+        //powerFiller.color = Color.white;
         Multiplier = 1;
         PowerUpDecreasing = false;
         powerDecreaseAmount = powerDecreaseSpeed;

@@ -86,6 +86,8 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
+    public int levelMoveCount = 10;
+
     public BallController ballRef;
     public int[] requiredPos;
 
@@ -309,7 +311,7 @@ public class LevelManager : Singleton<LevelManager>
         
         while (true)
         {
-            for (int i = 1; i < Random.Range(0, 10); i++)
+            for (int i = 1; i < Random.Range(0, levelMoveCount); i++)
             {
                 int randomDir = Random.Range(0, 2);
                 int rotatorInd = Random.Range(0, 100);
@@ -321,7 +323,7 @@ public class LevelManager : Singleton<LevelManager>
                     if (BallController.Instance != null && BallController.Instance.TapToStart)
                     {
                         
-                        LevelMove(ballRef.CurrentLevel + i);
+                        LevelMove(ballRef.CurrentLevel + 5 + i);
 
                     }
 
@@ -332,7 +334,7 @@ public class LevelManager : Singleton<LevelManager>
                     if (BallController.Instance != null && BallController.Instance.TapToStart)
                     {
                        
-                        LevelMove(ballRef.CurrentLevel + i, rightDir);
+                        LevelMove(ballRef.CurrentLevel + 5 + i, rightDir);
 
                     }
                 }
@@ -349,7 +351,7 @@ public class LevelManager : Singleton<LevelManager>
     //Move Level direction - clockwise by default
     public void LevelMove(int levelIndex, bool directionControl = false)
     {
-        if (!transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
+        if (transform.GetChild(levelIndex) != null && !transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
         {
             //GameManager.Instance.ComboActive = false;
             //GameManager.Instance.Multiplier = 1;

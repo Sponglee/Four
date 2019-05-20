@@ -150,7 +150,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             {
                 
                 if (i != tmpRank)
-                {
+                { 
                     mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = finishedColor;
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
                     //Color current level as finished
