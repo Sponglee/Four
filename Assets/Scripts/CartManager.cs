@@ -118,7 +118,7 @@ public class CartManager : MonoBehaviour
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
                 }
 
-
+                //LEVELDIFFICULTY
                 //If randomizer proc or this is a required cart
                 if (spawnRandomizer <= 40 && spawnRandomizer>5 /*&& i == 1*/)
                 {
@@ -154,7 +154,8 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
                 }
-                else if(spawnRandomizer<=3 && transform.parent.GetSiblingIndex()>5)
+                //LEVELDIFFICULTY
+                else if (spawnRandomizer<=3 && transform.parent.GetSiblingIndex()>5 && PlayerPrefs.GetInt("CurrentRank", 1)%4 != 1)
                 {
                     materialRandomizer = 0;
 
@@ -185,33 +186,38 @@ public class CartManager : MonoBehaviour
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
-                else if (spawnRandomizer > 70 && spawnRandomizer <= 100 && PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
+                //LEVELDIFFICULTY
+                else if (PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
                 {
-                    //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
-                    //check if it's steel
+                    if((PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 1) || (spawnRandomizer > 70 && spawnRandomizer <= 100))
+                    {
+                        //spawn cart prefab, set random position
+                        GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
+                        //check if it's steel
 
-                    //if (materialRandomizer == 0)
-                    //{
+                        //if (materialRandomizer == 0)
+                        //{
 
-                    tmpCart.tag = "Collectable";
-                    tmpCart.transform.GetChild(0).tag = "Collectable";
-                    //}
+                        tmpCart.tag = "Collectable";
+                        tmpCart.transform.GetChild(0).tag = "Collectable";
+                        //}
 
-                    ////Set a material
-                    //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
+                        ////Set a material
+                        //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
 
-                    //Set position and orientation for dolly
-                    tmpCart.transform.SetParent(tmpCartHolder.transform);
-                    tmpCart.transform.position = tmpCartHolder.transform.position;
-                    tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+                        //Set position and orientation for dolly
+                        tmpCart.transform.SetParent(tmpCartHolder.transform);
+                        tmpCart.transform.position = tmpCartHolder.transform.position;
+                        tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+                        //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
-                    //Set current for that cart
-                    //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+                        //Set current for that cart
+                        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
 
-                    //set cart reference for manager
-                    //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                        //set cart reference for manager
+                        //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                    }
+
                 }
               
                 index++;

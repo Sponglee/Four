@@ -86,7 +86,10 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
+    //for LEVELDIFFICULTY
     public int levelMoveCount = 10;
+    public int levelMoveStart = 0;
+    public float levelMoveWait = 2f;
 
     public BallController ballRef;
     public int[] requiredPos;
@@ -116,8 +119,11 @@ public class LevelManager : Singleton<LevelManager>
         int prefSpawnMatsRank = System.Convert.ToInt32(prefSpawnMatsArray[0]);
 
 
-
-
+        ////LEVELDIFFICULTY
+        //if (PlayerPrefs.GetInt("CurrentRank", 1) > 25)
+        //{
+        //    levelMoveCount = Mathf.Clamp(levelMoveCount, 0, 20);
+        //}
 
 
 
@@ -311,38 +317,62 @@ public class LevelManager : Singleton<LevelManager>
         
         while (true)
         {
-            for (int i = 1; i < Random.Range(0, levelMoveCount); i++)
+            //LEVELDIFFICULTY
+            //Skip rotattion up to lvl 10
+            if (PlayerPrefs.GetInt("CurrentRank", 1) <= 10)
             {
-                int randomDir = Random.Range(0, 2);
-                int rotatorInd = Random.Range(0, 100);
-
-
-
-                if (rotatorInd > 30 && randomDir == 1)
-                {
-                    if (BallController.Instance != null && BallController.Instance.TapToStart)
-                    {
-                        
-                        LevelMove(ballRef.CurrentLevel + 5 + i);
-
-                    }
-
-                }
-                else if(rotatorInd >30 && randomDir == 0)
-                {
-
-                    if (BallController.Instance != null && BallController.Instance.TapToStart)
-                    {
-                       
-                        LevelMove(ballRef.CurrentLevel + 5 + i, rightDir);
-
-                    }
-                }
-
+                break;
             }
-           
-            yield return new WaitForSeconds(2);
+            //LEVELDIFFICULTY
+            //levels 10 to 25 - rotate only when non powerUp, lvls 25+ rotate even when poweredUp
+            else if (PlayerPrefs.GetInt("CurrentRank", 1)>10 && !ballRef.PoweredUp)
+            {
+                Debug.Log(">>>>>");
+                ////LEVELDIFFICULTY
+                //if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) > 30)
+                //    levelMoveStart = 30;
+                //else
+                //    levelMoveStart = 0;
+
+
+                for (int i = 1; i < Random.Range(levelMoveStart, levelMoveStart + levelMoveCount); i++)
+                {
+                    int randomDir = Random.Range(0, 2);
+                    int rotatorInd = Random.Range(0, 100);
+
+
+
+                    if (rotatorInd > 30 && randomDir == 1)
+                    {
+                        if (BallController.Instance != null && BallController.Instance.TapToStart)
+                        {
+
+                            LevelMove(ballRef.CurrentLevel + 5 + i);
+
+                        }
+
+                    }
+                    else if (rotatorInd > 30 && randomDir == 0)
+                    {
+
+                        if (BallController.Instance != null && BallController.Instance.TapToStart)
+                        {
+
+                            LevelMove(ballRef.CurrentLevel + 5 + i, rightDir);
+
+                        }
+                    }
+
+                }
+
+                yield return new WaitForSeconds(levelMoveWait);   
+            }
+            else
+            {
+                yield return new WaitForSeconds(levelMoveWait);
+            }
         }
+           
     }
 
 

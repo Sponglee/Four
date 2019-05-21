@@ -205,9 +205,11 @@ public class BallController : Singleton<BallController>
         {
             if(value == true && poweredUp == false)
             {
+                poweredUp = value;
                 RemoveCartBelow(4);
                 CollidedBool = false;
             }
+
             poweredUp = value;
         }
     }
@@ -218,15 +220,16 @@ public class BallController : Singleton<BallController>
         GameObject otherTrans = DownCheckRay(transform, "Cart");
         //Debug.Log(">>>>" + otherTrans.name);
 
-        if (otherTrans != null && otherTrans.gameObject.CompareTag("Cart") || otherTrans.gameObject.CompareTag("Danger"))
+        if (otherTrans.gameObject != null && otherTrans.gameObject.CompareTag("Cart") || otherTrans.gameObject.CompareTag("Danger"))
         {
             Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
             //Сheck if cart is close to push it out if needed
             if ((otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= range))
             {
-                
+
                 PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
             }
+            
         }
     }
 
@@ -267,7 +270,7 @@ public class BallController : Singleton<BallController>
         //gameObject.GetComponent<Renderer>().material.color = LevelManager.Instance.spawnMats[0].color;
 
 
-
+        
         StartCoroutine(LevelManager.Instance.StopLevelRotator());
     }
 
@@ -443,7 +446,7 @@ public class BallController : Singleton<BallController>
        
         if (otherTrans != null && otherTrans.gameObject.CompareTag("Cart"))
         {
-            Debug.Log(">>> " + CurrentLevel + " : " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
+            //Debug.Log(">>> " + CurrentLevel + " : " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
             if (Mathf.Abs(otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex() - CurrentLevel) > 1 )
             {
                 CollidedBool = false;
@@ -455,7 +458,7 @@ public class BallController : Singleton<BallController>
         }
         else
         {
-            Debug.Log("NULL");
+            //Debug.Log("NULL");
 
             CollidedBool = false;
         }
@@ -516,7 +519,7 @@ public class BallController : Singleton<BallController>
         {
             if (true /*&& !CollidedBool*/)
             {
-                Debug.Log(other + "COLLISION");
+                //Debug.Log(other + "COLLISION");
                 //Debug.Log(other.transform.name + "Transform");
 
                 CollidedBool = true;

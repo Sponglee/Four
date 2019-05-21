@@ -43,12 +43,11 @@ public class GameManager : Singleton<GameManager>
         set
         {
             //powerFill = Mathf.Clamp(0f,1f,value);
-            if(!BallController.Instance.PoweredUp)
-            {
                 powerFill = value;
                 powerFiller.fillAmount = powerFill;
-            }
-          
+
+           if(powerFill > 0 && powerFill<1)
+                Instance.powerFiller.gameObject.SetActive(true);
 
 
             if (powerFill >= 1 && BallController.Instance.PowerUpTrigger == false)
@@ -301,9 +300,9 @@ public class GameManager : Singleton<GameManager>
     public void LevelComplete()
     {
         int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 50);
-        FunctionHandler.Instance.OpenGameOver("LEVEL COMPLETE");
+        FunctionHandler.Instance.OpenGameOver(String.Format("LEVEL {0} COMPLETE",PlayerPrefs.GetInt("CurrentRank",1)));
         PlayerPrefs.SetInt("CurrentRank", CurrentRank + 1);
-        if (tmpLvlCount <= 500)
+        if (tmpLvlCount <= 400)
             PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5);
         else
         {

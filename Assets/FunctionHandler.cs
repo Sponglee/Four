@@ -17,6 +17,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public Color lockedMapColor;
     public Color finishedColor;
 
+    public bool LevelCompleteInProgress = false;
 
  
 
@@ -27,6 +28,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
+
         BallController.Instance.MenuOpened = true;
         StartCoroutine(StopOpenGameOver(message));
 
@@ -114,13 +116,15 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Disable menu button if game over or win
             menuButton.SetActive(false);
             //yield return new WaitForSeconds(0.21f);
-            if(message == "LEVEL COMPLETE")
+            if(message != "GAME OVER")
             {
                 menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-                StartCoroutine(StopMapProgression());
+                if(!LevelCompleteInProgress)
+                    StartCoroutine(StopMapProgression());
             }
             else
             {
+                GameManager.Instance.Score = 0;
                 PlayerPrefs.SetInt("Score", 0);
                 Time.timeScale = 0;
             }
@@ -132,7 +136,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopMapProgression()
     {
-       
+        LevelCompleteInProgress = true;
+        Debug.Log("STOPMAP");
         int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
         GameObject mapSegment = null;
 
@@ -140,15 +145,16 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         for (int i = Mathf.Clamp(tmpRank-100,0,tmpRank); i < tmpRank+1; i++)
         {
-           
+            
             if (i % 4 == 0)
             {
+                Debug.Log("NOW "+i + "(" + tmpRank + ")");
                 mapSegment = Instantiate(mapElemRef, map);
             }
             
             if(mapSegment != null)
             {
-                
+                Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
                 if (i != tmpRank)
                 { 
                     mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = finishedColor;
@@ -171,8 +177,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 }
 
             }
-               
-           
+
+          
           
         }
 
@@ -251,6 +257,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
    public void StartPowerUp()
     {
         GameManager.Instance.multiButton.SetActive(false);
+        GameManager.Instance.powerFiller.gameObject.SetActive(false);
         if (BallController.Instance.PowerUpTrigger)
         {
 
