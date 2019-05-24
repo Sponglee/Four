@@ -24,7 +24,7 @@ public class BallController : Singleton<BallController>
 
 
             //OPTIMIZATION
-            //levelManager.transform.GetChild((currentLevel + 25) % levelManager.transform.childCount).gameObject.SetActive(true);
+            levelManager.transform.GetChild((currentLevel + 65) % levelManager.transform.childCount).gameObject.SetActive(true);
 
             if (currentLevel>20)
             {

@@ -228,8 +228,8 @@ public class CartManager : MonoBehaviour
 
         //transform.parent.eulerAngles = new Vector3(0, -angStep * transform.parent.GetSiblingIndex(), 0);
 
-        //if(transform.parent.GetSiblingIndex()>25)
-        //    transform.parent.gameObject.SetActive(false);
+        if (transform.parent.GetSiblingIndex() > 65)
+            transform.parent.gameObject.SetActive(false);
     }
 
 
