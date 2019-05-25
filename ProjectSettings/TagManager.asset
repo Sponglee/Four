@@ -20,6 +20,7 @@ TagManager:
   - CartTrigger
   - Collectable
   - Danger
+  - Magnet
   layers:
   - Default
   - TransparentFX

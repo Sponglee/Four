@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
     public TextMeshProUGUI multiText;
     public TextMeshProUGUI menuScoreText;
 
+    public TextMeshProUGUI gemsText;
 
     public Slider progresSlider;
 
@@ -23,6 +24,26 @@ public class GameManager : Singleton<GameManager>
 
     public GameObject multiButton;
     public GameObject fltText;
+
+    private int gems;
+
+    public int Gems
+    {
+        get
+        {
+            return gems;
+        }
+
+        set
+        {
+            gems = value;
+            gemsText.text = gems.ToString();
+            PlayerPrefs.SetInt("Gems", gems);
+        }
+    }
+
+
+
 
 
     //Fill amount of powerbar
@@ -162,11 +183,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
-        PowerFill = 0;
+        Gems = PlayerPrefs.GetInt("Gems", 0);
+        //PowerFill = 0;
        
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
@@ -206,43 +227,9 @@ public class GameManager : Singleton<GameManager>
 
     public void GrabCollectable()
     {
-       if(!PowerUpDecreasing)
-        {
-            PowerFill += 1/fillRate;
-           
-        }
-        else
-        {
-            //PowerFill += 1 / (1.5f * fillRate);
-            //Debug.Log("<< " + 1 / 15f * fillRate);
-        }
 
-
-        //if (powerFill >= 1)
-        //{
-
-        //    powerFill = 1;
-        //powerFiller.color = Color.yellow;
-        //if (!PowerUpDecreasing)
-        //{
-        //    BallController.Instance.PoweredUp = true;
-        //    //BallController.Instance.comboMultiplier = 3f;
-        //    //StartCoroutine(StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
-        //    //BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
-        //}
-        ////else
-        ////{
-        ////    BallController.Instance.comboMultiplier += 0.2f;
-        //}
-
-
-        ////Fade down
-        //powerDecreaseAmount += powerRestoreRate;
-
-
-        //}
-
-
+        Gems++;
+            
 
     }
 
@@ -285,7 +272,7 @@ public class GameManager : Singleton<GameManager>
         BallController.Instance.PoweredUp = false;
         BallController.Instance.comboMultiplier = 1f;
 
-        PowerFill = 0;
+        //PowerFill = 0;
         //powerFiller.color = Color.white;
         Multiplier = 1;
         PowerUpDecreasing = false;

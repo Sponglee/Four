@@ -254,18 +254,51 @@ public class FunctionHandler : Singleton<FunctionHandler>
     }
 
 
-   public void StartPowerUp()
+   public void StartPowerUp(int index)
     {
-        GameManager.Instance.multiButton.SetActive(false);
-        GameManager.Instance.powerFiller.gameObject.SetActive(false);
-        if (BallController.Instance.PowerUpTrigger)
+        switch (index)
         {
+            //PoweredUp
+            case 0:
+                {
+                    if (!BallController.Instance.PoweredUp && GameManager.Instance.Gems >= 5)
+                    {
+                        GameManager.Instance.Gems -= 5;
+                        BallController.Instance.PowerUpTrigger = false;
+                        BallController.Instance.comboMultiplier = 3f;
+                        BallController.Instance.PoweredUp = true;
+                        //StartCoroutine(GameManager.Instance.StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
 
-            BallController.Instance.PowerUpTrigger = false;
-            BallController.Instance.comboMultiplier = 3f;
-            BallController.Instance.PoweredUp = true;
-            StartCoroutine(GameManager.Instance.StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
+                    }
+                }
+                break;
+            //Magnet
+            case 1:
+                {
+                    if (!BallController.Instance.Magnet && GameManager.Instance.Gems >= 5)
+                    {
+                        GameManager.Instance.Gems -= 5;
+                        BallController.Instance.Magnet = true;
+                    }
+                }
+                break;
+                //Shield
+            case 2:
+                {
+                    if (!BallController.Instance.Shielded && GameManager.Instance.Gems >= 50)
+                    {
+                        GameManager.Instance.Gems -= 50;
+                        BallController.Instance.Shielded = true;
+                    }
+                }
+                break;
+
+            default:
+                break;
         }
+       
+
+       
     }
 
     public void SwitchMode()

@@ -214,6 +214,47 @@ public class BallController : Singleton<BallController>
         }
     }
 
+    [SerializeField]
+    private bool shielded = false;
+    public bool Shielded
+    {
+        get
+        {
+            return shielded;
+        }
+
+        set
+        {
+            shielded = value;
+        }
+    }
+
+
+    public Transform magnetHolder;
+
+    [SerializeField]
+    private bool magnet = false;
+    public bool Magnet
+    {
+        get
+        {
+            return magnet;
+        }
+
+        set
+        {
+            if(value == true && magnet == false)
+            {
+               magnetHolder.gameObject.SetActive(true);
+               StartCoroutine(magnetHolder.parent.GetComponent<SpawnManager>().StopMagnet());
+            }
+            magnet = value;
+        }
+    }
+
+
+
+
 
     public void RemoveCartBelow(int range)
     {
@@ -255,8 +296,12 @@ public class BallController : Singleton<BallController>
 
     void Start()
     {
-        
-        
+
+        transform.SetSiblingIndex(1);
+
+        magnetHolder = SpawnManager.Instance.transform.GetChild(0);
+
+
         downVelocity = new Vector3(0, -PlayerPrefs.GetFloat("Speed", 0.3f), 0);
 
         rb = GetComponent<Rigidbody>();
@@ -492,11 +537,13 @@ public class BallController : Singleton<BallController>
     //Process a collision
     private void OnTriggerEnter(Collider other)
     {
+
+       
         //Debug.Log("COLLIDED " + other.gameObject.name);
         //Collision with steel carts or cart carts that are to the left or to the right
         if (!PoweredUp && other.gameObject.CompareTag("Cart"))
         {
-
+            //LevelMove cart if on same level
             if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
             {
 
@@ -539,6 +586,7 @@ public class BallController : Singleton<BallController>
         //}
         else if (other.gameObject.CompareTag("Collectable"))
         {
+           
             Destroy(other.gameObject);
             GameManager.Instance.GrabCollectable();
             if (PoweredUp)
@@ -557,8 +605,30 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Danger"))
         {
+            //LevelMove danger if on same level
+            if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
+            {
+
+                if (other.transform.position.x >= transform.position.x)
+                {
+                    other.transform.GetComponent<CartModelContoller>().Moving = true;
+                    LevelManager.Instance.LevelMove(CurrentLevel, true);
+                }
+                else
+                {
+                    other.transform.GetComponent<CartModelContoller>().Moving = true;
+                    LevelManager.Instance.LevelMove(CurrentLevel, false);
+                }
+                return;
+            }
+
             //8888888888888888888//
-            if(!PoweredUp)
+            if (Shielded)
+            {
+                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                Shielded = false;
+            }
+            else if(!PoweredUp)
             {
                 FunctionHandler.Instance.OpenGameOver("GAME OVER");
                 TapToStart = false;
@@ -571,7 +641,7 @@ public class BallController : Singleton<BallController>
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
                 PoweredUp = false;
                 comboMultiplier = 1;
-                GameManager.Instance.PowerFill = 0;
+                //GameManager.Instance.PowerFill = 0;
             }
         }
         else if (other.gameObject.CompareTag("Bottom"))
@@ -580,6 +650,8 @@ public class BallController : Singleton<BallController>
             GameManager.Instance.LevelComplete();
         }
     }
+
+
 
 
     public void PushDown(Transform other, int siblingIndex)

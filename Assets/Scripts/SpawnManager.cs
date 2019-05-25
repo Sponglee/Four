@@ -95,18 +95,30 @@ public class SpawnManager : Singleton<SpawnManager>
 
 
     }
-    //Drop spawned cart
-    public void DropSpawn(GameObject spawnCart)
+
+
+    public IEnumerator StopMagnet()
     {
-        if (spawnCart != null)
+        while (transform.GetChild(0).gameObject.activeSelf)
         {
-            spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
+            transform.GetChild(0).position = transform.GetChild(1).position;
+            yield return null;
+
+        }
+    }
+
+    ////Drop spawned cart
+    //public void DropSpawn(GameObject spawnCart)
+    //{
+    //    if (spawnCart != null)
+    //    {
+    //        spawnCart.transform.GetChild(0).GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezePositionY;
  
 
 
-        }
+    //    }
 
-    }
+    //}
 
 
 

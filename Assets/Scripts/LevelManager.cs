@@ -183,7 +183,7 @@ public class LevelManager : Singleton<LevelManager>
         //Set background color
         Camera.main.backgroundColor = spawnMats[3].color + new Color(-0.1f,-0.1f,-0.1f);
         //Set fog color
-        RenderSettings.fogColor = Camera.main.backgroundColor;
+        //RenderSettings.fogColor = Camera.main.backgroundColor;
 
 
 
