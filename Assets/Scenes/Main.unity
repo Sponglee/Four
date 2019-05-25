@@ -1226,7 +1226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &277720978
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1646,7 +1646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &516349223
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1679,14 +1679,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 40326d99531e547368b3959b040f548d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2283,8 +2283,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 63.3, y: 262.7}
+  m_AnchoredPosition: {x: -19.61, y: 0}
+  m_SizeDelta: {x: 43.69, y: 262.7}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &724606296
 MonoBehaviour:
@@ -2405,7 +2405,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0.8795769, b: 0, a: 0}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.15294118}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -2458,8 +2458,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 0ff05ae370de7634cac6d0cf99ca506b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2947,7 +2947,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0.8795769, b: 0, a: 0}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.15294118}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -3000,8 +3000,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 0ff05ae370de7634cac6d0cf99ca506b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3029,12 +3029,12 @@ GameObject:
   - component: {fileID: 819441366}
   - component: {fileID: 819441365}
   m_Layer: 5
-  m_Name: Power (1)
+  m_Name: Magnet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &819441364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3051,10 +3051,10 @@ RectTransform:
   m_Father: {fileID: 724606295}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 31.65, y: -131.35}
+  m_SizeDelta: {x: 63.3, y: 87.56667}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &819441365
 MonoBehaviour:
@@ -4449,6 +4449,114 @@ MonoBehaviour:
   vcam: {fileID: 825723382}
   vcamSpeedy: {fileID: 1478627309}
   gameMode: 0
+--- !u!1 &1207889958 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1633342062131054137, guid: 2e2baa4492d951f4cb60688c49420579,
+    type: 3}
+  m_PrefabInstance: {fileID: 101368831}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1207889959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207889958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 1.5
+  precomputeOutline: 1
+  bakeKeys:
+  - {fileID: 4300000, guid: 88298ecb4d0fcff45879b1338c17fe54, type: 3}
+  bakeValues:
+  - data:
+    - {x: -0.35664564, y: -0.8656433, z: 0.35137653}
+    - {x: 0.0007516272, y: -0.8554726, z: 0.51784754}
+    - {x: 0.00009040944, y: 0.009034614, z: 0.9999592}
+    - {x: -0.7132113, y: 0.009027378, z: 0.70089096}
+    - {x: -0.999965, y: 0.008360432, z: 0.00009482994}
+    - {x: -0.713345, y: 0.009024401, z: -0.700755}
+    - {x: -0.35707027, y: -0.8656428, z: -0.35094634}
+    - {x: -0.5216382, y: -0.85316676, z: 0.00022918962}
+    - {x: -0.3510212, y: 0.8708682, z: -0.34405342}
+    - {x: -0.00034213375, y: 0.86146116, z: -0.5078233}
+    - {x: -0.00010145416, y: 0.009030411, z: -0.9999592}
+    - {x: -0.713345, y: 0.009024401, z: -0.700755}
+    - {x: -0.7132113, y: 0.009027378, z: 0.70089096}
+    - {x: -0.999965, y: 0.008360432, z: 0.00009482994}
+    - {x: -0.5216382, y: -0.85316676, z: 0.00022918962}
+    - {x: -0.35664564, y: -0.8656433, z: 0.35137653}
+    - {x: -0.5216382, y: -0.85316676, z: 0.00022918962}
+    - {x: -0.35707027, y: -0.8656428, z: -0.35094634}
+    - {x: 0.0001312034, y: -0.9999999, z: 0.00048644282}
+    - {x: 0.0003012235, y: -0.8554749, z: -0.51784414}
+    - {x: 0.35806787, y: -0.86520314, z: -0.35101408}
+    - {x: 0.5226876, y: -0.8525243, z: 0.00012946603}
+    - {x: -0.35664564, y: -0.8656433, z: 0.35137653}
+    - {x: 0.0007516272, y: -0.8554726, z: 0.51784754}
+    - {x: 0.35777813, y: -0.86520374, z: 0.35130796}
+    - {x: -0.7132113, y: 0.009027378, z: 0.70089096}
+    - {x: 0.00009040944, y: 0.009034614, z: 0.9999592}
+    - {x: -0.00024466385, y: 0.8614628, z: 0.50782067}
+    - {x: -0.35071594, y: 0.8708712, z: 0.34435698}
+    - {x: -0.713345, y: 0.009024401, z: -0.700755}
+    - {x: -0.00010145416, y: 0.009030411, z: -0.9999592}
+    - {x: 0.0003012235, y: -0.8554749, z: -0.51784414}
+    - {x: -0.35707027, y: -0.8656428, z: -0.35094634}
+    - {x: -0.3510212, y: 0.8708682, z: -0.34405342}
+    - {x: -0.51267236, y: 0.8585843, z: 0.000283269}
+    - {x: -0.00061505096, y: 0.99999964, z: 0.0006446235}
+    - {x: -0.00034213375, y: 0.86146116, z: -0.5078233}
+    - {x: 0.349883, y: 0.8712998, z: -0.34411985}
+    - {x: 0.51161516, y: 0.85921466, z: 0.00018545036}
+    - {x: -0.35071594, y: 0.8708712, z: 0.34435698}
+    - {x: -0.00024466385, y: 0.8614628, z: 0.50782067}
+    - {x: 0.34971, y: 0.8713022, z: 0.34428966}
+    - {x: -0.35071594, y: 0.8708712, z: 0.34435698}
+    - {x: -0.51267236, y: 0.8585843, z: 0.000283269}
+    - {x: -0.999965, y: 0.008360432, z: 0.00009482994}
+    - {x: -0.7132113, y: 0.009027378, z: 0.70089096}
+    - {x: -0.51267236, y: 0.8585843, z: 0.000283269}
+    - {x: -0.3510212, y: 0.8708682, z: -0.34405342}
+    - {x: -0.713345, y: 0.009024401, z: -0.700755}
+    - {x: -0.999965, y: 0.008360432, z: 0.00009482994}
+    - {x: 0.35777813, y: -0.86520374, z: 0.35130796}
+    - {x: 0.7133342, y: 0.00990525, z: 0.70075405}
+    - {x: 0.00009040944, y: 0.009034614, z: 0.9999592}
+    - {x: 0.0007516272, y: -0.8554726, z: 0.51784754}
+    - {x: 0.99995404, y: 0.009591053, z: -0.00009628734}
+    - {x: 0.5226876, y: -0.8525243, z: 0.00012946603}
+    - {x: 0.35806787, y: -0.86520314, z: -0.35101408}
+    - {x: 0.7131995, y: 0.009902192, z: -0.7008912}
+    - {x: 0.349883, y: 0.8712998, z: -0.34411985}
+    - {x: 0.7131995, y: 0.009902192, z: -0.7008912}
+    - {x: -0.00010145416, y: 0.009030411, z: -0.9999592}
+    - {x: -0.00034213375, y: 0.86146116, z: -0.5078233}
+    - {x: 0.7133342, y: 0.00990525, z: 0.70075405}
+    - {x: 0.35777813, y: -0.86520374, z: 0.35130796}
+    - {x: 0.5226876, y: -0.8525243, z: 0.00012946603}
+    - {x: 0.99995404, y: 0.009591053, z: -0.00009628734}
+    - {x: 0.7133342, y: 0.00990525, z: 0.70075405}
+    - {x: 0.34971, y: 0.8713022, z: 0.34428966}
+    - {x: -0.00024466385, y: 0.8614628, z: 0.50782067}
+    - {x: 0.00009040944, y: 0.009034614, z: 0.9999592}
+    - {x: 0.7131995, y: 0.009902192, z: -0.7008912}
+    - {x: 0.35806787, y: -0.86520314, z: -0.35101408}
+    - {x: 0.0003012235, y: -0.8554749, z: -0.51784414}
+    - {x: -0.00010145416, y: 0.009030411, z: -0.9999592}
+    - {x: 0.34971, y: 0.8713022, z: 0.34428966}
+    - {x: 0.7133342, y: 0.00990525, z: 0.70075405}
+    - {x: 0.99995404, y: 0.009591053, z: -0.00009628734}
+    - {x: 0.51161516, y: 0.85921466, z: 0.00018545036}
+    - {x: 0.51161516, y: 0.85921466, z: 0.00018545036}
+    - {x: 0.99995404, y: 0.009591053, z: -0.00009628734}
+    - {x: 0.7131995, y: 0.009902192, z: -0.7008912}
+    - {x: 0.349883, y: 0.8712998, z: -0.34411985}
 --- !u!1 &1259285966
 GameObject:
   m_ObjectHideFlags: 0
@@ -5250,7 +5358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1314162180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5329,7 +5437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1328278471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5362,14 +5470,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 4257bbe279aff48c8b9b51a581df754e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5445,7 +5553,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0.8795769, b: 0, a: 0}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.15294118}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -5498,8 +5606,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 0ff05ae370de7634cac6d0cf99ca506b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -5601,12 +5709,12 @@ GameObject:
   - component: {fileID: 1449911686}
   - component: {fileID: 1449911685}
   m_Layer: 5
-  m_Name: Power
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1449911684
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5623,10 +5731,10 @@ RectTransform:
   m_Father: {fileID: 724606295}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 31.65, y: -65.675}
+  m_SizeDelta: {x: 63.3, y: 131.35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1449911685
 MonoBehaviour:
@@ -5740,7 +5848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1509932180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5773,14 +5881,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 003044f3d2b2242df863f39651d72ba9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7385,7 +7493,7 @@ GameObject:
   - component: {fileID: 1901764843}
   - component: {fileID: 1901764842}
   m_Layer: 5
-  m_Name: Power (2)
+  m_Name: PowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7995,7 +8103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2139830791
 RectTransform:
   m_ObjectHideFlags: 0

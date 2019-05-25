@@ -606,7 +606,7 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("Danger"))
         {
             //LevelMove danger if on same level
-            if (other.transform.parent.parent != null && CurrentLevel == other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
+            if (other.transform.parent.parent != null && CurrentLevel >= other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
             {
 
                 if (other.transform.position.x >= transform.position.x)
