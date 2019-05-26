@@ -258,37 +258,38 @@ public class FunctionHandler : Singleton<FunctionHandler>
     {
         switch (index)
         {
-            //PoweredUp
+            //Shield
             case 0:
                 {
-                    if (!BallController.Instance.PoweredUp && GameManager.Instance.Gems >= 5)
+                    if (GameManager.Instance.ShieldCount > 0)
                     {
-                        GameManager.Instance.Gems -= 5;
-                        BallController.Instance.PowerUpTrigger = false;
-                        BallController.Instance.comboMultiplier = 3f;
-                        BallController.Instance.PoweredUp = true;
-                        //StartCoroutine(GameManager.Instance.StopPoweredUp(500, Time.timeSinceLevelLoad, 2000f));
-
+                        GameManager.Instance.ShieldCount--;
+                        BallController.Instance.Shielded = true;
                     }
                 }
                 break;
+           
             //Magnet
             case 1:
                 {
-                    if (!BallController.Instance.Magnet && GameManager.Instance.Gems >= 5)
+                    if (GameManager.Instance.MagnetCount>0)
                     {
-                        GameManager.Instance.Gems -= 5;
+                        GameManager.Instance.MagnetCount--;
                         BallController.Instance.Magnet = true;
                     }
                 }
                 break;
-                //Shield
+            //PoweredUp
             case 2:
                 {
-                    if (!BallController.Instance.Shielded && GameManager.Instance.Gems >= 50)
+                    if (GameManager.Instance.PoweredUpCount > 0)
                     {
-                        GameManager.Instance.Gems -= 50;
-                        BallController.Instance.Shielded = true;
+                        GameManager.Instance.PoweredUpCount--;
+                        BallController.Instance.PowerUpTrigger = false;
+                        BallController.Instance.comboMultiplier = 3f;
+                        BallController.Instance.PoweredUp = true;
+
+
                     }
                 }
                 break;

@@ -42,6 +42,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+   
 
 
 
@@ -182,13 +183,127 @@ public class GameManager : Singleton<GameManager>
             nextText.text = (value + 1).ToString();
         }
     }
+    //POWER UPS
+    ///////////////////////////////////////////////
+    [SerializeField]
+    private int shieldCount = 0;
+    public int ShieldCount
+    {
+        get
+        {
+            return shieldCount;
+        }
+
+        set
+        {
+            shieldCount = value;
+            if (shieldCount > 0)
+            {
+                powerPanel.GetChild(0).gameObject.SetActive(true);
+                //Set powerCol multiplier
+                if(shieldCount>1)
+                {
+                    powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(true);
+                    powerPanel.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
+                }
+                else
+                {
+                    powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                powerPanel.GetChild(0).gameObject.SetActive(false);
+            }
+            PlayerPrefs.SetInt("ShieldCount", shieldCount);
+        }
+    }
+
+    [SerializeField]
+    private int magnetCount = 0;
+    public int MagnetCount
+    {
+        get
+        {
+            return magnetCount;
+        }
+
+        set
+        {
+            magnetCount = value;
+            if (magnetCount > 0)
+            {
+                powerPanel.GetChild(1).gameObject.SetActive(true);
+                //Set powerCol multiplier
+                if(magnetCount>1)
+                {
+                    powerPanel.GetChild(1).GetChild(1).gameObject.SetActive(true);
+                    powerPanel.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
+                }
+                else
+                {
+                    powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                powerPanel.GetChild(1).gameObject.SetActive(false);
+            }
+            PlayerPrefs.SetInt("MagnetCount", magnetCount);
+        }
+    }
+
+
+    [SerializeField]
+    private int poweredUpCount = 0;
+    public int PoweredUpCount
+    {
+        get
+        {
+            return poweredUpCount;
+        }
+
+        set
+        {
+            poweredUpCount = value;
+            if (poweredUpCount > 0)
+            {
+                powerPanel.GetChild(2).gameObject.SetActive(true);
+                //Set powerCol multiplier
+                if(poweredUpCount>1)
+                {
+                    powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(true);
+                    powerPanel.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
+                }
+                else
+                {
+                    powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                powerPanel.GetChild(2).gameObject.SetActive(false);
+            }
+            PlayerPrefs.SetInt("PoweredUpCount", poweredUpCount);
+        }
+    }
+
+
+    //////////////////////////////////////
+
 
     // Start is called before the first frame update
     void Start()
     {
         Gems = PlayerPrefs.GetInt("Gems", 0);
+
+        //Initialize powerUps
+        ShieldCount = PlayerPrefs.GetInt("ShieldCount", 0);
+        MagnetCount = PlayerPrefs.GetInt("MagnetCount", 0);
+        PoweredUpCount = PlayerPrefs.GetInt("PoweredUpCount", 0);
+
         //PowerFill = 0;
-       
+
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
@@ -230,7 +345,30 @@ public class GameManager : Singleton<GameManager>
 
         if(power != -1)
         {
-            powerPanel.GetChild(power).gameObject.SetActive(true);
+            switch (power)
+            {
+                //Shield
+                case 0:
+                    {
+                        ShieldCount++;
+                    }
+                    break;
+                //Magnet
+                case 1:
+                    {
+                        MagnetCount++;
+                    }
+                    break;
+                //PoweredUp
+                case 2:
+                    {
+                        PoweredUpCount++;
+                    }
+                    break;
+                default:
+                    break;
+            }
+           
         }
         else
         {
