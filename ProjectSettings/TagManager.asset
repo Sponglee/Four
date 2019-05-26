@@ -21,6 +21,7 @@ TagManager:
   - Collectable
   - Danger
   - Magnet
+  - PowerCol
   layers:
   - Default
   - TransparentFX

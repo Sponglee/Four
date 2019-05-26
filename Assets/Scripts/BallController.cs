@@ -595,7 +595,13 @@ public class BallController : Singleton<BallController>
             }
             Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
         }
-
+        else if(other.gameObject.CompareTag("PowerCol"))
+        {
+           
+            GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
+            Instantiate(LevelManager.Instance.cylinderPrefab, other.transform.position, Quaternion.identity);
+            Destroy(other.gameObject);
+        }
 
 
 

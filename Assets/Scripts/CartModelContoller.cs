@@ -34,6 +34,8 @@ public class CartModelContoller : MonoBehaviour
     private int cartNumber;
 
     public Color spawnColor;
+
+    [SerializeField]
     private bool moving = false;
     public bool Moving
     {

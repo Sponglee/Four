@@ -5,15 +5,42 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     Rigidbody collectableRb;
-    
 
+
+    [SerializeField]
+    private int powerCol = -1;
+    public int PowerCol
+    {
+        get
+        {
+            return powerCol;
+        }
+
+        set
+        {
+            powerCol = value;
+        }
+    }
 
     private void Start()
     {
         collectableRb = transform.GetComponent<Rigidbody>();
+
+        if(PowerCol != -1)
+        {
+            PowerCol = Random.Range(0, 3);
+            transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(true);
+        }
+
     }
 
-
+    private void Update()
+    {
+        if(PowerCol!= -1)
+        {
+            transform.GetChild(0).Rotate(Vector3.forward, 1f);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {

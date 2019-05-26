@@ -15,6 +15,7 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject cartPrefab;
     public GameObject dangerPrefab;
     public GameObject collectablePrefab;
+    public GameObject powerColPrefab;
     public Transform backGround;
 
     public List<Transform> dangerList;

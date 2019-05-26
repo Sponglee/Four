@@ -389,6 +389,8 @@ MonoBehaviour:
     type: 3}
   collectablePrefab: {fileID: 7726349034571893014, guid: 6b6808e6f4c7106498985c72b0f31236,
     type: 3}
+  powerColPrefab: {fileID: 2408599178843164886, guid: 3c8062deceb79854bad2fca9671bd8da,
+    type: 3}
   backGround: {fileID: 1178556464}
   dangerList: []
   spawnMatPool:
@@ -2139,6 +2141,7 @@ MonoBehaviour:
   multiText: {fileID: 1286456365}
   menuScoreText: {fileID: 1511344335}
   gemsText: {fileID: 561604091}
+  powerPanel: {fileID: 724606295}
   progresSlider: {fileID: 120047163}
   powerFiller: {fileID: 1270731996}
   currText: {fileID: 1685531851}
@@ -7498,7 +7501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1901764841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7515,10 +7518,10 @@ RectTransform:
   m_Father: {fileID: 724606295}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 21.845, y: -131.35}
+  m_SizeDelta: {x: 43.69, y: 262.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1901764842
 MonoBehaviour:

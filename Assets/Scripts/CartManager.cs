@@ -191,15 +191,31 @@ public class CartManager : MonoBehaviour
                 {
                     if((PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 1) || (spawnRandomizer > 70 && spawnRandomizer <= 100))
                     {
-                        //spawn cart prefab, set random position
-                        GameObject tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
-                        //check if it's steel
+                        GameObject tmpCart;
+                        //Randomizer for powerCol
 
-                        //if (materialRandomizer == 0)
-                        //{
+                        int powerRand = Random.Range(0, 100);
 
-                        tmpCart.tag = "Collectable";
-                        tmpCart.transform.GetChild(0).tag = "Collectable";
+                        if(powerRand> 0 && powerRand < 5)
+                        {
+                            //spawn cart prefab, set random position
+                           tmpCart= Instantiate(LevelManager.Instance.powerColPrefab, transform);
+                            tmpCart.tag = "PowerCol";
+                            tmpCart.transform.GetChild(0).tag = "PowerCol";
+                        }
+                        else
+                        {
+                            //spawn cart prefab, set random position
+                            tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
+                            tmpCart.tag = "Collectable";
+                            tmpCart.transform.GetChild(0).tag = "Collectable";
+                        }
+
+
+                       
+
+
+                      
                         //}
 
                         ////Set a material

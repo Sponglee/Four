@@ -12,11 +12,11 @@ public class GameManager : Singleton<GameManager>
     public TextMeshProUGUI bestText;
     public TextMeshProUGUI multiText;
     public TextMeshProUGUI menuScoreText;
-
     public TextMeshProUGUI gemsText;
 
-    public Slider progresSlider;
+    public Transform powerPanel;
 
+    public Slider progresSlider;
     public Image powerFiller;
 
     public TextMeshProUGUI currText;
@@ -225,12 +225,19 @@ public class GameManager : Singleton<GameManager>
 
     private bool PowerUpDecreasing = false;
 
-    public void GrabCollectable()
+    public void GrabCollectable(int power = -1, Transform powerColTrans = null)
     {
 
-        Gems++;
-            
+        if(power != -1)
+        {
+            powerPanel.GetChild(power).gameObject.SetActive(true);
+        }
+        else
+        {
+            Gems++;
+        }
 
+       
     }
 
 
