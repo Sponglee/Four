@@ -204,7 +204,7 @@ public class GameManager : Singleton<GameManager>
                 if(shieldCount>1)
                 {
                     powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(true);
-                    powerPanel.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
+                    powerPanel.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = shieldCount.ToString();
                 }
                 else
                 {
@@ -238,7 +238,7 @@ public class GameManager : Singleton<GameManager>
                 if(magnetCount>1)
                 {
                     powerPanel.GetChild(1).GetChild(1).gameObject.SetActive(true);
-                    powerPanel.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
+                    powerPanel.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = magnetCount.ToString();
                 }
                 else
                 {
