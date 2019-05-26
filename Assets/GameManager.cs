@@ -107,7 +107,7 @@ public class GameManager : Singleton<GameManager>
             {
                 bestScore = value;
                 PlayerPrefs.SetInt("BestScore", value);
-              
+                menuScoreText.gameObject.SetActive(false);
             }
         }
     }
@@ -306,6 +306,7 @@ public class GameManager : Singleton<GameManager>
 
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
         Score = PlayerPrefs.GetInt("Score", 0);
+       
         //Debug.Log(":" + Score + " :: " + bestScore + ":");
 
        
@@ -432,7 +433,7 @@ public class GameManager : Singleton<GameManager>
     public void LevelComplete()
     {
         int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 50);
-        FunctionHandler.Instance.OpenGameOver(String.Format("LEVEL {0} COMPLETE",PlayerPrefs.GetInt("CurrentRank",1)));
+        FunctionHandler.Instance.OpenGameOver(String.Format("LEVEL {0} COMPLETE",PlayerPrefs.GetInt("CurrentRank",1)-1));
         PlayerPrefs.SetInt("CurrentRank", CurrentRank + 1);
         if (tmpLvlCount <= 400)
             PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5);

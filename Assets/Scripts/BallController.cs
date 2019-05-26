@@ -214,6 +214,7 @@ public class BallController : Singleton<BallController>
         }
     }
 
+    public Outline shieldOutline;
     [SerializeField]
     private bool shielded = false;
     public bool Shielded
@@ -225,6 +226,14 @@ public class BallController : Singleton<BallController>
 
         set
         {
+            if(shielded == false && value == true)
+            {
+                shieldOutline.enabled = true;
+            }
+            else if(shielded == true && value == false)
+            {
+                shieldOutline.enabled = false;
+            }
             shielded = value;
         }
     }
@@ -605,7 +614,7 @@ public class BallController : Singleton<BallController>
 
 
 
-         if (PoweredUp && other.gameObject.CompareTag("Cart"))
+        if (PoweredUp && other.gameObject.CompareTag("Cart"))
         {
                 PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
         }
@@ -614,7 +623,8 @@ public class BallController : Singleton<BallController>
             //LevelMove danger if on same level
             if (other.transform.parent.parent != null && CurrentLevel >= other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
             {
-
+               
+                Debug.Log(CurrentLevel + " : : : : " + other.transform.parent.parent.parent.parent.GetSiblingIndex());
                 if (other.transform.position.x >= transform.position.x)
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
@@ -626,29 +636,38 @@ public class BallController : Singleton<BallController>
                     LevelManager.Instance.LevelMove(CurrentLevel, false);
                 }
                 return;
-            }
-
-            //8888888888888888888//
-            if (Shielded)
-            {
-                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
-                Shielded = false;
-            }
-            else if(!PoweredUp)
-            {
-                FunctionHandler.Instance.OpenGameOver("GAME OVER");
-                TapToStart = false;
-                forceMultiplier = 1;
-                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+             
             }
             else
             {
-        
-                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
-                PoweredUp = false;
-                comboMultiplier = 1;
-                //GameManager.Instance.PowerFill = 0;
+                //8888888888888888888//
+                if (Shielded)
+                {
+                    PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                    Shielded = false;
+                }
+                else if (!PoweredUp)
+                {
+                    if(!other.transform.GetComponent<CartModelContoller>().Moving)
+                    {
+                        FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                        TapToStart = false;
+                        forceMultiplier = 1;
+                        PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                    }
+                    
+                }
+                else
+                {
+
+                    PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                    PoweredUp = false;
+                    comboMultiplier = 1;
+                    //GameManager.Instance.PowerFill = 0;
+                }
             }
+
+           
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {

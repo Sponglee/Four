@@ -28,7 +28,25 @@ public class Collectable : MonoBehaviour
 
         if(PowerCol != -1)
         {
-            PowerCol = Random.Range(0, 3);
+           int PowerColRand = Random.Range(0,100);
+
+            //Shield
+            if(PowerColRand<30)
+            {
+                PowerCol = 0;
+            }
+            //Magnet
+            else if (PowerColRand>=30 && PowerColRand<40)
+            {
+                PowerCol = 1;
+            }
+            //Powered Up
+            else
+            {
+                PowerCol = 2;
+            }
+
+
             transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(true);
         }
 
@@ -39,6 +57,10 @@ public class Collectable : MonoBehaviour
         if(PowerCol!= -1)
         {
             transform.GetChild(0).Rotate(Vector3.forward, 1f);
+        }
+        else
+        {
+            transform.GetChild(0).Rotate(Vector3.forward, 0.5f);
         }
     }
 

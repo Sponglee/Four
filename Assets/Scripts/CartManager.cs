@@ -155,7 +155,7 @@ public class CartManager : MonoBehaviour
 
                 }
                 //LEVELDIFFICULTY
-                else if (spawnRandomizer<=3 && transform.parent.GetSiblingIndex()>5 && PlayerPrefs.GetInt("CurrentRank", 1)%4 != 1)
+                else if (spawnRandomizer<=3 && transform.parent.GetSiblingIndex()>5 && PlayerPrefs.GetInt("CurrentRank", 1)%4 != 0)
                 {
                     materialRandomizer = 0;
 

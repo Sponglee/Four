@@ -141,7 +141,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
         int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
         GameObject mapSegment = null;
 
-       
+
+        Transform lastSegment = null;
+        Transform nextSegment = null;
 
         for (int i = Mathf.Clamp(tmpRank-100,0,tmpRank); i < tmpRank+1; i++)
         {
@@ -159,6 +161,19 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 { 
                     mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = finishedColor;
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
+
+                    if(i<tmpRank)
+                    {
+                        mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(true);
+                        
+                        if(i == tmpRank -1)
+                        {
+                            mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.clear;
+                            lastSegment = mapSegment.transform.GetChild(i % 4);
+                        }
+
+                      
+                    }
                     //Color current level as finished
                     //if (i == tmpRank - 1)
                     //{
@@ -170,8 +185,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 }
                 else
                 {
+                  
                     //Unlock next level
-                    yield return StopColorLerp(mapSegment.transform.GetChild(i % 4), unlockedMapColor);
+                    nextSegment = mapSegment.transform.GetChild(i % 4);
+                   
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
 
                 }
@@ -183,12 +200,13 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
 
         yield return StopMapPan();
-       
+        yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), Color.white);
+        yield return StopColorLerp(lastSegment, finishedColor);
 
         yield return null;
     }
 
-
+  
 
     public IEnumerator StopMapPan()
     {
@@ -235,7 +253,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     private IEnumerator StopColorLerp(Transform target, Color destColor)
     {
         float elapsed = 0;
-        float duration = 1f;
+        float duration = 2f;
 
         while (elapsed < duration)
         {
@@ -261,7 +279,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Shield
             case 0:
                 {
-                    if (GameManager.Instance.ShieldCount > 0)
+                    if (!BallController.Instance.Shielded && GameManager.Instance.ShieldCount > 0)
                     {
                         GameManager.Instance.ShieldCount--;
                         BallController.Instance.Shielded = true;
@@ -272,7 +290,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Magnet
             case 1:
                 {
-                    if (GameManager.Instance.MagnetCount>0)
+                    if (!BallController.Instance.Magnet && GameManager.Instance.MagnetCount>0)
                     {
                         GameManager.Instance.MagnetCount--;
                         BallController.Instance.Magnet = true;
@@ -282,7 +300,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //PoweredUp
             case 2:
                 {
-                    if (GameManager.Instance.PoweredUpCount > 0)
+                    if (!BallController.Instance.PoweredUp && GameManager.Instance.PoweredUpCount > 0)
                     {
                         GameManager.Instance.PoweredUpCount--;
                         BallController.Instance.PowerUpTrigger = false;

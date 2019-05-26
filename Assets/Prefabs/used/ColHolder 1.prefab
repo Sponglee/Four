@@ -31,8 +31,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -8.5}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
-  - {fileID: 4098947769553174756}
   - {fileID: 7323623802552310124}
+  - {fileID: 4098947769553174756}
   m_Father: {fileID: 7726349034571893013}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6ab184944558d4f87a2d679a545b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerCol: -1
 --- !u!114 &7574932845166515089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +167,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2278841791379899109}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7726349034571893014
 GameObject:
@@ -209,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 9194138799704474661, guid: 3c9764f91c3173c41b462683e40fe795,
         type: 3}
       propertyPath: m_Name
-      value: 5 Side Diamond
+      value: 0Side Diamond
       objectReference: {fileID: 0}
     - target: {fileID: 9194138799704250373, guid: 3c9764f91c3173c41b462683e40fe795,
         type: 3}
@@ -249,7 +250,7 @@ PrefabInstance:
     - target: {fileID: 9194138799704250373, guid: 3c9764f91c3173c41b462683e40fe795,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9194138799704250373, guid: 3c9764f91c3173c41b462683e40fe795,
         type: 3}
