@@ -101,7 +101,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         while (transform.GetChild(0).gameObject.activeSelf)
         {
-            transform.GetChild(0).position = transform.GetChild(1).position;
+            transform.GetChild(0).position = transform.GetChild(1).position + Vector3.down*5f;
             yield return null;
 
         }

@@ -137,7 +137,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 32.2, y: 2.0000005, z: 30}
+  m_Size: {x: 32.2, y: 5, z: 30}
   m_Center: {x: 0.00000005960485, y: 0, z: -0.000000089307015}
 --- !u!1 &2864307845419137470
 GameObject:
@@ -221,7 +221,7 @@ MonoBehaviour:
   spawnManager: {fileID: 0}
   cartNumber: 1
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
-  IsLowered: 0
+  moving: 0
   current: 2
 --- !u!33 &2860314869176113692
 MeshFilter:
@@ -348,7 +348,7 @@ MonoBehaviour:
   spawnManager: {fileID: 0}
   cartNumber: 4
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
-  IsLowered: 0
+  moving: 0
   current: 1
 --- !u!33 &2860743839594014606
 MeshFilter:
@@ -645,7 +645,7 @@ MonoBehaviour:
   spawnManager: {fileID: 0}
   cartNumber: 2
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
-  IsLowered: 0
+  moving: 0
   current: 3
 --- !u!33 &2860615507709593948
 MeshFilter:
@@ -772,7 +772,7 @@ MonoBehaviour:
   spawnManager: {fileID: 0}
   cartNumber: 3
   spawnColor: {r: 0, g: 0, b: 0, a: 0}
-  IsLowered: 0
+  moving: 0
   current: 0
 --- !u!33 &2860543879686268258
 MeshFilter:

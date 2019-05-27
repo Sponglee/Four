@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class BallController : Singleton<BallController>
 {
 
+    public Animator BallAnim;
+
     ///FROM CARTMODELCONTROLLER 
     /// 
     [SerializeField]
@@ -79,6 +81,10 @@ public class BallController : Singleton<BallController>
         {
             if(collidedBool == false && value == true)
             {
+
+
+                BallAnim.SetBool("Fall", false);
+                BallAnim.SetTrigger("Bump");
                 //for (int i = 2; i < Random.Range(0,10); i++)
                 //{
                 //    int randomDir = Random.Range(0, 2);
@@ -95,6 +101,14 @@ public class BallController : Singleton<BallController>
                 //    }
 
                 //}
+            }
+            else if(collidedBool == true && value == false)
+            {
+                BallAnim.SetBool("Fall", true);
+            }
+            else if(value == false)
+            {
+                BallAnim.SetBool("Fall", true);
             }
             collidedBool = value;
            
@@ -388,7 +402,7 @@ public class BallController : Singleton<BallController>
             }
             else if(!CollidedBool)
             {
-                transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+                //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
                 ForcePush = false;
                 
                 rb.velocity = downVelocity * comboMultiplier * 100f;
@@ -396,7 +410,7 @@ public class BallController : Singleton<BallController>
             }
             else
             {
-                transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+                //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
                 ForcePush = false;
 
                 rb.velocity =Vector3.zero;

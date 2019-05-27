@@ -4780,7 +4780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSpawnColor: {r: 0, g: 0, b: 0, a: 0}
   spawnMatRandomColor: {r: 0, g: 0, b: 0, a: 0}
-  spawnPrefab: {fileID: 3640801874800319340, guid: 7aa04d617e4c10e4c82e26d9763e63d5,
+  spawnPrefab: {fileID: 3640801874800319340, guid: 30948d59cc39dd448954347d72f126fb,
     type: 3}
   spawnInterval: 1
   spawnTime: 0

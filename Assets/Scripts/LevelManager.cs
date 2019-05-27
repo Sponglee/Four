@@ -405,7 +405,7 @@ public class LevelManager : Singleton<LevelManager>
     //Move level around  default - CLOCKWISE (LEFT)
     public IEnumerator LevelMoveRotate(int level, float levelAngle, bool rightDirection = false)
     {
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
        
         float tempAngle = levelAngle;
         //number of turns
