@@ -430,6 +430,10 @@ public class LevelManager : Singleton<LevelManager>
         //Move them around  default - CLOCKWISE (LEFT)
         foreach (Transform childToMove in childsToMove)
         {
+            //If there's no cart - next one
+            if (childToMove.childCount == 0)
+                continue;
+
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
 
             //Switch parents of carts and move (right or left)

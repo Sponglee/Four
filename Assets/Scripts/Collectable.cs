@@ -82,7 +82,7 @@ public class Collectable : MonoBehaviour
         {
             Debug.DrawLine(collectableRb.transform.position, ballTrans.position, Color.blue);
             collectableRb.velocity = (ballTrans.position - collectableRb.transform.position) * 5f;
-            Debug.Log(collectableRb.velocity);
+            //Debug.Log(collectableRb.velocity);
             yield return null;
         }
     }

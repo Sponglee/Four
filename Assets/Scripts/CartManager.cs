@@ -187,7 +187,7 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
                 //LEVELDIFFICULTY
-                else if (PlayerPrefs.GetInt("CurrentRank",1)>3 && transform.parent.GetSiblingIndex()%3==0)
+                else if (PlayerPrefs.GetInt("CurrentRank",1)>2 && transform.parent.GetSiblingIndex()%3==0)
                 {
                     if((PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 1) || (spawnRandomizer > 70 && spawnRandomizer <= 100))
                     {
