@@ -152,6 +152,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             {
                 Debug.Log("NOW "+i + "(" + tmpRank + ")");
                 mapSegment = Instantiate(mapElemRef, map);
+                
             }
             
             if(mapSegment != null)
@@ -165,7 +166,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     if(i<tmpRank)
                     {
                         mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(true);
-                        
+
+                        //Disable gems icon
+                        if(mapSegment.transform.GetChild(i%4).GetChild(0).childCount>1)
+                        {
+                            mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(1).gameObject.SetActive(false);
+                        }
+
+
                         if(i == tmpRank -1)
                         {
                             mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.clear;
@@ -188,7 +196,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                   
                     //Unlock next level
                     nextSegment = mapSegment.transform.GetChild(i % 4);
-                   
+                    
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
 
                 }
@@ -200,8 +208,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
 
         yield return StopMapPan();
-        yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), Color.white);
-        yield return StopColorLerp(lastSegment, finishedColor);
+        yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), unlockedMapColor);
+        yield return StopColorLerp(nextSegment, finishedColor);
 
         yield return null;
     }

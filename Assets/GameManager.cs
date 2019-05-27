@@ -199,7 +199,8 @@ public class GameManager : Singleton<GameManager>
             shieldCount = value;
             if (shieldCount > 0)
             {
-                powerPanel.GetChild(0).gameObject.SetActive(true);
+                //Fade out the button
+                powerPanel.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
                 if(shieldCount>1)
                 {
@@ -213,7 +214,8 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                powerPanel.GetChild(0).gameObject.SetActive(false);
+                //Fade in the button
+                powerPanel.GetChild(0).GetChild(2).gameObject.SetActive(true);
             }
             PlayerPrefs.SetInt("ShieldCount", shieldCount);
         }
@@ -233,7 +235,8 @@ public class GameManager : Singleton<GameManager>
             magnetCount = value;
             if (magnetCount > 0)
             {
-                powerPanel.GetChild(1).gameObject.SetActive(true);
+                //Fade out the button
+                powerPanel.GetChild(1).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
                 if(magnetCount>1)
                 {
@@ -242,12 +245,13 @@ public class GameManager : Singleton<GameManager>
                 }
                 else
                 {
-                    powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                    powerPanel.GetChild(1).GetChild(1).gameObject.SetActive(false);
                 }
             }
             else
             {
-                powerPanel.GetChild(1).gameObject.SetActive(false);
+                //Fade in the buttton
+                powerPanel.GetChild(1).GetChild(2).gameObject.SetActive(true);
             }
             PlayerPrefs.SetInt("MagnetCount", magnetCount);
         }
@@ -268,7 +272,8 @@ public class GameManager : Singleton<GameManager>
             poweredUpCount = value;
             if (poweredUpCount > 0)
             {
-                powerPanel.GetChild(2).gameObject.SetActive(true);
+                //Fade out the button
+                powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
                 if(poweredUpCount>1)
                 {
@@ -277,12 +282,13 @@ public class GameManager : Singleton<GameManager>
                 }
                 else
                 {
-                    powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                    powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(false);
                 }
             }
             else
             {
-                powerPanel.GetChild(2).gameObject.SetActive(false);
+                //Fade in the button
+                powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(true);
             }
             PlayerPrefs.SetInt("PoweredUpCount", poweredUpCount);
         }

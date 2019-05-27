@@ -56,11 +56,11 @@ public class Collectable : MonoBehaviour
     {
         if(PowerCol!= -1)
         {
-            transform.GetChild(0).Rotate(Vector3.forward, 1f);
+            transform.GetChild(0).Rotate(Vector3.forward, 3f);
         }
         else
         {
-            transform.GetChild(0).Rotate(Vector3.forward, 0.5f);
+            transform.GetChild(0).Rotate(Vector3.forward, 1.5f);
         }
     }
 
