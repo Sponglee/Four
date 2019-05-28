@@ -23,7 +23,7 @@ public class BallController : Singleton<BallController>
         {
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / levelManager.levelCount;
-
+            GameManager.Instance.AddScore(1, Color.grey, transform.GetChild(1));
 
             //OPTIMIZATION
             levelManager.transform.GetChild((currentLevel + 65) % levelManager.transform.childCount).gameObject.SetActive(true);
@@ -83,7 +83,7 @@ public class BallController : Singleton<BallController>
             {
 
 
-                BallAnim.SetBool("Fall", false);
+             
                 BallAnim.SetTrigger("Bump");
                 //for (int i = 2; i < Random.Range(0,10); i++)
                 //{
@@ -102,14 +102,7 @@ public class BallController : Singleton<BallController>
 
                 //}
             }
-            else if(collidedBool == true && value == false)
-            {
-                BallAnim.SetBool("Fall", true);
-            }
-            else if(value == false)
-            {
-                BallAnim.SetBool("Fall", true);
-            }
+          
             collidedBool = value;
            
 
@@ -219,11 +212,19 @@ public class BallController : Singleton<BallController>
         {
             if(value == true && poweredUp == false)
             {
+                BallAnim.SetBool("Fall", true);
                 poweredUp = value;
                 RemoveCartBelow(4);
                 CollidedBool = false;
             }
-
+            else if (collidedBool == true && value == false)
+            {
+                BallAnim.SetBool("Fall", false);
+            }
+            else if (value == false)
+            {
+                BallAnim.SetBool("Fall", false);
+            }
             poweredUp = value;
         }
     }
@@ -254,6 +255,7 @@ public class BallController : Singleton<BallController>
 
 
     public Transform magnetHolder;
+    public GameObject magnetVFX;
 
     [SerializeField]
     private bool magnet = false;
@@ -269,7 +271,13 @@ public class BallController : Singleton<BallController>
             if(value == true && magnet == false)
             {
                magnetHolder.gameObject.SetActive(true);
+               magnetVFX = Instantiate(LevelManager.Instance.electroMagnetPrefab, transform.GetChild(0).transform);
                StartCoroutine(magnetHolder.parent.GetComponent<SpawnManager>().StopMagnet());
+            }
+            else if(value == false && magnet == true)
+            {
+                Destroy(magnetVFX);
+                magnetHolder.gameObject.SetActive(false);
             }
             magnet = value;
         }
@@ -616,13 +624,13 @@ public class BallController : Singleton<BallController>
             {
                 //comboMultiplier += 0.3f;
             }
-            Instantiate(LevelManager.Instance.threePrefab, other.transform.position, Quaternion.identity);
+            Instantiate(LevelManager.Instance.poofPrefab, other.transform.position, Quaternion.identity);
         }
         else if(other.gameObject.CompareTag("PowerCol"))
         {
            
             GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
-            Instantiate(LevelManager.Instance.cylinderPrefab, other.transform.position, Quaternion.identity);
+            Instantiate(LevelManager.Instance.smokePrefab, other.transform.position, Quaternion.identity);
             Destroy(other.gameObject);
         }
 
@@ -730,7 +738,7 @@ public class BallController : Singleton<BallController>
 
 
             //Get some effects 
-            Instantiate(LevelManager.Instance.hitPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+            Instantiate(LevelManager.Instance.mpoofPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
 
 
             if(PoweredUp)
@@ -745,7 +753,7 @@ public class BallController : Singleton<BallController>
             else
             {
                 //SCORE
-                GameManager.Instance.AddScore(1, Color.grey, transform.GetChild(0));
+             
                 StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), Color.white));
                 StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), Color.white));
             }

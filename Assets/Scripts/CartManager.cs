@@ -77,7 +77,7 @@ public class CartManager : MonoBehaviour
 
         transform.parent.GetChild(1).GetChild(0).GetComponent<Renderer>().material.color = spawnMatsRef[1].color;
 
-       
+
 
         if (!gameObject.CompareTag("Spawn") && !gameObject.CompareTag("Bottom"))
         {
@@ -91,9 +91,12 @@ public class CartManager : MonoBehaviour
 
                 //Set up cart holder
                 int a = 360 / LevelManager.Instance.cartCount * i;
-                Vector3 cartHolderPos = RandomCircle(transform.position,0f, a);
 
-                GameObject tmpCartHolder = Instantiate(cartHolderPrefab,cartHolderPos,Quaternion.identity, transform);
+                Vector3 cartHolderPos = RandomCircle(transform.position, 0f, a); ;
+
+
+
+                GameObject tmpCartHolder = Instantiate(cartHolderPrefab, cartHolderPos, Quaternion.identity, transform);
 
                 //Set place and orientation for blank holder
                 tmpCartHolder.name = i.ToString();
@@ -120,10 +123,60 @@ public class CartManager : MonoBehaviour
 
                 //LEVELDIFFICULTY
                 //If randomizer proc or this is a required cart
-                if (spawnRandomizer <= 40 && spawnRandomizer>5 /*&& i == 1*/)
+                if (PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 0)
+                {
+                    if (true)
+                    {
+                        GameObject tmpCart;
+                        //Randomizer for powerCol
+
+                        int powerRand = Random.Range(0, 100);
+
+                        if (powerRand > 0 && powerRand < 5)
+                        {
+                            //spawn cart prefab, set random position
+                            tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
+                            tmpCart.tag = "PowerCol";
+                            tmpCart.transform.GetChild(0).tag = "PowerCol";
+                        }
+                        else
+                        {
+                            //spawn cart prefab, set random position
+                            tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
+                            tmpCart.tag = "Collectable";
+                            tmpCart.transform.GetChild(0).tag = "Collectable";
+                        }
+
+
+
+
+
+
+                        //}
+
+                        ////Set a material
+                        //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
+
+                        //Set position and orientation for dolly
+                        tmpCart.transform.SetParent(tmpCartHolder.transform);
+                        tmpCart.transform.position = tmpCartHolder.transform.position;
+                        tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+                        //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
+                        //Set current for that cart
+                        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+
+                        //set cart reference for manager
+                        //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                        index++;
+                        continue;
+
+                    }
+                }
+                else if (spawnRandomizer <= 40 && spawnRandomizer > 5 /*&& i == 1*/)
                 {
 
-                   
+
                     materialRandomizer = 0;
 
                     //spawn cart prefab, set random position
@@ -155,7 +208,7 @@ public class CartManager : MonoBehaviour
 
                 }
                 //LEVELDIFFICULTY
-                else if (spawnRandomizer<=3 && transform.parent.GetSiblingIndex()>5 && PlayerPrefs.GetInt("CurrentRank", 1)%4 != 0)
+                else if (spawnRandomizer <= 3 && transform.parent.GetSiblingIndex() > 5 && (PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0 || PlayerPrefs.GetInt("CurrentRank", 1) != 1))
                 {
                     materialRandomizer = 0;
 
@@ -187,19 +240,19 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                 }
                 //LEVELDIFFICULTY
-                else if (PlayerPrefs.GetInt("CurrentRank",1)>2 && transform.parent.GetSiblingIndex()%3==0)
+                else if (PlayerPrefs.GetInt("CurrentRank", 1) > 2 && transform.parent.GetSiblingIndex() % 3 == 0)
                 {
-                    if((PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 1) || (spawnRandomizer > 70 && spawnRandomizer <= 100))
+                    if ((PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 1) || (spawnRandomizer > 70 && spawnRandomizer <= 100))
                     {
                         GameObject tmpCart;
                         //Randomizer for powerCol
 
                         int powerRand = Random.Range(0, 100);
 
-                        if(powerRand> 0 && powerRand < 5)
+                        if (powerRand > 0 && powerRand < 5)
                         {
                             //spawn cart prefab, set random position
-                           tmpCart= Instantiate(LevelManager.Instance.powerColPrefab, transform);
+                            tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
                             tmpCart.tag = "PowerCol";
                             tmpCart.transform.GetChild(0).tag = "PowerCol";
                         }
@@ -212,10 +265,10 @@ public class CartManager : MonoBehaviour
                         }
 
 
-                       
 
 
-                      
+
+
                         //}
 
                         ////Set a material
@@ -235,21 +288,20 @@ public class CartManager : MonoBehaviour
                     }
 
                 }
-              
-                index++;
+
+                    index++;
             }
 
+            
+
+            //transform.parent.eulerAngles = new Vector3(0, -angStep * transform.parent.GetSiblingIndex(), 0);
+
+            if (transform.parent.GetSiblingIndex() > 65)
+                transform.parent.gameObject.SetActive(false);
         }
 
 
-        //transform.parent.eulerAngles = new Vector3(0, -angStep * transform.parent.GetSiblingIndex(), 0);
-
-        if (transform.parent.GetSiblingIndex() > 65)
-            transform.parent.gameObject.SetActive(false);
     }
-
-
-   
 
 
     //Build circle for spots

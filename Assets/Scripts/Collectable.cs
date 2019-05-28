@@ -81,7 +81,7 @@ public class Collectable : MonoBehaviour
         while (true)
         {
             Debug.DrawLine(collectableRb.transform.position, ballTrans.position, Color.blue);
-            collectableRb.velocity = (ballTrans.position - collectableRb.transform.position) * 5f;
+            collectableRb.velocity = (ballTrans.position + new Vector3(0, Random.Range(0f,10f), 0f) - collectableRb.transform.position) * 5f;
             //Debug.Log(collectableRb.velocity);
             yield return null;
         }

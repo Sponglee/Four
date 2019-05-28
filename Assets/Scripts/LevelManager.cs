@@ -44,9 +44,10 @@ public class LevelManager : Singleton<LevelManager>
 
     public bool levelStop = false;
     //Effects
-    public GameObject hitPrefab;
-    public GameObject threePrefab;
-    public GameObject cylinderPrefab;
+    public GameObject mpoofPrefab;
+    public GameObject poofPrefab;
+    public GameObject smokePrefab;
+    public GameObject electroMagnetPrefab;
     public Transform EffectHolder;
 
     //Input vars
@@ -302,7 +303,7 @@ public class LevelManager : Singleton<LevelManager>
             yield return new WaitForSeconds(raiseTowerTime);
             if (true/*ballRef != null && ballRef.CurrentLevel > 0*/)
             {
-                Instantiate(cylinderPrefab, transform.GetChild(i).position + new Vector3(0, -5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+                Instantiate(smokePrefab, transform.GetChild(i).position + new Vector3(0, -5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
                 transform.GetChild(i).gameObject.SetActive(false);
                 //Destroy(transform.GetChild(0).gameObject);
                 RaiseTower();
@@ -332,7 +333,7 @@ public class LevelManager : Singleton<LevelManager>
             //levels 10 to 25 - rotate only when non powerUp, lvls 25+ rotate even when poweredUp
             else if (PlayerPrefs.GetInt("CurrentRank", 1)>10 && !ballRef.PoweredUp)
             {
-                Debug.Log(">>>>>");
+                //Debug.Log(">>>>>");
                 ////LEVELDIFFICULTY
                 //if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) > 30)
                 //    levelMoveStart = 30;
@@ -435,6 +436,9 @@ public class LevelManager : Singleton<LevelManager>
                 continue;
 
             CartModelContoller tmp = childToMove.GetChild(0).GetComponent<CartModelContoller>();
+
+            if (tmp == null)
+                continue;
 
             //Switch parents of carts and move (right or left)
             if(rightDirection)

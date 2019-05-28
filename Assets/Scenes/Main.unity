@@ -411,10 +411,11 @@ MonoBehaviour:
   spawnOffsetStep: 5
   level: 0
   levelStop: 0
-  hitPrefab: {fileID: 100018, guid: a40b64bf23366dc42a892af2c6ff6140, type: 3}
-  threePrefab: {fileID: 100000, guid: 3156817f64ec68948ad6bb26569b9ef5, type: 3}
-  cylinderPrefab: {fileID: 1892078723244562, guid: 46876a2780737ec45a19d62f88e5ce56,
+  mpoofPrefab: {fileID: 100018, guid: a40b64bf23366dc42a892af2c6ff6140, type: 3}
+  poofPrefab: {fileID: 100000, guid: 3156817f64ec68948ad6bb26569b9ef5, type: 3}
+  smokePrefab: {fileID: 1892078723244562, guid: 46876a2780737ec45a19d62f88e5ce56,
     type: 3}
+  electroMagnetPrefab: {fileID: 100000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
   EffectHolder: {fileID: 1172575578}
   currentAngleSpeed: 0
   startPosition: {x: 0, y: 0, z: 0}
@@ -426,7 +427,7 @@ MonoBehaviour:
   LevelMoveProgress: 0
   levelInputTrigger: 0
   SpawnInProgress: 0
-  followDuration: 0.1
+  followDuration: 0.2
   levelCount: 15
   lastCurrentLevel: 0
   lastLevelCurrentLevel: 0
