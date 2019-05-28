@@ -314,7 +314,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     {
                         GameManager.Instance.PoweredUpCount--;
                         BallController.Instance.PowerUpTrigger = false;
-                        BallController.Instance.comboMultiplier = 3f;
+                       
                         BallController.Instance.PoweredUp = true;
 
 

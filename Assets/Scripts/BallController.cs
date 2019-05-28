@@ -353,9 +353,25 @@ public class BallController : Singleton<BallController>
    
     private void Update()
     {
+
+        if(!collidedBool && !poweredUp)
+        {
+
+            comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 1, 2f);
+        }
+        else if(!poweredUp)
+        {
+            comboMultiplier = 1f;
+        }
+        else
+        {
+            comboMultiplier = 3f;
+        }
+
+
         if (Input.GetMouseButtonDown(2))
         {
-            comboMultiplier = 3;
+            //comboMultiplier = 3;
             PoweredUp = true;
             //GameManager.Instance.ComboActive = true;
             //GameManager.Instance.LevelComplete();
@@ -581,12 +597,12 @@ public class BallController : Singleton<BallController>
                 if (other.transform.position.x >= transform.position.x )
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, true);
+                    LevelManager.Instance.LevelMove(CurrentLevel, true, true);
                 }
                 else
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, false);
+                    LevelManager.Instance.LevelMove(CurrentLevel, false,true);
                 }
                 return;
             }

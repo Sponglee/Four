@@ -385,14 +385,14 @@ public class LevelManager : Singleton<LevelManager>
 
 
     //Move Level direction - clockwise by default
-    public void LevelMove(int levelIndex, bool directionControl = false)
+    public void LevelMove(int levelIndex, bool directionControl = false, bool inputMove = false)
     {
         if (transform.GetChild(levelIndex) != null && !transform.GetChild(levelIndex).GetChild(0).CompareTag("Bottom"))
         {
             //GameManager.Instance.ComboActive = false;
             //GameManager.Instance.Multiplier = 1;
             LevelMoveProgress = true;
-            StartCoroutine(LevelMoveRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, directionControl));
+            StartCoroutine(LevelMoveRotate(levelIndex, transform.GetChild(levelIndex).localEulerAngles.z, directionControl, inputMove));
         }
 
 
@@ -404,7 +404,7 @@ public class LevelManager : Singleton<LevelManager>
     public float levelMoveSpeed = 60f;
 
     //Move level around  default - CLOCKWISE (LEFT)
-    public IEnumerator LevelMoveRotate(int level, float levelAngle, bool rightDirection = false)
+    public IEnumerator LevelMoveRotate(int level, float levelAngle, bool rightDirection = false, bool inputMove =false)
     {
         //yield return new WaitForSeconds(0.1f);
        
@@ -470,12 +470,16 @@ public class LevelManager : Singleton<LevelManager>
         }
 
         childsToMove.Clear();
+        if (inputMove)
+        {
+            yield return new WaitForSeconds(0.2f);
+            BallController.Instance.CheckMovement();
+        }
+       
 
-        yield return new WaitForSeconds(0.2f);
-        BallController.Instance.CheckMovement();
 
-        //*****************
         LevelMoveProgress = false;
+        //*****************
         yield return null;
 
     }

@@ -357,19 +357,22 @@ public class GameManager : Singleton<GameManager>
                 //Shield
                 case 0:
                     {
-                        ShieldCount++;
+                        //ShieldCount++;
+                        BallController.Instance.Shielded = true;
                     }
                     break;
                 //Magnet
                 case 1:
                     {
-                        MagnetCount++;
+                        //MagnetCount++;
+                        BallController.Instance.Magnet = true;
                     }
                     break;
                 //PoweredUp
                 case 2:
                     {
-                        PoweredUpCount++;
+                        //PoweredUpCount++;
+                        BallController.Instance.PoweredUp = true;
                     }
                     break;
                 default:
