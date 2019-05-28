@@ -60,7 +60,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 menuCanvas.SetActive(false);
                 menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Enable menu button if game over or win
-                menuButton.SetActive(false);
+                menuButton.SetActive(true);
+
+
                 BallController.Instance.TapToStart = false;
                 BallController.Instance.RemoveCartBelow(15);
                 GameManager.Instance.tapText.gameObject.SetActive(true);

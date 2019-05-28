@@ -199,6 +199,9 @@ public class BallController : Singleton<BallController>
    
      
     }
+
+
+    public GameObject poweredUpVFX;
     [SerializeField]
     private bool poweredUp = false;
     public bool PoweredUp
@@ -213,6 +216,7 @@ public class BallController : Singleton<BallController>
             if(value == true && poweredUp == false)
             {
                 BallAnim.SetBool("Fall", true);
+                poweredUpVFX.SetActive(true);
                 poweredUp = value;
                 RemoveCartBelow(4);
                 CollidedBool = false;
@@ -220,16 +224,18 @@ public class BallController : Singleton<BallController>
             else if (collidedBool == true && value == false)
             {
                 BallAnim.SetBool("Fall", false);
+                poweredUpVFX.SetActive(false);
             }
             else if (value == false)
             {
                 BallAnim.SetBool("Fall", false);
+                poweredUpVFX.SetActive(false);
             }
             poweredUp = value;
         }
     }
 
-    public Outline shieldOutline;
+    public GameObject shieldVFX;
     [SerializeField]
     private bool shielded = false;
     public bool Shielded
@@ -243,11 +249,11 @@ public class BallController : Singleton<BallController>
         {
             if(shielded == false && value == true)
             {
-                shieldOutline.enabled = true;
+                shieldVFX.SetActive(true);
             }
             else if(shielded == true && value == false)
             {
-                shieldOutline.enabled = false;
+                shieldVFX.SetActive(false);
             }
             shielded = value;
         }
@@ -543,10 +549,11 @@ public class BallController : Singleton<BallController>
             {
                 CollidedBool = false;
             }
-            //else
-            //{
-            //    CollidedBool = true;
-            //}
+            else
+            {
+                if (BallController.Instance.CollidedBool)
+                    BallController.Instance.BallAnim.SetTrigger("Bump");
+            }
         }
         else
         {

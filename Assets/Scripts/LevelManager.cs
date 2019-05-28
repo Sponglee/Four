@@ -371,7 +371,8 @@ public class LevelManager : Singleton<LevelManager>
 
                 }
 
-                yield return new WaitForSeconds(levelMoveWait);   
+                yield return new WaitForSeconds(levelMoveWait);
+                
             }
             else
             {
@@ -472,6 +473,7 @@ public class LevelManager : Singleton<LevelManager>
         childsToMove.Clear();
         if (inputMove)
         {
+
             yield return new WaitForSeconds(0.2f);
             BallController.Instance.CheckMovement();
         }

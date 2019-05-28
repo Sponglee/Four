@@ -111,7 +111,7 @@ public class CartManager : MonoBehaviour
 
 
 
-                if (i == requiredCart1)
+                if (i != requiredCart1)
                 {
                     materialRandomizer = 1;
                     continue;
@@ -139,7 +139,7 @@ public class CartManager : MonoBehaviour
                             tmpCart.tag = "PowerCol";
                             tmpCart.transform.GetChild(0).tag = "PowerCol";
                         }
-                        else
+                        else 
                         {
                             //spawn cart prefab, set random position
                             tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
