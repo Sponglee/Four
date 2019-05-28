@@ -31,7 +31,7 @@ public class Collectable : MonoBehaviour
            int PowerColRand = Random.Range(0,100);
 
             //Shield
-            if (PowerColRand > 40 && PowerColRand < 45)
+            if (PowerColRand > 10 && PowerColRand < 30)
             {
                 PowerCol = 0;
             }
@@ -41,7 +41,7 @@ public class Collectable : MonoBehaviour
                 PowerCol = 1;
             }
             //Powered Up
-            else
+            else if(PowerColRand > 30 && PowerColRand < 50)
             {
                 PowerCol = 2;
             }
