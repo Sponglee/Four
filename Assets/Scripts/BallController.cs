@@ -277,12 +277,12 @@ public class BallController : Singleton<BallController>
             if(value == true && magnet == false)
             {
                magnetHolder.gameObject.SetActive(true);
-               magnetVFX = Instantiate(LevelManager.Instance.electroMagnetPrefab, transform.GetChild(0).transform);
+               magnetVFX.SetActive(true);
                StartCoroutine(magnetHolder.parent.GetComponent<SpawnManager>().StopMagnet());
             }
             else if(value == false && magnet == true)
             {
-                Destroy(magnetVFX);
+                magnetVFX.SetActive(false);
                 magnetHolder.gameObject.SetActive(false);
             }
             magnet = value;
