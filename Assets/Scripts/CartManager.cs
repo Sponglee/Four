@@ -111,7 +111,7 @@ public class CartManager : MonoBehaviour
 
 
 
-                if (i == requiredCart1)
+                if (i != requiredCart1)
                 {
                     materialRandomizer = 1;
                     continue;

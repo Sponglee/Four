@@ -765,7 +765,7 @@ public class BallController : Singleton<BallController>
             rb = other.transform.GetChild(0).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
-            rb.velocity = new Vector3(Random.Range(5f, 10f), 10f, -10f);
+            rb.velocity = new Vector3(Random.Range(5f, 20f), 10f, -10f);
             rb.AddRelativeTorque(new Vector3(Random.Range(-50f,-10f), -20f, 50f));
 
 

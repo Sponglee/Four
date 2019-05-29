@@ -36,15 +36,16 @@ public class Collectable : MonoBehaviour
                 PowerCol = 0;
             }
             //Magnet
-            else if (PowerColRand>=30 && PowerColRand<40)
+            else if (PowerColRand >= 30 && PowerColRand < 40)
             {
                 PowerCol = 1;
             }
-            ////Powered Up
-            //else if(PowerColRand >= 40 && PowerColRand < 60)
-            //{
-            //    PowerCol = 2;
-            //}
+            //Powered Up
+            else if (PowerColRand >= 40 && PowerColRand < 60)
+            {
+                PowerCol = 2;
+            }
+           
 
 
             transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(true);
