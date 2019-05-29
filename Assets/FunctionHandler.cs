@@ -38,6 +38,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void CloseGameOver(bool menuClose = false)
     {
+        //Enable effectHolder
+        LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
         BallController.Instance.MenuOpened = false;
         //If menu is already open
         if (menuCanvas.activeSelf)
@@ -111,6 +113,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
         else if (message != "")
         {
+            //Disable fltText
             LevelManager.Instance.EffectHolder.gameObject.SetActive(false);
             //Activate Menu screen
             menuCanvas.SetActive(true);

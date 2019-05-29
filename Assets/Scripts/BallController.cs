@@ -7,6 +7,7 @@ public class BallController : Singleton<BallController>
 {
 
     public Animator BallAnim;
+    public int comboIndex = 1;
 
     ///FROM CARTMODELCONTROLLER 
     /// 
@@ -21,9 +22,13 @@ public class BallController : Singleton<BallController>
 
         set
         {
+            
+            if(!CollidedBool)
+                comboIndex = Mathf.Clamp(comboIndex+1,0,5);
+
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / levelManager.levelCount;
-            GameManager.Instance.AddScore(1, Color.grey, transform.GetChild(1));
+            GameManager.Instance.AddScore(comboIndex, Color.grey, transform.GetChild(1));
 
             //OPTIMIZATION
             levelManager.transform.GetChild((currentLevel + 65) % levelManager.transform.childCount).gameObject.SetActive(true);
@@ -81,9 +86,11 @@ public class BallController : Singleton<BallController>
         {
             if(collidedBool == false && value == true)
             {
+                comboIndex = 0;
+                //GameObject otherTrans = DownCheckRay(transform, "Cart");
 
+                //PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
 
-             
                 BallAnim.SetTrigger("Bump");
                 //for (int i = 2; i < Random.Range(0,10); i++)
                 //{
@@ -102,6 +109,7 @@ public class BallController : Singleton<BallController>
 
                 //}
             }
+            
           
             collidedBool = value;
            
@@ -742,6 +750,7 @@ public class BallController : Singleton<BallController>
                 return;
             }
 
+            //other.SetParent(transform.GetChild(0));
            
             //Second cart pop sequence
             other.gameObject.GetComponent<BoxCollider>().tag = "Untagged";
@@ -749,15 +758,15 @@ public class BallController : Singleton<BallController>
             Rigidbody rb = other.transform.GetChild(1).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
-            rb.velocity = new Vector3(Random.Range(-50f, -30f), 80f, -50f);
-            rb.AddRelativeTorque(new Vector3(500f, 20f, 0));
+            rb.velocity = new Vector3(Random.Range(-5f, -10f), 10f, -10f);
+            rb.AddRelativeTorque(new Vector3(Random.Range(-50f, -10f), 20f, -50f));
 
 
             rb = other.transform.GetChild(0).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
-            rb.velocity = new Vector3(Random.Range(50f, 30f), 80f, -50f);
-            rb.AddRelativeTorque(new Vector3(500f, 20f, 0));
+            rb.velocity = new Vector3(Random.Range(5f, 10f), 10f, -10f);
+            rb.AddRelativeTorque(new Vector3(Random.Range(-50f,-10f), -20f, 50f));
 
 
             //Get some effects 
