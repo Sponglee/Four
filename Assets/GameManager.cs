@@ -327,9 +327,9 @@ public class GameManager : Singleton<GameManager>
     {
        
 
-        GameObject tmpFltText = Instantiate(fltText, origin.position, Quaternion.identity);
-        tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = color;
-        tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount/**comboCount*/);
+        //GameObject tmpFltText = Instantiate(fltText, origin.position, Quaternion.identity);
+        //tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().color = color;
+        //tmpFltText.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = string.Format("+{0}", scoreAmount/**comboCount*/);
 
        
 
