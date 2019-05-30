@@ -144,7 +144,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public IEnumerator StopMapProgression()
     {
         LevelCompleteInProgress = true;
-        Debug.Log("STOPMAP");
+        //Debug.Log("STOPMAP");
         int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
         GameObject mapSegment = null;
 
@@ -157,14 +157,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
             
             if (i % 4 == 0)
             {
-                Debug.Log("NOW "+i + "(" + tmpRank + ")");
+                //Debug.Log("NOW "+i + "(" + tmpRank + ")");
                 mapSegment = Instantiate(mapElemRef, map);
                 
             }
             
             if(mapSegment != null)
             {
-                Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
+                //Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
                 if (i != tmpRank)
                 { 
                     mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = finishedColor;
@@ -247,7 +247,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         }
 
-        Debug.Log(endPos);
+        //Debug.Log(endPos);
 
         map.transform.localPosition = Vector3.zero;
 

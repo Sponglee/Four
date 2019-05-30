@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -19,6 +19,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public List<Transform> dangerList;
 
+    public GameObject[] cartVariants;
     public Material[] spawnMatPool;
     public Material[] spawnMats;
     public Material dangerMaterial;
@@ -100,7 +101,13 @@ public class LevelManager : Singleton<LevelManager>
     {
         dangerList = new List<Transform>();
 
-        
+        //Debug.Log(PlayerPrefs.GetInt("CurrentVariant",  0) + " >> " + PlayerPrefs.GetInt("CurrentRank", 1)%4);
+        if (PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 0)
+        {
+            PlayerPrefs.SetInt("CartVariant", Random.Range(0,cartVariants.Length));
+        }
+
+        cartPrefab = cartVariants[PlayerPrefs.GetInt("CartVariant", 0)];
 
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount",50);
@@ -129,7 +136,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
 
-        Debug.Log(spawnMatPool.Length);
+        //Debug.Log(spawnMatPool.Length);
         //Get random string of indexes and save it, or load it from prefs
         if (prefCurrentRank != prefSpawnMatsRank)
         {
@@ -158,7 +165,7 @@ public class LevelManager : Singleton<LevelManager>
             }
 
             PlayerPrefs.SetString("SpawnMats", tmpSaveString);
-            Debug.Log(tmpSaveString);
+            //Debug.Log(tmpSaveString);
         }
         else
         {
@@ -200,7 +207,7 @@ public class LevelManager : Singleton<LevelManager>
 
 
 
-        Debug.Log("LOADED " + levelCount);
+        //Debug.Log("LOADED " + levelCount);
 
 
         //Generate the level
@@ -219,7 +226,11 @@ public class LevelManager : Singleton<LevelManager>
     // Update is called once per frame
     void Update()
     {
-
+        if(Input.GetMouseButtonDown(1))
+        {
+            PlayerPrefs.SetInt("CartVariant", Random.Range(0, cartVariants.Length));
+            SceneManager.LoadScene("Main");
+        }
         //transform.localEulerAngles += new Vector3(0, 1f, 0);
 
         if (Input.GetMouseButtonDown(0))

@@ -384,13 +384,22 @@ MonoBehaviour:
     type: 3}
   blankCartPrefab: {fileID: 1729948694081418, guid: d62b55e25021f034381914d09003251f,
     type: 3}
-  cartPrefab: {fileID: 1859630849823150, guid: 9e3e1b97a52690d4b92c4bb5a8797afd, type: 3}
+  cartPrefab: {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 3}
   collectablePrefab: {fileID: 7726349034571893014, guid: 6b6808e6f4c7106498985c72b0f31236,
     type: 3}
   powerColPrefab: {fileID: 2408599178843164886, guid: 3c8062deceb79854bad2fca9671bd8da,
     type: 3}
   backGround: {fileID: 1178556464}
   dangerList: []
+  cartVariants:
+  - {fileID: 1859630849823150, guid: 66d43c7086168b546817d7c19f8e14f3, type: 3}
+  - {fileID: 1859630849823150, guid: c528a5f5ba8fd9243bbcf5cf11204d10, type: 3}
+  - {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 3}
+  - {fileID: 1859630849823150, guid: 987b1ca79831dee4a8a5ff79959c4b25, type: 3}
+  - {fileID: 1859630849823150, guid: 4c52e92f3784d0f4d9cf0bbc75f3335c, type: 3}
+  - {fileID: 1859630849823150, guid: 796a334effcba864ab8f0b27fd068801, type: 3}
+  - {fileID: 1859630849823150, guid: 4611cf18451952747a0764988db58b80, type: 3}
+  - {fileID: 1859630849823150, guid: ddec1d924e8928344a41ab2ce53dca75, type: 3}
   spawnMatPool:
   - {fileID: 2100000, guid: 610192e893f67824282de753ea7bee69, type: 2}
   - {fileID: 2100000, guid: 97f3a0a0a565e2b48bfd8ddee873c094, type: 2}
@@ -2869,8 +2878,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 5000
-  field of view: 40
+  far clip plane: 350
+  field of view: 20
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -2895,7 +2904,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786702170}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
