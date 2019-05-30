@@ -13,7 +13,6 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject bottomPrefab;
     public GameObject blankCartPrefab;
     public GameObject cartPrefab;
-    public GameObject dangerPrefab;
     public GameObject collectablePrefab;
     public GameObject powerColPrefab;
     public Transform backGround;
@@ -22,6 +21,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public Material[] spawnMatPool;
     public Material[] spawnMats;
+    public Material dangerMaterial;
     public int[] spawnMatsIndex;
 
     public Material towerMat;

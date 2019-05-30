@@ -213,8 +213,15 @@ public class CartManager : MonoBehaviour
                     materialRandomizer = 0;
 
                     //spawn cart prefab, set random position
-                    GameObject tmpCart = Instantiate(LevelManager.Instance.dangerPrefab, transform);
-                    //check if it's steel
+                    GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
+
+                    //Set up material and collider
+                    tmpCart.transform.GetChild(0).GetComponent<BoxCollider>().enabled = false;
+                    tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
+                    tmpCart.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
+                    
+                    
+                    
 
                     //if ()
                     //{
