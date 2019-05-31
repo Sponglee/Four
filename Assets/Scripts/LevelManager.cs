@@ -101,8 +101,13 @@ public class LevelManager : Singleton<LevelManager>
     {
         dangerList = new List<Transform>();
 
-        //Debug.Log(PlayerPrefs.GetInt("CurrentVariant",  0) + " >> " + PlayerPrefs.GetInt("CurrentRank", 1)%4);
-        if (PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 0)
+        Debug.Log(PlayerPrefs.GetInt("CurrentRank", 1) + " >> " + PlayerPrefs.GetInt("CurrentRank", 1) % 4);
+
+        if (GameManager.Instance.CurrentRank == 1)
+        {
+            PlayerPrefs.SetInt("CartVariant", 0);
+        }
+        else if (GameManager.Instance.CurrentRank % 4 == 0)
         {
             PlayerPrefs.SetInt("CartVariant", Random.Range(0,cartVariants.Length));
         }

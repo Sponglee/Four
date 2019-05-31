@@ -297,7 +297,11 @@ public class GameManager : Singleton<GameManager>
 
     //////////////////////////////////////
 
+    private void Awake()
+    {
+        CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
 
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -319,7 +323,7 @@ public class GameManager : Singleton<GameManager>
 
   
         LevelProgress = 0;
-        CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
+      
     }
 
   
