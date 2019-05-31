@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4255553555441760}
   - component: {fileID: 114229273417673040}
+  - component: {fileID: 5460059352684722153}
   - component: {fileID: 7350323113723950188}
   - component: {fileID: 2522011171895027}
-  - component: {fileID: 5460059352684722153}
   m_Layer: 10
   m_Name: Cart
   m_TagString: Cart
@@ -55,6 +55,19 @@ MonoBehaviour:
   spawnColor: {r: 1, g: 1, b: 1, a: 0}
   moving: 0
   current: 3
+--- !u!65 &5460059352684722153
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422077635645674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.43, y: 1.36, z: 1.94}
+  m_Center: {x: 0, y: 2.38, z: -1}
 --- !u!65 &7350323113723950188
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66,8 +79,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.78, y: 1.59, z: 1.69}
-  m_Center: {x: 0, y: 2.53, z: -0.8}
+  m_Size: {x: 3, y: 1.59, z: 1}
+  m_Center: {x: 0, y: 2.53, z: -0.5}
 --- !u!54 &2522011171895027
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -84,19 +97,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!65 &5460059352684722153
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422077635645674}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.86, y: 1.36, z: 0.78}
-  m_Center: {x: 0, y: 2.38, z: -0.37}
 --- !u!1 &1859630849823150
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385715651048490}
   m_Layer: 10
-  m_Name: DollyTemplate 3
+  m_Name: DollyShuriken
   m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
