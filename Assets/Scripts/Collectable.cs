@@ -40,11 +40,11 @@ public class Collectable : MonoBehaviour
             {
                 PowerCol = 1;
             }
-            //Powered Up
-            else if (PowerColRand >= 40 && PowerColRand < 60)
-            {
-                PowerCol = 2;
-            }
+            ////Powered Up
+            //else if (PowerColRand >= 40 && PowerColRand < 60)
+            //{
+            //    PowerCol = 2;
+            //}
            
 
 

@@ -371,7 +371,12 @@ public class BallController : Singleton<BallController>
         if(!collidedBool && !poweredUp)
         {
 
-            comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 1, 2f);
+            comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 1, 3f);
+
+            if(comboMultiplier == 3f)
+            {
+                PoweredUp = true;
+            }
         }
         else if(!poweredUp)
         {

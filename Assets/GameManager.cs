@@ -376,15 +376,15 @@ public class GameManager : Singleton<GameManager>
                             BallController.Instance.Magnet = true;
                     }
                     break;
-                //PoweredUp
-                case 2:
-                    {
-                        if(BallController.Instance.PoweredUp)
-                            PoweredUpCount++;
-                        else
-                            BallController.Instance.PoweredUp = true;
-                    }
-                    break;
+                ////PoweredUp
+                //case 2:
+                //    {
+                //        if(BallController.Instance.PoweredUp)
+                //            PoweredUpCount++;
+                //        else
+                //            BallController.Instance.PoweredUp = true;
+                //    }
+                //    break;
                 default:
                     break;
             }
