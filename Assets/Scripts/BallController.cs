@@ -368,10 +368,14 @@ public class BallController : Singleton<BallController>
     private void Update()
     {
 
-        if(!collidedBool && !poweredUp)
+        if(!collidedBool && !poweredUp && TapToStart)
         {
 
             comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 1, 3f);
+            //Enable and fill powerFiller
+            GameManager.Instance.powerFiller.gameObject.SetActive(true);
+            GameManager.Instance.powerFiller.fillAmount = (comboMultiplier)/3f;
+
 
             if(comboMultiplier == 3f)
             {
@@ -381,10 +385,13 @@ public class BallController : Singleton<BallController>
         else if(!poweredUp)
         {
             comboMultiplier = 1f;
+            //Enable and fill powerFiller
+            GameManager.Instance.powerFiller.gameObject.SetActive(false);
         }
         else
         {
             comboMultiplier = 3f;
+            GameManager.Instance.powerFiller.gameObject.SetActive(false);
         }
 
 
