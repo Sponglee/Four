@@ -158,41 +158,62 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         for (int i = Mathf.Clamp(tmpRank-100,0,tmpRank); i < tmpRank+1; i++)
         {
-            
+           
+
             if (i % 4 == 0)
             {
                 //Debug.Log("NOW "+i + "(" + tmpRank + ")");
                 mapSegment = Instantiate(mapElemRef, map);
                 
+
             }
-            
-            if(mapSegment != null)
+
+           
+
+            if (mapSegment != null)
             {
+               
                 //Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
                 if (i != tmpRank)
                 { 
+                    
                     mapSegment.transform.GetChild(i % 4).GetComponent<Image>().color = finishedColor;
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
 
                     if(i<tmpRank)
                     {
-                        mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(true);
+                       
+                        //enable checkmark
+                        //mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(true);
+                     
 
                         //Disable gems icon
-                        if(mapSegment.transform.GetChild(i%4).GetChild(0).childCount>1)
+                        if (mapSegment.transform.GetChild(i%4).GetChild(0).childCount>1)
                         {
                             mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(1).gameObject.SetActive(false);
+                           
                         }
 
+                        if (i != tmpRank)
+                        {
+                            //Enable tower graphics
+                            mapSegment.transform.GetChild(i % 4).GetChild(1).gameObject.SetActive(true);
+                        }
 
-                        if(i == tmpRank -1)
+                        //Get lastSegment
+                        if (i == tmpRank -1)
                         {
                             mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.clear;
                             lastSegment = mapSegment.transform.GetChild(i % 4);
-                        }
 
+
+                            mapSegment.transform.GetChild(i % 4).GetChild(1).gameObject.SetActive(false);
+
+                        }
+                     
                       
                     }
+                   
                     //Color current level as finished
                     //if (i == tmpRank - 1)
                     //{
@@ -207,8 +228,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
                   
                     //Unlock next level
                     nextSegment = mapSegment.transform.GetChild(i % 4);
-                    
+                   
                     mapSegment.transform.GetChild(i % 4).GetChild(0).GetComponent<Text>().text = (i + 1).ToString();
+
 
                 }
 
@@ -218,8 +240,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
           
         }
 
-        yield return StopMapPan();
-        yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), unlockedMapColor);
+        yield return StopMapPan(lastSegment);
+        //yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), unlockedMapColor);
         yield return StopColorLerp(nextSegment, finishedColor);
 
         yield return null;
@@ -227,7 +249,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
   
 
-    public IEnumerator StopMapPan()
+    public IEnumerator StopMapPan(Transform lastSegment = null)
     {
         //yield return new WaitForSeconds(0.2f);
         float elapsed = 0;
@@ -240,7 +262,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
         if (tmpRank < 12)
+        {
+            //Animation here
+            lastSegment.GetChild(1).gameObject.SetActive(true);
+            lastSegment.GetChild(1).GetComponent<Animator>().SetTrigger("Pan");
+            yield return new WaitForSeconds(0.5f);
             yield break;
+        }
+
         else if(tmpRank % 4 != 0)
         {
             endPos = -Vector3.right * (tmpRank / 4 -2)*100;
@@ -265,8 +294,13 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Debug.Log("XXXXX " + (PlayerPrefs.GetInt("CurrentRank", 1) / 4 - 3) * 97f);
             yield return new WaitForEndOfFrame();
         }
+
+        //Animation here
+        lastSegment.GetChild(1).gameObject.SetActive(true);
+        lastSegment.GetChild(1).GetComponent<Animator>().SetTrigger("Pan");
+        yield return new WaitForSeconds(0.5f);
     }
-    
+
 
     //Lerp the color
     private IEnumerator StopColorLerp(Transform target, Color destColor)
