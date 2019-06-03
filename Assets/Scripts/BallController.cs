@@ -764,21 +764,21 @@ public class BallController : Singleton<BallController>
 
             //other.SetParent(transform.GetChild(0));
            
-            //Second cart pop sequence
+            //Second cart pop sequence  
             other.gameObject.GetComponent<BoxCollider>().tag = "Untagged";
             //other.gameObject.GetComponent<BoxCollider>().enabled = false;
             Rigidbody rb = other.transform.GetChild(1).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
-            rb.velocity = new Vector3(Random.Range(-5f, -10f), 10f, -10f);
-            rb.AddRelativeTorque(new Vector3(Random.Range(-50f, -10f), 20f, -50f));
+            rb.velocity = new Vector3(Random.Range(-5f, -20f), Random.Range(1f, 10f), -10f);
+            rb.AddRelativeTorque(new Vector3(Random.Range(-50f, -10f), Random.Range(0f,20f), -50f));
 
 
             rb = other.transform.GetChild(0).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;
-            rb.velocity = new Vector3(Random.Range(5f, 20f), 10f, -10f);
-            rb.AddRelativeTorque(new Vector3(Random.Range(-50f,-10f), -20f, 50f));
+            rb.velocity = new Vector3(Random.Range(5f, 20f), Random.Range(1f,10f), -10f);
+            rb.AddRelativeTorque(new Vector3(Random.Range(-50f,-10f), Random.Range(-20f, 0f), 50f));
 
 
             //Get some effects 
@@ -817,7 +817,7 @@ public class BallController : Singleton<BallController>
 
 
         float ElapsedTime = 0.0f;
-        float TotalTime = 1f;
+        float TotalTime = 0.5f;
         while (ElapsedTime < TotalTime)
         {
             render.material.color = Color.Lerp(color, initColor, (ElapsedTime / TotalTime));

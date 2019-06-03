@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public class FunctionHandler : Singleton<FunctionHandler>
 {
     public GameObject menuCanvas;
+    public GameObject canvas;
+
+
     public GameObject menuButton;
 
     public Transform map;
@@ -28,7 +31,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
-
+        canvas.SetActive(false);
         BallController.Instance.MenuOpened = true;
         StartCoroutine(StopOpenGameOver(message));
 
@@ -40,6 +43,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     {
         //Enable effectHolder
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
+        canvas.SetActive(true);
         BallController.Instance.MenuOpened = false;
         //If menu is already open
         if (menuCanvas.activeSelf)

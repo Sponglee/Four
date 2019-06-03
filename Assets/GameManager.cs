@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
 
     public Transform powerPanel;
 
+    public GameObject popUp;
+
+
     public Slider progresSlider;
     public Image powerFiller;
 

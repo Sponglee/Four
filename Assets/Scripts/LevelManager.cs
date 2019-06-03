@@ -308,30 +308,30 @@ public class LevelManager : Singleton<LevelManager>
     //}
 
     public float raiseTowerTime = 0.25f;
-    //Level Move sequence
-    public IEnumerator LevelTimer()
-    {
-        int i = 0;
-        yield return new WaitForSeconds(4f);
+    ////Level Move sequence
+    //public IEnumerator LevelTimer()
+    //{
+    //    int i = 0;
+    //    yield return new WaitForSeconds(4f);
 
-        while (true)
-        {
-            yield return new WaitForSeconds(raiseTowerTime);
-            if (true/*ballRef != null && ballRef.CurrentLevel > 0*/)
-            {
-                Instantiate(smokePrefab, transform.GetChild(i).position + new Vector3(0, -5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
-                transform.GetChild(i).gameObject.SetActive(false);
-                //Destroy(transform.GetChild(0).gameObject);
-                RaiseTower();
-                if (raiseTowerTime >= 0.25f)
-                {
-                    //raiseTowerTime -= 0.05f;
-                }
-                i++;
-            }
-        }
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(raiseTowerTime);
+    //        if (true/*ballRef != null && ballRef.CurrentLevel > 0*/)
+    //        {
+    //            Instantiate(smokePrefab, transform.GetChild(i).position + new Vector3(0, -5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+    //            transform.GetChild(i).gameObject.SetActive(false);
+    //            //Destroy(transform.GetChild(0).gameObject);
+    //            RaiseTower();
+    //            if (raiseTowerTime >= 0.25f)
+    //            {
+    //                //raiseTowerTime -= 0.05f;
+    //            }
+    //            i++;
+    //        }
+    //    }
 
-    }
+    //}
 
 
     public IEnumerator StopLevelRotator(bool rightDir = false)
@@ -341,20 +341,19 @@ public class LevelManager : Singleton<LevelManager>
         {
             //LEVELDIFFICULTY
             //Skip rotattion up to lvl 10
-            if (PlayerPrefs.GetInt("CurrentRank", 1) <= 10)
+            if (PlayerPrefs.GetInt("CurrentRank", 1) <= 30)
             {
                 break;
             }
             //LEVELDIFFICULTY
             //levels 10 to 25 - rotate only when non powerUp, lvls 25+ rotate even when poweredUp
-            else if (PlayerPrefs.GetInt("CurrentRank", 1)>10 && !ballRef.PoweredUp)
+            else if (PlayerPrefs.GetInt("CurrentRank", 1)>30)
             {
                 //Debug.Log(">>>>>");
-                ////LEVELDIFFICULTY
-                //if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) > 30)
-                //    levelMoveStart = 30;
-                //else
-                //    levelMoveStart = 0;
+                //LEVELDIFFICULTY
+                if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) < 60)
+                    continue;
+                
 
 
                 for (int i = 1; i < Random.Range(levelMoveStart, levelMoveStart + levelMoveCount); i++)
@@ -368,6 +367,7 @@ public class LevelManager : Singleton<LevelManager>
                     {
                         if (BallController.Instance != null && BallController.Instance.TapToStart)
                         {
+                            Debug.Log("LEFT");
 
                             LevelMove(ballRef.CurrentLevel + 5 + i);
 
@@ -379,8 +379,8 @@ public class LevelManager : Singleton<LevelManager>
 
                         if (BallController.Instance != null && BallController.Instance.TapToStart)
                         {
-
-                            LevelMove(ballRef.CurrentLevel + 5 + i, rightDir);
+                            Debug.Log("RIGHT");
+                            LevelMove(ballRef.CurrentLevel + 5 + i, true);
 
                         }
                     }
@@ -460,6 +460,7 @@ public class LevelManager : Singleton<LevelManager>
             //Switch parents of carts and move (right or left)
             if(rightDirection)
             {
+                Debug.Log("RIGHT INSIDE");
                 //change currents, set parents 
                 tmp.Current--;
                 tmp.transform.parent.SetParent(null);
@@ -469,6 +470,7 @@ public class LevelManager : Singleton<LevelManager>
             }
             else
             {
+                Debug.Log("LEFT INSIDE");
                 //change currents, set parents 
                 tmp.Current++;
                 tmp.transform.parent.SetParent(null);
