@@ -352,7 +352,11 @@ public class LevelManager : Singleton<LevelManager>
                 //Debug.Log(">>>>>");
                 //LEVELDIFFICULTY
                 if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) < 60)
+                {
+                    yield return new WaitForSeconds(levelMoveWait);
                     continue;
+                }
+
                 
 
 

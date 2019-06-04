@@ -194,7 +194,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                            
                         }
 
-                        if (i != tmpRank)
+                        if (i != tmpRank && i != tmpRank -1)
                         {
                             //Enable tower graphics
                             mapSegment.transform.GetChild(i % 4).GetChild(1).gameObject.SetActive(true);
@@ -206,8 +206,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
                             mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.clear;
                             lastSegment = mapSegment.transform.GetChild(i % 4);
 
-
-                            mapSegment.transform.GetChild(i % 4).GetChild(1).gameObject.SetActive(false);
+                            //Disable model for later anim
+                            mapSegment.transform.GetChild(i % 4).GetChild(1).GetChild(0).gameObject.SetActive(false);
 
                         }
                      
@@ -266,7 +266,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Animation here
             lastSegment.GetChild(1).gameObject.SetActive(true);
             lastSegment.GetChild(1).GetComponent<Animator>().SetTrigger("Pan");
-            yield return new WaitForSeconds(0.5f);
+            //Enable model after anim
+            lastSegment.GetChild(1).GetChild(0).gameObject.SetActive(true);
+            yield return new WaitForSeconds(1f);
             yield break;
         }
 
@@ -298,7 +300,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
         //Animation here
         lastSegment.GetChild(1).gameObject.SetActive(true);
         lastSegment.GetChild(1).GetComponent<Animator>().SetTrigger("Pan");
-        yield return new WaitForSeconds(0.5f);
+        //Enable model after anim
+        lastSegment.GetChild(1).GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
     }
 
 

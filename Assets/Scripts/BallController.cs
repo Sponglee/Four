@@ -226,7 +226,7 @@ public class BallController : Singleton<BallController>
                 BallAnim.SetBool("Fall", true);
                 poweredUpVFX.SetActive(true);
                 poweredUp = value;
-                RemoveCartBelow(4);
+                RemoveCartBelow(2);
                 CollidedBool = false;
             }
             else if (collidedBool == true && value == false)
@@ -310,7 +310,7 @@ public class BallController : Singleton<BallController>
         {
             Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
             //Сheck if cart is close to push it out if needed
-            if ((otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= range))
+            if (otherTrans.GetComponent<CartModelContoller>().LevelIndex - CurrentLevel <= range)
             {
 
                 PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);

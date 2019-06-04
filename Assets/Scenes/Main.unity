@@ -421,8 +421,7 @@ MonoBehaviour:
   levelStop: 0
   mpoofPrefab: {fileID: 100018, guid: a40b64bf23366dc42a892af2c6ff6140, type: 3}
   poofPrefab: {fileID: 100000, guid: 3156817f64ec68948ad6bb26569b9ef5, type: 3}
-  smokePrefab: {fileID: 1628744458893394, guid: e243632bb3aff9549abdcfcc2ef0c4f0,
-    type: 3}
+  smokePrefab: {fileID: 0}
   electroMagnetPrefab: {fileID: 100000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
   EffectHolder: {fileID: 1172575578}
   currentAngleSpeed: 0
@@ -3243,7 +3242,7 @@ MonoBehaviour:
   currText: {fileID: 1685531851}
   nextText: {fileID: 435973916}
   multiButton: {fileID: 684461228}
-  fltText: {fileID: 1001251165192770, guid: a45335c98c69dcf45ac304fa3416ac4e, type: 3}
+  fltText: {fileID: 0}
   fillRate: 5
   powerDecreaseAmount: 1000
   powerRestoreRate: 50
