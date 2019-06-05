@@ -10,6 +10,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 {
     public GameObject menuCanvas;
     public GameObject canvas;
+    public GameObject shop;
 
 
     public GameObject menuButton;
@@ -76,6 +77,18 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
 
 
+    }
+
+    public void ToggleShop()
+    {
+        if(shop.activeSelf)
+        {
+            shop.SetActive(false);
+        }
+        else
+        {
+            shop.SetActive(true);
+        }
     }
 
     public IEnumerator StopOpenGameOver(string message)
