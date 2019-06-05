@@ -24,7 +24,7 @@ public class BallController : Singleton<BallController>
         {
             
             if(!CollidedBool)
-                comboIndex = Mathf.Clamp(comboIndex+1,0,5);
+                comboIndex = Mathf.Clamp(comboIndex+1,0,1);
 
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / levelManager.levelCount;
