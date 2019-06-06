@@ -8,9 +8,12 @@ using UnityEngine.UI;
 
 public class FunctionHandler : Singleton<FunctionHandler>
 {
+
+    public GameObject menuCam;
+    public GameObject shopCam;
+
     public GameObject menuCanvas;
     public GameObject canvas;
-    public GameObject shop;
 
 
     public GameObject menuButton;
@@ -28,10 +31,13 @@ public class FunctionHandler : Singleton<FunctionHandler>
     private void Start()
     {
         Time.timeScale = 1;
+        menuCam = SpawnManager.Instance.vcamMenu.gameObject;
+        shopCam = SpawnManager.Instance.vcamShop.gameObject;
     }
 
     public void OpenGameOver(string message)
     {
+        BallController.Instance.TapToStart = false;
         canvas.SetActive(false);
         BallController.Instance.MenuOpened = true;
         StartCoroutine(StopOpenGameOver(message));
@@ -42,9 +48,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void CloseGameOver(bool menuClose = false)
     {
+        
         //Enable effectHolder
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
         canvas.SetActive(true);
+        menuCam.SetActive(false);
         BallController.Instance.MenuOpened = false;
         //If menu is already open
         if (menuCanvas.activeSelf)
@@ -54,7 +62,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //GameOver menu close
             if (!menuClose)
             {
-                Time.timeScale = 1;
+                //Time.timeScale = 1;
 
 
                 SceneManager.LoadScene("Main");
@@ -62,7 +70,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             else
             {
 
-                Time.timeScale = 1;
+                //Time.timeScale = 1;
                 //Disable menu screen
                 menuCanvas.SetActive(false);
                 menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
@@ -70,7 +78,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 menuButton.SetActive(true);
 
 
-                BallController.Instance.TapToStart = false;
+                
                 BallController.Instance.RemoveCartBelow(15);
                 GameManager.Instance.tapText.gameObject.SetActive(true);
             }
@@ -81,13 +89,13 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void ToggleShop()
     {
-        if(shop.activeSelf)
+        if(shopCam.activeSelf)
         {
-            shop.SetActive(false);
+            shopCam.SetActive(false);
         }
         else
         {
-            shop.SetActive(true);
+            shopCam.SetActive(true);
         }
     }
 
@@ -100,16 +108,17 @@ public class FunctionHandler : Singleton<FunctionHandler>
         //if there's no message - mid game open or close menu
         if (message == "")
         {
-            Time.timeScale = 0;
+            
             //Close menu if it's open and midgame
-            if (menuCanvas.activeSelf)
+            if (menuCam.activeSelf)
             {
                 CloseGameOver(true);
             }
             else
             {
                 //Activate Menu screen
-                menuCanvas.SetActive(true);
+                menuCam.SetActive(true);
+
                 //Set message
                 menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
                
@@ -133,7 +142,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Disable fltText
             LevelManager.Instance.EffectHolder.gameObject.SetActive(false);
             //Activate Menu screen
-            menuCanvas.SetActive(true);
+            menuCam.SetActive(true);
+
             //Set message
             menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
 
@@ -150,7 +160,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             {
                 GameManager.Instance.Score = 0;
                 PlayerPrefs.SetInt("Score", 0);
-                Time.timeScale = 0;
+                //Time.timeScale = 0;
             }
           
         }

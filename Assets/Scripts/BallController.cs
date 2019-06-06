@@ -170,13 +170,16 @@ public class BallController : Singleton<BallController>
             {
                 //let go
                 rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+                GameManager.Instance.tapText.gameObject.SetActive(true);
 
                 //StartCoroutine(LevelManager.Instance.StopLevelRotator());
             }
             else if (value == false && tapToStart == true)
             {
                 rb.constraints = RigidbodyConstraints.FreezeAll;
+                GameManager.Instance.tapText.gameObject.SetActive(false);
             }
+           
             tapToStart = value;
         }
     }
@@ -524,14 +527,14 @@ public class BallController : Singleton<BallController>
 
 
         }
-        else if(!TapToStart)
+        else if(!TapToStart && !MenuOpened)
         {
             //rb.velocity = Vector3.zero;
 
             if (Input.GetMouseButtonDown(0))
             {
                 TapToStart = true;
-                GameManager.Instance.tapText.gameObject.SetActive(false);
+                
                 //PoweredUp = true;
 
             }

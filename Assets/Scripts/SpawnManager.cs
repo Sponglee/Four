@@ -17,6 +17,8 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public CinemachineVirtualCamera vcam;
     public CinemachineVirtualCamera vcamSpeedy;
+    public CinemachineVirtualCamera vcamMenu;
+    public CinemachineVirtualCamera vcamShop;
 
     public bool gameMode = true;
 
