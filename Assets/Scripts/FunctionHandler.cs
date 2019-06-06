@@ -13,7 +13,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject shopCam;
 
     public GameObject menuCanvas;
-    public GameObject canvas;
+    public GameObject canvasUI;
 
 
     public GameObject menuButton;
@@ -38,7 +38,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public void OpenGameOver(string message)
     {
         BallController.Instance.TapToStart = false;
-        canvas.SetActive(false);
+        canvasUI.SetActive(false);
         BallController.Instance.MenuOpened = true;
         StartCoroutine(StopOpenGameOver(message));
 
@@ -51,7 +51,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         
         //Enable effectHolder
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
-        canvas.SetActive(true);
+        canvasUI.SetActive(true);
         BallController.Instance.MenuOpened = false;
         //If menu is already open
         if (menuCam.activeSelf)
@@ -297,11 +297,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         else if(tmpRank % 4 != 0)
         {
-            endPos = -Vector3.right * (tmpRank / 4 -2)*100;
+            endPos = -Vector3.right * (tmpRank / 4 -2)*110f;
         }
         else
         {
-            endPos = -Vector3.right * (tmpRank /4 - 2) * 100;
+            endPos = -Vector3.right * (tmpRank /4 - 2) * 110f;
 
         }
 

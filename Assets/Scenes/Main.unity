@@ -4560,7 +4560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.00004129562, y: 0}
+  m_AnchoredPosition: {x: -0.000044698212, y: 0}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &732152713
@@ -5037,8 +5037,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuCam: {fileID: 0}
   shopCam: {fileID: 0}
-  menuCanvas: {fileID: 159181785}
-  canvas: {fileID: 359740917}
+  menuCanvas: {fileID: 1113430521}
+  canvasUI: {fileID: 359740917}
   menuButton: {fileID: 1786462194}
   map: {fileID: 732152712}
   mapElemRef: {fileID: 3089175753561968872, guid: c719a7b342552644faf0359cea1d4849,
@@ -6408,7 +6408,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956264747}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000025205867}
+  m_LocalPosition: {x: 0, y: 0, z: 0.19998874}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2011019480}
@@ -6417,7 +6417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000076293945}
+  m_AnchoredPosition: {x: 0.0000016680146, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &956264749
@@ -7604,7 +7604,7 @@ MonoBehaviour:
     lineCount: 2
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -9146,7 +9146,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.9}
-  m_SizeDelta: {x: 369, y: 98.2}
+  m_SizeDelta: {x: 392.9, y: 98.2}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1336820552
 MonoBehaviour:
@@ -13078,7 +13078,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0008239746}
+  m_AnchoredPosition: {x: 0, y: 0.00050354004}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2012980702
