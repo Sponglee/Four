@@ -128,6 +128,8 @@ public class BallController : Singleton<BallController>
     private int CollidedCurrent = -1;
 
     [SerializeField]
+    private float powerUpSpeed = 0;
+    [SerializeField]
     private float forceMultiplier = 10;
     [SerializeField]
     public float comboMultiplier = 1;
@@ -372,6 +374,8 @@ public class BallController : Singleton<BallController>
         {
 
             comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 1, 3f);
+            //powerUpSpeed += Time.deltaTime;
+
             //Enable and fill powerFiller
             GameManager.Instance.powerFiller.gameObject.SetActive(true);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier)/3f;
@@ -384,9 +388,11 @@ public class BallController : Singleton<BallController>
         }
         else if(!poweredUp)
         {
-            comboMultiplier = 1f;
+            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 1, 3f);
+            GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
             //Enable and fill powerFiller
-            GameManager.Instance.powerFiller.gameObject.SetActive(false);
+            if (comboMultiplier == 1)
+                GameManager.Instance.powerFiller.gameObject.SetActive(false);
         }
         else
         {

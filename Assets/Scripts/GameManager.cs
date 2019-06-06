@@ -384,7 +384,7 @@ public class GameManager : Singleton<GameManager>
                     {
                         if (BallController.Instance.PoweredUp)
                         {
-                            //PoweredUpCount++;
+                            PoweredUpCount++;
                         }
                         else
                             BallController.Instance.PoweredUp = true;

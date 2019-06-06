@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385715651048490}
   m_Layer: 10
-  m_Name: DollyTemplate 5
+  m_Name: DollyTemplate 6
   m_TagString: Cart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
