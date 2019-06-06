@@ -198,6 +198,7 @@ public class BallController : Singleton<BallController>
             if (value == true && powerUpTrigger == false && !PoweredUp)
             {
                 GameManager.Instance.multiButton.SetActive(true);
+                
                 //StartCoroutine(StopLevelRotator());
                 powerUpTrigger = value;
             }
@@ -232,21 +233,28 @@ public class BallController : Singleton<BallController>
         {
             if(value == true && poweredUp == false)
             {
+                //Enable trigger
                 transform.GetComponent<BoxCollider>().isTrigger = true;
                 BallAnim.SetBool("Fall", true);
                 poweredUpVFX.SetActive(true);
-                poweredUp = value;
-                RemoveCartBelow(2);
+
+                Debug.Log("SPEED " + rb.velocity);
+                rb.velocity = Vector3.down * 72f;
+
+                //RemoveCartBelow(2);
                 CollidedBool = false;
+                poweredUp = value;
             }
             else if (collidedBool == true && value == false)
             {
+                //Disable trigger
                 transform.GetComponent<BoxCollider>().isTrigger = false;
                 BallAnim.SetBool("Fall", false);
                 poweredUpVFX.SetActive(false);
             }
             else if (value == false)
             {
+                //Disable trigger
                 transform.GetComponent<BoxCollider>().isTrigger = false;
                 BallAnim.SetBool("Fall", false);
                 poweredUpVFX.SetActive(false);

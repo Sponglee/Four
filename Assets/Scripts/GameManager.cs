@@ -276,22 +276,22 @@ public class GameManager : Singleton<GameManager>
             if (poweredUpCount > 0)
             {
                 ////Fade out the button
-                ////powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
+                powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
-                if(poweredUpCount>1)
+                if (poweredUpCount>1)
                 {
-                    //powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(true);
+                    powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(true);
                     powerPanel.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
                 }
                 else
                 {
-                    //powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(false);
+                    powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(false);
                 }
             }
             else
             {
                 //Fade in the button
-                //powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(true);
+                powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(true);
             }
             PlayerPrefs.SetInt("PoweredUpCount", poweredUpCount);
         }
