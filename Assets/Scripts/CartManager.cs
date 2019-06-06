@@ -215,8 +215,8 @@ public class CartManager : MonoBehaviour
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
 
-                    ////Set up material and collider
-                    //tmpCart.transform.GetChild(0).GetComponent<BoxCollider>().enabled = false;
+                    ////Set up material and danger capsule collider
+                    tmpCart.transform.GetChild(0).GetComponent<CapsuleCollider>().enabled = true;
                     tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
                     tmpCart.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
                     

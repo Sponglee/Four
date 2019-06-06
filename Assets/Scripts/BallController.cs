@@ -175,7 +175,7 @@ public class BallController : Singleton<BallController>
             }
             else if (value == false && tapToStart == true)
             {
-                rb.constraints = RigidbodyConstraints.FreezePositionY;
+                rb.constraints = RigidbodyConstraints.FreezeAll;
             }
             tapToStart = value;
         }
@@ -318,7 +318,7 @@ public class BallController : Singleton<BallController>
         GameObject otherTrans = DownCheckRay(transform, "Cart");
         //Debug.Log(">>>>" + otherTrans.name);
 
-        if (otherTrans.gameObject != null && otherTrans.gameObject.CompareTag("Cart") || otherTrans.gameObject.CompareTag("Danger"))
+        if (otherTrans.gameObject != null && /*otherTrans.gameObject.CompareTag("Cart") || */otherTrans.gameObject.CompareTag("Danger"))
         {
             Debug.Log("BUMP " + CurrentLevel + " ::: " + otherTrans.GetComponent<CartModelContoller>().LevelIndex);
             //Сheck if cart is close to push it out if needed
@@ -367,13 +367,13 @@ public class BallController : Singleton<BallController>
         nextBallPosToJump = -levelManager.spawnOffset /*+ GetComponent<SphereCollider>().bounds.size.y / 2*/ + levelManager.spawnOffsetStep / 2;
 
         //Debug.Log(nextBallPosToJump);
-        LevelManager.Instance.ballRef = this;
+        levelManager.ballRef = this;
 
         //gameObject.GetComponent<Renderer>().material.color = LevelManager.Instance.spawnMats[0].color;
 
 
         
-        StartCoroutine(LevelManager.Instance.StopLevelRotator());
+        StartCoroutine(levelManager.StopLevelRotator());
     }
 
    
@@ -633,6 +633,8 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("Bottom"))
         {
             //Add more levels for progression
+            transform.GetComponent<BoxCollider>().isTrigger = false;
+            comboMultiplier = 1;
             GameManager.Instance.LevelComplete();
         }
         else if (other.gameObject.CompareTag("Collectable"))
@@ -644,13 +646,13 @@ public class BallController : Singleton<BallController>
             {
                 //comboMultiplier += 0.3f;
             }
-            Instantiate(LevelManager.Instance.poofPrefab, other.transform.position, Quaternion.identity);
+            Instantiate(levelManager.poofPrefab, other.transform.position, Quaternion.identity);
         }
         else if (other.gameObject.CompareTag("PowerCol"))
         {
 
             GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
-            Instantiate(LevelManager.Instance.smokePrefab, other.transform.position, Quaternion.identity);
+            Instantiate(levelManager.smokePrefab, other.transform.position, Quaternion.identity);
             Destroy(other.gameObject);
         }
         if (PoweredUp && other.gameObject.CompareTag("Cart"))
@@ -667,12 +669,12 @@ public class BallController : Singleton<BallController>
                 if (other.transform.position.x >= transform.position.x)
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, true);
+                    levelManager.LevelMove(CurrentLevel, true);
                 }
                 else
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, false);
+                    levelManager.LevelMove(CurrentLevel, false);
                 }
                 return;
 
@@ -701,6 +703,7 @@ public class BallController : Singleton<BallController>
 
                     PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
                     PoweredUp = false;
+                  
                     comboMultiplier = 1;
                     //GameManager.Instance.PowerFill = 0;
                 }
@@ -726,12 +729,12 @@ public class BallController : Singleton<BallController>
                 if (other.transform.position.x >= transform.position.x )
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, true, true);
+                    levelManager.LevelMove(CurrentLevel, true, true);
                 }
                 else
                 {
                     other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, false,true);
+                    levelManager.LevelMove(CurrentLevel, false,true);
                 }
                 return;
             }
@@ -803,8 +806,11 @@ public class BallController : Singleton<BallController>
             rb.AddRelativeTorque(new Vector3(Random.Range(-50f,-10f), Random.Range(-20f, 0f), 50f));
 
 
+            //SetBoxCollider to trigger to avoid stucking
+            other.transform.GetComponent<BoxCollider>().isTrigger = true;
+
             //Get some effects 
-            Instantiate(LevelManager.Instance.mpoofPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, LevelManager.Instance.EffectHolder);
+            Instantiate(levelManager.mpoofPrefab, gameObject.transform.position + new Vector3(0, 5, -5), Quaternion.identity, levelManager.EffectHolder);
 
 
             if(PoweredUp)

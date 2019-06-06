@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1762960421721146485}
   - component: {fileID: 1868298566343017797}
-  - component: {fileID: 6034351000678030332}
+  - component: {fileID: 7006870868991914522}
   - component: {fileID: 9113529327871744121}
   - component: {fileID: 1761083992493824742}
   m_Layer: 10
@@ -55,19 +55,20 @@ MonoBehaviour:
   spawnColor: {r: 1, g: 1, b: 1, a: 0}
   moving: 0
   current: 3
---- !u!65 &6034351000678030332
-BoxCollider:
+--- !u!136 &7006870868991914522
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764663462198082815}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.43, y: 1.36, z: 0.83}
-  m_Center: {x: 0, y: 2.38, z: -0.43}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  m_Radius: 0.5
+  m_Height: 2.95
+  m_Direction: 0
+  m_Center: {x: 0, y: 2.5, z: -1.03}
 --- !u!65 &9113529327871744121
 BoxCollider:
   m_ObjectHideFlags: 0

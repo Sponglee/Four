@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 114229273417673040}
   - component: {fileID: 7350323113723950188}
   - component: {fileID: 2522011171895027}
+  - component: {fileID: 8036140776747286078}
   m_Layer: 10
   m_Name: Cart
   m_TagString: Cart
@@ -83,6 +84,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!136 &8036140776747286078
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422077635645674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  m_Radius: 0.5
+  m_Height: 2.95
+  m_Direction: 0
+  m_Center: {x: 0, y: 2.5, z: -1.03}
 --- !u!1 &1859630849823150
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,11 +323,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1a10dd056dc3b7d4bb9bbbbbe532f564, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.49
+      value: 0.02000016
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1a10dd056dc3b7d4bb9bbbbbe532f564, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.00000015894572
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1a10dd056dc3b7d4bb9bbbbbe532f564, type: 3}
       propertyPath: m_LocalRotation.x
@@ -383,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1a10dd056dc3b7d4bb9bbbbbe532f564, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.49
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1a10dd056dc3b7d4bb9bbbbbe532f564, type: 3}
       propertyPath: m_LocalPosition.z
