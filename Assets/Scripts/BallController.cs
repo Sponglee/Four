@@ -168,7 +168,14 @@ public class BallController : Singleton<BallController>
 
             if (value == true && tapToStart == false)
             {
+                //let go
+                rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+
                 //StartCoroutine(LevelManager.Instance.StopLevelRotator());
+            }
+            else if (value == false && tapToStart == true)
+            {
+                rb.constraints = RigidbodyConstraints.FreezePositionY;
             }
             tapToStart = value;
         }
@@ -225,6 +232,7 @@ public class BallController : Singleton<BallController>
         {
             if(value == true && poweredUp == false)
             {
+                transform.GetComponent<BoxCollider>().isTrigger = true;
                 BallAnim.SetBool("Fall", true);
                 poweredUpVFX.SetActive(true);
                 poweredUp = value;
@@ -233,11 +241,13 @@ public class BallController : Singleton<BallController>
             }
             else if (collidedBool == true && value == false)
             {
+                transform.GetComponent<BoxCollider>().isTrigger = false;
                 BallAnim.SetBool("Fall", false);
                 poweredUpVFX.SetActive(false);
             }
             else if (value == false)
             {
+                transform.GetComponent<BoxCollider>().isTrigger = false;
                 BallAnim.SetBool("Fall", false);
                 poweredUpVFX.SetActive(false);
             }
@@ -451,27 +461,27 @@ public class BallController : Singleton<BallController>
                     transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
                    
                     ForcePush = true;
-                    rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
+                    //rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
                 }
 
 
             }
-            else if(!CollidedBool)
-            {
-                //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
-                ForcePush = false;
+            //else if(!CollidedBool)
+            //{
+            //    //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+            //    ForcePush = false;
                 
-                rb.velocity = downVelocity * comboMultiplier * 100f;
+            //    rb.velocity = downVelocity /** comboMultiplier*/ * 100f;
 
-            }
-            else
-            {
-                //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
-                ForcePush = false;
+            //}
+            //else
+            //{
+            //    //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+            //    ForcePush = false;
 
-                rb.velocity =Vector3.zero;
+            //    rb.velocity =Vector3.zero;
 
-            }
+            //}
 
 
 
@@ -508,19 +518,19 @@ public class BallController : Singleton<BallController>
         }
         else if(!TapToStart)
         {
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
 
             if (Input.GetMouseButtonDown(0))
             {
                 TapToStart = true;
                 GameManager.Instance.tapText.gameObject.SetActive(false);
                 //PoweredUp = true;
-                
+
             }
         }
         else
         {
-            rb.velocity = Vector3.zero;
+            //rb.velocity = Vector3.zero;
         }
 
 
@@ -612,10 +622,96 @@ public class BallController : Singleton<BallController>
     //    }
     //}
 
-
-
-    //Process a collision
     private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Level"))
+        {
+
+            //Debug.Log(other.name);
+            CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
+        }
+        else if (other.gameObject.CompareTag("Bottom"))
+        {
+            //Add more levels for progression
+            GameManager.Instance.LevelComplete();
+        }
+        else if (other.gameObject.CompareTag("Collectable"))
+        {
+
+            Destroy(other.gameObject);
+            GameManager.Instance.GrabCollectable();
+            if (PoweredUp)
+            {
+                //comboMultiplier += 0.3f;
+            }
+            Instantiate(LevelManager.Instance.poofPrefab, other.transform.position, Quaternion.identity);
+        }
+        else if (other.gameObject.CompareTag("PowerCol"))
+        {
+
+            GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
+            Instantiate(LevelManager.Instance.smokePrefab, other.transform.position, Quaternion.identity);
+            Destroy(other.gameObject);
+        }
+        if (PoweredUp && other.gameObject.CompareTag("Cart"))
+        {
+            PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+        }
+        else if (other.gameObject.CompareTag("Danger"))
+        {
+            //LevelMove danger if on same level
+            if (other.transform.parent.parent != null && CurrentLevel >= other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
+            {
+
+                Debug.Log(CurrentLevel + " : : : : " + other.transform.parent.parent.parent.parent.GetSiblingIndex());
+                if (other.transform.position.x >= transform.position.x)
+                {
+                    other.transform.GetComponent<CartModelContoller>().Moving = true;
+                    LevelManager.Instance.LevelMove(CurrentLevel, true);
+                }
+                else
+                {
+                    other.transform.GetComponent<CartModelContoller>().Moving = true;
+                    LevelManager.Instance.LevelMove(CurrentLevel, false);
+                }
+                return;
+
+            }
+            else
+            {
+                //8888888888888888888//
+                if (Shielded)
+                {
+                    PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                    Shielded = false;
+                }
+                else if (!PoweredUp)
+                {
+                    if (!other.transform.GetComponent<CartModelContoller>().Moving)
+                    {
+                        FunctionHandler.Instance.OpenGameOver("GAME OVER");
+                        TapToStart = false;
+                        forceMultiplier = 1;
+                        PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                    }
+
+                }
+                else
+                {
+
+                    PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
+                    PoweredUp = false;
+                    comboMultiplier = 1;
+                    //GameManager.Instance.PowerFill = 0;
+                }
+            }
+
+
+        }
+
+    }
+    //Process a collision
+    private void OnCollisionEnter(Collision other)
     {
 
        
@@ -651,100 +747,20 @@ public class BallController : Singleton<BallController>
 
                 CollidedBool = true;
             }
+
+
         }
 
-        if (other.gameObject.CompareTag("Level"))
-        {
-            
-            //Debug.Log(other.name);
-            CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
-        }
+
         //else if (other.gameObject.CompareTag("CartTrigger") && ForcePush)
         //{
         //    //if(gameObject.GetComponent<Renderer>().material.color != other.transform.parent.GetComponent<Renderer>().material.color)
         //    //    WarningCheck = true;
         //}
-        else if (other.gameObject.CompareTag("Collectable"))
-        {
-           
-            Destroy(other.gameObject);
-            GameManager.Instance.GrabCollectable();
-            if (PoweredUp)
-            {
-                //comboMultiplier += 0.3f;
-            }
-            Instantiate(LevelManager.Instance.poofPrefab, other.transform.position, Quaternion.identity);
-        }
-        else if(other.gameObject.CompareTag("PowerCol"))
-        {
-           
-            GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
-            Instantiate(LevelManager.Instance.smokePrefab, other.transform.position, Quaternion.identity);
-            Destroy(other.gameObject);
-        }
 
 
 
-        if (PoweredUp && other.gameObject.CompareTag("Cart"))
-        {
-                PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
-        }
-        else if (other.gameObject.CompareTag("Danger"))
-        {
-            //LevelMove danger if on same level
-            if (other.transform.parent.parent != null && CurrentLevel >= other.transform.parent.parent.parent.parent.GetSiblingIndex() && !other.transform.GetComponent<CartModelContoller>().Moving)
-            {
-               
-                Debug.Log(CurrentLevel + " : : : : " + other.transform.parent.parent.parent.parent.GetSiblingIndex());
-                if (other.transform.position.x >= transform.position.x)
-                {
-                    other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, true);
-                }
-                else
-                {
-                    other.transform.GetComponent<CartModelContoller>().Moving = true;
-                    LevelManager.Instance.LevelMove(CurrentLevel, false);
-                }
-                return;
-             
-            }
-            else
-            {
-                //8888888888888888888//
-                if (Shielded)
-                {
-                    PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
-                    Shielded = false;
-                }
-                else if (!PoweredUp)
-                {
-                    if(!other.transform.GetComponent<CartModelContoller>().Moving)
-                    {
-                        FunctionHandler.Instance.OpenGameOver("GAME OVER");
-                        TapToStart = false;
-                        forceMultiplier = 1;
-                        PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
-                    }
-                    
-                }
-                else
-                {
 
-                    PushDown(other.transform, other.transform.GetComponent<CartModelContoller>().LevelIndex);
-                    PoweredUp = false;
-                    comboMultiplier = 1;
-                    //GameManager.Instance.PowerFill = 0;
-                }
-            }
-
-           
-        }
-        else if (other.gameObject.CompareTag("Bottom"))
-        {
-            //Add more levels for progression
-            GameManager.Instance.LevelComplete();
-        }
     }
 
 
@@ -772,7 +788,7 @@ public class BallController : Singleton<BallController>
            
             //Second cart pop sequence  
             other.gameObject.GetComponent<BoxCollider>().tag = "Untagged";
-            //other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             Rigidbody rb = other.transform.GetChild(1).GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
             rb.useGravity = true;

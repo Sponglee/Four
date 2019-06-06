@@ -23586,6 +23586,7 @@ MonoBehaviour:
   forcePush: 0
   SecondCollision: 0
   collidedBool: 0
+  powerUpSpeed: 0
   forceMultiplier: 0
   comboMultiplier: 1
   forceTreshold: 30
