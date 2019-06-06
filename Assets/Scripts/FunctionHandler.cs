@@ -55,7 +55,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         menuCam.SetActive(false);
         BallController.Instance.MenuOpened = false;
         //If menu is already open
-        if (menuCanvas.activeSelf)
+        if (menuCam.activeSelf)
         {
 
 
