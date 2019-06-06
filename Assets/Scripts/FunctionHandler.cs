@@ -52,12 +52,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
         //Enable effectHolder
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
         canvas.SetActive(true);
-        menuCam.SetActive(false);
         BallController.Instance.MenuOpened = false;
         //If menu is already open
         if (menuCam.activeSelf)
         {
 
+            menuCam.SetActive(false);
 
             //GameOver menu close
             if (!menuClose)
