@@ -10,8 +10,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
 {
 
     public GameObject menuCam;
-    public GameObject shopCam;
+    public GameObject windowCam;
 
+    public GameObject shopHolder;
+    public GameObject rollHolder;
     public GameObject menuCanvas;
     public GameObject canvasUI;
 
@@ -26,13 +28,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public bool LevelCompleteInProgress = false;
 
- 
-
     private void Start()
     {
         Time.timeScale = 1;
         menuCam = SpawnManager.Instance.vcamMenu.gameObject;
-        shopCam = SpawnManager.Instance.vcamShop.gameObject;
+        windowCam = SpawnManager.Instance.vcamShop.gameObject;
     }
 
     public void OpenGameOver(string message)
@@ -87,21 +87,52 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     }
 
-    public void ToggleShop()
+    public void ToggleMenuWindow(int targetIndex)
     {
-        if(shopCam.activeSelf)
+        GameObject target = null;
+
+        switch (targetIndex)
         {
-            shopCam.SetActive(false);
+            //shop window
+            case 0:
+                target = shopHolder;
+                break;
+            //Roll window
+            case 1:
+                target = rollHolder;
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+
+
+        if(windowCam.activeSelf)
+        {
+            windowCam.SetActive(false);
+            StartCoroutine(StopWindow(target));
         }
         else
         {
-            shopCam.SetActive(true);
+
+            windowCam.SetActive(true);
+            target.SetActive(true);
         }
     }
 
+    public IEnumerator StopWindow(GameObject target)
+    {
+        yield return new WaitForSeconds(0.21f);
+        target.SetActive(false);
+    }
+
+
+
     public IEnumerator StopOpenGameOver(string message)
     {
-        
+        menuCanvas.transform.parent.position = new Vector3(menuCanvas.transform.parent.position.x, BallController.Instance.transform.position.y, menuCanvas.transform.parent.position.z);
+        menuCanvas.SetActive(true);
         GameManager.Instance.bestText.text = GameManager.Instance.bestScore.ToString();
         GameManager.Instance.menuScoreText.text = GameManager.Instance.Score.ToString();
 
