@@ -13,7 +13,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject windowCam;
 
     public GameObject shopHolder;
-    public GameObject rollHolder;
+    public GameObject chestHolder;
     public GameObject menuCanvas;
     public GameObject canvasUI;
 
@@ -37,10 +37,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
-        BallController.Instance.TapToStart = false;
-        canvasUI.SetActive(false);
-        BallController.Instance.MenuOpened = true;
-        StartCoroutine(StopOpenGameOver(message));
+        if (!LevelCompleteInProgress)
+        {
+            LevelCompleteInProgress = true;
+            BallController.Instance.TapToStart = false;
+            canvasUI.SetActive(false);
+            BallController.Instance.MenuOpened = true;
+            StartCoroutine(StopOpenGameOver(message));
+        }
 
        
 
@@ -90,16 +94,16 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public void ToggleMenuWindow(int targetIndex)
     {
         GameObject target = null;
-
+        Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         switch (targetIndex)
         {
             //shop window
             case 0:
                 target = shopHolder;
                 break;
-            //Roll window
+            //chest window
             case 1:
-                target = rollHolder;
+                target = chestHolder;
                 break;
             case 2:
                 break;
@@ -131,10 +135,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopOpenGameOver(string message)
     {
+       
         menuCanvas.transform.parent.position = new Vector3(menuCanvas.transform.parent.position.x, BallController.Instance.transform.position.y, menuCanvas.transform.parent.position.z);
         menuCanvas.SetActive(true);
         GameManager.Instance.bestText.text = GameManager.Instance.bestScore.ToString();
         GameManager.Instance.menuScoreText.text = GameManager.Instance.Score.ToString();
+      
 
         //if there's no message - mid game open or close menu
         if (message == "")
@@ -149,6 +155,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             {
                 //Activate Menu screen
                 menuCam.SetActive(true);
+                yield return new WaitForSeconds(0.4f);
 
                 //Set message
                 menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
@@ -174,6 +181,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
             LevelManager.Instance.EffectHolder.gameObject.SetActive(false);
             //Activate Menu screen
             menuCam.SetActive(true);
+            yield return new WaitForSeconds(0.4f);
+
 
             //Set message
             menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
@@ -184,26 +193,36 @@ public class FunctionHandler : Singleton<FunctionHandler>
             if(message != "GAME OVER")
             {
                 menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-                if(!LevelCompleteInProgress)
-                    StartCoroutine(StopMapProgression());
+                //if(!LevelCompleteInProgress)
+                    yield return StartCoroutine(StopMapProgression());
             }
             else
             {
-                GameManager.Instance.Score = 0;
+                //GameManager.Instance.Score = 0;
                 PlayerPrefs.SetInt("Score", 0);
                 //Time.timeScale = 0;
             }
           
         }
+
+        if(GameManager.Instance.KeyCount>0)
+        {
+            yield return new WaitForSeconds(0.4f);
+            //Open chestWindow
+            ToggleMenuWindow(1);
+
+        }
         yield return null;
+
     }
 
 
     public IEnumerator StopMapProgression()
     {
-        LevelCompleteInProgress = true;
+        //LevelCompleteInProgress = true;
         //Debug.Log("STOPMAP");
         int tmpRank = PlayerPrefs.GetInt("CurrentRank",1);
+        Debug.Log("RANK " + tmpRank);
         GameObject mapSegment = null;
 
 
@@ -216,7 +235,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
             if (i % 4 == 0)
             {
-                //Debug.Log("NOW "+i + "(" + tmpRank + ")");
+                Debug.Log("NOW " + i + "(" + tmpRank + ")");
                 mapSegment = Instantiate(mapElemRef, map);
                 
 
@@ -225,9 +244,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
            
 
             if (mapSegment != null)
-            {
-               
-                //Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
+            {   
+
+                Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
                 if (i != tmpRank)
                 { 
                     
@@ -294,6 +313,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
           
         }
 
+        //Add a rank
+        PlayerPrefs.SetInt("CurrentRank", tmpRank + 1);
         yield return StopMapPan(lastSegment);
         //yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), unlockedMapColor);
         yield return StopColorLerp(nextSegment, finishedColor);

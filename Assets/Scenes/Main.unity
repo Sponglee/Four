@@ -5167,7 +5167,7 @@ MonoBehaviour:
   menuCam: {fileID: 0}
   windowCam: {fileID: 2147371687}
   shopHolder: {fileID: 1193128468}
-  rollHolder: {fileID: 1033313415}
+  chestHolder: {fileID: 1033313415}
   menuCanvas: {fileID: 1113430521}
   canvasUI: {fileID: 359740917}
   menuButton: {fileID: 1786462194}

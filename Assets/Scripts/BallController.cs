@@ -409,7 +409,7 @@ public class BallController : Singleton<BallController>
         }
         else if(!poweredUp)
         {
-            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 1, 3f);
+            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime*2f, 1, 3f);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
             //Enable and fill powerFiller
             if (comboMultiplier == 1)
@@ -635,7 +635,7 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Chest"))
         {
-            
+            GameManager.Instance.KeyCount++;
         }
         else if (other.gameObject.CompareTag("PowerCol"))
         {
