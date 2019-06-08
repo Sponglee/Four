@@ -188,6 +188,25 @@ public class GameManager : Singleton<GameManager>
     }
     //POWER UPS
     ///////////////////////////////////////////////
+
+    //Keys for the chest
+    [SerializeField]
+    private int keyCount=0;
+    public int KeyCount
+    {
+        get
+        {
+            return keyCount;
+        }
+
+        set
+        {
+            keyCount = value;
+            PlayerPrefs.SetInt("KeyCount", value);
+        }
+    }
+
+
     [SerializeField]
     private int shieldCount = 0;
     public int ShieldCount
@@ -297,6 +316,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+   
 
     //////////////////////////////////////
 

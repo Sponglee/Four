@@ -132,20 +132,20 @@ public class CartManager : MonoBehaviour
 
                         int powerRand = Random.Range(0, 100);
 
-                        if (powerRand > 0 && powerRand < 5)
-                        {
-                            //spawn cart prefab, set random position
-                            tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
-                            tmpCart.tag = "PowerCol";
-                            tmpCart.transform.GetChild(0).tag = "PowerCol";
-                        }
-                        else 
-                        {
+                        //if (powerRand > 0 && powerRand < 5)
+                        //{
+                        //    ////spawn cart prefab, set random position
+                        //    //tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
+                        //    //tmpCart.tag = "PowerCol";
+                        //    //tmpCart.transform.GetChild(0).tag = "PowerCol";
+                        //}
+                        //else 
+                        //{
                             //spawn cart prefab, set random position
                             tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
                             tmpCart.tag = "Collectable";
                             tmpCart.transform.GetChild(0).tag = "Collectable";
-                        }
+                        //}
 
 
 
@@ -256,20 +256,20 @@ public class CartManager : MonoBehaviour
 
                         int powerRand = Random.Range(0, 100);
 
-                        if (powerRand > 0 && powerRand < 5)
-                        {
-                            //spawn cart prefab, set random position
-                            tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
-                            tmpCart.tag = "PowerCol";
-                            tmpCart.transform.GetChild(0).tag = "PowerCol";
-                        }
-                        else
-                        {
+                        //if (powerRand > 0 && powerRand < 5)
+                        //{
+                        //    //spawn cart prefab, set random position
+                        //    tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
+                        //    tmpCart.tag = "PowerCol";
+                        //    tmpCart.transform.GetChild(0).tag = "PowerCol";
+                        //}
+                        //else
+                        //{
                             //spawn cart prefab, set random position
                             tmpCart = Instantiate(LevelManager.Instance.collectablePrefab, transform);
                             tmpCart.tag = "Collectable";
                             tmpCart.transform.GetChild(0).tag = "Collectable";
-                        }
+                        //}
 
 
 

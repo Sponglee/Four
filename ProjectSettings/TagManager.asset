@@ -22,6 +22,7 @@ TagManager:
   - Danger
   - Magnet
   - PowerCol
+  - Chest
   layers:
   - Default
   - TransparentFX

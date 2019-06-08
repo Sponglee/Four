@@ -103,6 +103,7 @@ public class LevelManager : Singleton<LevelManager>
 
         Debug.Log(PlayerPrefs.GetInt("CurrentRank", 1) + " >> " + PlayerPrefs.GetInt("CurrentRank", 1) % 4);
 
+        //LEVELDIFFICULTY
         if (GameManager.Instance.CurrentRank == 1)
         {
             PlayerPrefs.SetInt("CartVariant", 0);
@@ -224,6 +225,10 @@ public class LevelManager : Singleton<LevelManager>
         //Add a bottom level
         GameObject tmpBottomSpawn = Instantiate(bottomPrefab, transform.position, transform.rotation, transform);
         tmpBottomSpawn.transform.position += new Vector3(0, -spawnOffset - spawnOffsetStep * levelCount, 0);
+
+        //Randomize chest LEVELDIFFICULTY
+        if (PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 0)
+            tmpBottomSpawn.transform.GetChild(0).GetChild(Random.Range(0, tmpBottomSpawn.transform.childCount)).gameObject.SetActive(true);
 
     }
 
