@@ -11,8 +11,6 @@ public class GameManager : Singleton<GameManager>
 
 
 
-   
-    public GameObject chestPref;
 
     public GameObject chestReference;
 
@@ -215,7 +213,7 @@ public class GameManager : Singleton<GameManager>
             keyCount = value;
             if(value  > 0)
             {
-                chestReference = Instantiate(chestPref, FunctionHandler.Instance.chestHolder.transform.GetChild(0).GetChild(0));
+               
                 chestReference.transform.GetChild(0).GetComponent<ChestController>().key.SetActive(true);
             }
             PlayerPrefs.SetInt("KeyCount", value);
@@ -394,7 +392,7 @@ public class GameManager : Singleton<GameManager>
 
     public void GrabCollectable(int power = -1, Transform powerColTrans = null)
     {
-
+        //Not gem
         if(power != -1)
         {
             switch (power)
@@ -428,11 +426,33 @@ public class GameManager : Singleton<GameManager>
                             BallController.Instance.PoweredUp = true;
                     }
                     break;
+                //Gems min
+                case 3:
+                    {
+                        Gems += 10;
+                        //StartCoroutine(StopGems(10));
+                    }
+                    break;
+                //Gems mid
+                case 4:
+                    {
+                        Gems += 25;
+                        //StartCoroutine(StopGems(25));
+                    }
+                    break;
+                //Gems high
+                case 5:
+                    {
+                        Gems += 100;
+                        //StartCoroutine(StopGems(100));
+                    }
+                    break;
                 default:
                     break;
             }
            
         }
+        //Coll is gem
         else
         {
             Gems++;
@@ -442,7 +462,11 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-
+    public IEnumerator StopGems(int amount)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Gems += amount;
+    }
 
 
     public IEnumerator StopPoweredUp(float fraction, float startTime, float powerDecreaseSpeed)
@@ -517,21 +541,49 @@ public class GameManager : Singleton<GameManager>
     //Open chest
     public void OpenChest(int pow)
     {
-        KeyCount--;
         ChestController tmpChest = chestReference.transform.GetChild(0).GetComponent<ChestController>();
+        if (!tmpChest.ChestOpened)
+        {
+            tmpChest.ChestOpened = true;
+            StartCoroutine(StopOpenChest(pow, tmpChest));
+        }
+    }
 
 
+    public IEnumerator StopOpenChest(int pow, ChestController tmpChest)
+    {
 
         if (PlayerPrefs.GetInt("KeyCount", 0) > 0)
         {
-            tmpChest.keyMultiplier.gameObject.SetActive(false);
-        }
-        else
-        {
-            tmpChest.key.SetActive(false);
-            tmpChest.keyMultiplier.gameObject.SetActive(false);
+            KeyCount--;
+           
+            tmpChest.chestAnim.SetTrigger("ChestOpen");
+
+            tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
+            GrabCollectable(pow);
+            
+            tmpChest.chestAnim.SetTrigger("NewChest");
+
+          
+            yield return new WaitForSeconds(1f);
+
+            if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
+            {
+                tmpChest.keyMultiplier.gameObject.SetActive(false);
+                tmpChest.key.gameObject.SetActive(false);
+
+            }
+            else
+            {
+                tmpChest.key.SetActive(true);
+                tmpChest.keyMultiplier.gameObject.SetActive(true);
+                tmpChest.keyMultiplier.text = string.Format("x{0}", PlayerPrefs.GetInt("KeyCount", 0).ToString());
+            }
         }
 
-        tmpChest.chestAnim.SetTrigger("ChestOpen");
+        tmpChest.ChestOpened = false;
+
+        Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
+
     }
 }

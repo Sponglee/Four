@@ -8,7 +8,7 @@ public class Collectable : MonoBehaviour
 
 
     [SerializeField]
-    private int powerCol = -1;
+    private int powerCol = -2;
     public int PowerCol
     {
         get
@@ -26,36 +26,13 @@ public class Collectable : MonoBehaviour
     {
         collectableRb = transform.GetComponent<Rigidbody>();
 
-        if(PowerCol != -1)
-        {
-           int PowerColRand = Random.Range(0,100);
-
-            //Shield
-            if (PowerColRand >= 20 && PowerColRand < 20)
-            {
-                PowerCol = 0;
-            }
-            //Magnet
-            else if (PowerColRand >= 30 && PowerColRand < 40)
-            {
-                PowerCol = 1;
-            }
-            //Powered Up
-            else if (PowerColRand >= 40 && PowerColRand < 60)
-            {
-                PowerCol = 2;
-            }
-
-
-
-            transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(true);
-        }
+        RandomizeCollectable();
 
     }
 
     private void Update()
     {
-        if(PowerCol!= -1)
+        if(PowerCol!= -2)
         {
             transform.GetChild(0).Rotate(Vector3.forward, 3f);
         }
@@ -67,7 +44,7 @@ public class Collectable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (PowerCol == -1 && other.CompareTag("Magnet"))
+        if (PowerCol == -2 && other.CompareTag("Magnet"))
         {
             transform.SetParent(SpawnManager.Instance.transform.GetChild(0));
             StartCoroutine(MagnetCollectable());
@@ -88,4 +65,57 @@ public class Collectable : MonoBehaviour
         }
     }
 
+    public void RandomizeCollectable()
+    {
+
+        if(PowerCol >= 0)
+        {
+            transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(false);
+        }
+
+
+
+
+        if (PowerCol != -2)
+        {
+            int PowerColRand = Random.Range(0, 100);
+
+            Debug.Log(PowerColRand);
+
+
+            //Shield
+            if (PowerColRand >= 0 && PowerColRand < 20)
+            {
+                PowerCol = 0;
+            }
+            //Magnet
+            else if (PowerColRand >= 20 && PowerColRand < 30)
+            {
+                PowerCol = 1;
+            }
+            //Powered Up
+            else if (PowerColRand >= 30 && PowerColRand < 50)
+            {
+                PowerCol = 2;
+            }
+            //Gems med
+            else if (PowerColRand >= 50 && PowerColRand < 65)
+            {
+                PowerCol = 4;
+            }
+            //Gems high
+            else if (PowerColRand >= 65 && PowerColRand < 67)
+            {
+                PowerCol = 5;
+            }
+            //Gems min
+            else if (PowerColRand >= 67 && PowerColRand < 100)
+            {
+                PowerCol = 3;
+            }
+           
+
+            transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(true);
+        }
+    }
 }

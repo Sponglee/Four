@@ -636,6 +636,7 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("Chest"))
         {
             GameManager.Instance.KeyCount++;
+            Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("PowerCol"))
         {

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3643835910294994509}
-  - component: {fileID: 7563719127946364988}
   m_Layer: 0
   m_Name: KeyHolder
   m_TagString: Untagged
@@ -32,19 +31,6 @@ Transform:
   m_Father: {fileID: 6409614204829417391}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7563719127946364988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 525959869810137754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6ab184944558d4f87a2d679a545b1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerCol: -1
 --- !u!1 &3200393725821006940
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6ab184944558d4f87a2d679a545b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerCol: 0
+  powerCol: -2
 --- !u!114 &3336047918119579355
 MonoBehaviour:
   m_ObjectHideFlags: 0

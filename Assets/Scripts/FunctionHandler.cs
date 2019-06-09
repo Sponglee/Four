@@ -91,7 +91,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public void ToggleMenuWindow(int targetIndex)
     {
         GameObject target = null;
-        Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + PlayerPrefs.GetInt("KeyCount",0));
         switch (targetIndex)
         {
             //shop window
@@ -100,7 +100,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 break;
             //chest window
             case 1:
-                target = chestHolder;
+                {
+                    target = chestHolder;
+                    chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<ChestController>().CheckKeys(); 
+                    chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
+                    chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<ChestController>().chestAnim.SetTrigger("NewChest");
+                }
                 break;
             case 2:
                 break;
@@ -195,25 +200,34 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
                     //if(!LevelCompleteInProgress)
                     yield return StartCoroutine(StopMapProgression());
+                    //Open chest
+                    if (GameManager.Instance.KeyCount > 0)
+                    {
+                        yield return new WaitForSeconds(0.4f);
+                       
+                        //Open chestWindow
+                        ToggleMenuWindow(1);
+
+                    }
                 }
                 else
                 {
                     //GameManager.Instance.Score = 0;
                     PlayerPrefs.SetInt("Score", 0);
                     //Time.timeScale = 0;
+
+                 
                 }
+
+               
             }
-        }
 
-        if(GameManager.Instance.KeyCount>0)
-        {
-            yield return new WaitForSeconds(0.4f);
-            //Open chestWindow
-            ToggleMenuWindow(1);
+           
+   
 
         }
+
         yield return null;
-       
     }
 
 
