@@ -7,6 +7,17 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
+
+
+
+
+   
+    public GameObject chestPref;
+
+    public GameObject chestReference;
+
+
+
     public TextMeshProUGUI tapText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestText;
@@ -202,6 +213,11 @@ public class GameManager : Singleton<GameManager>
         set
         {
             keyCount = value;
+            if(value  > 0)
+            {
+                chestReference = Instantiate(chestPref, FunctionHandler.Instance.chestHolder.transform.GetChild(0).GetChild(0));
+                chestReference.transform.GetChild(0).GetComponent<ChestController>().key.SetActive(true);
+            }
             PlayerPrefs.SetInt("KeyCount", value);
         }
     }
@@ -329,6 +345,8 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         Gems = PlayerPrefs.GetInt("Gems", 0);
+
+        KeyCount = PlayerPrefs.GetInt("KeyCount", 0);
 
         //Initialize powerUps
         ShieldCount = PlayerPrefs.GetInt("ShieldCount", 0);
@@ -490,5 +508,30 @@ public class GameManager : Singleton<GameManager>
                 PlayerPrefs.SetInt("LevelCount", tmpLvlCount);
             }
         }
+    }
+
+
+
+
+
+    //Open chest
+    public void OpenChest(int pow)
+    {
+        KeyCount--;
+        ChestController tmpChest = chestReference.transform.GetChild(0).GetComponent<ChestController>();
+
+
+
+        if (PlayerPrefs.GetInt("KeyCount", 0) > 0)
+        {
+            tmpChest.keyMultiplier.gameObject.SetActive(false);
+        }
+        else
+        {
+            tmpChest.key.SetActive(false);
+            tmpChest.keyMultiplier.gameObject.SetActive(false);
+        }
+
+        tmpChest.chestAnim.SetTrigger("ChestOpen");
     }
 }

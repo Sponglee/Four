@@ -37,22 +37,19 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
-        if (!LevelCompleteInProgress)
-        {
-            LevelCompleteInProgress = true;
+       
             BallController.Instance.TapToStart = false;
             canvasUI.SetActive(false);
             BallController.Instance.MenuOpened = true;
             StartCoroutine(StopOpenGameOver(message));
-        }
-
+        
        
 
     }
 
     public void CloseGameOver(bool menuClose = false)
     {
-        
+        LevelCompleteInProgress = false;
         //Enable effectHolder
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
         canvasUI.SetActive(true);
@@ -177,32 +174,35 @@ public class FunctionHandler : Singleton<FunctionHandler>
         }
         else if (message != "")
         {
-            //Disable fltText
-            LevelManager.Instance.EffectHolder.gameObject.SetActive(false);
-            //Activate Menu screen
-            menuCam.SetActive(true);
-            yield return new WaitForSeconds(0.4f);
-
-
-            //Set message
-            menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
-
-            //Disable menu button if game over or win
-            menuButton.SetActive(false);
-            //yield return new WaitForSeconds(0.21f);
-            if(message != "GAME OVER")
+            if (!LevelCompleteInProgress)
             {
-                menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-                //if(!LevelCompleteInProgress)
+                LevelCompleteInProgress = true;
+                //Disable fltText
+                LevelManager.Instance.EffectHolder.gameObject.SetActive(false);
+                //Activate Menu screen
+                menuCam.SetActive(true);
+                yield return new WaitForSeconds(0.4f);
+
+
+                //Set message
+                menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+
+                //Disable menu button if game over or win
+                menuButton.SetActive(false);
+                //yield return new WaitForSeconds(0.21f);
+                if (message != "GAME OVER")
+                {
+                    menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                    //if(!LevelCompleteInProgress)
                     yield return StartCoroutine(StopMapProgression());
+                }
+                else
+                {
+                    //GameManager.Instance.Score = 0;
+                    PlayerPrefs.SetInt("Score", 0);
+                    //Time.timeScale = 0;
+                }
             }
-            else
-            {
-                //GameManager.Instance.Score = 0;
-                PlayerPrefs.SetInt("Score", 0);
-                //Time.timeScale = 0;
-            }
-          
         }
 
         if(GameManager.Instance.KeyCount>0)
@@ -213,7 +213,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         }
         yield return null;
-
+       
     }
 
 
