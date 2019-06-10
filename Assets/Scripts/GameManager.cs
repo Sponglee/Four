@@ -544,7 +544,7 @@ public class GameManager : Singleton<GameManager>
         ChestController tmpChest = chestReference.transform.GetChild(0).GetComponent<ChestController>();
         if (!tmpChest.ChestOpened)
         {
-            tmpChest.ChestOpened = true;
+            //tmpChest.ChestOpened = true;
             StartCoroutine(StopOpenChest(pow, tmpChest));
         }
     }
@@ -562,10 +562,14 @@ public class GameManager : Singleton<GameManager>
             tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
             GrabCollectable(pow);
             
-            tmpChest.chestAnim.SetTrigger("NewChest");
-
+            //Wait for newChestReady
+            while(!tmpChest.NewChestReady)
+            {
+                yield return null;
+            }
           
-            yield return new WaitForSeconds(1f);
+            
+            tmpChest.chestAnim.SetTrigger("NewChest");
 
             if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
             {
@@ -581,7 +585,7 @@ public class GameManager : Singleton<GameManager>
             }
         }
 
-        tmpChest.ChestOpened = false;
+       
 
         Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
 

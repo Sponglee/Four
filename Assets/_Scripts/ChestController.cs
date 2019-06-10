@@ -12,7 +12,48 @@ public class ChestController : MonoBehaviour
     public Animator chestAnim;
 
     [SerializeField]
-    public bool ChestOpened = false;
+    private bool newChestReady = false;
+    public bool NewChestReady
+    {
+        get
+        {
+            return newChestReady;
+        }
+
+        set
+        {
+            newChestReady = value;
+        }
+    }
+
+
+    [SerializeField]
+    private bool chestOpened = false;
+
+    public bool ChestOpened
+    {
+        get
+        {
+            return chestOpened;
+        }
+
+        set
+        {
+            Debug.Log(">>>><<<<");
+
+            if(value == true && chestOpened == false)
+            {
+                chestAnim.SetTrigger("NewChest");
+            }
+            else if(value == false && chestOpened == true)
+            {
+                chestAnim.SetTrigger("NewChest");
+            }
+            chestOpened = value;
+        }
+    }
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +107,12 @@ public class ChestController : MonoBehaviour
             GameManager.Instance.OpenChest(transform.GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol);
 
         }
-        
+        else if (ChestOpened && GameManager.Instance.KeyCount > 0)
+        {
+            chestAnim.SetTrigger("NewChest");
+
+        }
+
     }
 
 

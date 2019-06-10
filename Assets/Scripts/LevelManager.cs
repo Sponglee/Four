@@ -238,6 +238,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         if(Input.GetMouseButtonDown(1))
         {
+
             PlayerPrefs.SetInt("CartVariant", Random.Range(0, cartVariants.Length));
             SceneManager.LoadScene("Main");
         }
