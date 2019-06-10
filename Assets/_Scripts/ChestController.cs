@@ -100,16 +100,17 @@ public class ChestController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!chestAnim.GetBool("Open") && GameManager.Instance.KeyCount>0)
+        if (/*!chestAnim.GetBool("Open") */ !ChestOpened && GameManager.Instance.KeyCount>0)
         {
 
            
             GameManager.Instance.OpenChest(transform.GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol);
 
         }
-        else if (chestAnim.GetBool("Open") && GameManager.Instance.KeyCount > 0)
+        else if (/*chestAnim.GetBool("Open")*/ ChestOpened && GameManager.Instance.KeyCount > 0)
         {
-            chestAnim.SetBool("Open", false);
+            //chestAnim.SetBool("Open", false);
+            ChestOpened = false;
             chestAnim.SetTrigger("SkipChest");
 
         }

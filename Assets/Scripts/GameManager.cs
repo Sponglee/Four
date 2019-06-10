@@ -568,20 +568,24 @@ public class GameManager : Singleton<GameManager>
             }
 
 
-            tmpChest.chestAnim.SetBool("Open", true);
+            //tmpChest.chestAnim.SetBool("Open", true);
+            tmpChest.chestAnim.SetTrigger("ChestOpen");
             tmpChest.ChestOpened = true;
 
 
             tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
             GrabCollectable(pow);
 
-            ////Wait for newChestReady
-            //while (tmpChest.ChestOpened)
-            //{
-            //    yield return null;
-            //}
+            //Wait for newChestReady
+            while (tmpChest.ChestOpened)
+            {
+                yield return null;
+            }
 
-            //tmpChest.chestAnim.SetBool("Open",false);
+            tmpChest.ChestOpened = false;
+
+
+            //tmpChest.chestAnim.SetBool("Open", false);
 
             if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
             {
