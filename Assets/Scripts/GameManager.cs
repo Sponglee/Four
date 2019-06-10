@@ -556,26 +556,9 @@ public class GameManager : Singleton<GameManager>
         if (PlayerPrefs.GetInt("KeyCount", 0) > 0)
         {
             KeyCount--;
-           
-            tmpChest.chestAnim.SetTrigger("ChestOpen");
-
-            tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
-            GrabCollectable(pow);
-            
-            //Wait for newChestReady
-            while(!tmpChest.NewChestReady)
-            {
-                yield return null;
-            }
-          
-            
-            tmpChest.chestAnim.SetTrigger("NewChest");
-
             if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
             {
                 tmpChest.keyMultiplier.gameObject.SetActive(false);
-                tmpChest.key.gameObject.SetActive(false);
-
             }
             else
             {
@@ -583,10 +566,33 @@ public class GameManager : Singleton<GameManager>
                 tmpChest.keyMultiplier.gameObject.SetActive(true);
                 tmpChest.keyMultiplier.text = string.Format("x{0}", PlayerPrefs.GetInt("KeyCount", 0).ToString());
             }
+
+
+            tmpChest.chestAnim.SetBool("Open", true);
+            tmpChest.ChestOpened = true;
+
+
+            tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
+            GrabCollectable(pow);
+
+            ////Wait for newChestReady
+            //while (tmpChest.ChestOpened)
+            //{
+            //    yield return null;
+            //}
+
+            //tmpChest.chestAnim.SetBool("Open",false);
+
+            if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
+            {
+                tmpChest.key.gameObject.SetActive(false);
+            }
+
+            
         }
 
-       
 
+        yield return null;
         Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
 
     }
