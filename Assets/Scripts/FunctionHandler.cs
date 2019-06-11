@@ -116,7 +116,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         if(windowCam.activeSelf)
         {
-            windowCam.SetActive(false);
+           
             StartCoroutine(StopWindow(target));
         }
         else
@@ -129,6 +129,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopWindow(GameObject target)
     {
+        //yield return new WaitForSeconds(0.61f);
+        windowCam.SetActive(false);
         yield return new WaitForSeconds(0.21f);
         target.SetActive(false);
     }

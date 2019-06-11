@@ -236,9 +236,9 @@ public class GameManager : Singleton<GameManager>
             if (shieldCount > 0)
             {
                 //Fade out the button
-                powerPanel.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                //powerPanel.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
-                if(shieldCount>1)
+                if(shieldCount>0)
                 {
                     powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(true);
                     powerPanel.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = shieldCount.ToString();
@@ -272,9 +272,9 @@ public class GameManager : Singleton<GameManager>
             if (magnetCount > 0)
             {
                 //Fade out the button
-                powerPanel.GetChild(1).GetChild(2).gameObject.SetActive(false);
+                //powerPanel.GetChild(1).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
-                if(magnetCount>1)
+                if(magnetCount>0)
                 {
                     powerPanel.GetChild(1).GetChild(1).gameObject.SetActive(true);
                     powerPanel.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = magnetCount.ToString();
@@ -309,9 +309,10 @@ public class GameManager : Singleton<GameManager>
             if (poweredUpCount > 0)
             {
                 ////Fade out the button
-                powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
+                //powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
+
                 //Set powerCol multiplier
-                if (poweredUpCount>1)
+                if (poweredUpCount>0)
                 {
                     powerPanel.GetChild(2).GetChild(1).gameObject.SetActive(true);
                     powerPanel.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>().text = poweredUpCount.ToString();
@@ -400,30 +401,30 @@ public class GameManager : Singleton<GameManager>
                 //Shield
                 case 0:
                     {
-                        if(BallController.Instance.Shielded)
                             ShieldCount++;
-                        else
-                            BallController.Instance.Shielded = true;
+                        //if(BallController.Instance.Shielded)
+                        //else
+                        //    BallController.Instance.Shielded = true;
                     }
                     break;
                 //Magnet
                 case 1:
                     {
-                        if(BallController.Instance.Magnet)
                             MagnetCount++;
-                        else
-                            BallController.Instance.Magnet = true;
+                        //if(BallController.Instance.Magnet)
+                        //else
+                        //    BallController.Instance.Magnet = true;
                     }
                     break;
                 //PoweredUp
                 case 2:
                     {
-                        if (BallController.Instance.PoweredUp)
-                        {
                             PoweredUpCount++;
-                        }
-                        else
-                            BallController.Instance.PoweredUp = true;
+                        //if (BallController.Instance.PoweredUp)
+                        //{
+                        //}
+                        //else
+                        //    BallController.Instance.PoweredUp = true;
                     }
                     break;
                 //Gems min
@@ -535,18 +536,15 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-
-
+   
 
     //Open chest
     public void OpenChest(int pow)
     {
         ChestController tmpChest = chestReference.transform.GetChild(0).GetComponent<ChestController>();
-        if (!tmpChest.ChestOpened)
-        {
+       
             //tmpChest.ChestOpened = true;
             StartCoroutine(StopOpenChest(pow, tmpChest));
-        }
     }
 
 
@@ -568,21 +566,23 @@ public class GameManager : Singleton<GameManager>
             }
 
 
+
+
             //tmpChest.chestAnim.SetBool("Open", true);
             tmpChest.chestAnim.SetTrigger("ChestOpen");
-            tmpChest.ChestOpened = true;
-
-
+           
             tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
             GrabCollectable(pow);
 
-            //Wait for newChestReady
-            while (tmpChest.ChestOpened)
+            //Wait for Chest close
+            while (!tmpChest.CanSkip && tmpChest.SkipIgnore)
             {
+                Debug.Log(Time.time);
                 yield return null;
             }
 
-            tmpChest.ChestOpened = false;
+            tmpChest.ChestOpenedBool = false;
+
 
 
             //tmpChest.chestAnim.SetBool("Open", false);

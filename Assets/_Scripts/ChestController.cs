@@ -12,48 +12,54 @@ public class ChestController : MonoBehaviour
     public Animator chestAnim;
 
     [SerializeField]
-    private bool newChestReady = false;
-    public bool NewChestReady
+    private bool chestOpenedBool = false;
+    public bool ChestOpenedBool
     {
         get
         {
-            return newChestReady;
+            return chestOpenedBool;
         }
 
         set
         {
-            newChestReady = value;
+            chestOpenedBool = value;
+        }
+    }
+
+  
+
+    [SerializeField]
+    private bool canSkip = false;
+    public bool CanSkip
+    {
+        get
+        {
+            return canSkip;
+        }
+
+        set
+        {
+            canSkip = value;
         }
     }
 
 
     [SerializeField]
-    private bool chestOpened = false;
-
-    public bool ChestOpened
+    private bool skipIgnore = true;
+    public bool SkipIgnore
     {
         get
         {
-            return chestOpened;
+            return skipIgnore;
         }
 
         set
         {
-            Debug.Log(">>>><<<<");
-
-            if(value == true && chestOpened == false)
-            {
-                chestAnim.SetTrigger("NewChest");
-            }
-            else if(value == false && chestOpened == true)
-            {
-                chestAnim.SetTrigger("NewChest");
-            }
-            chestOpened = value;
+            skipIgnore = value;
         }
     }
 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -98,20 +104,29 @@ public class ChestController : MonoBehaviour
         }
     }
 
+    //private void Update()
+    //{
+        
+    //}
+
+
     private void OnMouseDown()
     {
-        if (/*!chestAnim.GetBool("Open") */ !ChestOpened && GameManager.Instance.KeyCount>0)
+        if (!ChestOpenedBool && !CanSkip && GameManager.Instance.KeyCount>0)
         {
-
-           
+            ChestOpenedBool = true;
+            //ChestOpened = true;
             GameManager.Instance.OpenChest(transform.GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol);
 
         }
-        else if (/*chestAnim.GetBool("Open")*/ ChestOpened && GameManager.Instance.KeyCount > 0)
+        else if (CanSkip && GameManager.Instance.KeyCount > 0)
         {
             //chestAnim.SetBool("Open", false);
-            ChestOpened = false;
+            
             chestAnim.SetTrigger("SkipChest");
+            ChestOpenedBool = false;
+            CanSkip = false;
+            chestAnim.SetTrigger("OpenChest");
 
         }
 
