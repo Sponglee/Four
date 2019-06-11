@@ -6,6 +6,10 @@ public class Collectable : MonoBehaviour
 {
     Rigidbody collectableRb;
 
+    public bool ChestCollectable = false;
+    public float chestDuration = 1f;
+    private float chestTimer = 0f;
+
 
     [SerializeField]
     private int powerCol = -2;
@@ -28,17 +32,23 @@ public class Collectable : MonoBehaviour
 
         RandomizeCollectable();
 
+        chestTimer = 0;
+
     }
 
     private void Update()
     {
-        if(PowerCol!= -2)
+        if(!ChestCollectable)
         {
             transform.GetChild(0).Rotate(Vector3.forward, 3f);
         }
         else
         {
-            transform.GetChild(0).Rotate(Vector3.forward, 1.5f);
+            chestTimer += Time.deltaTime;
+            if (chestTimer > chestDuration)
+            {
+                Destroy(transform.parent.gameObject);
+            }
         }
     }
 
@@ -50,6 +60,11 @@ public class Collectable : MonoBehaviour
             StartCoroutine(MagnetCollectable());
         }
     }
+
+
+
+
+
 
     private IEnumerator MagnetCollectable()
     {

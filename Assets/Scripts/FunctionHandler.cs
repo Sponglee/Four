@@ -116,7 +116,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         if(windowCam.activeSelf)
         {
-           
+            GameManager.Instance.ResetAnims();
             StartCoroutine(StopWindow(target));
         }
         else

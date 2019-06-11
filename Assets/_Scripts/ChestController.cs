@@ -114,19 +114,19 @@ public class ChestController : MonoBehaviour
     {
         if (!ChestOpenedBool && !CanSkip && GameManager.Instance.KeyCount>0)
         {
-            ChestOpenedBool = true;
+            //ChestOpenedBool = true;
             //ChestOpened = true;
-            GameManager.Instance.OpenChest(transform.GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol);
+            GameManager.Instance.OpenChest();
 
         }
         else if (CanSkip && GameManager.Instance.KeyCount > 0)
         {
-            //chestAnim.SetBool("Open", false);
+            ////chestAnim.SetBool("Open", false);
             
-            chestAnim.SetTrigger("SkipChest");
-            ChestOpenedBool = false;
-            CanSkip = false;
-            chestAnim.SetTrigger("OpenChest");
+            //chestAnim.SetTrigger("SkipChest");
+            //ChestOpenedBool = false;
+            //CanSkip = false;
+            //chestAnim.SetTrigger("OpenChest");
 
         }
 

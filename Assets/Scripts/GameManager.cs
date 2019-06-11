@@ -11,7 +11,7 @@ public class GameManager : Singleton<GameManager>
 
 
 
-
+    public GameObject chestPowerUpPref;
     public GameObject chestReference;
 
 
@@ -539,16 +539,19 @@ public class GameManager : Singleton<GameManager>
    
 
     //Open chest
-    public void OpenChest(int pow)
+    public void OpenChest()
     {
         ChestController tmpChest = chestReference.transform.GetChild(0).GetComponent<ChestController>();
-       
+
             //tmpChest.ChestOpened = true;
-            StartCoroutine(StopOpenChest(pow, tmpChest));
+        StartCoroutine(StopOpenChest(tmpChest));
     }
 
-
-    public IEnumerator StopOpenChest(int pow, ChestController tmpChest)
+    public void ResetAnims()
+    {
+        chestReference.transform.GetComponentInChildren<ChestController>().chestAnim.Rebind();
+    }
+    public IEnumerator StopOpenChest(ChestController tmpChest)
     {
 
         if (PlayerPrefs.GetInt("KeyCount", 0) > 0)
@@ -566,26 +569,28 @@ public class GameManager : Singleton<GameManager>
             }
 
 
-
-
+            GameObject tmpGlow = Instantiate(chestPowerUpPref, tmpChest.transform.GetChild(0));
+            //tmpGlow.transform.SetAsFirstSibling();
+            int pow = tmpChest.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol;
             //tmpChest.chestAnim.SetBool("Open", true);
             tmpChest.chestAnim.SetTrigger("ChestOpen");
-           
-            tmpChest.transform.GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
+            tmpChest.chestAnim.Play("PwrUp");
+
+            tmpChest.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
             GrabCollectable(pow);
 
-            //Wait for Chest close
-            while (!tmpChest.CanSkip && tmpChest.SkipIgnore)
-            {
-                Debug.Log(Time.time);
-                yield return null;
-            }
+            ////Wait for Chest close
+            //while (!tmpChest.CanSkip && tmpChest.SkipIgnore)
+            //{
+            //    Debug.Log(Time.time);
+            //    yield return null;
+            //}
 
-            tmpChest.ChestOpenedBool = false;
+            //tmpChest.ChestOpenedBool = false;
 
 
 
-            //tmpChest.chestAnim.SetBool("Open", false);
+            ////tmpChest.chestAnim.SetBool("Open", false);
 
             if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
             {
