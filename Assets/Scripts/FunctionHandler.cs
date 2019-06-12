@@ -102,9 +102,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
             case 1:
                 {
                     target = chestHolder;
-                    chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<ChestController>().CheckKeys(); 
-                    chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
-                    chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<ChestController>().chestAnim.SetTrigger("NewChest");
+                    //chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<ChestController>().CheckKeys(); 
+                    //chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
+                   
                 }
                 break;
             case 2:
@@ -118,12 +118,20 @@ public class FunctionHandler : Singleton<FunctionHandler>
         {
             GameManager.Instance.ResetAnims();
             StartCoroutine(StopWindow(target));
+            if (target == chestHolder)
+            {
+                GameManager.Instance.ChestDespawn();
+            }
         }
         else
         {
 
             windowCam.SetActive(true);
             target.SetActive(true);
+            if(target == chestHolder)
+            {
+                GameManager.Instance.ChestSpawn();
+            }
         }
     }
 

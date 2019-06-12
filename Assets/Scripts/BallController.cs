@@ -422,19 +422,19 @@ public class BallController : Singleton<BallController>
         }
 
 
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(1))
         {
-            GameManager.Instance.KeyCount++;
-
+           
             //comboMultiplier = 3;
             //PoweredUp = true;
             //GameManager.Instance.ComboActive = true;
             //GameManager.Instance.LevelComplete();
         }
-        //else if (Input.GetMouseButtonDown(1))
-        //{
-        //    StartCoroutine(FunctionHandler.Instance.StopMapPan());
-        //}
+        else if (Input.GetMouseButtonDown(2))
+        {
+            GameManager.Instance.KeyCount++;
+            
+        }
 
 
         if (TapToStart && !MenuOpened)
@@ -638,13 +638,14 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("Chest"))
         {
             GameManager.Instance.KeyCount++;
+            Instantiate(levelManager.smokePrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
         }
         else if (other.gameObject.CompareTag("PowerCol"))
         {
-
+            //GameManager.Instance.KeyCount++;
             GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
-            Instantiate(levelManager.smokePrefab, other.transform.position, Quaternion.identity);
+            Instantiate(levelManager.smokePrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
         }
         if (PoweredUp && other.gameObject.CompareTag("Cart"))

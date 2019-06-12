@@ -33,7 +33,10 @@ public class Collectable : MonoBehaviour
         RandomizeCollectable();
 
         chestTimer = 0;
-
+        //if(ChestCollectable)
+        //{
+        //    transform.localPosition += new Vector3( Random.Range(-1f,1f),Random.Range(-1f,1f),0);
+        //}
     }
 
     private void Update()

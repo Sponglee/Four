@@ -61,6 +61,13 @@ public class ChestController : MonoBehaviour
 
 
 
+
+    public GameObject chestPowerUpPref;
+
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -104,34 +111,59 @@ public class ChestController : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-        
-    //}
+  
 
 
     private void OnMouseDown()
     {
         if (!ChestOpenedBool && !CanSkip && GameManager.Instance.KeyCount>0)
         {
-            //ChestOpenedBool = true;
+            ChestOpenedBool = true;
             //ChestOpened = true;
-            GameManager.Instance.OpenChest();
+            OpenChest();
 
         }
-        else if (CanSkip && GameManager.Instance.KeyCount > 0)
-        {
-            ////chestAnim.SetBool("Open", false);
-            
-            //chestAnim.SetTrigger("SkipChest");
-            //ChestOpenedBool = false;
-            //CanSkip = false;
-            //chestAnim.SetTrigger("OpenChest");
+        //else if (ChestOpenedBool && GameManager.Instance.KeyCount > 0)
+        //{
+        //    GameManager.Instance.ResetAnims();
+        //    ////chestAnim.SetBool("Open", false);
 
-        }
+        //    chestAnim.SetTrigger("SkipChest");
+        //    ChestOpenedBool = false;
+        //    //CanSkip = false;
+        //    //chestAnim.SetTrigger("OpenChest");
+
+        //}
 
     }
 
 
+    //Open chest
+    private void OpenChest()
+    {
+        
 
+        //tmpChest.ChestOpened = true;
+        StartCoroutine(StopOpenChest());
+    }
+
+   
+    public IEnumerator StopOpenChest()
+    {
+        GameManager.Instance.KeyCount--;
+        GameObject tmpGlow = Instantiate(chestPowerUpPref, transform.GetChild(0));
+        int pow = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol;
+        chestAnim.SetTrigger("ChestOpen");
+        chestAnim.Play("PwrUp");
+
+        transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
+        GameManager.Instance.GrabCollectable(pow);
+
+        yield return null;
+        //Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
+
+        yield return new WaitForSeconds(3f);
+        Destroy(gameObject);    
+
+    }
 }

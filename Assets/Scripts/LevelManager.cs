@@ -236,13 +236,13 @@ public class LevelManager : Singleton<LevelManager>
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(1))
-        {
+        //if(Input.GetMouseButtonDown(1))
+        //{
 
-            PlayerPrefs.SetInt("CartVariant", Random.Range(0, cartVariants.Length));
-            SceneManager.LoadScene("Main");
-        }
-        //transform.localEulerAngles += new Vector3(0, 1f, 0);
+        //    PlayerPrefs.SetInt("CartVariant", Random.Range(0, cartVariants.Length));
+        //    SceneManager.LoadScene("Main");
+        //}
+        ////transform.localEulerAngles += new Vector3(0, 1f, 0);
 
         if (Input.GetMouseButtonDown(0))
         {

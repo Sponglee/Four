@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,9 +11,10 @@ public class GameManager : Singleton<GameManager>
 
 
 
-    public GameObject chestPowerUpPref;
-    public GameObject chestReference;
-
+    public GameObject chestPrefab;
+    public Transform chestReference;
+    public Transform chestSpawnPoint;
+    
 
 
     public TextMeshProUGUI tapText;
@@ -214,7 +215,7 @@ public class GameManager : Singleton<GameManager>
             if(value  > 0)
             {
                
-                chestReference.transform.GetChild(0).GetComponent<ChestController>().key.SetActive(true);
+                //chestReference.transform.GetChild(0).GetComponent<ChestController>().key.SetActive(true);
             }
             PlayerPrefs.SetInt("KeyCount", value);
         }
@@ -366,6 +367,11 @@ public class GameManager : Singleton<GameManager>
       
     }
 
+
+    
+
+
+
   
     public void AddScore(int scoreAmount, Color color, Transform origin)
     {
@@ -515,12 +521,15 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-
+    public void ResetAnims()
+    {
+        //chestReference.transform.GetComponentInChildren<ChestController>().chestAnim.Rebind();
+    }
 
     public void LevelComplete()
     {
         int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 50);
-        FunctionHandler.Instance.OpenGameOver(String.Format("LEVEL {0} COMPLETE",PlayerPrefs.GetInt("CurrentRank",1)));
+        FunctionHandler.Instance.OpenGameOver(string.Format("LEVEL {0} COMPLETE",PlayerPrefs.GetInt("CurrentRank",1)));
         
         if (tmpLvlCount <= 400)
             PlayerPrefs.SetInt("LevelCount", tmpLvlCount + 5);
@@ -537,72 +546,53 @@ public class GameManager : Singleton<GameManager>
 
 
    
-
-    //Open chest
-    public void OpenChest()
+    public void ChestSpawn()
     {
-        ChestController tmpChest = chestReference.transform.GetChild(0).GetComponent<ChestController>();
-
-            //tmpChest.ChestOpened = true;
-        StartCoroutine(StopOpenChest(tmpChest));
+        StartCoroutine(StopChestSpawn());
     }
 
-    public void ResetAnims()
-    {
-        chestReference.transform.GetComponentInChildren<ChestController>().chestAnim.Rebind();
-    }
-    public IEnumerator StopOpenChest(ChestController tmpChest)
-    {
 
-        if (PlayerPrefs.GetInt("KeyCount", 0) > 0)
+    public void ChestDespawn()
+    {
+        foreach (Transform child in chestReference)
         {
-            KeyCount--;
-            if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
-            {
-                tmpChest.keyMultiplier.gameObject.SetActive(false);
-            }
-            else
-            {
-                tmpChest.key.SetActive(true);
-                tmpChest.keyMultiplier.gameObject.SetActive(true);
-                tmpChest.keyMultiplier.text = string.Format("x{0}", PlayerPrefs.GetInt("KeyCount", 0).ToString());
-            }
-
-
-            GameObject tmpGlow = Instantiate(chestPowerUpPref, tmpChest.transform.GetChild(0));
-            //tmpGlow.transform.SetAsFirstSibling();
-            int pow = tmpChest.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol;
-            //tmpChest.chestAnim.SetBool("Open", true);
-            tmpChest.chestAnim.SetTrigger("ChestOpen");
-            tmpChest.chestAnim.Play("PwrUp");
-
-            tmpChest.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
-            GrabCollectable(pow);
-
-            ////Wait for Chest close
-            //while (!tmpChest.CanSkip && tmpChest.SkipIgnore)
-            //{
-            //    Debug.Log(Time.time);
-            //    yield return null;
-            //}
-
-            //tmpChest.ChestOpenedBool = false;
-
-
-
-            ////tmpChest.chestAnim.SetBool("Open", false);
-
-            if (PlayerPrefs.GetInt("KeyCount", 0) == 0)
-            {
-                tmpChest.key.gameObject.SetActive(false);
-            }
-
-            
+            Destroy(child.gameObject);
         }
+    }
 
 
-        yield return null;
-        Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
-
+    public IEnumerator StopChestSpawn()
+    {
+        float chestSpawnPointOffset = 0;
+        int keyNumber = PlayerPrefs.GetInt("KeyCount", 0);
+        for (int i = 0; i < keyNumber; i++)
+        {
+            chestSpawnPoint.localPosition = Vector3.zero;
+            //Middle row
+            if (i % 3 == 0)
+            {
+                if (i!=0)
+                {
+                    chestSpawnPointOffset += 200f;
+                    if (chestSpawnPointOffset == 1400f)
+                        chestSpawnPointOffset = 0;
+                }
+                chestSpawnPoint.localPosition = new Vector3(0, 0,  chestSpawnPointOffset);
+            }
+            //Right
+            else if (i % 3 == 1)
+            { 
+                chestSpawnPoint.localPosition = new Vector3(185f, 0, +100 + chestSpawnPointOffset);
+            }
+            //Left
+            else if(i%3 == 2)
+            {
+                
+                chestSpawnPoint.localPosition = new Vector3(-185f, 0, +100f + chestSpawnPointOffset);
+            }
+          
+            Instantiate(chestPrefab, chestSpawnPoint.position, Quaternion.identity, chestReference);
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }
