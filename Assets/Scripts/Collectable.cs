@@ -26,18 +26,27 @@ public class Collectable : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         collectableRb = transform.GetComponent<Rigidbody>();
 
-        RandomizeCollectable();
+        
+        //RandomizeCollectable();
 
         chestTimer = 0;
-        //if(ChestCollectable)
-        //{
-        //    transform.localPosition += new Vector3( Random.Range(-1f,1f),Random.Range(-1f,1f),0);
-        //}
     }
+    //private void Start()
+    //{
+    //    collectableRb = transform.GetComponent<Rigidbody>();
+
+    //    RandomizeCollectable();
+
+    //    chestTimer = 0;
+    //    //if(ChestCollectable)
+    //    //{
+    //    //    transform.localPosition += new Vector3( Random.Range(-1f,1f),Random.Range(-1f,1f),0);
+    //    //}
+    //}
 
     private void Update()
     {
@@ -57,7 +66,7 @@ public class Collectable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (PowerCol == -2 && other.CompareTag("Magnet"))
+        if (PowerCol == -1 && other.CompareTag("Magnet"))
         {
             transform.SetParent(SpawnManager.Instance.transform.GetChild(0));
             StartCoroutine(MagnetCollectable());
@@ -94,11 +103,11 @@ public class Collectable : MonoBehaviour
 
 
 
-        if (PowerCol != -2)
+        if (PowerCol != -1)
         {
             int PowerColRand = Random.Range(0, 100);
 
-            Debug.Log(PowerColRand);
+            Debug.Log(">rand " + PowerColRand);
 
 
             //Shield
@@ -131,8 +140,8 @@ public class Collectable : MonoBehaviour
             {
                 PowerCol = 3;
             }
-           
 
+            Debug.Log(PowerCol);
             transform.GetChild(0).GetChild(0).GetChild(PowerCol).gameObject.SetActive(true);
         }
     }

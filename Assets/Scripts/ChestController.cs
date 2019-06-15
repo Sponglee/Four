@@ -152,11 +152,13 @@ public class ChestController : MonoBehaviour
     {
         GameManager.Instance.KeyCount--;
         GameObject tmpGlow = Instantiate(chestPowerUpPref, transform.GetChild(0));
-        int pow = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol;
         chestAnim.SetTrigger("ChestOpen");
         chestAnim.Play("PwrUp");
 
         transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
+        yield return new WaitForEndOfFrame();
+        int pow = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().PowerCol;
+        Debug.Log("pow " + pow);
         GameManager.Instance.GrabCollectable(pow);
 
         yield return null;

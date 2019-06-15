@@ -55,8 +55,23 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-   
 
+
+    [SerializeField]
+    private int skinAvailability;
+    public int SkinAvailability
+    {
+        get
+        {
+            return skinAvailability;
+        }
+
+        set
+        {
+            skinAvailability = value;
+            PlayerPrefs.SetInt("SkinAvailability", skinAvailability);
+        }
+    }
 
 
 
@@ -196,6 +211,8 @@ public class GameManager : Singleton<GameManager>
             nextText.text = (value + 1).ToString();
         }
     }
+
+
     //POWER UPS
     ///////////////////////////////////////////////
 
@@ -332,22 +349,31 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-   
+
+  
+
+
 
     //////////////////////////////////////
 
     private void Awake()
     {
+        Gems = PlayerPrefs.GetInt("Gems", 0);
+
+        KeyCount = PlayerPrefs.GetInt("KeyCount", 0);
+
         CurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
+        //Check bought skins
+        SkinAvailability = PlayerPrefs.GetInt("SkinAvailability", 1);
 
     }
     // Start is called before the first frame update
     void Start()
     {
-        Gems = PlayerPrefs.GetInt("Gems", 0);
+       
 
-        KeyCount = PlayerPrefs.GetInt("KeyCount", 0);
 
+      
         //Initialize powerUps
         ShieldCount = PlayerPrefs.GetInt("ShieldCount", 0);
         MagnetCount = PlayerPrefs.GetInt("MagnetCount", 0);
@@ -396,9 +422,11 @@ public class GameManager : Singleton<GameManager>
     }
 
     private bool PowerUpDecreasing = false;
+   
 
     public void GrabCollectable(int power = -1, Transform powerColTrans = null)
     {
+        Debug.Log(power);
         //Not gem
         if(power != -1)
         {
@@ -457,6 +485,8 @@ public class GameManager : Singleton<GameManager>
                 default:
                     break;
             }
+
+            Debug.Log(power);
            
         }
         //Coll is gem

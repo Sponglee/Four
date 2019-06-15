@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestCollectable: 1
   chestDuration: 4
-  powerCol: -1
+  powerCol: -2
 --- !u!114 &777681493264249451
 MonoBehaviour:
   m_ObjectHideFlags: 0

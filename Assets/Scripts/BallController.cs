@@ -628,7 +628,7 @@ public class BallController : Singleton<BallController>
         {
 
             Destroy(other.gameObject);
-            GameManager.Instance.GrabCollectable();
+            //GameManager.Instance.GrabCollectable();
             if (PoweredUp)
             {
                 //comboMultiplier += 0.3f;
@@ -644,7 +644,7 @@ public class BallController : Singleton<BallController>
         else if (other.gameObject.CompareTag("PowerCol"))
         {
             //GameManager.Instance.KeyCount++;
-            GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
+            //GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
             Instantiate(levelManager.smokePrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
         }

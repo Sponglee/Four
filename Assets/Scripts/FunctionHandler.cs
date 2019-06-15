@@ -506,4 +506,40 @@ public class FunctionHandler : Singleton<FunctionHandler>
     {
         PlayerPrefs.DeleteAll();
     }
+
+
+    public void ApplySkin(Transform skinElem)
+    {
+        int skinIndex = skinElem.GetSiblingIndex();
+        //Check if skin is in availability (bit flag)
+        if ((GameManager.Instance.SkinAvailability & 1 << skinIndex) == 1 << skinIndex)
+        {
+
+            //If it's bought - select it
+            PlayerPrefs.SetInt("Skin", skinIndex);
+          
+
+        }
+        else
+        {
+            //Getskin's Cost
+            int cost = int.Parse("100");
+
+            if (GameManager.Instance.Gems >= cost)
+            {
+                GameManager.Instance.Gems -= cost;
+
+                //bitshift index for memorizing unlocks
+                GameManager.Instance.SkinAvailability += 1 << skinIndex;
+
+                PlayerPrefs.SetInt("Theme", skinIndex);
+              
+            }
+            else
+            {
+                Debug.Log("YOU DONT HAVE THE SKIN. BUY IT? " + cost);
+            }
+        }
+
+    }
 }

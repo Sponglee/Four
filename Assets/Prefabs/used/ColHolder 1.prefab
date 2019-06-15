@@ -77,7 +77,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6ab184944558d4f87a2d679a545b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerCol: -2
+  ChestCollectable: 0
+  chestDuration: 1
+  powerCol: -1
 --- !u!114 &7574932845166515089
 MonoBehaviour:
   m_ObjectHideFlags: 0
