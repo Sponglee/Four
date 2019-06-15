@@ -398,7 +398,7 @@ public class BallController : Singleton<BallController>
             //powerUpSpeed += Time.deltaTime;
 
             //Enable and fill powerFiller
-            GameManager.Instance.powerFiller.gameObject.SetActive(true);
+            GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier)/3f;
 
 
@@ -413,12 +413,13 @@ public class BallController : Singleton<BallController>
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
             //Enable and fill powerFiller
             if (comboMultiplier == 1)
-                GameManager.Instance.powerFiller.gameObject.SetActive(false);
+                GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
         }
         else
         {
             comboMultiplier = 3f;
-            GameManager.Instance.powerFiller.gameObject.SetActive(false);
+            GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
+            
         }
 
 

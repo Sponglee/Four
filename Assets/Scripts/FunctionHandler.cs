@@ -511,13 +511,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public void ApplySkin(Transform skinElem)
     {
         int skinIndex = skinElem.GetSiblingIndex();
+        int lastSkin = PlayerPrefs.GetInt("Skin", 0);
         //Check if skin is in availability (bit flag)
         if ((GameManager.Instance.SkinAvailability & 1 << skinIndex) == 1 << skinIndex)
         {
 
             //If it's bought - select it
             PlayerPrefs.SetInt("Skin", skinIndex);
-          
+            skinElem.GetComponent<ThemeButtonUpdater>().UpdateThemeButton(lastSkin);
 
         }
         else
@@ -532,7 +533,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 //bitshift index for memorizing unlocks
                 GameManager.Instance.SkinAvailability += 1 << skinIndex;
 
-                PlayerPrefs.SetInt("Theme", skinIndex);
+                PlayerPrefs.SetInt("Skin", skinIndex);
               
             }
             else
