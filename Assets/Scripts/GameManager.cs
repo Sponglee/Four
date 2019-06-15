@@ -254,9 +254,9 @@ public class GameManager : Singleton<GameManager>
             if (shieldCount > 0)
             {
                 //Fade out the button
-                //powerPanel.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                powerPanel.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
-                if(shieldCount>0)
+                if (shieldCount>0)
                 {
                     powerPanel.GetChild(0).GetChild(1).gameObject.SetActive(true);
                     powerPanel.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = shieldCount.ToString();
@@ -290,9 +290,9 @@ public class GameManager : Singleton<GameManager>
             if (magnetCount > 0)
             {
                 //Fade out the button
-                //powerPanel.GetChild(1).GetChild(2).gameObject.SetActive(false);
+                powerPanel.GetChild(1).GetChild(2).gameObject.SetActive(false);
                 //Set powerCol multiplier
-                if(magnetCount>0)
+                if (magnetCount>0)
                 {
                     powerPanel.GetChild(1).GetChild(1).gameObject.SetActive(true);
                     powerPanel.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = magnetCount.ToString();
@@ -326,8 +326,8 @@ public class GameManager : Singleton<GameManager>
             poweredUpCount = value;
             if (poweredUpCount > 0)
             {
-                ////Fade out the button
-                //powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
+                //Fade out the button
+                powerPanel.GetChild(2).GetChild(2).gameObject.SetActive(false);
 
                 //Set powerCol multiplier
                 if (poweredUpCount>0)

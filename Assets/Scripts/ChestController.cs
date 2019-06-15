@@ -164,7 +164,12 @@ public class ChestController : MonoBehaviour
         yield return null;
         //Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
+        if(GameManager.Instance.KeyCount==0)
+        {
+            //Hide Chest window
+            FunctionHandler.Instance.ToggleMenuWindow(1);
+        }
         Destroy(gameObject);    
 
     }
