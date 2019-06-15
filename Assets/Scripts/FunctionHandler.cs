@@ -520,6 +520,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
             PlayerPrefs.SetInt("Skin", skinIndex);
             skinElem.GetComponent<ThemeButtonUpdater>().UpdateThemeButton(lastSkin);
 
+            SpawnManager.Instance.Spawn();
+
+
+
         }
         else
         {

@@ -629,7 +629,7 @@ public class BallController : Singleton<BallController>
         {
 
             Destroy(other.gameObject);
-            //GameManager.Instance.GrabCollectable();
+            GameManager.Instance.GrabCollectable();
             if (PoweredUp)
             {
                 //comboMultiplier += 0.3f;

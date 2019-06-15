@@ -8,12 +8,16 @@ public class SpawnManager : Singleton<SpawnManager>
     public Color nextSpawnColor;
     public Color spawnMatRandomColor;
     public GameObject spawnPrefab;
+    public GameObject[] spawnPool;
 
     public float spawnInterval = 2;
     public float spawnTime = 0;
 
     //Reference to spawn cart
     public GameObject tmpCart;
+    public Vector3 tmpPos;
+
+
 
     public CinemachineVirtualCamera vcam;
     public CinemachineVirtualCamera vcamSpeedy;
@@ -27,10 +31,7 @@ public class SpawnManager : Singleton<SpawnManager>
     void Start()
     {
 
-        //Grab gameMode 
-        gameMode = (PlayerPrefs.GetInt("GameMode", 0) != 0);
-
-       
+        //Grab spawnPrefab        
         Spawn();
     }
 
@@ -47,33 +48,50 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public IEnumerator StopSpawn()
     {
-       
+        int prefIndex = PlayerPrefs.GetInt("Skin", 0);
+        spawnPrefab = spawnPool[prefIndex];
 
-      
-        yield return new WaitForSeconds(0.3f);
+        if(tmpCart != null)
+        {
+            tmpPos = tmpCart.transform.position;
+            Destroy(tmpCart);
+            //spawn cart prefab, set random position
+            tmpCart = Instantiate(spawnPrefab, tmpPos, Quaternion.identity, transform);
 
-
-        //initialize Spawn Color
-        //spawnMatRandomColor = LevelManager.Instance.towerMat.color;
-
-
-        //spawn cart prefab, set random position
-        tmpCart = Instantiate(spawnPrefab, transform.position, Quaternion.identity, transform);
-
-        //Set material to spawn
-        //tmpCart.GetComponent<Renderer>().material.color = spawnMatRandomColor;
-
-        //spawnObject = tmpCart;
-
-        //Follow camera to a ball
-        vcam.m_Follow = tmpCart.transform;
-        vcam.m_LookAt = tmpCart.transform;
-
-        vcamSpeedy.m_Follow = tmpCart.transform;
-        vcamSpeedy.m_LookAt = tmpCart.transform;
+            yield return new WaitForFixedUpdate();
+            BallController.Instance.TapToStart = false;
+            BallController.Instance.MenuOpened = true;
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.3f);
 
 
-        
+            //initialize Spawn Color
+            //spawnMatRandomColor = LevelManager.Instance.towerMat.color;
+
+
+            //spawn cart prefab, set random position
+            tmpCart = Instantiate(spawnPrefab, transform.position, Quaternion.identity, transform);
+
+            //Set material to spawn
+            //tmpCart.GetComponent<Renderer>().material.color = spawnMatRandomColor;
+
+            //spawnObject = tmpCart;
+
+
+        }
+
+
+
+            //Follow camera to a ball
+            vcam.m_Follow = tmpCart.transform;
+            vcam.m_LookAt = tmpCart.transform;
+
+            vcamSpeedy.m_Follow = tmpCart.transform;
+            vcamSpeedy.m_LookAt = tmpCart.transform;
+
+
     }
 
     
