@@ -279,10 +279,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
                     if(i<tmpRank)
                     {
-                       
+
                         //enable checkmark
-                        //mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(true);
-                     
+                        mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(true);
+
 
                         //Disable gems icon
                         if (mapSegment.transform.GetChild(i%4).GetChild(0).childCount>1)
@@ -294,18 +294,19 @@ public class FunctionHandler : Singleton<FunctionHandler>
                         if (i != tmpRank && i != tmpRank -1)
                         {
                             //Enable tower graphics
-                            mapSegment.transform.GetChild(i % 4).GetChild(1).gameObject.SetActive(true);
+                            mapSegment.transform.GetChild(i % 4).GetChild(0).gameObject.SetActive(true);
                         }
 
                         //Get lastSegment
                         if (i == tmpRank -1)
                         {
-                            mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.clear;
+                            //mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).GetComponent<Image>().color = Color.clear;
                             lastSegment = mapSegment.transform.GetChild(i % 4);
 
                             //Disable model for later anim
                             mapSegment.transform.GetChild(i % 4).GetChild(1).GetChild(0).gameObject.SetActive(false);
-
+                            //enable checkmark fir later anim
+                            mapSegment.transform.GetChild(i % 4).GetChild(0).GetChild(0).gameObject.SetActive(false);
                         }
                      
                       
@@ -366,7 +367,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
             lastSegment.GetChild(1).gameObject.SetActive(true);
             lastSegment.GetChild(1).GetComponent<Animator>().SetTrigger("Pan");
             //Enable model after anim
-            lastSegment.GetChild(1).GetChild(0).gameObject.SetActive(true);
+            lastSegment.GetChild(0).gameObject.SetActive(true);
+            //enable checkmark
+            lastSegment.GetChild(0).GetChild(0).gameObject.SetActive(false);
             yield return new WaitForSeconds(1f);
             yield break;
         }
@@ -400,7 +403,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
         lastSegment.GetChild(1).gameObject.SetActive(true);
         lastSegment.GetChild(1).GetComponent<Animator>().SetTrigger("Pan");
         //Enable model after anim
-        lastSegment.GetChild(1).GetChild(0).gameObject.SetActive(true);
+        lastSegment.GetChild(1).gameObject.SetActive(true);
+        //enable checkmark
+        lastSegment.GetChild(0).GetChild(0).gameObject.SetActive(false);
         yield return new WaitForSeconds(1f);
     }
 

@@ -237,7 +237,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2376050815653715679}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -1643,6 +1643,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chest_Closed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417686438846089429, guid: ada26c8f62967a54188fcd631e1515a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3404657169473455883, guid: ada26c8f62967a54188fcd631e1515a2,
         type: 3}

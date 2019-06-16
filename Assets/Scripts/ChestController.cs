@@ -151,8 +151,10 @@ public class ChestController : MonoBehaviour
     public IEnumerator StopOpenChest()
     {
         GameManager.Instance.KeyCount--;
-        GameObject tmpGlow = Instantiate(chestPowerUpPref, transform.GetChild(0));
+
         chestAnim.SetTrigger("ChestOpen");
+        yield return new WaitForSeconds(0.4f);
+        GameObject tmpGlow = Instantiate(chestPowerUpPref, transform.GetChild(0));
         chestAnim.Play("PwrUp");
 
         transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Collectable>().RandomizeCollectable();
@@ -164,9 +166,10 @@ public class ChestController : MonoBehaviour
         yield return null;
         //Debug.Log(PlayerPrefs.GetInt("KeyCount", 0));
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.8f);
         if(GameManager.Instance.KeyCount==0)
         {
+            yield return new WaitForSeconds(1f);
             //Hide Chest window
             FunctionHandler.Instance.ToggleMenuWindow(1);
         }
@@ -174,3 +177,6 @@ public class ChestController : MonoBehaviour
 
     }
 }
+
+
+

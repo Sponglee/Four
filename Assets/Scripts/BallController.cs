@@ -425,7 +425,7 @@ public class BallController : Singleton<BallController>
 
         if (Input.GetMouseButtonDown(1))
         {
-           
+            GameManager.Instance.LevelComplete();
             //comboMultiplier = 3;
             //PoweredUp = true;
             //GameManager.Instance.ComboActive = true;
