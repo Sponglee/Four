@@ -47,7 +47,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     }
 
+
     public void CloseGameOver(bool menuClose = false)
+    {
+        StartCoroutine(StopCloseGameOver(menuClose));
+    }
+    public IEnumerator StopCloseGameOver(bool menuClose = false)
     {
         LevelCompleteInProgress = false;
         //Enable effectHolder
@@ -57,8 +62,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
         //If menu is already open
         if (menuCam.activeSelf)
         {
-
             menuCam.SetActive(false);
+         
 
             //GameOver menu close
             if (!menuClose)
@@ -73,10 +78,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
                 //Time.timeScale = 1;
                 //Disable menu screen
+                yield return new WaitForSeconds(0.21f);
+                menuButton.SetActive(true);
                 menuCanvas.SetActive(false);
                 menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Enable menu button if game over or win
-                menuButton.SetActive(true);
 
 
                 
@@ -148,7 +154,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public IEnumerator StopOpenGameOver(string message)
     {
        
-        menuCanvas.transform.parent.position = new Vector3(menuCanvas.transform.parent.position.x, BallController.Instance.transform.position.y, menuCanvas.transform.parent.position.z);
+        menuCanvas.transform.parent.position = new Vector3(menuCanvas.transform.parent.position.x, BallController.Instance.transform.position.y + 200f, menuCanvas.transform.parent.position.z);
         menuCanvas.SetActive(true);
         GameManager.Instance.bestText.text = GameManager.Instance.bestScore.ToString();
         GameManager.Instance.menuScoreText.text = GameManager.Instance.Score.ToString();
