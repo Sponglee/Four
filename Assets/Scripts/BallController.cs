@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class BallController : Singleton<BallController>
 {
-
+    private Skybox skyReference;
     public Animator BallAnim;
+
     public int comboIndex = 1;
 
     ///FROM CARTMODELCONTROLLER 
@@ -29,6 +30,11 @@ public class BallController : Singleton<BallController>
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / levelManager.levelCount;
             GameManager.Instance.AddScore(comboIndex, Color.grey, transform.GetChild(1));
+
+
+            //RenderSettings.skybox.SetColor("_Color1_B", Color.black);
+
+            //DynamicGI.UpdateEnvironment();
 
             //OPTIMIZATION
             levelManager.transform.GetChild((currentLevel + 65) % levelManager.transform.childCount).gameObject.SetActive(true);

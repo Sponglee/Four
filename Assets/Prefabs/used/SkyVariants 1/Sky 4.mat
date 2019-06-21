@@ -50,7 +50,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Offset: {x: 0, y: 3860}
     - _MainTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -82,7 +82,7 @@ Material:
     - _DirY: 0
     - _DontMix: 0
     - _DstBlend: 0
-    - _Exponent: 0.64
+    - _Exponent: 0.63
     - _Fade: 1
     - _FogHeight: 10
     - _FogYStartPos: 0
@@ -105,7 +105,7 @@ Material:
     - _GradientHeight_T: 1
     - _GradientSpace: 0
     - _HFogEnable: 0
-    - _Intensity: 1.87
+    - _Intensity: 2
     - _LMPower: 0
     - _LmapBlendingMode: 0
     - _LmapEnable: 0
@@ -156,14 +156,14 @@ Material:
     - _AOColor: {r: 1, g: 1, b: 1, a: 1}
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 0.49056602, g: 0.33090067, b: 0.33090067, a: 0}
+    - _Color1: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
     - _Color1_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_L: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_T: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 0.13817194, g: 0.1849798, b: 0.21698111, a: 0}
+    - _Color2: {r: 0, g: 0, b: 0, a: 0}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}

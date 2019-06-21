@@ -604,7 +604,7 @@ public class GameManager : Singleton<GameManager>
                 if (i!=0)
                 {
                     chestSpawnPointOffset += 200f;
-                    if (chestSpawnPointOffset == 1400f)
+                    if (chestSpawnPointOffset == 1000f)
                         chestSpawnPointOffset = 0;
                 }
                 chestSpawnPoint.localPosition = new Vector3(0, 0,  chestSpawnPointOffset);

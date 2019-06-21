@@ -77,11 +77,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
             {
 
                 //Time.timeScale = 1;
+                menuButton.SetActive(true);
+                //menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Disable menu screen
                 yield return new WaitForSeconds(0.21f);
-                menuButton.SetActive(true);
                 menuCanvas.SetActive(false);
-                menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 //Enable menu button if game over or win
 
 
@@ -215,6 +215,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 {
                     menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
                     //if(!LevelCompleteInProgress)
+                    Debug.Log('!');
                     yield return StartCoroutine(StopMapProgression());
                     //Open chest
                     if (GameManager.Instance.KeyCount > 0)
@@ -265,7 +266,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
             if (i % 4 == 0)
             {
-                Debug.Log("NOW " + i + "(" + tmpRank + ")");
+                //Debug.Log("NOW " + i + "(" + tmpRank + ")");
                 mapSegment = Instantiate(mapElemRef, map);
                 
 
@@ -276,7 +277,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             if (mapSegment != null)
             {   
 
-                Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
+                //Debug.Log("AND NOW" + i + "(" + tmpRank + ")");
                 if (i != tmpRank)
                 { 
                     

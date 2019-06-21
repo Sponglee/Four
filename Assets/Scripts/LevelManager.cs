@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -16,6 +15,9 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject collectablePrefab;
     public GameObject powerColPrefab;
     public Transform backGround;
+    public Skybox sky;
+    public Material[] skyboxes;
+
 
     public List<Transform> dangerList;
 
@@ -118,14 +120,14 @@ public class LevelManager : Singleton<LevelManager>
         //Level Count curve (500 maximum - after that +1);
         levelCount = PlayerPrefs.GetInt("LevelCount",50);
         //Level values generator
-        spawnMats = new Material[4];
-        spawnMatsIndex = new int[4];
+        spawnMats = new Material[3];
+        spawnMatsIndex = new int[3];
 
-        //reference to saved leveldata string
-        string prefSpawnMats = PlayerPrefs.GetString("SpawnMats", "0,0,0,0,0");
+        //reference to saved leveldata string  "Rank, Material, Skybox"
+        string prefSpawnMats = PlayerPrefs.GetString("SpawnMats", "0,0,0,0");
         int prefCurrentRank = PlayerPrefs.GetInt("CurrentRank", 1);
 
-        string[] prefSpawnMatsArray = new string[5];
+        string[] prefSpawnMatsArray = new string[7];
         prefSpawnMatsArray = prefSpawnMats.Split(',');
 
 
@@ -146,7 +148,7 @@ public class LevelManager : Singleton<LevelManager>
         //Get random string of indexes and save it, or load it from prefs
         if (prefCurrentRank != prefSpawnMatsRank)
         {
-            string[] tmpSave = new string[5];
+            string[] tmpSave = new string[4];
             string tmpSaveString = "";
 
 
@@ -154,10 +156,14 @@ public class LevelManager : Singleton<LevelManager>
 
             //Debug.Log("HERE");
          
-            for (int i = 0; i < spawnMatsIndex.Length; i++)
+            for (int i = 0; i < spawnMats.Length; i++)
             {
-                
-                spawnMatsIndex[i] = Random.Range(0, spawnMatPool.Length);
+                if (i ==0)
+                    spawnMatsIndex[i] = Random.Range(0, spawnMatPool.Length);
+                else if (i==spawnMats.Length-1)
+                {
+                    spawnMatsIndex[i] = Random.Range(0, skyboxes.Length);
+                }
 
                 //Debug.Log("!!! " + spawnMatsIndex[i]);
                 tmpSave[i+1] = spawnMatsIndex[i].ToString();
@@ -191,12 +197,23 @@ public class LevelManager : Singleton<LevelManager>
         //Populate spawnMats array
         for (int i = 0; i < spawnMats.Length; i++)
         {
-            spawnMats[i] = spawnMatPool[spawnMatsIndex[i]];
+            if(i != spawnMats.Length-1)
+            {
+                spawnMats[i] = spawnMatPool[spawnMatsIndex[i]];
+            }
+            else
+            {
+
+                spawnMats[i] = skyboxes[spawnMatsIndex[i]];
+            }
         }
        
 
         //Set background color
-        Camera.main.backgroundColor = spawnMats[3].color + new Color(-0.1f,-0.1f,-0.1f);
+        RenderSettings.skybox = spawnMats[spawnMats.Length-1];
+
+      
+        //Camera.main.backgroundColor = spawnMats[3].color + new Color(-0.1f,-0.1f,-0.1f);
         //Set fog color
         //RenderSettings.fogColor = Camera.main.backgroundColor;
 

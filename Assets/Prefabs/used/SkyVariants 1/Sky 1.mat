@@ -105,7 +105,7 @@ Material:
     - _GradientHeight_T: 1
     - _GradientSpace: 0
     - _HFogEnable: 0
-    - _Intensity: 23.61
+    - _Intensity: 2
     - _LMPower: 0
     - _LmapBlendingMode: 0
     - _LmapEnable: 0
@@ -163,7 +163,7 @@ Material:
     - _Color1_L: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_T: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 0.13817194, g: 0.1849798, b: 0.21698111, a: 0}
+    - _Color2: {r: 0.2747419, g: 0.66461366, b: 0.9245283, a: 0}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}
