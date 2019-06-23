@@ -256,6 +256,17 @@ public class GameManager : Singleton<GameManager>
                     }
                 }
 
+                if(value == 0 && ChestSpawnedBool)
+                {
+                    Debug.Log("HEREERERE");
+
+                    //Enable more keys if <9
+                    if(chestOpenedCount<8)
+                        FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(true);
+                    //Enable back button if last key was used
+                    else
+                        FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1).gameObject.SetActive(true);
+                }
                       
 
 
@@ -376,8 +387,22 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //Keep track of how many opened Chests there's 
+    [SerializeField]
+    private int chestOpenedCount = 0;
+    public int ChestOpenedCount
+    {
+        get 
+        { 
+            return chestOpenedCount; 
+        }
+    set 
+        {
+            chestOpenedCount = value; 
+        }
+    }
 
-  
+
 
 
 
@@ -449,8 +474,9 @@ public class GameManager : Singleton<GameManager>
     }
 
     private bool PowerUpDecreasing = false;
-   
 
+    //Check if chests were spawned
+    public bool ChestSpawnedBool = false;
     public void GrabCollectable(int power = -1, Transform powerColTrans = null)
     {
         Debug.Log(power);
@@ -605,6 +631,7 @@ public class GameManager : Singleton<GameManager>
    
     public void ChestSpawn()
     {
+        ChestSpawnedBool = true;
         StartCoroutine(StopChestSpawn());
     }
 

@@ -108,9 +108,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             case 1:
                 {
                     target = chestHolder;
-                    //chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<ChestController>().CheckKeys(); 
-                    //chestHolder.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
-                   
+             
                 }
                 break;
             case 2:
@@ -126,7 +124,15 @@ public class FunctionHandler : Singleton<FunctionHandler>
             StartCoroutine(StopWindow(target));
             if (target == chestHolder)
             {
-                GameManager.Instance.ChestDespawn();
+                //GameManager.Instance.ChestDespawn();
+                if(GameManager.Instance.KeyCount==0)
+                {
+                    //Enable buttons 
+                    menuCanvas.transform.GetChild(3).gameObject.SetActive(false);
+                    menuCanvas.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+
+                }
+
             }
         }
         else
@@ -136,7 +142,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
             target.SetActive(true);
             if(target == chestHolder)
             {
-                GameManager.Instance.ChestSpawn();
+                if(GameManager.Instance.ChestSpawnedBool == false)
+                    GameManager.Instance.ChestSpawn();
             }
         }
     }
@@ -176,19 +183,19 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 yield return new WaitForSeconds(0.4f);
 
                 //Set message
-                menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
                
-               
-                menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+                //Enable continue
+                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(2).gameObject.SetActive(true);
 
-                if (SpawnManager.Instance.gameMode)
-                {
-                    menuCanvas.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<Image>().color = Color.red;
-                }
-                else
-                {
-                    menuCanvas.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<Image>().color = Color.white;
-                }
+                //if (SpawnManager.Instance.gameMode)
+                //{
+                //    menuCanvas.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<Image>().color = Color.red;
+                //}
+                //else
+                //{
+                //    menuCanvas.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<Image>().color = Color.white;
+                //}
 
                 
             }
@@ -206,26 +213,38 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
                 //Set message
-                menuCanvas.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
 
                 //Disable menu button if game over or win
                 menuButton.SetActive(false);
                 //yield return new WaitForSeconds(0.21f);
                 if (message != "GAME OVER")
                 {
-                    menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-                    //if(!LevelCompleteInProgress)
-                    Debug.Log('!');
-                    yield return StartCoroutine(StopMapProgression());
-                    //Open chest
-                    if (GameManager.Instance.KeyCount >=3)
-                    {
-                        yield return new WaitForSeconds(0.4f);
-                       
-                        //Open chestWindow
-                        ToggleMenuWindow(1);
+                    //disable continue
+                    menuCanvas.transform.GetChild(0).GetChild(0).GetChild(2).gameObject.SetActive(false);
 
+
+
+                    if (GameManager.Instance.KeyCount >= 3)
+                    {
+                        //disable continue
+                        menuCanvas.transform.GetChild(3).gameObject.SetActive(true);
+                        //disable buttons
+                        menuCanvas.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
                     }
+
+
+                        yield return StartCoroutine(StopMapProgression());
+                    ////Open chest
+                    //if (GameManager.Instance.KeyCount >= 3)
+                    //{
+                       
+                    //    yield return new WaitForSeconds(0.4f);
+
+                    //    //Open chestWindow
+                    //    ToggleMenuWindow(1);
+
+                    //}
                 }
                 else
                 {
@@ -558,5 +577,22 @@ public class FunctionHandler : Singleton<FunctionHandler>
             }
         }
 
+    }
+
+
+
+
+    public void MoreKeys()
+    {
+        if(GameManager.Instance.KeyCount<3 && GameManager.Instance.ChestOpenedCount <9)
+        {
+            GameManager.Instance.KeyCount += 3;
+          
+
+
+            //Disable back button and back button
+            chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(false);
+            chestHolder.transform.GetChild(1).GetChild(2).GetChild(1).gameObject.SetActive(false);
+        }
     }
 }

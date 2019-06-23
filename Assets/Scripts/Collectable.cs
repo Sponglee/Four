@@ -10,9 +10,9 @@ public class Collectable : MonoBehaviour
     public float chestDuration = 1f;
     private float chestTimer = 0f;
 
-
     [SerializeField]
     private int powerCol = -2;
+    // -3 - Key PowerCol, -2 - gem PowerUp -1 - gem collectable
     public int PowerCol
     {
         get
@@ -77,7 +77,7 @@ public class Collectable : MonoBehaviour
 
     private void OnEnable()
     {
-        if(PowerCol == -2)
+        if(PowerCol == -3)
         {
             Debug.Log("ONENABLE KEY");
             if (GameManager.Instance.KeyCount >= 3)
@@ -115,7 +115,7 @@ public class Collectable : MonoBehaviour
 
 
 
-        if (PowerCol > -2 && PowerCol < 0)
+        if (PowerCol > -3 && PowerCol < 0)
         {
             int PowerColRand = Random.Range(0, 100);
 
