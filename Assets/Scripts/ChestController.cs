@@ -173,7 +173,7 @@ public class ChestController : MonoBehaviour
             //Hide Chest window
             FunctionHandler.Instance.ToggleMenuWindow(1);
         }
-        Destroy(gameObject);    
+        //Destroy(gameObject);    
 
     }
 }

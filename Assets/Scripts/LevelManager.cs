@@ -487,7 +487,7 @@ public class LevelManager : Singleton<LevelManager>
             //Switch parents of carts and move (right or left)
             if(rightDirection)
             {
-                Debug.Log("RIGHT INSIDE");
+                //Debug.Log("RIGHT INSIDE");
                 //change currents, set parents 
                 tmp.Current--;
                 tmp.transform.parent.SetParent(null);
@@ -497,7 +497,7 @@ public class LevelManager : Singleton<LevelManager>
             }
             else
             {
-                Debug.Log("LEFT INSIDE");
+                //Debug.Log("LEFT INSIDE");
                 //change currents, set parents 
                 tmp.Current++;
                 tmp.transform.parent.SetParent(null);

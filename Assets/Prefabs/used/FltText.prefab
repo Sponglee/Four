@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988d28778b5c3444ab8b701cf13d78be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0.6
+  timer: 2
   destroyBool: 1
 --- !u!1 &1179872251534314
 GameObject:

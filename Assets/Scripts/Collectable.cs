@@ -59,7 +59,7 @@ public class Collectable : MonoBehaviour
             chestTimer += Time.deltaTime;
             if (chestTimer > chestDuration)
             {
-                Destroy(transform.parent.gameObject);
+                transform.parent.GetChild(1).gameObject.SetActive(false);
             }
         }
     }
@@ -75,7 +75,19 @@ public class Collectable : MonoBehaviour
 
 
 
-
+    private void OnEnable()
+    {
+        if(PowerCol == -2)
+        {
+            Debug.Log("ONENABLE KEY");
+            if (GameManager.Instance.KeyCount >= 3)
+            {
+                Debug.Log("DISABLE");
+                transform.parent.gameObject.SetActive(false);
+            }
+        }
+       
+    }
 
 
     private IEnumerator MagnetCollectable()
@@ -103,7 +115,7 @@ public class Collectable : MonoBehaviour
 
 
 
-        if (PowerCol != -1)
+        if (PowerCol > -2 && PowerCol < 0)
         {
             int PowerColRand = Random.Range(0, 100);
 

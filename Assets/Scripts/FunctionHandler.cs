@@ -218,7 +218,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     Debug.Log('!');
                     yield return StartCoroutine(StopMapProgression());
                     //Open chest
-                    if (GameManager.Instance.KeyCount > 0)
+                    if (GameManager.Instance.KeyCount >=3)
                     {
                         yield return new WaitForSeconds(0.4f);
                        

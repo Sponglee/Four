@@ -216,6 +216,11 @@ public class GameManager : Singleton<GameManager>
     //POWER UPS
     ///////////////////////////////////////////////
 
+    public Color keyUnavailable;
+    public Color keyAvailable;
+    
+    public Transform keyUI;
+
     //Keys for the chest
     [SerializeField]
     private int keyCount=0;
@@ -229,10 +234,32 @@ public class GameManager : Singleton<GameManager>
         set
         {
             keyCount = value;
-            if(value  > 0)
+            if(value  >= 0)
             {
+
+
+
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (i < value)
+                    {
+                        keyUI.GetChild(i).GetComponent<Image>().color = keyAvailable;
+                    }
+                    else
+                    {
+                        //if (i != 4)
+                            keyUI.GetChild(i).GetComponent<Image>().color = keyUnavailable;
+                        //else
+                        //    keyUI.GetChild(3).GetComponent<Image>().color = Color.clear;
+
+                    }
+                }
+
+                      
+
+
                
-                //chestReference.transform.GetChild(0).GetComponent<ChestController>().key.SetActive(true);
             }
             PlayerPrefs.SetInt("KeyCount", value);
         }
@@ -595,7 +622,7 @@ public class GameManager : Singleton<GameManager>
     {
         float chestSpawnPointOffset = 0;
         int keyNumber = PlayerPrefs.GetInt("KeyCount", 0);
-        for (int i = 0; i < keyNumber; i++)
+        for (int i = 0; i < 9; i++)
         {
             chestSpawnPoint.localPosition = Vector3.zero;
             //Middle row
@@ -603,8 +630,8 @@ public class GameManager : Singleton<GameManager>
             {
                 if (i!=0)
                 {
-                    chestSpawnPointOffset += 200f;
-                    if (chestSpawnPointOffset == 1000f)
+                    chestSpawnPointOffset += 300f;
+                    if (chestSpawnPointOffset == 1200f)
                         chestSpawnPointOffset = 0;
                 }
                 chestSpawnPoint.localPosition = new Vector3(0, 0,  chestSpawnPointOffset);
@@ -612,13 +639,13 @@ public class GameManager : Singleton<GameManager>
             //Right
             else if (i % 3 == 1)
             { 
-                chestSpawnPoint.localPosition = new Vector3(185f, 0, +100 + chestSpawnPointOffset);
+                chestSpawnPoint.localPosition = new Vector3(185f, 0,/* +100*/ + chestSpawnPointOffset);
             }
             //Left
             else if(i%3 == 2)
             {
                 
-                chestSpawnPoint.localPosition = new Vector3(-185f, 0, +100f + chestSpawnPointOffset);
+                chestSpawnPoint.localPosition = new Vector3(-185f, 0, /*+100f*/ + chestSpawnPointOffset);
             }
           
             Instantiate(chestPrefab, chestSpawnPoint.position, Quaternion.identity, chestReference);
