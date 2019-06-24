@@ -158,7 +158,7 @@ public class LevelManager : Singleton<LevelManager>
          
             for (int i = 0; i < spawnMats.Length; i++)
             {
-                if (i ==0)
+                if (i < spawnMats.Length-1/*i ==0*/)
                     spawnMatsIndex[i] = Random.Range(0, spawnMatPool.Length);
                 else if (i==spawnMats.Length-1)
                 {
