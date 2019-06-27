@@ -55,6 +55,22 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //Gem level 
+    private int gemTmp;
+    public int GemTmp
+    {
+        get
+        {
+            return GemTmp;
+        }
+
+        set
+        {
+            GemTmp = value;
+        }
+    }
+
+
 
 
     [SerializeField]
@@ -223,6 +239,7 @@ public class GameManager : Singleton<GameManager>
     
     public Transform keyUI;
 
+    
     //Keys for the chest
     [SerializeField]
     private int keyCount=0;
@@ -404,8 +421,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-
-
+   
 
 
     //////////////////////////////////////

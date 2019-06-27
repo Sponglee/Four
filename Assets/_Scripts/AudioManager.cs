@@ -25,16 +25,24 @@ public class Sound
         source.clip = clip;
     }
 
-    public void Play(bool powUp = false)
+    public void Play(bool powUp = false, bool gem = false)
     {
         source.volume = volume;
         source.pitch = pitch * (1 + Random.Range(-randomPitch / 2, randomPitch / 2));
        
         if (powUp)
         {
-            source.pitch = Mathf.Clamp(1 + GameManager.Instance.Multiplier/10f,0,2f);
+            if(gem)
+            {
+                source.pitch = Mathf.Clamp(1 + GameManager.Instance.gemMultiplier / 10f, 0, 3f);
+            }
+            else
+            {
+                source.pitch = Mathf.Clamp(1 + GameManager.Instance.Multiplier / 10f, 0, 3f);
+            }
+
             //source.Play();
-            source.PlayScheduled(0.2f);
+            source.Play();
         }
         else
             source.Play();
@@ -95,9 +103,15 @@ public class AudioManager : Singleton<AudioManager>
         {
             if (sounds[i].name == _name)
             {
-                if (sounds[i].name == "Hit" /*|| sounds[i].name == "Gem"*/)
+                if (sounds[i].name == "Hit" )
                 {
+                  
                     sounds[i].Play(true);
+                }
+                else if( sounds[i].name == "Gem")
+                {
+                    GameManager.Instance.gemMultiplier++;
+                    sounds[i].Play(true,true);
                 }
                 else if (sounds[i].name == "FireTrail")
                 {

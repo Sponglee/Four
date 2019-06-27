@@ -156,14 +156,14 @@ Material:
     - _AOColor: {r: 1, g: 1, b: 1, a: 1}
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 1, g: 1, b: 1, a: 0}
+    - _Color1: {r: 0.23544855, g: 0.3490566, b: 0.34128106, a: 0}
     - _Color1_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_L: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_T: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 0.022071911, g: 0.09939479, b: 0.1509434, a: 0}
+    - _Color2: {r: 0.09710526, g: 0.40460527, b: 0.615, a: 0}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}

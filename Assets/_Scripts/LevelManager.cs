@@ -118,7 +118,16 @@ public class LevelManager : Singleton<LevelManager>
         cartPrefab = cartVariants[PlayerPrefs.GetInt("CartVariant", 0)];
 
         //Level Count curve (500 maximum - after that +1);
-        levelCount = PlayerPrefs.GetInt("LevelCount",50);
+        if (PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 0)
+        {
+            levelCount = 150;
+        }
+        else
+        {
+
+            levelCount = PlayerPrefs.GetInt("LevelCount",50);
+        }
+
         //Level values generator
         spawnMats = new Material[3];
         spawnMatsIndex = new int[3];

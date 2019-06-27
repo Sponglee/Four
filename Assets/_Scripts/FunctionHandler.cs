@@ -183,7 +183,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 yield return new WaitForSeconds(0.4f);
 
                 //Set message
-                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+                menuCanvas.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
                
                 //Enable continue
                 menuCanvas.transform.GetChild(0).GetChild(0).GetChild(2).gameObject.SetActive(true);
@@ -213,7 +213,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
                 //Set message
-                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+                menuCanvas.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
 
                 //Disable menu button if game over or win
                 menuButton.SetActive(false);
@@ -221,7 +221,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 if (message != "GAME OVER")
                 {
                     //disable continue
-                    menuCanvas.transform.GetChild(0).GetChild(0).GetChild(2).gameObject.SetActive(false);
+                    menuCanvas.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
 
 
 
