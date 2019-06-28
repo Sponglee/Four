@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3194684279788999157}
   - component: {fileID: 1928653707972367494}
+  - component: {fileID: 4266122885188009758}
   m_Layer: 5
   m_Name: mapCylinder
   m_TagString: Untagged
@@ -56,6 +57,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4266122885188009758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702123474375208445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3183bdc498b769e45b154b45c35ad2e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &977437554403670337
 GameObject:
   m_ObjectHideFlags: 0

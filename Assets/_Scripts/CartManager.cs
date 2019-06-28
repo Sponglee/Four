@@ -134,7 +134,7 @@ public class CartManager : MonoBehaviour
 
                         
 
-                        if (powerRand > 0 && powerRand < 5)
+                        if (powerRand > 0 && powerRand < 1)
                         {
                             //spawn cart prefab, set random position
                             tmpCart = Instantiate(LevelManager.Instance.powerColPrefab, transform);
@@ -205,7 +205,7 @@ public class CartManager : MonoBehaviour
 
                     }
                 }
-                else if (spawnRandomizer <= 40 && spawnRandomizer > 5 /*&& i == 1*/)
+                else if (spawnRandomizer <= 60 && spawnRandomizer > 5 /*&& i == 1*/)
                 {
 
 
@@ -240,7 +240,7 @@ public class CartManager : MonoBehaviour
 
                 }
                 //LEVELDIFFICULTY
-                else if (spawnRandomizer <= 3 && transform.parent.GetSiblingIndex() > 5 && (PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0 && GameManager.Instance.CurrentRank != 1))
+                else if (spawnRandomizer <=5 && transform.parent.GetSiblingIndex() > 5 && (PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0 && GameManager.Instance.CurrentRank != 1))
                 {
                     materialRandomizer = 0;
 

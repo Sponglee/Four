@@ -527,6 +527,7 @@ GameObject:
   - component: {fileID: 6386374678481103034}
   - component: {fileID: 7897271128587184616}
   - component: {fileID: 7014789379841198955}
+  - component: {fileID: 4186222449083661519}
   m_Layer: 0
   m_Name: ChestPref
   m_TagString: Untagged
@@ -635,6 +636,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 152.41, y: 124.9, z: 114.61}
   m_Center: {x: 0, y: -35.2, z: 0}
+--- !u!114 &4186222449083661519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8098616674594665109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3183bdc498b769e45b154b45c35ad2e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3713433444890080519
 PrefabInstance:
   m_ObjectHideFlags: 0

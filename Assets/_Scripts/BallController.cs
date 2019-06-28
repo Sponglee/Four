@@ -37,11 +37,11 @@ public class BallController : Singleton<BallController>
             //DynamicGI.UpdateEnvironment();
 
             //OPTIMIZATION
-            levelManager.transform.GetChild((currentLevel + 65) % levelManager.transform.childCount).gameObject.SetActive(true);
+            levelManager.transform.GetChild((currentLevel + 35) % levelManager.transform.childCount).gameObject.SetActive(true);
 
             if (currentLevel>20)
             {
-                levelManager.transform.GetChild(currentLevel - 20).gameObject.SetActive(false);
+                levelManager.transform.GetChild(currentLevel - 5).gameObject.SetActive(false);
             }
 
         }

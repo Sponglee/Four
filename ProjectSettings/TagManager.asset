@@ -23,6 +23,7 @@ TagManager:
   - Magnet
   - PowerCol
   - Chest
+  - Audio
   layers:
   - Default
   - TransparentFX

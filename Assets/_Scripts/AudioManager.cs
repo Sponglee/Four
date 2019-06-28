@@ -34,11 +34,11 @@ public class Sound
         {
             if(gem)
             {
-                source.pitch = Mathf.Clamp(1 + GameManager.Instance.gemMultiplier / 10f, 0, 3f);
+                source.pitch = Mathf.Clamp(1 + GameManager.Instance.gemMultiplier / 200f, 0, 3f);
             }
             else
             {
-                source.pitch = Mathf.Clamp(1 + GameManager.Instance.Multiplier / 10f, 0, 3f);
+                source.pitch = Mathf.Clamp(1 + GameManager.Instance.Multiplier / 100f, 0, 3f);
             }
 
             //source.Play();

@@ -64,7 +64,10 @@ public class ChestController : MonoBehaviour
 
     public GameObject chestPowerUpPref;
 
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        AudioManager.Instance.PlaySound("MenuSmash");
+    }
 
 
 

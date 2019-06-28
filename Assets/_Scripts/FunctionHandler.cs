@@ -146,13 +146,16 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     GameManager.Instance.ChestSpawn();
             }
         }
+        AudioManager.Instance.PlaySound("MenuSwoop");
     }
 
     public IEnumerator StopWindow(GameObject target)
     {
         //yield return new WaitForSeconds(0.61f);
+       
         windowCam.SetActive(false);
         yield return new WaitForSeconds(0.21f);
+
         target.SetActive(false);
     }
 
@@ -184,9 +187,10 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
                 //Set message
                 menuCanvas.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
-               
+
                 //Enable continue
-                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(2).gameObject.SetActive(true);
+
+                menuCanvas.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
 
                 //if (SpawnManager.Instance.gameMode)
                 //{
@@ -197,7 +201,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 //    menuCanvas.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<Image>().color = Color.white;
                 //}
 
-                
+
             }
         }
         else if (message != "")
@@ -366,6 +370,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         //Add a rank
         PlayerPrefs.SetInt("CurrentRank", tmpRank + 1);
+        //AudioManager.Instance.PlaySound("MenuSmash");
         yield return StopMapPan(lastSegment);
         //yield return StopColorLerp(lastSegment.GetChild(0).GetChild(0), unlockedMapColor);
         yield return StopColorLerp(nextSegment, finishedColor);
