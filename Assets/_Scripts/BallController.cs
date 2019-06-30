@@ -41,7 +41,7 @@ public class BallController : Singleton<BallController>
 
             if (currentLevel>20)
             {
-                levelManager.transform.GetChild(currentLevel - 5).gameObject.SetActive(false);
+                levelManager.transform.GetChild(currentLevel - 10).gameObject.SetActive(false);
             }
 
         }
@@ -250,7 +250,7 @@ public class BallController : Singleton<BallController>
                 BallAnim.SetBool("Fall", true);
                 poweredUpVFX.SetActive(true);
 
-                Debug.Log("SPEED " + rb.velocity);
+                //Debug.Log("SPEED " + rb.velocity);
                 rb.velocity = Vector3.down * 72f;
 
                 //RemoveCartBelow(2);

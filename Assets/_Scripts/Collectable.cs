@@ -79,10 +79,10 @@ public class Collectable : MonoBehaviour
     {
         if(PowerCol == -3)
         {
-            Debug.Log("ONENABLE KEY");
+            //Debug.Log("ONENABLE KEY");
             if (GameManager.Instance.KeyCount >= 3)
             {
-                Debug.Log("DISABLE");
+                //Debug.Log("DISABLE");
                 transform.parent.gameObject.SetActive(false);
             }
         }

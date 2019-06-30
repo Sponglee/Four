@@ -13,6 +13,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public GameObject windowCam;
 
     public GameObject shopHolder;
+    public Transform shopElements;
+
     public GameObject chestHolder;
     public GameObject menuCanvas;
     public GameObject canvasUI;
@@ -609,5 +611,30 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
 
-    
+    public void BuySkin()
+    {
+        StartCoroutine(StopBuySkin());
+        
+    }
+
+
+    public IEnumerator StopBuySkin()
+    {
+        int lastStep = -1;
+        int randomStep = -1;
+        for (int i = 0; i < 5; i++)
+        {
+            while (lastStep == randomStep)
+            {
+                randomStep = UnityEngine.Random.Range(0, shopElements.childCount);
+            }
+            
+            StartCoroutine(StopColorLerp(shopElements.GetChild(randomStep).GetChild(0), Color.white));
+            yield return new WaitForSeconds(1f);
+            lastStep = randomStep;
+
+        }
+
+        ApplySkin(shopElements.GetChild(randomStep));
+    }
 }

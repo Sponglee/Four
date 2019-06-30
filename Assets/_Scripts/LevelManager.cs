@@ -403,7 +403,7 @@ public class LevelManager : Singleton<LevelManager>
                     {
                         if (BallController.Instance != null && BallController.Instance.TapToStart)
                         {
-                            Debug.Log("LEFT");
+                            //Debug.Log("LEFT");
 
                             LevelMove(ballRef.CurrentLevel + 5 + i);
 
@@ -415,7 +415,7 @@ public class LevelManager : Singleton<LevelManager>
 
                         if (BallController.Instance != null && BallController.Instance.TapToStart)
                         {
-                            Debug.Log("RIGHT");
+                            //Debug.Log("RIGHT");
                             LevelMove(ballRef.CurrentLevel + 5 + i, true);
 
                         }

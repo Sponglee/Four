@@ -497,7 +497,7 @@ public class GameManager : Singleton<GameManager>
     public bool ChestSpawnedBool = false;
     public void GrabCollectable(int power = -1, Transform powerColTrans = null)
     {
-        Debug.Log(power);
+        //Debug.Log(power);
         //Not gem
         if(power != -1)
         {
