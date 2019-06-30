@@ -99,6 +99,7 @@ public class BallController : Singleton<BallController>
 
                 BallAnim.SetTrigger("Bump");
                 AudioManager.Instance.PlaySound("Bump");
+                Instantiate(LevelManager.Instance.mpoofPrefab, transform.position, Quaternion.identity);
                 //for (int i = 2; i < Random.Range(0,10); i++)
                 //{
                 //    int randomDir = Random.Range(0, 2);
@@ -292,9 +293,12 @@ public class BallController : Singleton<BallController>
             if(shielded == false && value == true)
             {
                 shieldVFX.SetActive(true);
+                //Turn magnet on
+                Instantiate(LevelManager.Instance.shieldedPrefab, shieldVFX.transform);
             }
             else if(shielded == true && value == false)
             {
+                Destroy(shieldVFX.transform.GetChild(0).gameObject);
                 shieldVFX.SetActive(false);
             }
             shielded = value;
@@ -320,10 +324,14 @@ public class BallController : Singleton<BallController>
             {
                magnetHolder.gameObject.SetActive(true);
                magnetVFX.SetActive(true);
+                //Turn magnet on
+               Instantiate(LevelManager.Instance.electroMagnetPrefab, magnetVFX.transform);
                StartCoroutine(magnetHolder.parent.GetComponent<SpawnManager>().StopMagnet());
             }
             else if(value == false && magnet == true)
             {
+                //Turn magnet off
+                Destroy(magnetVFX.transform.GetChild(0).gameObject);
                 magnetVFX.SetActive(false);
                 magnetHolder.gameObject.SetActive(false);
             }
@@ -587,7 +595,10 @@ public class BallController : Singleton<BallController>
             else
             {
                 if (BallController.Instance.CollidedBool)
+                {
                     BallController.Instance.BallAnim.SetTrigger("Bump");
+                 
+                }
             }
         }
         else

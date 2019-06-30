@@ -50,7 +50,12 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject mpoofPrefab;
     public GameObject poofPrefab;
     public GameObject smokePrefab;
+
+    //PowerUp prefs
     public GameObject electroMagnetPrefab;
+    public GameObject poweredUpPrefab;
+    public GameObject shieldedPrefab;
+
     public Transform EffectHolder;
 
     //Input vars
