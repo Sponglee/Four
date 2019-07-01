@@ -298,6 +298,7 @@ public class BallController : Singleton<BallController>
             }
             else if(shielded == true && value == false)
             {
+                if(shieldVFX.transform.childCount>0)
                 Destroy(shieldVFX.transform.GetChild(0).gameObject);
                 shieldVFX.SetActive(false);
             }

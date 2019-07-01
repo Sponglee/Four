@@ -17504,7 +17504,7 @@ MonoBehaviour:
     randomPitch: 0.1
     Looped: 0
   - name: Danger
-    clip: {fileID: 8300000, guid: 7fc3c5b2426a42b4c9f9627faacb3e38, type: 3}
+    clip: {fileID: 8300000, guid: 3524079dbc1b27d45887dca117b8ebed, type: 3}
     volume: 1
     pitch: 1
     randomPitch: 0.5
@@ -17516,9 +17516,9 @@ MonoBehaviour:
     randomPitch: 0.5
     Looped: 0
   - name: Bump
-    clip: {fileID: 8300000, guid: 524bdb7932d97e64ea9eedb682ca7195, type: 3}
-    volume: 1
-    pitch: 1
+    clip: {fileID: 8300000, guid: 1f83730964f115649b3fce7a7dd1e19d, type: 3}
+    volume: 0.3
+    pitch: 1.2
     randomPitch: 0.2
     Looped: 0
   - name: Chest
@@ -17546,8 +17546,8 @@ MonoBehaviour:
     randomPitch: 0
     Looped: 0
   - name: FireTrail
-    clip: {fileID: 8300000, guid: 90ea9cbf5c568844da459d04edb16109, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 12c00e18b36102c4e946108384d65519, type: 3}
+    volume: 0.5
     pitch: 1
     randomPitch: 0
     Looped: 1
