@@ -113,13 +113,49 @@ public class CartManager : MonoBehaviour
 
                 if (i != requiredCart1)
                 {
-                    materialRandomizer = 1;
-                    continue;
+                   if (spawnRandomizer <= 5 && transform.parent.GetSiblingIndex() > 5 && (GameManager.Instance.CurrentRank > 15 && PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0))
+                    {
+                        materialRandomizer = 0;
+
+                        //spawn cart prefab, set random position
+                        GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
+
+                        ////Set up material and danger capsule collider
+                        tmpCart.transform.GetChild(0).GetComponent<CapsuleCollider>().enabled = true;
+                        tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
+                        tmpCart.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
+
+                        tmpCart.tag = "Danger";
+                        tmpCart.transform.GetChild(0).tag = "Danger";
+
+                        ////Set a material
+                        LevelManager.Instance.dangerList.Add(transform.parent);
+
+
+                        //Set position and orientation for dolly
+                        tmpCart.transform.SetParent(tmpCartHolder.transform);
+                        tmpCart.transform.position = tmpCartHolder.transform.position;
+                        tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
+
+
+                        //Set Current
+                        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
+                        tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().LevelIndex = transform.parent.GetSiblingIndex();
+                        //set cart reference for manager
+                        carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                    }
+                    else
+                    {
+                        materialRandomizer = 1;
+                        continue;
+                    }
                 }
                 else
                 {
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
                 }
+
+
 
                 //LEVELDIFFICULTY
                 //CHEST LEVEL
@@ -148,59 +184,12 @@ public class CartManager : MonoBehaviour
                             tmpCart.transform.GetChild(0).tag = "Collectable";
                         }
                       
-                        //}
-
-                        ////Set a material
-                        //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
-
                         //Set position and orientation for dolly
                         tmpCart.transform.SetParent(tmpCartHolder.transform);
                         tmpCart.transform.position = tmpCartHolder.transform.position;
                         tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                        //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
 
-                        //Set current for that cart
-                        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
-
-                        //set cart reference for manager
-                        //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
                         index++;
-
-
-
-
-
-                        /////////////////////////////////////////////////////////////////////////////////////////
-                        //materialRandomizer = 0;
-
-                        ////spawn cart prefab, set random position
-                        //tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
-                        ////check if it's steel
-
-                        ////if ()
-                        ////{
-
-                        ////tmpCart.tag = "Steel";
-                        ////tmpCart.transform.GetChild(0).tag = "Steel";
-                        ////}
-
-                        ////Set a material
-                        //tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
-                        //tmpCart.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
-
-                        ////Set position and orientation for dolly
-                        //tmpCart.transform.SetParent(tmpCartHolder.transform);
-                        //tmpCart.transform.position = tmpCartHolder.transform.position;
-                        //tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                        ////tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
-
-                        ////Set Current
-                        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
-                        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().LevelIndex = transform.parent.GetSiblingIndex();
-                        ////set cart reference for manager
-                        //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-
-                        ///////////////////////////////////////////////////
                         continue;
 
                     }
@@ -213,14 +202,7 @@ public class CartManager : MonoBehaviour
 
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
-                    //check if it's steel
-
-                    //if ()
-                    //{
-
-                    //tmpCart.tag = "Steel";
-                    //tmpCart.transform.GetChild(0).tag = "Steel";
-                    //}
+                  
 
                     //Set a material
                     tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
@@ -239,11 +221,14 @@ public class CartManager : MonoBehaviour
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
 
                 }
-                //LEVELDIFFICULTY
-                else if (spawnRandomizer <=5 && transform.parent.GetSiblingIndex() > 5 && (PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0 && GameManager.Instance.CurrentRank != 1))
+                //LEVELDIFFICULTY  ( before 15 lvl )
+                else if (spawnRandomizer <=5 && transform.parent.GetSiblingIndex() > 5 && (PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0 && GameManager.Instance.CurrentRank < 15))
                 {
                     materialRandomizer = 0;
 
+                    //set everything but 1 
+                    //for (int j = 0; j < cartsLength-1; j++)
+                    //{
                     //spawn cart prefab, set random position
                     GameObject tmpCart = Instantiate(LevelManager.Instance.cartPrefab, transform);
 
@@ -251,32 +236,27 @@ public class CartManager : MonoBehaviour
                     tmpCart.transform.GetChild(0).GetComponent<CapsuleCollider>().enabled = true;
                     tmpCart.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
                     tmpCart.transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Renderer>().material = LevelManager.Instance.dangerMaterial;
-                    
-                    
-                    
-
-                    //if ()
-                    //{
 
                     tmpCart.tag = "Danger";
                     tmpCart.transform.GetChild(0).tag = "Danger";
-                    //}
 
-                    LevelManager.Instance.dangerList.Add(transform.parent);
                     ////Set a material
-                    //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[0];
+                    LevelManager.Instance.dangerList.Add(transform.parent);
+
 
                     //Set position and orientation for dolly
                     tmpCart.transform.SetParent(tmpCartHolder.transform);
                     tmpCart.transform.position = tmpCartHolder.transform.position;
                     tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                    //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
+
 
                     //Set Current
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
                     tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().LevelIndex = transform.parent.GetSiblingIndex();
                     //set cart reference for manager
                     carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                    //}
+
                 }
                 //LEVELDIFFICULTY
                 else if (PlayerPrefs.GetInt("CurrentRank", 1) > 2 && transform.parent.GetSiblingIndex() % 3 == 0)
@@ -303,27 +283,11 @@ public class CartManager : MonoBehaviour
                             tmpCart.transform.GetChild(0).tag = "Collectable";
                         }
 
-
-
-
-
-
-                        //}
-
-                        ////Set a material
-                        //tmpCart.transform.GetChild(0).GetComponent<Renderer>().material = spawnMatsRef[materialRandomizer];
-
                         //Set position and orientation for dolly
                         tmpCart.transform.SetParent(tmpCartHolder.transform);
                         tmpCart.transform.position = tmpCartHolder.transform.position;
                         tmpCart.transform.rotation = tmpCartHolder.transform.rotation;
-                        //tmpCart.transform.rotation = tmpCart.transform.rotation * Quaternion.Euler(-180, 0, 90);
-
-                        //Set current for that cart
-                        //tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().Current = tmpCartHolder.transform.GetSiblingIndex();
-
-                        //set cart reference for manager
-                        //carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
+                       
                     }
 
                 }
@@ -331,10 +295,7 @@ public class CartManager : MonoBehaviour
                     index++;
             }
 
-            
-
-            //transform.parent.eulerAngles = new Vector3(0, -angStep * transform.parent.GetSiblingIndex(), 0);
-
+           //Hide tower for rendering
             if (transform.parent.GetSiblingIndex() > 65)
                 transform.parent.gameObject.SetActive(false);
         }

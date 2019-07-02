@@ -394,7 +394,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
 
-        if (tmpRank < 8)
+        if (tmpRank < 9)
         {
             //Animation here
             lastSegment.GetChild(1).gameObject.SetActive(true);
@@ -409,11 +409,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         else if(tmpRank % 4 != 0)
         {
-            endPos = -Vector3.right * (tmpRank / 4 -2)*110f;
+            endPos = -Vector3.right * (tmpRank / 4 )*150f;
         }
         else
         {
-            endPos = -Vector3.right * (tmpRank /4 - 2) * 110f;
+            endPos = -Vector3.right * (tmpRank /4) * 150f;
 
         }
 
