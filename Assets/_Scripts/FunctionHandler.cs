@@ -39,7 +39,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
-       
+             AudioManager.Instance.PlaySound("MenuSwoop");
             BallController.Instance.TapToStart = false;
             canvasUI.SetActive(false);
             BallController.Instance.MenuOpened = true;
@@ -52,6 +52,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void CloseGameOver(bool menuClose = false)
     {
+        AudioManager.Instance.PlaySound("MenuSwoop");
         StartCoroutine(StopCloseGameOver(menuClose));
     }
     public IEnumerator StopCloseGameOver(bool menuClose = false)
