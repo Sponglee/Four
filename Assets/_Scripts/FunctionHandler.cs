@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class FunctionHandler : Singleton<FunctionHandler>
 {
+    public Transform resumeReference;
+    public Transform restartReference;
+
 
     public GameObject menuCam;
     public GameObject windowCam;
@@ -39,11 +42,17 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void OpenGameOver(string message)
     {
-             AudioManager.Instance.PlaySound("MenuSwoop");
-            BallController.Instance.TapToStart = false;
-            canvasUI.SetActive(false);
-            BallController.Instance.MenuOpened = true;
-            StartCoroutine(StopOpenGameOver(message));
+        AudioManager.Instance.PlaySound("MenuSwoop");
+
+       
+
+
+
+
+        BallController.Instance.TapToStart = false;
+        canvasUI.SetActive(false);
+        BallController.Instance.MenuOpened = true;
+        StartCoroutine(StopOpenGameOver(message));
         
        
 
@@ -174,9 +183,15 @@ public class FunctionHandler : Singleton<FunctionHandler>
       
 
         //if there's no message - mid game open or close menu
-        if (message == "")
+        if (message == "PAUSE")
         {
-            
+
+            //Set button icons for midgame pause
+            resumeReference.GetChild(0).gameObject.SetActive(false);
+            resumeReference.GetChild(1).gameObject.SetActive(true);
+            restartReference.GetChild(0).gameObject.SetActive(false);
+            restartReference.GetChild(1).gameObject.SetActive(true);
+
             //Close menu if it's open and midgame
             if (menuCam.activeSelf)
             {
@@ -207,7 +222,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
             }
         }
-        else if (message != "")
+        else if (message != "PAUSE")
         {
             if (!LevelCompleteInProgress)
             {
@@ -227,6 +242,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 //yield return new WaitForSeconds(0.21f);
                 if (message != "GAME OVER")
                 {
+
+                    //Set button icons for gameOver
+                    resumeReference.GetChild(0).gameObject.SetActive(false);
+                    resumeReference.GetChild(1).gameObject.SetActive(true);
+                    restartReference.GetChild(0).gameObject.SetActive(false);
+                    restartReference.GetChild(1).gameObject.SetActive(true);
+
+
                     //disable continue
                     menuCanvas.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
 
@@ -255,6 +278,13 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 }
                 else
                 {
+
+                    //Set button icons for Level complete
+                    resumeReference.GetChild(0).gameObject.SetActive(false);
+                    resumeReference.GetChild(1).gameObject.SetActive(true);
+                  
+
+
                     //GameManager.Instance.Score = 0;
                     PlayerPrefs.SetInt("Score", 0);
                     //Time.timeScale = 0;
