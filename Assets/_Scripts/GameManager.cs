@@ -279,9 +279,14 @@ public class GameManager : Singleton<GameManager>
                 {
                     Debug.Log("HEREERERE");
 
-                    //Enable more keys if <9
+                    //Enable more keys buttton if <9
                     if(chestOpenedCount<8)
+                    {
+                        //Animate timeout
+                        StartCoroutine(FunctionHandler.Instance.TimeOutButton(FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0)
+                                                                                , FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1)));
                         FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(true);
+                    }
                     //Enable back button if last key was used
                     else
                         FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1).gameObject.SetActive(true);

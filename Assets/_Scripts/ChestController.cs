@@ -177,6 +177,8 @@ public class ChestController : MonoBehaviour
 
         if(GameManager.Instance.KeyCount==0)
         {
+
+            
             yield return new WaitForSeconds(2f);
             ////Hide Chest window
             //FunctionHandler.Instance.ToggleMenuWindow(1);

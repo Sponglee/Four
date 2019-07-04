@@ -246,10 +246,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     //Set button icons for gameOver
                     resumeReference.GetChild(0).gameObject.SetActive(false);
                     resumeReference.GetChild(1).gameObject.SetActive(true);
-                    restartReference.GetChild(0).gameObject.SetActive(false);
-                    restartReference.GetChild(1).gameObject.SetActive(true);
+                    restartReference.GetChild(0).gameObject.SetActive(true);
+                    restartReference.GetChild(1).gameObject.SetActive(false);
 
 
+
+                    
                     //disable continue
                     menuCanvas.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
 
@@ -280,9 +282,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 {
 
                     //Set button icons for Level complete
-                    resumeReference.GetChild(0).gameObject.SetActive(false);
-                    resumeReference.GetChild(1).gameObject.SetActive(true);
-                  
+                    resumeReference.GetChild(0).gameObject.SetActive(true);
+                    resumeReference.GetChild(1).gameObject.SetActive(false);
+
+                    //Animate timeout
+                    StartCoroutine(TimeOutButton(resumeReference, restartReference));
 
 
                     //GameManager.Instance.Score = 0;
@@ -302,6 +306,28 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         yield return null;
     }
+
+
+
+    public IEnumerator TimeOutButton(Transform bounceRef, Transform hideRef)
+    {
+        //make it bounce
+
+        bounceRef.gameObject.SetActive(true);
+        bounceRef.GetComponent<Animator>().SetTrigger("Bounce");
+        Debug.Log("BOUNCE " + bounceRef.GetComponent<Animator>().isActiveAndEnabled);
+
+        yield return null;
+       
+
+        yield return new WaitForSeconds(1.8f);
+
+        hideRef.gameObject.SetActive(true);
+
+       
+    }
+
+
 
 
     public IEnumerator StopMapProgression()
