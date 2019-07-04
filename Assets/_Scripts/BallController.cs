@@ -257,6 +257,8 @@ public class BallController : Singleton<BallController>
                 //RemoveCartBelow(2);
                 CollidedBool = false;
                 poweredUp = value;
+
+                
             }
             else if (collidedBool == true && value == false)
             {
@@ -264,6 +266,7 @@ public class BallController : Singleton<BallController>
                 transform.GetComponent<BoxCollider>().isTrigger = false;
                 BallAnim.SetBool("Fall", false);
                 poweredUpVFX.SetActive(false);
+                
             }
             else if (value == false)
             {
@@ -429,16 +432,38 @@ public class BallController : Singleton<BallController>
         }
         else if(!poweredUp)
         {
-            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime*5f, 1, 5f);
+            //Reset power Up on collided
+            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime*5f, 0, 5f);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
             //Enable and fill powerFiller
-            if (comboMultiplier == 1)
+            if (comboMultiplier == 0)
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
         }
         else
         {
-            comboMultiplier = 3f;
-            GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
+            //Decrease on PoweredUp 
+            if (!collidedBool && poweredUp && TapToStart)
+            {
+
+                comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 0, 3f);
+                //powerUpSpeed += Time.deltaTime;
+
+                //Enable and fill powerFiller
+                GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
+                GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+
+
+                if (comboMultiplier == 0f)
+                {
+                    PoweredUp = false;
+                }
+            }
+            else
+            {
+                comboMultiplier = 3f;
+                GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
+            }
+         
             
         }
 
@@ -797,11 +822,15 @@ public class BallController : Singleton<BallController>
 
     public void PushDown(Transform other, int siblingIndex)
     {
-       
-        //if(PoweredUp)
-        //    GameManager.Instance.PowerFill -= 15f / 200f; 
-        //Debug.Log("SHIKARI");
-        //CollidedBool = true;
+
+        if (PoweredUp)
+        {
+            comboMultiplier = Mathf.Clamp(comboMultiplier + 0.5f, 1, 3f);
+            GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+        }
+            //    GameManager.Instance.PowerFill -= 15f / 200f; 
+            //Debug.Log("SHIKARI");
+            //CollidedBool = true;
         if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
         {
           

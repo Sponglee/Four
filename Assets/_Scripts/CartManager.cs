@@ -118,6 +118,8 @@ public class CartManager : MonoBehaviour
                 {
                    if (spawnRandomizer <= 5 && transform.parent.GetSiblingIndex() > 5 && (GameManager.Instance.CurrentRank > 15 && PlayerPrefs.GetInt("CurrentRank", 1) % 4 != 0))
                     {
+                        if (dangerCount == 2)
+                            break;
                         materialRandomizer = 0;
                         dangerCount++;
                         //spawn cart prefab, set random position
@@ -146,8 +148,7 @@ public class CartManager : MonoBehaviour
                         tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>().LevelIndex = transform.parent.GetSiblingIndex();
                         //set cart reference for manager
                         carts[index] = tmpCart.transform.GetChild(0).GetComponent<CartModelContoller>();
-                        if(dangerCount == 2)
-                            break;
+                      
                     }
                     else
                     {
@@ -157,7 +158,11 @@ public class CartManager : MonoBehaviour
                 }
                 else
                 {
+                    if (dangerCount == 2)
+                        break;
                     materialRandomizer = Random.Range(0, spawnMatsRef.Length);
+                    dangerCount++;
+
                 }
 
 

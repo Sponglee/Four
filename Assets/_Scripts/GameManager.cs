@@ -585,44 +585,7 @@ public class GameManager : Singleton<GameManager>
     public IEnumerator StopPoweredUp(float fraction, float startTime, float powerDecreaseSpeed)
     {
 
-      
-
-        PowerUpDecreasing = true;
-
-        while (powerFill > 0)  
-        {
-            if (powerFill <= 0.1f)
-            {
-                //BallController.Instance.comboMultiplier = 1f;
-                yield return new WaitForSeconds(0.02f);
-            }
-            else
-                yield return null;
-
-            if (ComboActive)
-            {
-
-                //PowerFill -= 10f / (powerDecreaseSpeed);
-            }
-            else
-            {
-                //PowerFill -= 10f / (powerDecreaseSpeed);
-
-            }
-
-          
-
-        }
-
-        BallController.Instance.PoweredUp = false;
-        BallController.Instance.comboMultiplier = 1f;
-
-        //PowerFill = 0;
-        //powerFiller.color = Color.white;
-        Multiplier = 1;
-        PowerUpDecreasing = false;
-        powerDecreaseAmount = powerDecreaseSpeed;
-        BallController.Instance.transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+        yield return null;
 
 
     }
