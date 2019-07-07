@@ -44,6 +44,62 @@ public class BallController : Singleton<BallController>
                 levelManager.transform.GetChild(currentLevel - 10).gameObject.SetActive(false);
             }
 
+
+            //Increase PoweredUP
+            if (!collidedBool && !PoweredUp && TapToStart)
+            {
+
+                StartCoroutine(ChangePowerFill(0.2f));
+
+                //Enable and fill powerFiller
+                GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
+                GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+
+
+                if (comboMultiplier == 3f)
+                {
+                    PoweredUp = true;
+                }
+            }
+            //Decrease on PoweredUp 
+            else if (PoweredUp)
+            {
+                if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
+                {
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+                    ////Reset power Up on collided
+
+
+                    StartCoroutine(ChangePowerFill(-0.15f));
+                   
+
+                    //Enable and fill powerFiller
+                    GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
+                    GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+
+
+                    if (comboMultiplier == 0f)
+                    {
+                        PoweredUp = false;
+                    }
+                }
+                else
+                {
+                    comboMultiplier = 3f;
+                    GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
+                }
+
+
+            }
+
+
+
+
+
+
+
+
+
         }
     }
 
@@ -416,59 +472,59 @@ public class BallController : Singleton<BallController>
     private void Update()
     {
 
-        if(!collidedBool && !PoweredUp && TapToStart)
-        {
+        ////////////////if(!collidedBool && !PoweredUp && TapToStart)
+        ////////////////{
 
-            comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 0, 3f);
-            //powerUpSpeed += Time.deltaTime;
+        ////////////////    comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 0, 3f);
+        ////////////////    //powerUpSpeed += Time.deltaTime;
 
-            //Enable and fill powerFiller
-            GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
-            GameManager.Instance.powerFiller.fillAmount = (comboMultiplier)/3f;
+        ////////////////    //Enable and fill powerFiller
+        ////////////////    GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
+        ////////////////    GameManager.Instance.powerFiller.fillAmount = (comboMultiplier)/3f;
 
 
-            if(comboMultiplier == 3f)
-            {
-                PoweredUp = true;
-            }
-        }
-        else if(!PoweredUp)
+        ////////////////    if(comboMultiplier == 3f)
+        ////////////////    {
+        ////////////////        PoweredUp = true;
+        ////////////////    }
+        ////////////////}
+        if (!PoweredUp && collidedBool && TapToStart)
         {
             //Reset power Up on collided
-            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime*5f, 0, 5f);
+            comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime * 5f, 0, 5f);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
             //Enable and fill powerFiller
             if (comboMultiplier == 0)
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
         }
-        else /*if(PoweredUp)*/
-        {
-            //Decrease on PoweredUp 
-            if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
-            {
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-                ////Reset power Up on collided
-                comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 0, 3f);
-                GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+        //else if (PoweredUp && TapToStart)
+        //{
+        //    //Decrease on PoweredUp 
+        //    if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
+        //    {
+        //        ////////////////////////////////////////////////////////////////////////////////////////////////////////; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+        //        ////Reset power Up on collided
+        //        comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 0, 3f);
+        //        GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
-                //Enable and fill powerFiller
-                GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
-                GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+        //        //Enable and fill powerFiller
+        //        GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
+        //        GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
 
-                if (comboMultiplier == 0f)
-                {
-                    PoweredUp = false;
-                }
-            }
-            else
-            {
-                comboMultiplier = 3f;
-                GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
-            }
-         
-            
-        }
+        //        if (comboMultiplier == 0f)
+        //        {
+        //            PoweredUp = false;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        comboMultiplier = 3f;
+        //        GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
+        //    }
+
+
+        //}
 
 
         if (Input.GetMouseButtonDown(1))
@@ -958,6 +1014,19 @@ public class BallController : Singleton<BallController>
         }
         return null;
 
+    }
+
+
+
+    //For poweredUp fill on currentlevel change
+    public IEnumerator ChangePowerFill( float rate)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            comboMultiplier = Mathf.Clamp(comboMultiplier + rate /5f, 0, 3f);
+            GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
 }

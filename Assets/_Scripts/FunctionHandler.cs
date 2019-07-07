@@ -560,6 +560,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
                     }
+                    else if (BallController.Instance.PoweredUp && GameManager.Instance.PoweredUpCount > 0)
+                    {
+                        GameManager.Instance.PoweredUpCount--;
+                        BallController.Instance.comboMultiplier = 3f;
+                    }
                 }
                 break;
 
