@@ -416,10 +416,10 @@ public class BallController : Singleton<BallController>
     private void Update()
     {
 
-        if(!collidedBool && !poweredUp && TapToStart)
+        if(!collidedBool && !PoweredUp && TapToStart)
         {
 
-            comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 1, 3f);
+            comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 0, 3f);
             //powerUpSpeed += Time.deltaTime;
 
             //Enable and fill powerFiller
@@ -432,7 +432,7 @@ public class BallController : Singleton<BallController>
                 PoweredUp = true;
             }
         }
-        else if(!poweredUp)
+        else if(!PoweredUp)
         {
             //Reset power Up on collided
             comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime*5f, 0, 5f);
@@ -441,14 +441,15 @@ public class BallController : Singleton<BallController>
             if (comboMultiplier == 0)
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
         }
-        else
+        else /*if(PoweredUp)*/
         {
             //Decrease on PoweredUp 
             if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
             {
-
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+                ////Reset power Up on collided
                 comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 0, 3f);
-                //powerUpSpeed += Time.deltaTime;
+                GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
                 //Enable and fill powerFiller
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
@@ -824,10 +825,10 @@ public class BallController : Singleton<BallController>
 
     public void PushDown(Transform other, int siblingIndex)
     {
-
+        //Decrease Power up on push
         if (PoweredUp)
         {
-            comboMultiplier = Mathf.Clamp(comboMultiplier + 0.5f, 1, 3f);
+            comboMultiplier = Mathf.Clamp(comboMultiplier + 0.5f, 0, 3f);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
         }
             //    GameManager.Instance.PowerFill -= 15f / 200f; 

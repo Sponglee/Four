@@ -14,6 +14,7 @@ public class ThemeButtonUpdater : MonoBehaviour
 
     public void UpdateThemeButton(int lastSkin = -1)
     {
+        // If skin was bought
         if ((GameManager.Instance.SkinAvailability & 1 << transform.GetSiblingIndex()) == 1 << transform.GetSiblingIndex())
         {
             //gameObject.transform.GetChild(0).GetComponentInChildren<Text>().text = "SELECT";
@@ -28,16 +29,16 @@ public class ThemeButtonUpdater : MonoBehaviour
                     transform.parent.GetChild(lastSkin).GetChild(0).GetComponent<UnityEngine.UI.Outline>().effectColor = Color.white;
             }
 
-
+            //Disable the cost
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         }
         else
         {
             transform.GetChild(0).GetComponent<Image>().color -= new Color(0f,0f,0f,0.5f);
             gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.gray;
-            //gameObject.transform.GetChild(0).GetComponentInChildren<Text>().text = itemCost.ToString();
-            //gameObject.transform.GetChild(0).GetComponentInChildren<Text>().color = Color.white;
-            //gameObject.transform.GetChild(0).GetChild(1).GetComponentInChildren<Text>().color = Color.white;
-            //gameObject.transform.GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
+
+            //Enable the cost
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
 
         }
 

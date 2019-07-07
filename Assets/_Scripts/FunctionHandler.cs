@@ -640,9 +640,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 skinElem.GetComponent<ThemeButtonUpdater>().UpdateThemeButton(lastSkin);
 
                 SpawnManager.Instance.Spawn();
+                AudioManager.Instance.PlaySound("Chest");
             }
             else
             {
+                AudioManager.Instance.PlaySound("No");
                 Debug.Log("YOU DONT HAVE THE SKIN. BUY IT? " + cost);
             }
         }

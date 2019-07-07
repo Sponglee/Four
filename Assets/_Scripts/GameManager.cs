@@ -569,9 +569,11 @@ public class GameManager : Singleton<GameManager>
         else
         {
             Gems++;
+            //BallController.Instance.comboMultiplier = Mathf.Clamp(BallController.Instance.comboMultiplier + 0f, 1f, 3f);
+            //powerFiller.fillAmount = (BallController.Instance.comboMultiplier) / 3f;
         }
 
-       
+
     }
 
 

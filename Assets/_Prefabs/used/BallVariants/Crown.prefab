@@ -9706,7 +9706,7 @@ GameObject:
   - component: {fileID: 3861889724857273329}
   - component: {fileID: 3989937754040958271}
   m_Layer: 0
-  m_Name: Arrow 1
+  m_Name: Crown
   m_TagString: Spawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9840,7 +9840,7 @@ Animator:
   m_GameObject: {fileID: 3640801874800319340}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e3047f2cc0ca1f241ba0f9042e46d4be, type: 2}
+  m_Controller: {fileID: 9100000, guid: a0fa43c1d54cf2d44b538a4dabf92e6f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
