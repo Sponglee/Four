@@ -670,6 +670,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void BuySkin()
     {
+        
         StartCoroutine(StopBuySkin());
         
     }
@@ -677,21 +678,40 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopBuySkin()
     {
+
+        List<Transform> skinsToBuy = new List<Transform>();
+
+        foreach (Transform skin in shopElements)
+        {
+
+
+            //Check if skin is in availability (bit flag)
+            if ((GameManager.Instance.SkinAvailability & 1 << skin.GetSiblingIndex()) == 1 << skin.GetSiblingIndex())
+            {
+
+                continue;
+            }
+            else
+            {
+                skinsToBuy.Add(skin);
+            }
+        }
+
         int lastStep = -1;
         int randomStep = -1;
         for (int i = 0; i < 5; i++)
         {
-            while (lastStep == randomStep)
+            while (skinsToBuy.Count>1 && lastStep == randomStep)
             {
-                randomStep = UnityEngine.Random.Range(0, shopElements.childCount);
+                randomStep = UnityEngine.Random.Range(0, skinsToBuy.Count);
             }
             
-            StartCoroutine(StopColorLerp(shopElements.GetChild(randomStep).GetChild(0), Color.white));
+            StartCoroutine(StopColorLerp(skinsToBuy[randomStep].GetChild(0), Color.white));
             yield return new WaitForSeconds(1f);
             lastStep = randomStep;
 
         }
 
-        ApplySkin(shopElements.GetChild(randomStep));
+        ApplySkin(skinsToBuy[randomStep]);
     }
 }

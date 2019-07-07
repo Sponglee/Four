@@ -648,17 +648,19 @@ public class GameManager : Singleton<GameManager>
                         chestSpawnPointOffset = 0;
                 }
                 chestSpawnPoint.localPosition = new Vector3(0, 0,  chestSpawnPointOffset);
+              
             }
             //Right
             else if (i % 3 == 1)
             { 
                 chestSpawnPoint.localPosition = new Vector3(185f, 0,/* +100*/ + chestSpawnPointOffset);
+                chestSpawnPoint.localRotation = new Quaternion(0, 0.2f, 0, 0);
             }
             //Left
             else if(i%3 == 2)
             {
-                
                 chestSpawnPoint.localPosition = new Vector3(-185f, 0, /*+100f*/ + chestSpawnPointOffset);
+                chestSpawnPoint.localRotation = new Quaternion(0, -0.2f, 0, 0);
             }
           
             Instantiate(chestPrefab, chestSpawnPoint.position, Quaternion.identity, chestReference);

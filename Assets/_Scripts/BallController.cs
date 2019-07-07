@@ -153,7 +153,7 @@ public class BallController : Singleton<BallController>
     [SerializeField] float jumpStrength = 100;
     [SerializeField] float gravityForce = 10;
 
-
+    private int currentBallRank = -1;
 
     LevelManager levelManager;
     Rigidbody rb;
@@ -388,6 +388,8 @@ public class BallController : Singleton<BallController>
     void Start()
     {
 
+
+        currentBallRank = PlayerPrefs.GetInt("CurrentRank", 1);
         transform.SetSiblingIndex(1);
 
         magnetHolder = SpawnManager.Instance.transform.GetChild(0);
@@ -442,7 +444,7 @@ public class BallController : Singleton<BallController>
         else
         {
             //Decrease on PoweredUp 
-            if (!collidedBool && poweredUp && TapToStart)
+            if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
             {
 
                 comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 0, 3f);
