@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: "0.9.\uF739\uF739\uF7398"
+  bundleVersion: "0.9.\uF739\uF739\uF7399"
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -157,7 +157,7 @@ PlayerSettings:
     iOS: com.SolidHinken.Four
   buildNumber:
     iOS: 2
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 12
   AndroidMinSdkVersion: 18
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -264,7 +264,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 6277a684400af43f99f20ad0fffb1ea5, type: 3}
+      m_Icon: {fileID: 2800000, guid: d676ab831de92d84db4f6203f991c7ef, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
