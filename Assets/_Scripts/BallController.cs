@@ -572,18 +572,18 @@ public class BallController : Singleton<BallController>
 
 
 
-            if (forceMultiplier >= forceTreshold)
-            {
-                if (!ForcePush)
-                {
-                    transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
+            //if (forceMultiplier >= forceTreshold)
+            //{
+            //    if (!ForcePush)
+            //    {
+            //        transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
                    
-                    ForcePush = true;
-                    //rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
-                }
+            //        ForcePush = true;
+            //        //rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
+            //    }
 
 
-            }
+            //}
             //else if(!CollidedBool)
             //{
             //    //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
@@ -931,8 +931,8 @@ public class BallController : Singleton<BallController>
             {
                 GameManager.Instance.Multiplier++;
                 GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
-                StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), Color.yellow));
-                StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), Color.yellow));
+                StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), Color.white));
+                StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), Color.white));
 
 
             }
