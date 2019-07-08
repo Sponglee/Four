@@ -305,7 +305,11 @@ public class BallController : Singleton<BallController>
                 //Enable trigger
                 transform.GetComponent<BoxCollider>().isTrigger = true;
                 BallAnim.SetBool("Fall", true);
+
+                //Instantiate powerup
                 poweredUpVFX.SetActive(true);
+                //Turn magnet on
+                Instantiate(LevelManager.Instance.poweredUpPrefab, poweredUpVFX.transform);
 
                 //Debug.Log("SPEED " + rb.velocity);
                 rb.velocity = Vector3.down * 72f;
@@ -316,15 +320,22 @@ public class BallController : Singleton<BallController>
 
                 
             }
-            else if (collidedBool == true && value == false)
+            else if (poweredUp == true && value == false)
             {
                 //Disable trigger
                 transform.GetComponent<BoxCollider>().isTrigger = false;
                 BallAnim.SetBool("Fall", false);
+
+                //Disable PowerUp
+                if (poweredUpVFX.transform.childCount > 0)
+                    Destroy(poweredUpVFX.transform.GetChild(0).gameObject);
+                Debug.Log("HERE");
                 poweredUpVFX.SetActive(false);
                 
             }
-            else if (value == false)
+
+            //Disable everything and sound
+            if (value == false)
             {
                 AudioManager.Instance.StopSound("FireTrail");
                 GameManager.Instance.Multiplier = 1;
@@ -538,7 +549,8 @@ public class BallController : Singleton<BallController>
         else if (Input.GetMouseButtonDown(2))
         {
             GameManager.Instance.KeyCount++;
-            
+            BallController.Instance.PoweredUp = true;
+            comboMultiplier = 3f;
         }
 
 

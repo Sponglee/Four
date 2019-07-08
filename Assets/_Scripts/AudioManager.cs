@@ -38,7 +38,7 @@ public class Sound
             }
             else
             {
-                source.pitch = Mathf.Clamp(1 + GameManager.Instance.Multiplier / 200f, 0, 10f);
+                source.pitch = Mathf.Clamp(1 + GameManager.Instance.Multiplier / 200f, 0, 30f);
             }
 
             //source.Play();

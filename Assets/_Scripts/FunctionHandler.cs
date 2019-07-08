@@ -175,7 +175,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public IEnumerator StopOpenGameOver(string message)
     {
-       
+       //Move menu to camera and enable it
         menuCanvas.transform.parent.position = new Vector3(menuCanvas.transform.parent.position.x, BallController.Instance.transform.position.y + 200f, menuCanvas.transform.parent.position.z);
         menuCanvas.SetActive(true);
         GameManager.Instance.bestText.text = GameManager.Instance.bestScore.ToString();
@@ -189,6 +189,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //Set button icons for midgame pause
             resumeReference.GetChild(0).gameObject.SetActive(false);
             resumeReference.GetChild(1).gameObject.SetActive(true);
+            
             restartReference.GetChild(0).gameObject.SetActive(false);
             restartReference.GetChild(1).gameObject.SetActive(true);
 
@@ -280,10 +281,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 }
                 else
                 {
+                    //TEST
+                    resumeReference.gameObject.SetActive(false);
 
-                    //Set button icons for Level complete
-                    resumeReference.GetChild(0).gameObject.SetActive(true);
-                    resumeReference.GetChild(1).gameObject.SetActive(false);
+                    ////Set button icons for Level complete
+                    //resumeReference.GetChild(0).gameObject.SetActive(true);
+                    //resumeReference.GetChild(1).gameObject.SetActive(false);
+
+                    //TEST
 
                     //Animate timeout
                     StartCoroutine(TimeOutButton(resumeReference, restartReference));
@@ -312,11 +317,17 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public IEnumerator TimeOutButton(Transform bounceRef, Transform hideRef)
     {
         //make it bounce
-
         bounceRef.gameObject.SetActive(true);
-        bounceRef.GetComponent<Animator>().SetTrigger("Bounce");
-        Debug.Log("BOUNCE " + bounceRef.GetComponent<Animator>().isActiveAndEnabled);
 
+
+        //TEST
+        bounceRef.gameObject.SetActive(false);
+
+
+        //bounceRef.GetComponent<Animator>().SetTrigger("Bounce");
+        //Debug.Log("BOUNCE " + bounceRef.GetComponent<Animator>().isActiveAndEnabled);
+
+        //TEST
         yield return null;
        
 

@@ -285,7 +285,7 @@ public class GameManager : Singleton<GameManager>
                         //Animate timeout
                         StartCoroutine(FunctionHandler.Instance.TimeOutButton(FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0)
                                                                                 , FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1)));
-                        FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(true);
+                        //FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(true);
                     }
                     //Enable back button if last key was used
                     else
