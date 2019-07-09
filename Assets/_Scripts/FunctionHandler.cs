@@ -639,7 +639,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         else
         {
             //Getskin's Cost
-            int cost = int.Parse("100");
+            int cost = skinElem.GetComponent<ThemeButtonUpdater>().itemCost;
 
             if (GameManager.Instance.Gems >= cost)
             {

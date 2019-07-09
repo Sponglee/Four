@@ -17,6 +17,7 @@ public class Sound
     public float randomPitch = 0.1f;
 
     public bool Looped = false;
+    public bool Acceleration = false;
 
     //get all the clips to the 'pool'
     public void SetSource(AudioSource _source)
@@ -116,6 +117,20 @@ public class AudioManager : Singleton<AudioManager>
                 else if (sounds[i].name == "FireTrail")
                 {
                    
+                    sounds[i].Play();
+                }
+                else if(sounds[i].name == "Accelerate")
+                {
+                    if (BallController.Instance.comboMultiplier < 1f)
+                    {
+                        sounds[i].pitch = 0.85f;
+                    }
+                    else if (BallController.Instance.comboMultiplier < 2f)
+                    {
+                        sounds[i].pitch = 1.6f;
+                    }
+                   
+
                     sounds[i].Play();
                 }
                 else

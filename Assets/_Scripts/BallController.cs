@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameAnalyticsSDK;
+
 
 public class BallController : Singleton<BallController>
 {
@@ -55,8 +57,21 @@ public class BallController : Singleton<BallController>
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
                 GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
-
-                if (comboMultiplier == 3f)
+                Debug.Log("?????????????????? " + comboMultiplier);
+                if(comboMultiplier >= 0.40f && comboMultiplier <= 0.48f)
+                {
+                    Debug.Log("YAS");
+                    AudioManager.Instance.PlaySound("Accelerate");
+                }
+                else if(comboMultiplier >= 1.60f && comboMultiplier <= 1.68f)
+                {
+                    AudioManager.Instance.PlaySound("Accelerate");
+                }
+                //else if(comboMultiplier >= 2.80f && comboMultiplier <= 2.88f)
+                //{
+                //    AudioManager.Instance.PlaySound("Accelerate");
+                //}
+                else if (comboMultiplier == 3f)
                 {
                     PoweredUp = true;
                 }
@@ -70,7 +85,7 @@ public class BallController : Singleton<BallController>
                     ////Reset power Up on collided
 
 
-                    StartCoroutine(ChangePowerFill(-0.15f));
+                    StartCoroutine(ChangePowerFill(-0.12f));
                    
 
                     //Enable and fill powerFiller
@@ -744,7 +759,11 @@ public class BallController : Singleton<BallController>
             //Add more levels for progression
             transform.GetComponent<BoxCollider>().isTrigger = false;
             comboMultiplier = 1;
+            //GA 
+            GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, Application.version, string.Format("level0{0}",currentBallRank), GameManager.Instance.Score);
+
             GameManager.Instance.LevelComplete();
+
         }
         else if (other.gameObject.CompareTag("Collectable"))
         {
@@ -813,6 +832,9 @@ public class BallController : Singleton<BallController>
                     {
                         AudioManager.Instance.StopSound("FireTrail");
                         //AudioManager.Instance.PlaySound("End");
+                        //GA 
+                        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, Application.version, string.Format("level0{0}", currentBallRank), GameManager.Instance.Score);
+
                         FunctionHandler.Instance.OpenGameOver("GAME OVER");
                         TapToStart = false;
                         forceMultiplier = 1;

@@ -1,4 +1,5 @@
 ﻿
+using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -106,6 +107,13 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
+        //GA 
+        GameAnalytics.Initialize();
+
+        //GA 
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, Application.version, string.Format("level0{0}", GameManager.Instance.CurrentRank), GameManager.Instance.Score);
+
+
         dangerList = new List<Transform>();
 
         Debug.Log(PlayerPrefs.GetInt("CurrentRank", 1) + " >> " + PlayerPrefs.GetInt("CurrentRank", 1) % 4);
