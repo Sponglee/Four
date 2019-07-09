@@ -10,6 +10,7 @@ public class BallController : Singleton<BallController>
     private Skybox skyReference;
     public Animator BallAnim;
 
+    private Color pushColor;
     public int comboIndex = 1;
 
     ///FROM CARTMODELCONTROLLER 
@@ -470,7 +471,7 @@ public class BallController : Singleton<BallController>
     void Start()
     {
 
-
+        pushColor = LevelManager.Instance.ballPushColor;
         currentBallRank = PlayerPrefs.GetInt("CurrentRank", 1);
         transform.SetSiblingIndex(1);
 
@@ -754,8 +755,14 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
+
+            Instantiate(levelManager.finishPrefab, transform.position, Quaternion.identity, transform.GetChild(1));
+            BallAnim.SetTrigger("Bump");
+            AudioManager.Instance.PlaySound("Hit");
             AudioManager.Instance.StopSound("FireTrail");
             AudioManager.Instance.PlaySound("Finish");
+
+
             //Add more levels for progression
             transform.GetComponent<BoxCollider>().isTrigger = false;
             comboMultiplier = 1;
@@ -965,8 +972,8 @@ public class BallController : Singleton<BallController>
             {
                 GameManager.Instance.Multiplier++;
                 GameManager.Instance.AddScore(GameManager.Instance.Multiplier, Color.yellow, transform.GetChild(1));
-                StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), Color.white));
-                StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), Color.white));
+                StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), pushColor));
+                StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), pushColor));
 
 
             }
@@ -974,8 +981,8 @@ public class BallController : Singleton<BallController>
             {
                 //SCORE
                
-                StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), Color.white));
-                StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), Color.white));
+                StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), pushColor));
+                StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), pushColor));
             }
            
         }

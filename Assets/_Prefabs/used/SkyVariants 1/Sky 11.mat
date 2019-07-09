@@ -156,7 +156,7 @@ Material:
     - _AOColor: {r: 1, g: 1, b: 1, a: 1}
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 0.035243843, g: 0.8301887, b: 0.8050328, a: 0}
+    - _Color1: {r: 0, g: 0.27639124, b: 0.9150943, a: 0}
     - _Color1_B: {r: 0, g: 0, b: 0, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}

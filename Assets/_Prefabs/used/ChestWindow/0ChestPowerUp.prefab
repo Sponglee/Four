@@ -645,37 +645,37 @@ PrefabInstance:
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.025069555
+      value: -0.0250692
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: 0.2329868
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.74
+      value: -0.70230675
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5535564
+      value: -0.70222783
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -6.8212085e-12
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -8.003551e-11
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.83281165
+      value: 0.7119522
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
@@ -685,7 +685,7 @@ PrefabInstance:
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -67.223
+      value: -89.211006
       objectReference: {fileID: 0}
     - target: {fileID: 2472311533249524978, guid: 6da649dc88d6bde48a360891f0530646,
         type: 3}

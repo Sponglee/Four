@@ -704,7 +704,10 @@ MonoBehaviour:
     type: 3}
   powerColPrefab: {fileID: 3200393725821006940, guid: 3161de773ca48e940ac08f190769774a,
     type: 3}
+  finishPrefab: {fileID: 1545806602296978, guid: 9e4577abe56a95f4a91d29a0473cd30c,
+    type: 3}
   backGround: {fileID: 1178556464}
+  ballPushColor: {r: 1, g: 0.7476415, b: 0.495283, a: 1}
   sky: {fileID: 0}
   skyboxes:
   - {fileID: 2100000, guid: 5f05e56aacaf5764d9bd841c671f6d18, type: 2}
@@ -718,6 +721,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: dea6e205dac2bea4793d9a729d807173, type: 2}
   - {fileID: 2100000, guid: d9cb7e54eaa75444fa73e2865afd4c44, type: 2}
   - {fileID: 2100000, guid: 98b32d7f9656c1d448670696b237acf4, type: 2}
+  - {fileID: 2100000, guid: 025e0de488461ce4b926659eeaa9d412, type: 2}
   dangerList: []
   cartVariants:
   - {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 3}
@@ -18606,7 +18610,7 @@ MonoBehaviour:
     Looped: 0
     Acceleration: 0
   - name: End
-    clip: {fileID: 8300000, guid: 5ebbf0902d7ba25438cb24b9cfec3c41, type: 3}
+    clip: {fileID: 8300000, guid: def0380bcb452e449a0db990ee4a79ef, type: 3}
     volume: 1
     pitch: 1
     randomPitch: 0.1

@@ -15,7 +15,10 @@ public class LevelManager : Singleton<LevelManager>
     public GameObject cartPrefab;
     public GameObject collectablePrefab;
     public GameObject powerColPrefab;
+    public GameObject finishPrefab;
     public Transform backGround;
+    public Color ballPushColor;
+
     public Skybox sky;
     public Material[] skyboxes;
 
