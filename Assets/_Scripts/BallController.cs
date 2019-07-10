@@ -250,14 +250,19 @@ public class BallController : Singleton<BallController>
             {
                 //let go
                 rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
-                GameManager.Instance.tapText.gameObject.SetActive(false );
+                GameManager.Instance.tapObject.gameObject.SetActive(false);
+                if(PoweredUp)
+                {
+                  rb.velocity = Vector3.down * 72f;
+                }
 
+                  
                 //StartCoroutine(LevelManager.Instance.StopLevelRotator());
             }
             else if (value == false && tapToStart == true)
             {
                 rb.constraints = RigidbodyConstraints.FreezeAll;
-                GameManager.Instance.tapText.gameObject.SetActive(true);
+                GameManager.Instance.tapObject.gameObject.SetActive(true);
             }
            
             tapToStart = value;

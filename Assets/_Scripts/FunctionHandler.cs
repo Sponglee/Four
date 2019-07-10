@@ -38,6 +38,27 @@ public class FunctionHandler : Singleton<FunctionHandler>
         Time.timeScale = 1;
         menuCam = SpawnManager.Instance.vcamMenu.gameObject;
         windowCam = SpawnManager.Instance.vcamShop.gameObject;
+
+
+        //Check volume 
+        int volToggle = PlayerPrefs.GetInt("VolumeMute", 0);
+
+        if (volToggle == 1)
+        {
+            Debug.Log("MUTED??");
+
+            volumeMuted = true;
+            AudioManager.Instance.VolumeMute(volumeMuted);
+            volumeRef.GetChild(0).gameObject.SetActive(!volumeMuted);
+            volumeRef.GetChild(1).gameObject.SetActive(volumeMuted);
+        }
+        else
+        {
+            volumeMuted = false;
+            AudioManager.Instance.VolumeMute(volumeMuted);
+            volumeRef.GetChild(0).gameObject.SetActive(!volumeMuted);
+            volumeRef.GetChild(1).gameObject.SetActive(volumeMuted);
+        }
     }
 
     public void OpenGameOver(string message)
@@ -71,6 +92,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
         canvasUI.SetActive(true);
         BallController.Instance.MenuOpened = false;
+
         //If menu is already open
         if (menuCam.activeSelf)
         {
@@ -85,6 +107,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
                 SceneManager.LoadScene("Main");
             }
+            //MidGame Close menu
             else
             {
 
@@ -99,7 +122,8 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
                 
                 BallController.Instance.RemoveCartBelow(15);
-                GameManager.Instance.tapText.gameObject.SetActive(true);
+              
+                GameManager.Instance.tapObject.gameObject.SetActive(true);
             }
         }
 
@@ -738,13 +762,14 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
     public bool volumeMuted = false;
+    public Transform volumeRef;
 
     public void MuteSound(Transform reference)
     {
         volumeMuted = !volumeMuted;
         AudioManager.Instance.VolumeMute(volumeMuted);
-        reference.GetChild(0).gameObject.SetActive(!volumeMuted);
-        reference.GetChild(1).gameObject.SetActive(volumeMuted);
+        volumeRef.GetChild(0).gameObject.SetActive(!volumeMuted);
+        volumeRef.GetChild(1).gameObject.SetActive(volumeMuted);
 
     }
 

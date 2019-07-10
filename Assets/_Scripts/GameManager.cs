@@ -17,7 +17,7 @@ public class GameManager : Singleton<GameManager>
     
 
 
-    public TextMeshProUGUI tapText;
+    public Transform tapObject;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestText;
     public TextMeshProUGUI multiText;

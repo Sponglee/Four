@@ -79,7 +79,7 @@ public class AudioManager : Singleton<AudioManager>
 
 
 
-    void Start()
+    void Awake()
     {
         //DontDestroyOnLoad(gameObject);
         //if (FindObjectsOfType(GetType()).Length > 1)
@@ -178,12 +178,15 @@ public class AudioManager : Singleton<AudioManager>
 
     public void VolumeMute(bool on=false)
     {
+        Debug.Log(">>" + on);
         if(on)
         {
             foreach (Transform child in transform)
             {
+                Debug.Log("MUTE");
                 child.GetComponent<AudioSource>().mute = true;
             }
+            PlayerPrefs.SetInt("VolumeMute", 1);
         }
         else
         {
@@ -191,6 +194,7 @@ public class AudioManager : Singleton<AudioManager>
             {
                 child.GetComponent<AudioSource>().mute = false;
             }
+            PlayerPrefs.SetInt("VolumeMute", 0);
         }
     }
 }
