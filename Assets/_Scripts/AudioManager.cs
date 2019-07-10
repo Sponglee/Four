@@ -172,9 +172,25 @@ public class AudioManager : Singleton<AudioManager>
     public void VolumeChange(float value)
     {
         PlayerPrefs.SetFloat("Volume", value);
-        for (int i = 0; i < sounds.Length; i++)
+       
+    }
+
+
+    public void VolumeMute(bool on=false)
+    {
+        if(on)
         {
-            sounds[i].volume = value;
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<AudioSource>().mute = true;
+            }
+        }
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<AudioSource>().mute = false;
+            }
         }
     }
 }

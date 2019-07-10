@@ -758,7 +758,9 @@ public class BallController : Singleton<BallController>
 
             Instantiate(levelManager.finishPrefab, transform.position, Quaternion.identity, transform.GetChild(1));
             BallAnim.SetTrigger("Bump");
-            AudioManager.Instance.PlaySound("Hit");
+            AudioManager.Instance.PlaySound("End");
+
+            PoweredUp = false;
             AudioManager.Instance.StopSound("FireTrail");
             AudioManager.Instance.PlaySound("Finish");
 

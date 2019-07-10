@@ -619,6 +619,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     }
 
 
+
     public void ApplySkin(Transform skinElem = null)
     {
         int skinIndex = skinElem.GetSiblingIndex();
@@ -732,4 +733,22 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
         ApplySkin(skinsToBuy[randomStep]);
     }
+
+
+
+
+    public bool volumeMuted = false;
+
+    public void MuteSound(Transform reference)
+    {
+        volumeMuted = !volumeMuted;
+        AudioManager.Instance.VolumeMute(volumeMuted);
+        reference.GetChild(0).gameObject.SetActive(!volumeMuted);
+        reference.GetChild(1).gameObject.SetActive(volumeMuted);
+
+    }
+
+
+
+
 }
