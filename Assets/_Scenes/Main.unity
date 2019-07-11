@@ -722,6 +722,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: d9cb7e54eaa75444fa73e2865afd4c44, type: 2}
   - {fileID: 2100000, guid: 98b32d7f9656c1d448670696b237acf4, type: 2}
   - {fileID: 2100000, guid: 025e0de488461ce4b926659eeaa9d412, type: 2}
+  - {fileID: 2100000, guid: 9c82a4f2218c57c44ab4f903b1f2916f, type: 2}
+  - {fileID: 2100000, guid: 0974dbf49b2cfcc42b2fe1a439c23387, type: 2}
   dangerList: []
   cartVariants:
   - {fileID: 1859630849823150, guid: a379d6e6a51f38a43a40e950b6efbd1d, type: 3}
@@ -2445,8 +2447,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 49.333252}
-  m_SizeDelta: {x: 162.16, y: 32.4}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 162.2, y: 38.834}
   m_Pivot: {x: 1, y: 0}
 --- !u!1 &306782801
 GameObject:
@@ -11761,7 +11763,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320648168}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
   m_Name: 
@@ -15501,7 +15503,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 15, y: -15}
   m_SizeDelta: {x: 40.49, y: 39.22}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1786462196
@@ -16656,7 +16658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -104}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1884319081
@@ -18874,8 +18876,15 @@ MonoBehaviour:
     randomPitch: 0
     Looped: 0
     Acceleration: 0
+  - name: Wind
+    clip: {fileID: 8300000, guid: 45bd50f25480bbd498772a719e72deb2, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 0.5
+    Looped: 0
+    Acceleration: 0
   - name: Accelerate
-    clip: {fileID: 8300000, guid: 8fd0f01f472e7a6428d8cf6489344431, type: 3}
+    clip: {fileID: 0}
     volume: 0.5
     pitch: 0.5
     randomPitch: 0
@@ -19293,6 +19302,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CFX4 Denser
+      objectReference: {fileID: 0}
+    - target: {fileID: 8356353641934324264, guid: ad233b06b60317143afe422d2cbc3767,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8356353641934626312, guid: ad233b06b60317143afe422d2cbc3767,
         type: 3}

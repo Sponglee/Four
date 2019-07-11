@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sky 11
+  m_Name: Sky 12
   m_Shader: {fileID: 4800000, guid: 32f82700d2f3c75449479a861f3b9c6e, type: 3}
   m_ShaderKeywords: _AOUV_UV0 _GRADIENTSPACE_WORLD_SPACE _GRADSETTINGS_B_USE_GLOBAL
     _GRADSETTINGS_D_USE_GLOBAL _GRADSETTINGS_F_USE_GLOBAL _GRADSETTINGS_L_USE_GLOBAL
@@ -156,14 +156,14 @@ Material:
     - _AOColor: {r: 1, g: 1, b: 1, a: 1}
     - _AmbientColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 0.44001427, g: 0.5799079, b: 0.9056604, a: 0}
+    - _Color1: {r: 0.5471698, g: 0.32778567, b: 0.33208203, a: 0}
     - _Color1_B: {r: 0, g: 0, b: 0, a: 1}
     - _Color1_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_F: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_L: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_R: {r: 1, g: 1, b: 1, a: 1}
     - _Color1_T: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 1, g: 1, b: 1, a: 0}
+    - _Color2: {r: 0, g: 0, b: 0, a: 0}
     - _Color2_B: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_D: {r: 1, g: 1, b: 1, a: 1}
     - _Color2_F: {r: 1, g: 1, b: 1, a: 1}

@@ -59,15 +59,17 @@ public class BallController : Singleton<BallController>
                 GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
                 Debug.Log("?????????????????? " + comboMultiplier);
-                if(comboMultiplier >= 0.40f && comboMultiplier <= 0.48f)
+                if(comboMultiplier >= 1f && comboMultiplier <= 1.1f)
                 {
-                    Debug.Log("YAS");
-                    AudioManager.Instance.PlaySound("Accelerate");
+                    //Debug.Log("YAS");
+
+                    AudioManager.Instance.PlaySound("Wind");
+                    //AudioManager.Instance.PlaySound("Accelerate");
                 }
-                else if(comboMultiplier >= 1.60f && comboMultiplier <= 1.68f)
-                {
-                    AudioManager.Instance.PlaySound("Accelerate");
-                }
+                //else if(comboMultiplier >= 1.60f && comboMultiplier <= 1.68f)
+                //{
+                //    AudioManager.Instance.PlaySound("Accelerate");
+                //}
                 //else if(comboMultiplier >= 2.80f && comboMultiplier <= 2.88f)
                 //{
                 //    AudioManager.Instance.PlaySound("Accelerate");
@@ -171,6 +173,7 @@ public class BallController : Singleton<BallController>
 
                 BallAnim.SetTrigger("Bump");
                 AudioManager.Instance.PlaySound("Bump");
+                AudioManager.Instance.StopSound("Wind");
                 Instantiate(LevelManager.Instance.mpoofPrefab, transform.position, Quaternion.identity);
                 //for (int i = 2; i < Random.Range(0,10); i++)
                 //{
@@ -189,7 +192,10 @@ public class BallController : Singleton<BallController>
 
                 //}
             }
-            
+            //else if( collidedBool == true && value == false)
+            //{
+              
+            //}
           
             collidedBool = value;
            
@@ -253,7 +259,8 @@ public class BallController : Singleton<BallController>
                 GameManager.Instance.tapObject.gameObject.SetActive(false);
                 if(PoweredUp)
                 {
-                  rb.velocity = Vector3.down * 72f;
+                    AudioManager.Instance.PlaySound("FireTrail");
+                    rb.velocity = Vector3.down * 72f;
                 }
 
                   
@@ -261,6 +268,7 @@ public class BallController : Singleton<BallController>
             }
             else if (value == false && tapToStart == true)
             {
+                
                 rb.constraints = RigidbodyConstraints.FreezeAll;
                 GameManager.Instance.tapObject.gameObject.SetActive(true);
             }
@@ -321,6 +329,7 @@ public class BallController : Singleton<BallController>
         {
             if(value == true && poweredUp == false)
             {
+                AudioManager.Instance.StopSound("Wind");
                 AudioManager.Instance.PlaySound("FireUp");
                 AudioManager.Instance.PlaySound("FireTrail");
                 //Enable trigger

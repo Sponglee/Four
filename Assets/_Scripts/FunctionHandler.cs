@@ -64,8 +64,9 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public void OpenGameOver(string message)
     {
         AudioManager.Instance.PlaySound("MenuSwoop");
+        AudioManager.Instance.StopSound("Wind");
+        AudioManager.Instance.StopSound("FireTrail");
 
-       
 
 
 

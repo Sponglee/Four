@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: SolidHinken
-  productName: Four
+  productName: 360! Drop
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -264,7 +264,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: b8ae1cd1e99c7ed41ac4ffa031a4c385, type: 3}
+      m_Icon: {fileID: 2800000, guid: 90693ae27179e28458ee3bcbf4af6037, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
