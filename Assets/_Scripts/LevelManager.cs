@@ -110,13 +110,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start()
     {
-        //GA 
-        GameAnalytics.Initialize();
-
-        //GA 
-        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, Application.version, string.Format("level0{0}", GameManager.Instance.CurrentRank), GameManager.Instance.Score);
-
-
+       
         dangerList = new List<Transform>();
 
         Debug.Log(PlayerPrefs.GetInt("CurrentRank", 1) + " >> " + PlayerPrefs.GetInt("CurrentRank", 1) % 4);
@@ -272,9 +266,22 @@ public class LevelManager : Singleton<LevelManager>
         if (PlayerPrefs.GetInt("CurrentRank", 1) % 4 == 0)
             tmpBottomSpawn.transform.GetChild(0).GetChild(Random.Range(0, tmpBottomSpawn.transform.childCount)).gameObject.SetActive(true);
 
+
+
+
+        //GA 
+        GameAnalytics.Initialize();
+
+        //GA 
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, Application.version, string.Format("level0{0}", PlayerPrefs.GetInt("CurrentRank",1)));
+
+
+
+
+
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {

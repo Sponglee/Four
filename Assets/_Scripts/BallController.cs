@@ -13,6 +13,7 @@ public class BallController : Singleton<BallController>
     private Color pushColor;
     public int comboIndex = 1;
 
+
     ///FROM CARTMODELCONTROLLER 
     /// 
     [SerializeField]
@@ -783,7 +784,7 @@ public class BallController : Singleton<BallController>
             transform.GetComponent<BoxCollider>().isTrigger = false;
             comboMultiplier = 1;
             //GA 
-            GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, Application.version, string.Format("level0{0}",currentBallRank), GameManager.Instance.Score);
+            GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, Application.version, string.Format("level0{0}",currentBallRank), GameManager.Instance.Gems);
 
             GameManager.Instance.LevelComplete();
 
@@ -856,7 +857,7 @@ public class BallController : Singleton<BallController>
                         AudioManager.Instance.StopSound("FireTrail");
                         //AudioManager.Instance.PlaySound("End");
                         //GA 
-                        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, Application.version, string.Format("level0{0}", currentBallRank), GameManager.Instance.Score);
+                        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, Application.version, string.Format("level0{0}", currentBallRank), GameManager.Instance.Gems);
 
                         FunctionHandler.Instance.OpenGameOver("GAME OVER");
                         TapToStart = false;
