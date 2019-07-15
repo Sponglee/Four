@@ -396,17 +396,17 @@ public class LevelManager : Singleton<LevelManager>
         {
             //LEVELDIFFICULTY
             //Skip rotattion up to lvl 10
-            if (PlayerPrefs.GetInt("CurrentRank", 1) <= 15)
+            if (PlayerPrefs.GetInt("CurrentRank", 1) <= 30)
             {
                 break;
             }
             //LEVELDIFFICULTY
-            //levels 10 to 25 - rotate only when non powerUp, lvls 15+ rotate even when poweredUp
-            else if (PlayerPrefs.GetInt("CurrentRank", 1)>15)
+            //levels 10 to 25 - rotate only when non powerUp, lvls 25+ rotate even when poweredUp
+            else if (PlayerPrefs.GetInt("CurrentRank", 1)>30)
             {
                 //Debug.Log(">>>>>");
                 //LEVELDIFFICULTY
-                if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) < 30)
+                if (ballRef.PoweredUp && PlayerPrefs.GetInt("CurrentRank", 1) < 60)
                 {
                     yield return new WaitForSeconds(levelMoveWait);
                     continue;

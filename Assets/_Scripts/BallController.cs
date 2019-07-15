@@ -677,11 +677,11 @@ public class BallController : Singleton<BallController>
 
 
         }
-        else if(!TapToStart && !MenuOpened )
+        else if(!TapToStart && !MenuOpened)
         {
             //rb.velocity = Vector3.zero;
 
-            if (Input.GetMouseButtonDown(0) && !FunctionHandler.Instance.GameOverInProgress)
+            if (Input.GetMouseButtonDown(0))
             {
                 TapToStart = true;
                 
