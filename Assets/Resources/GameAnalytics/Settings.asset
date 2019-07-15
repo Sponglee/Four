@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f78192cec1344d83a177ac5e6139ab3, type: 3}
+  m_Script: {fileID: 0}
   m_Name: Settings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp:GameAnalyticsSDK.Setup:Settings
   TotalMessagesSubmitted: 0
   TotalMessagesFailed: 0
   DesignMessagesSubmitted: 0
@@ -25,28 +25,21 @@ MonoBehaviour:
   UserMessagesSubmitted: 0
   UserMessagesFailed: 0
   CustomArea: 
-  gameKey:
-  - a28faf9d79296ead4bc378a0a61a6770
-  secretKey:
-  - 0e06f49d87efb03e07459ca958ccb697c8e54c5f
-  Build:
-  - 0.1
-  SelectedPlatformStudio:
-  - Voodoo
-  SelectedPlatformGame:
-  - 360! Drop - iOS (Asatur Arutyunyan Studio)
-  SelectedPlatformGameID: ff2d0100
-  SelectedStudio: 01000000
-  SelectedGame: 01000000
-  NewVersion: 5.1.7
-  Changes: '5.1.7
-
-    - bug fix for special events script'
-  SignUpOpen: 0
+  gameKey: []
+  secretKey: []
+  Build: []
+  SelectedPlatformStudio: []
+  SelectedPlatformGame: []
+  SelectedPlatformGameID: 
+  SelectedStudio: 
+  SelectedGame: 
+  NewVersion: 
+  Changes: 
+  SignUpOpen: 1
   StudioName: 
-  GameName: 360! Drop
-  EmailGA: solidhinken@gmail.com
-  IntroScreen: 0
+  GameName: 
+  EmailGA: 
+  IntroScreen: 1
   InfoLogEditor: 1
   InfoLogBuild: 1
   VerboseLogBuild: 0
@@ -59,8 +52,8 @@ MonoBehaviour:
   ResourceItemTypes: []
   ResourceCurrencies: []
   LastCreatedGamePlatform: 0
-  Platforms: 08000000
-  CurrentInspectorState: 1
+  Platforms: 
+  CurrentInspectorState: 0
   ClosedHints: 
   DisplayHints: 0
   DisplayHintsScrollState: {x: 0, y: 0}
@@ -86,7 +79,7 @@ MonoBehaviour:
   IncludeGooglePlay: 1
   FpsCriticalThreshold: 20
   FpsCirticalSubmitInterval: 1
-  PlatformFoldOut: 01
+  PlatformFoldOut: 
   CustomDimensions01FoldOut: 0
   CustomDimensions02FoldOut: 0
   CustomDimensions03FoldOut: 0
