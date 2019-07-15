@@ -120,7 +120,6 @@ public class LevelManager : Singleton<LevelManager>
         {
             PlayerPrefs.SetInt("CartVariant", 0);
         }
-        //Change cart variant every 4 levels
         else if (GameManager.Instance.CurrentRank % 4 == 0)
         {
             PlayerPrefs.SetInt("CartVariant", Random.Range(0,cartVariants.Length));
