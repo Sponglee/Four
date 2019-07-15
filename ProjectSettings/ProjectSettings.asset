@@ -156,7 +156,7 @@ PlayerSettings:
     Android: com.SolidHinken.Four
     iOS: com.SolidHinken.Four
   buildNumber:
-    iOS: 2
+    iOS: 7
   AndroidBundleVersionCode: 5
   AndroidMinSdkVersion: 18
   AndroidTargetSdkVersion: 0
@@ -180,7 +180,7 @@ PlayerSettings:
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
-  uIStatusBarHidden: 1
+  uIStatusBarHidden: 0
   uIExitOnSuspend: 0
   uIStatusBarStyle: 0
   iPhoneSplashScreen: {fileID: 0}
