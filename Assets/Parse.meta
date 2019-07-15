@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 56dae93500a9d814daa166d0500161ae
+=======
+guid: 978cc20b7ee228545ba0edf448dc1cd8
+>>>>>>> parent of 3cf7593... 15.07.19
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -16,6 +16,7 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
+<<<<<<< HEAD
       '': OSXIntel
     second:
       enabled: 1
@@ -47,10 +48,16 @@ PluginImporter:
       Any: 
     second:
       enabled: 1
+=======
+      Any: 
+    second:
+      enabled: 0
+>>>>>>> parent of 3cf7593... 15.07.19
       settings: {}
   - first:
       Editor: Editor
     second:
+<<<<<<< HEAD
       enabled: 1
       settings:
         DefaultValueInitialized: true
@@ -115,6 +122,17 @@ PluginImporter:
       settings:
         CompileFlags: 
         FrameworkDependencies: 
+=======
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+>>>>>>> parent of 3cf7593... 15.07.19
   userData: 
   assetBundleName: 
   assetBundleVariant: 
