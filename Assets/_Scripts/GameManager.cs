@@ -1,4 +1,5 @@
 ﻿
+using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -282,14 +283,32 @@ public class GameManager : Singleton<GameManager>
                     //Enable more keys buttton if <9
                     if(chestOpenedCount<8)
                     {
-                        //Animate timeout
-                        StartCoroutine(FunctionHandler.Instance.TimeOutButton(FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0)
-                                                                                , FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1)));
+                        //VOODOO TEST 
+                        FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(false);
+                        //VOODOO TEST
+
+
+
+                        //VOODOO TEST
+
+                        ////Animate timeout
+                        //StartCoroutine(FunctionHandler.Instance.TimeOutButton(FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0)
+                        //                                                        , FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1)));
                         //FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(true);
+
+                        //VOODOO TEST
                     }
                     //Enable back button if last key was used
                     else
+                    {
+
                         FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(1).gameObject.SetActive(true);
+
+
+                        //VOODOO TEST 
+                        FunctionHandler.Instance.chestHolder.transform.GetChild(1).GetChild(2).GetChild(0).gameObject.SetActive(false);
+                        //VOODOO TEST
+                    }
                 }
                       
 
@@ -599,6 +618,7 @@ public class GameManager : Singleton<GameManager>
 
     public void LevelComplete()
     {
+      
         int tmpLvlCount = PlayerPrefs.GetInt("LevelCount", 50);
         FunctionHandler.Instance.OpenGameOver(string.Format("LEVEL {0} COMPLETE",PlayerPrefs.GetInt("CurrentRank",1)));
         

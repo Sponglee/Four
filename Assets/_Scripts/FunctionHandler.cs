@@ -32,6 +32,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
     public Color finishedColor;
 
     public bool LevelCompleteInProgress = false;
+    public bool GameOverInProgress = false;
 
     private void Start()
     {
@@ -83,7 +84,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     public void CloseGameOver(bool menuClose = false)
     {
-        AudioManager.Instance.PlaySound("MenuSwoop");
+      
         StartCoroutine(StopCloseGameOver(menuClose));
     }
     public IEnumerator StopCloseGameOver(bool menuClose = false)
@@ -91,15 +92,13 @@ public class FunctionHandler : Singleton<FunctionHandler>
         LevelCompleteInProgress = false;
         //Enable effectHolder
         LevelManager.Instance.EffectHolder.gameObject.SetActive(true);
-        canvasUI.SetActive(true);
+       
         BallController.Instance.MenuOpened = false;
 
         //If menu is already open
         if (menuCam.activeSelf)
         {
-            menuCam.SetActive(false);
-         
-
+          
             //GameOver menu close
             if (!menuClose)
             {
@@ -111,25 +110,60 @@ public class FunctionHandler : Singleton<FunctionHandler>
             //MidGame Close menu
             else
             {
-
-                //Time.timeScale = 1;
-                menuButton.SetActive(true);
-                //menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
-                //Disable menu screen
-                yield return new WaitForSeconds(0.21f);
-                menuCanvas.SetActive(false);
-                //Enable menu button if game over or win
-
-
                 
-                BallController.Instance.RemoveCartBelow(15);
-              
-                GameManager.Instance.tapObject.gameObject.SetActive(true);
+                if (GameOverInProgress)
+                {
+                    //VOODOO TEST
+                    if (GameManager.Instance.Gems >= 100)
+                    {
+                        GameManager.Instance.Gems -= 100;
+
+                        //Close menu
+                        yield return StartCoroutine(CloseGameOverAction());
+                    }
+                    else
+                    {
+                        AudioManager.Instance.PlaySound("No");
+                      
+                    }
+                    //VOODOO TEST
+                }
+                else
+                {
+                    //Close menu
+                    yield return StartCoroutine(CloseGameOverAction());
+
+
+
+                    BallController.Instance.RemoveCartBelow(15);
+
+                    GameManager.Instance.tapObject.gameObject.SetActive(true);
+                }
+             
             }
         }
 
 
     }
+
+
+    public IEnumerator CloseGameOverAction()
+    {
+        AudioManager.Instance.PlaySound("MenuSwoop");
+        menuCam.SetActive(false);
+        canvasUI.SetActive(true);
+        GameOverInProgress = false;
+        //Time.timeScale = 1;
+        menuButton.SetActive(true);
+        //menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+        //Disable menu screen
+        yield return new WaitForSeconds(0.21f);
+        menuCanvas.SetActive(false);
+        BallController.Instance.RemoveCartBelow(15);
+        GameManager.Instance.tapObject.gameObject.SetActive(true);
+    }
+
+
 
     public void ToggleMenuWindow(int targetIndex)
     {
@@ -167,6 +201,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     //Enable buttons 
                     menuCanvas.transform.GetChild(3).gameObject.SetActive(false);
                     menuCanvas.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+
 
                 }
 
@@ -260,12 +295,16 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 yield return new WaitForSeconds(0.4f);
 
 
-                //Set message
+                //Enable message and set it
+                //menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+                menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 menuCanvas.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
 
                 //Disable menu button if game over or win
                 menuButton.SetActive(false);
                 //yield return new WaitForSeconds(0.21f);
+
+                //Level Complete
                 if (message != "GAME OVER")
                 {
 
@@ -281,6 +320,12 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     //disable continue
                     menuCanvas.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
 
+                   
+                    //Enable message and set it
+                    //menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+                    menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                    menuCanvas.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = message;
+
 
 
                     if (GameManager.Instance.KeyCount >= 3)
@@ -293,31 +338,34 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
 
                         yield return StartCoroutine(StopMapProgression());
-                    ////Open chest
-                    //if (GameManager.Instance.KeyCount >= 3)
-                    //{
-                       
-                    //    yield return new WaitForSeconds(0.4f);
-
-                    //    //Open chestWindow
-                    //    ToggleMenuWindow(1);
-
-                    //}
+                 
                 }
                 else
                 {
-                    //TEST
+                    GameOverInProgress = true;
                     resumeReference.gameObject.SetActive(false);
 
-                    ////Set button icons for Level complete
-                    //resumeReference.GetChild(0).gameObject.SetActive(true);
-                    //resumeReference.GetChild(1).gameObject.SetActive(false);
+                    //Set button icons for gameOver
+                    resumeReference.GetChild(0).gameObject.SetActive(true);
+                    resumeReference.GetChild(1).gameObject.SetActive(false);
+                    restartReference.GetChild(0).gameObject.SetActive(false);
+                    restartReference.GetChild(1).gameObject.SetActive(true);
 
-                    //TEST
+
+
+
+
+                    //Enable Lower message and set it
+                    menuCanvas.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                    menuCanvas.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+                    menuCanvas.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = message;
 
                     //Animate timeout
                     StartCoroutine(TimeOutButton(resumeReference, restartReference));
 
+                    //Set message
+                    menuCanvas.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text = string.Format("LEVEL {0}\n {1}%", PlayerPrefs.GetInt("CurrentRank",1),
+                        ((int)((float)BallController.Instance.CurrentLevel/(float)LevelManager.Instance.levelCount*100f)).ToString());
 
                     //GameManager.Instance.Score = 0;
                     PlayerPrefs.SetInt("Score", 0);
@@ -345,14 +393,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
         bounceRef.gameObject.SetActive(true);
 
 
-        //TEST
-        bounceRef.gameObject.SetActive(false);
+       
 
+        bounceRef.GetComponent<Animator>().SetTrigger("Bounce");
+        Debug.Log("BOUNCE " + bounceRef.GetComponent<Animator>().isActiveAndEnabled);
 
-        //bounceRef.GetComponent<Animator>().SetTrigger("Bounce");
-        //Debug.Log("BOUNCE " + bounceRef.GetComponent<Animator>().isActiveAndEnabled);
-
-        //TEST
         yield return null;
        
 
