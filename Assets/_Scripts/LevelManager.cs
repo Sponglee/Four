@@ -1,5 +1,5 @@
 ﻿
-using GameAnalyticsSDK;
+//8/////////////////using GameAnalyticsSDK;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -270,10 +270,10 @@ public class LevelManager : Singleton<LevelManager>
 
 
         //GA 
-        GameAnalytics.Initialize();
+        //GameAnalytics.Initialize();
 
         //GA 
-        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, Application.version, string.Format("level0{0}", PlayerPrefs.GetInt("CurrentRank",1)));
+        //GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, Application.version, string.Format("level0{0}", PlayerPrefs.GetInt("CurrentRank",1)));
 
 
 
