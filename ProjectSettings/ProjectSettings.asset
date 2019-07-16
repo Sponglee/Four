@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0
+  bundleVersion: 1.1
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -156,7 +156,7 @@ PlayerSettings:
     Android: com.SolidHinken.Four
     iOS: com.SolidHinken.Four
   buildNumber:
-    iOS: 7
+    iOS: 2
   AndroidBundleVersionCode: 5
   AndroidMinSdkVersion: 18
   AndroidTargetSdkVersion: 0
