@@ -22,7 +22,8 @@ namespace HutongGames.PlayMaker.Actions
 		public FsmString ResourceCurrency;
 
 		[RequiredField]
-		[Tooltip("Amount of virtual currency used/gained in this event")]
+		[Tooltip("Amount of virtual currency used
+ined in this event")]
 		public FsmFloat Amount;
 
 		[RequiredField]
