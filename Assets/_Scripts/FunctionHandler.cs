@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+//using UnityEngine.Advertisments;
 
 public class FunctionHandler : Singleton<FunctionHandler>
 {
