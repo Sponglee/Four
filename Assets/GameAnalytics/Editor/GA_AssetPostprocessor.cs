@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 
 namespace GameAnalyticsSDK.Editor
 {
@@ -14,9 +14,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -40,9 +43,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -66,9 +72,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -89,9 +98,13 @@ namespace GameAnalyticsSDK.Editor
             #region General
             {
                 PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/GameAnalytics.dll") as PluginImporter;
-                if(importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux) ||
+                if(importer != null && (importer.GetCompatibleWithAnyPlatform() ||
                     !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux64) ||
+#if UNITY_2019_2_OR_NEWER
+#else
+                    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux) ||
                     !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal) ||
+#endif
 #if UNITY_2017_3_OR_NEWER
                     !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneOSX) ||
 #else
@@ -101,16 +114,17 @@ namespace GameAnalyticsSDK.Editor
 #endif
                     !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneWindows) ||
                     !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneWindows64) ||
-                    !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("UWP") ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend").Equals("Il2Cpp")))
+                    importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer)))
                 {
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, true);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, true);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, true);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, true);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, true);
 #else
@@ -124,9 +138,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.tvOS, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.WebGL, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
-                    importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
-                    importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
+                    importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, false);
                     importer.SaveAndReimport();
                 }
             }
@@ -139,9 +151,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -165,9 +180,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -186,16 +204,24 @@ namespace GameAnalyticsSDK.Editor
             }
             {
                 PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/Linux/sqlite3.so") as PluginImporter;
-                if(importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux) ||
-                    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux64) ||
-                    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal)))
+                if(importer != null && (importer.GetCompatibleWithAnyPlatform() ||
+                    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux64)
+#if UNITY_2019_2_OR_NEWER
+#else
+                    || !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinux) ||
+                    !importer.GetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal)
+#endif
+                ))
                 {
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, true);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, true);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, true);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, true);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -221,9 +247,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -247,9 +276,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -273,9 +305,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -299,9 +334,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -325,9 +363,12 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -347,103 +388,21 @@ namespace GameAnalyticsSDK.Editor
             #endregion // WebGL
             #region WSA
             {
-                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/GameAnalytics.UWP.dll") as PluginImporter;
+                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/x86/GameAnalytics.UWP.dll") as PluginImporter;
                 if (importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
                     !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("UWP") ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend").Equals("DotNet")))
+                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "CPU").Equals("X86") ||
+                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend").Equals("Il2Cpp")))
                 {
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
-#if UNITY_2017_3_OR_NEWER
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
+#if UNITY_2019_2_OR_NEWER
 #else
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
-#endif
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.tvOS, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WebGL, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
-                    importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
-                    importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "DotNet");
-                    importer.SaveAndReimport();
-                }
-            }
-            {
-                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/Microsoft.Data.Sqlite.dll") as PluginImporter;
-                if (importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("UWP")))
-                {
-                    importer.SetCompatibleWithAnyPlatform(false);
-                    importer.SetCompatibleWithEditor(false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
-#if UNITY_2017_3_OR_NEWER
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
-#else
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
 #endif
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.tvOS, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WebGL, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
-                    importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
-                    importer.SaveAndReimport();
-                }
-            }
-            {
-                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/MetroLog.dll") as PluginImporter;
-                if (importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("AnySDK")))
-                {
-                    importer.SetCompatibleWithAnyPlatform(false);
-                    importer.SetCompatibleWithEditor(false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
-#if UNITY_2017_3_OR_NEWER
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
-#else
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXIntel64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSXUniversal, false);
-#endif
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.iOS, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.tvOS, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WebGL, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
-                    importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "AnySDK");
-                    importer.SaveAndReimport();
-                }
-            }
-            {
-                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/x86/sqlite3.dll") as PluginImporter;
-                if (importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("UWP") ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "CPU").Equals("X86")))
-                {
-                    importer.SetCompatibleWithAnyPlatform(false);
-                    importer.SetCompatibleWithEditor(false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -459,21 +418,26 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
                     importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                     importer.SetPlatformData(BuildTarget.WSAPlayer, "CPU", "X86");
+                    importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
                     importer.SaveAndReimport();
                 }
             }
             {
-                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/x64/sqlite3.dll") as PluginImporter;
+                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/x64/GameAnalytics.UWP.dll") as PluginImporter;
                 if (importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
                     !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("UWP") ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "CPU").Equals("X64")))
+                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "CPU").Equals("X64") ||
+                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend").Equals("Il2Cpp")))
                 {
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -489,21 +453,26 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
                     importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                     importer.SetPlatformData(BuildTarget.WSAPlayer, "CPU", "X64");
+                    importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
                     importer.SaveAndReimport();
                 }
             }
             {
-                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/ARM/sqlite3.dll") as PluginImporter;
+                PluginImporter importer = AssetImporter.GetAtPath("Assets/GameAnalytics/Plugins/WSA/ARM/GameAnalytics.UWP.dll") as PluginImporter;
                 if (importer != null && (importer.GetCompatibleWithAnyPlatform() || !importer.GetCompatibleWithPlatform(BuildTarget.WSAPlayer) ||
                     !importer.GetPlatformData(BuildTarget.WSAPlayer, "SDK").Equals("UWP") ||
-                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "CPU").Equals("ARM")))
+                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "CPU").Equals("ARM") ||
+                    !importer.GetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend").Equals("Il2Cpp")))
                 {
                     importer.SetCompatibleWithAnyPlatform(false);
                     importer.SetCompatibleWithEditor(false);
                     importer.SetCompatibleWithPlatform(BuildTarget.Android, false);
-                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux64, false);
+#if UNITY_2019_2_OR_NEWER
+#else
+                    importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinux, false);
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneLinuxUniversal, false);
+#endif
 #if UNITY_2017_3_OR_NEWER
                     importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX, false);
 #else
@@ -519,6 +488,7 @@ namespace GameAnalyticsSDK.Editor
                     importer.SetCompatibleWithPlatform(BuildTarget.WSAPlayer, true);
                     importer.SetPlatformData(BuildTarget.WSAPlayer, "SDK", "UWP");
                     importer.SetPlatformData(BuildTarget.WSAPlayer, "CPU", "ARM");
+                    importer.SetPlatformData(BuildTarget.WSAPlayer, "ScriptingBackend", "Il2Cpp");
                     importer.SaveAndReimport();
                 }
             }

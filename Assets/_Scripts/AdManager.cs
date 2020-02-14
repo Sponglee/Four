@@ -33,7 +33,7 @@ public class AdManager : Singleton<AdManager>
         if (forceAd || (Advertisement.IsReady() && adCount >= levelsToAd))
         {
 
-            Advertisement.Show();
+            Advertisement.Show("Inter360drop");
             adCount = 0;
         }
         else

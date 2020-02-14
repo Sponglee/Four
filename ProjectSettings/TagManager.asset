@@ -3,27 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Cart2
-  - Cart1
-  - Cart0
-  - Cart3
-  - Cart
-  - Spawn
-  - Bottom
-  - Blank
-  - FxTemporaire
-  - SpawnManager
-  - Steel
-  - MenuCanvas
-  - Level
-  - CartTrigger
-  - Collectable
-  - Danger
-  - Magnet
-  - PowerCol
-  - Chest
-  - Audio
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -33,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
-  - IgnoreCollision
-  - Circles
+  - 
+  - 
+  - 
   - 
   - 
   - 
