@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisments;
 
 public class FunctionHandler : Singleton<FunctionHandler>
 {
@@ -37,8 +37,6 @@ public class FunctionHandler : Singleton<FunctionHandler>
 
     private void Start()
     {
-       
-
         Time.timeScale = 1;
         menuCam = SpawnManager.Instance.vcamMenu.gameObject;
         windowCam = SpawnManager.Instance.vcamShop.gameObject;
@@ -117,9 +115,11 @@ public class FunctionHandler : Singleton<FunctionHandler>
                 if (GameOverInProgress)
                 {
                     //VOODOO TEST
-                    if (Advertisement.IsReady())
+                    if (GameManager.Instance.Gems >= 100)
                     {
-                        //Close menu and run Ad
+                        GameManager.Instance.Gems -= 100;
+
+                        //Close menu
                         yield return StartCoroutine(CloseGameOverAction());
                     }
                     else
@@ -134,8 +134,7 @@ public class FunctionHandler : Singleton<FunctionHandler>
                     //Close menu
                     yield return StartCoroutine(CloseGameOverAction());
 
-                    //Check if ad will be served
-                    AdManager.Instance.PlayAd();
+
 
                     BallController.Instance.RemoveCartBelow(15);
 
@@ -163,9 +162,6 @@ public class FunctionHandler : Singleton<FunctionHandler>
         menuCanvas.SetActive(false);
         BallController.Instance.RemoveCartBelow(15);
         GameManager.Instance.tapObject.gameObject.SetActive(true);
-
-        //Check if ad will be served
-        AdManager.Instance.PlayAd(true);
     }
 
 
