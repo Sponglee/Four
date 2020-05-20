@@ -12,7 +12,10 @@ public class BallController : Singleton<BallController>
 
     private Color pushColor;
     public int comboIndex = 1;
+    public bool PowerUpResetBool = false;
 
+    public float comboMultiplier = 1;
+    public float comboDecreaseRate = 0.2f;
 
     ///FROM CARTMODELCONTROLLER 
     /// 
@@ -34,12 +37,7 @@ public class BallController : Singleton<BallController>
             currentLevel = value;
             GameManager.Instance.LevelProgress = (float)(currentLevel) / levelManager.levelCount;
             GameManager.Instance.AddScore(comboIndex, Color.grey, transform.GetChild(1));
-
-
-            //RenderSettings.skybox.SetColor("_Color1_B", Color.black);
-
-            //DynamicGI.UpdateEnvironment();
-
+            
             //OPTIMIZATION
             levelManager.transform.GetChild((currentLevel + 35) % levelManager.transform.childCount).gameObject.SetActive(true);
 
@@ -48,50 +46,38 @@ public class BallController : Singleton<BallController>
                 levelManager.transform.GetChild(currentLevel - 10).gameObject.SetActive(false);
             }
 
-
-            //Increase PoweredUP
+            //Decrease PoweredUP
             if (!collidedBool && !PoweredUp && TapToStart)
             {
+                if(!PowerUpResetBool)
+                {
+                    //Increase combo while freefall
+                    StartCoroutine(ChangePowerFill(0.4f));
+                }
+               
 
-                StartCoroutine(ChangePowerFill(0.2f));
 
                 //Enable and fill powerFiller
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
                 GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
-                Debug.Log("?????????????????? " + comboMultiplier);
+                //Debug.Log("?????????????????? " + comboMultiplier);
                 if(comboMultiplier >= 1f && comboMultiplier <= 1.1f)
                 {
-                    //Debug.Log("YAS");
-
                     AudioManager.Instance.PlaySound("Wind");
-                    //AudioManager.Instance.PlaySound("Accelerate");
                 }
-                //else if(comboMultiplier >= 1.60f && comboMultiplier <= 1.68f)
-                //{
-                //    AudioManager.Instance.PlaySound("Accelerate");
-                //}
-                //else if(comboMultiplier >= 2.80f && comboMultiplier <= 2.88f)
-                //{
-                //    AudioManager.Instance.PlaySound("Accelerate");
-                //}
                 else if (comboMultiplier == 3f)
                 {
                     PoweredUp = true;
                 }
             }
+
             //Decrease on PoweredUp 
             else if (PoweredUp)
             {
                 if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
                 {
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-                    ////Reset power Up on collided
-
-
-                    StartCoroutine(ChangePowerFill(-0.12f));
                    
-
                     //Enable and fill powerFiller
                     GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
                     GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
@@ -107,18 +93,7 @@ public class BallController : Singleton<BallController>
                     comboMultiplier = 3f;
                     GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
                 }
-
-
             }
-
-
-
-
-
-
-
-
-
         }
     }
 
@@ -167,40 +142,24 @@ public class BallController : Singleton<BallController>
         {
             if(collidedBool == false && value == true)
             {
+                //Reset to prevent power up second time while falling
+                if(PowerUpResetBool)
+                {
+                    PowerUpResetBool = false;
+                }
+
                 comboIndex = 0;
-                //GameObject otherTrans = DownCheckRay(transform, "Cart");
-
-                //PushDown(otherTrans.transform, otherTrans.GetComponent<CartModelContoller>().LevelIndex);
-
                 BallAnim.SetTrigger("Bump");
                 AudioManager.Instance.PlaySound("Bump");
                 AudioManager.Instance.StopSound("Wind");
                 Instantiate(LevelManager.Instance.mpoofPrefab, transform.position, Quaternion.identity);
-                //for (int i = 2; i < Random.Range(0,10); i++)
-                //{
-                //    int randomDir = Random.Range(0, 2);
-
-                //    if (randomDir == 1)
-                //    {
-                //        StartCoroutine(LevelManager.Instance.transform.GetChild(CurrentLevel + i).GetChild(0).GetComponent<CartManager>().StopLevelRotator());
-
-                //    }
-                //    else
-                //    {
-                //        StartCoroutine(LevelManager.Instance.transform.GetChild(CurrentLevel + i).GetChild(0).GetComponent<CartManager>().StopLevelRotator(true));
-
-                //    }
-
-                //}
-            }
-            //else if( collidedBool == true && value == false)
-            //{
               
-            //}
-          
+            }
+            else if (collidedBool == true && value == false)
+            {
+                rigidBody.velocity = Vector3.down * gravityForce;
+            }
             collidedBool = value;
-           
-
         }
     }
 
@@ -218,8 +177,9 @@ public class BallController : Singleton<BallController>
     private float powerUpSpeed = 0;
     [SerializeField]
     private float forceMultiplier = 10;
-    [SerializeField]
-    public float comboMultiplier = 1;
+   
+  
+
     [SerializeField]
     private float forceTreshold = 3f;
     [SerializeField]
@@ -235,10 +195,10 @@ public class BallController : Singleton<BallController>
     private int currentBallRank = -1;
 
     LevelManager levelManager;
-    Rigidbody rb;
-    float nextBallPosToJump;
-    int skippedCounter = 0;
-    float vel;
+    private Rigidbody rigidBody;
+    private float nextBallPosToJump;
+    private int skippedCounter = 0;
+    private float vel;
 
     [SerializeField]
     private bool tapToStart = false;
@@ -256,12 +216,17 @@ public class BallController : Singleton<BallController>
             if (value == true && tapToStart == false)
             {
                 //let go
-                rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+                rigidBody.constraints &= ~RigidbodyConstraints.FreezePositionY;
                 GameManager.Instance.tapObject.gameObject.SetActive(false);
+
                 if(PoweredUp)
                 {
                     AudioManager.Instance.PlaySound("FireTrail");
-                    rb.velocity = Vector3.down * 72f;
+                    rigidBody.velocity = Vector3.down * 2f * gravityForce;
+                }
+                else
+                {
+                    rigidBody.velocity = Vector3.down * gravityForce;
                 }
 
                   
@@ -270,7 +235,7 @@ public class BallController : Singleton<BallController>
             else if (value == false && tapToStart == true)
             {
                 
-                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rigidBody.constraints = RigidbodyConstraints.FreezeAll;
                 GameManager.Instance.tapObject.gameObject.SetActive(true);
             }
            
@@ -330,6 +295,7 @@ public class BallController : Singleton<BallController>
         {
             if(value == true && poweredUp == false)
             {
+                PowerUpResetBool = true;
                 AudioManager.Instance.StopSound("Wind");
                 AudioManager.Instance.PlaySound("FireUp");
                 AudioManager.Instance.PlaySound("FireTrail");
@@ -343,7 +309,8 @@ public class BallController : Singleton<BallController>
                 Instantiate(LevelManager.Instance.poweredUpPrefab, poweredUpVFX.transform);
 
                 //Debug.Log("SPEED " + rb.velocity);
-                rb.velocity = Vector3.down * 72f;
+                rigidBody.velocity = Vector3.down * 2f * gravityForce;
+                //rb.useGravity = false;
 
                 //RemoveCartBelow(2);
                 CollidedBool = false;
@@ -359,10 +326,11 @@ public class BallController : Singleton<BallController>
 
                 //Disable PowerUp
                 if (poweredUpVFX.transform.childCount > 0)
-                    Destroy(poweredUpVFX.transform.GetChild(0).gameObject);
-                Debug.Log("HERE");
+                    Destroy(poweredUpVFX.transform.GetChild(1).gameObject);
+
                 poweredUpVFX.SetActive(false);
-                
+
+                //rigidBody.useGravity = true;
             }
 
             //Disable everything and sound
@@ -481,55 +449,60 @@ public class BallController : Singleton<BallController>
         }
     }
 
-
-
     void Start()
     {
-
         pushColor = LevelManager.Instance.ballPushColor;
         currentBallRank = PlayerPrefs.GetInt("CurrentRank", 1);
         transform.SetSiblingIndex(1);
 
         magnetHolder = SpawnManager.Instance.transform.GetChild(0);
 
-
         downVelocity = new Vector3(0, -PlayerPrefs.GetFloat("Speed", 0.3f), 0);
 
-        rb = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
         levelManager = FindObjectOfType<LevelManager>();
 
         nextBallPosToJump = -levelManager.spawnOffset /*+ GetComponent<SphereCollider>().bounds.size.y / 2*/ + levelManager.spawnOffsetStep / 2;
 
-        //Debug.Log(nextBallPosToJump);
         levelManager.ballRef = this;
 
-        //gameObject.GetComponent<Renderer>().material.color = LevelManager.Instance.spawnMats[0].color;
-
-
-        
         StartCoroutine(levelManager.StopLevelRotator());
     }
 
-   
     private void Update()
     {
+        if (TapToStart && !MenuOpened)
+        {
+            if (PoweredUp)
+            {
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
+            }
+            else
+            {
+                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
+            }
+        }
+        else if (!TapToStart && !MenuOpened)
+        {
+            //rb.velocity = Vector3.zero;
 
-        ////////////////if(!collidedBool && !PoweredUp && TapToStart)
-        ////////////////{
+            if (Input.GetMouseButtonDown(0) && !FunctionHandler.Instance.GameOverInProgress)
+            {
+                TapToStart = true;
 
-        ////////////////    comboMultiplier = Mathf.Clamp(comboMultiplier + Time.deltaTime, 0, 3f);
-        ////////////////    //powerUpSpeed += Time.deltaTime;
+                //PoweredUp = true;
 
-        ////////////////    //Enable and fill powerFiller
-        ////////////////    GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
-        ////////////////    GameManager.Instance.powerFiller.fillAmount = (comboMultiplier)/3f;
+            }
+        }
+        else
+        {
+            //rb.velocity = Vector3.zero;
+        }
+    }
 
+    private void FixedUpdate()
+    {
 
-        ////////////////    if(comboMultiplier == 3f)
-        ////////////////    {
-        ////////////////        PoweredUp = true;
-        ////////////////    }
-        ////////////////}
         if (!PoweredUp && collidedBool && TapToStart)
         {
             //Reset power Up on collided
@@ -539,35 +512,8 @@ public class BallController : Singleton<BallController>
             if (comboMultiplier == 0)
                 GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
         }
-        //else if (PoweredUp && TapToStart)
-        //{
-        //    //Decrease on PoweredUp 
-        //    if (currentBallRank % 4 != 0 && !collidedBool && poweredUp && TapToStart)
-        //    {
-        //        ////////////////////////////////////////////////////////////////////////////////////////////////////////; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
-        //        ////Reset power Up on collided
-        //        comboMultiplier = Mathf.Clamp(comboMultiplier - Time.deltaTime, 0, 3f);
-        //        GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
-        //        //Enable and fill powerFiller
-        //        GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(true);
-        //        GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
-
-
-        //        if (comboMultiplier == 0f)
-        //        {
-        //            PoweredUp = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        comboMultiplier = 3f;
-        //        GameManager.Instance.powerFiller.transform.parent.gameObject.SetActive(false);
-        //    }
-
-
-        //}
-
+        ///DEBUG/////////////////////////////////////////////////
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -584,124 +530,15 @@ public class BallController : Singleton<BallController>
             comboMultiplier = 3f;
         }
 
+        ///DEBUG/////////////////////////////////////////////////
 
-        if (TapToStart && !MenuOpened)
-        {
-            //Launch powerup
-            //REPLACE THIS WITH A BUTTON PRESS
-
-
-
-
-
-            if (PoweredUp)
-            {
-
-
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 11;
-                //comboMultiplier -= Time.deltaTime;
-                //comboMultiplier = Mathf.Clamp(comboMultiplier, 2.5f, 3f);
-                ////Debug.Log(comboMultiplier);
-
-            }
-            else
-            {
-
-                SpawnManager.Instance.vcamSpeedy.m_Priority = 9;
-
-
-            }
-
-
-
-
-            //if (forceMultiplier >= forceTreshold)
-            //{
-            //    if (!ForcePush)
-            //    {
-            //        transform.GetChild(2).GetComponent<Renderer>().material.color = Color.yellow;
-                   
-            //        ForcePush = true;
-            //        //rb.velocity = downVelocity * forceMultiplier * comboMultiplier * 10f;
-            //    }
-
-
-            //}
-            //else if(!CollidedBool)
-            //{
-            //    //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
-            //    ForcePush = false;
-                
-            //    rb.velocity = downVelocity /** comboMultiplier*/ * 100f;
-
-            //}
-            //else
-            //{
-            //    //transform.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
-            //    ForcePush = false;
-
-            //    rb.velocity =Vector3.zero;
-
-            //}
-
-
-
-            //if (Input.GetMouseButton(0) && !PoweredUp)
-            //{
-            //    //Move
-            //    forceMultiplier += 1.5f;
-            //    forceMultiplier = Mathf.Clamp(forceMultiplier, 0, forceTreshold);
-
-            //}
-            //else
-            //{
-                //forceMultiplier = 1f;
-                //forceMultiplier = Mathf.Clamp(forceMultiplier, 10, forceTreshold);
-            //}
-
-
-            
-
-
-            ////FailSafe for a ball
-            //if (rb.velocity != Vector3.zero)
-            //{
-            //    rb.velocity = Vector3.zero;
-            //}
-            //if (transform.localPosition.y > 0)
-            //{
-            //    transform.localPosition = Vector3.zero;
-            //}
-
-
-
-
-        }
-        else if(!TapToStart && !MenuOpened )
-        {
-            //rb.velocity = Vector3.zero;
-
-            if (Input.GetMouseButtonDown(0) && !FunctionHandler.Instance.GameOverInProgress)
-            {
-                TapToStart = true;
-                
-                //PoweredUp = true;
-
-            }
-        }
-        else
-        {
-            //rb.velocity = Vector3.zero;
-        }
-
-
+       
     }
 
 
 
 
-    [SerializeField]
-    private bool WarningCheck = false;
+    [SerializeField] private bool WarningCheck = false;
  
 
 
@@ -711,13 +548,12 @@ public class BallController : Singleton<BallController>
         //Grab obj below
         GameObject otherTrans = DownCheckRay(transform, "Cart");
 
-
-       
         if (otherTrans != null && otherTrans.gameObject.CompareTag("Cart"))
         {
-            //Debug.Log(">>> " + CurrentLevel + " : " + otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex());
             if (Mathf.Abs(otherTrans.transform.parent.parent.parent.parent.GetSiblingIndex() - CurrentLevel) > 1 )
             {
+                Debug.Log(">");
+                //CollidedBool = true;
                 CollidedBool = false;
             }
             else
@@ -725,52 +561,24 @@ public class BallController : Singleton<BallController>
                 if (BallController.Instance.CollidedBool)
                 {
                     BallController.Instance.BallAnim.SetTrigger("Bump");
-                 
                 }
             }
         }
         else
         {
-            //Debug.Log("NULL");
-
             CollidedBool = false;
         }
-
-
-       
     }
 
-
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if(!PoweredUp && other.gameObject.CompareTag("Steel"))
-    //    {
-    //        //Debug.Log(other + "COLLISION");
-    //        CollidedBool = false;   
-    //    }
-    //}
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    //Debug.Log("ENTER " + gameObject.name + " >>> " + other.gameObject.name);
-    //    if (!PoweredUp && other.gameObject.CompareTag("Steel"))
-    //    {
-    //        CollidedBool = true;
-    //    }
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Level"))
         {
-
-            //Debug.Log(other.name);
             CurrentLevel = other.transform.parent.parent.GetSiblingIndex();
         }
         else if (other.gameObject.CompareTag("Bottom"))
         {
-
             Instantiate(levelManager.finishPrefab, transform.position, Quaternion.identity, transform.GetChild(1));
             BallAnim.SetTrigger("Bump");
             AudioManager.Instance.PlaySound("End");
@@ -802,7 +610,6 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("Chest"))
         {
-
             AudioManager.Instance.PlaySound("Key");
             GameManager.Instance.KeyCount++;
             Instantiate(levelManager.smokePrefab, transform.position, Quaternion.identity);
@@ -810,8 +617,6 @@ public class BallController : Singleton<BallController>
         }
         else if (other.gameObject.CompareTag("PowerCol"))
         {
-            //GameManager.Instance.KeyCount++;
-            //GameManager.Instance.GrabCollectable(other.gameObject.GetComponent<Collectable>().PowerCol, other.transform);
             Instantiate(levelManager.smokePrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
         }
@@ -939,19 +744,17 @@ public class BallController : Singleton<BallController>
 
     public void PushDown(Transform other, int siblingIndex)
     {
-        //Decrease Power up on push
+        //Decrease Power on collision
         if (PoweredUp)
         {
-            comboMultiplier = Mathf.Clamp(comboMultiplier + 0.5f, 0, 3f);
+            
+            comboMultiplier = Mathf.Clamp(comboMultiplier - comboDecreaseRate, 0, 3f);
             GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
         }
-            //    GameManager.Instance.PowerFill -= 15f / 200f; 
-            //Debug.Log("SHIKARI");
-            //CollidedBool = true;
-        if (true/*gameObject.GetComponent<Renderer>().material.color == other.gameObject.GetComponent<Renderer>().material.color*/)
-        {
           
-            //ForcePush = false;
+        if (true)
+        {
+
             //Check if other is in the same column if secon hit 
             if (SecondCollision && CollidedCurrent != other.transform.GetComponent<CartModelContoller>().Current)
             {
@@ -959,8 +762,6 @@ public class BallController : Singleton<BallController>
                 return;
             }
 
-            //other.SetParent(transform.GetChild(0));
-           
             //Second cart pop sequence  
             other.gameObject.GetComponent<BoxCollider>().tag = "Untagged";
             other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
@@ -992,6 +793,8 @@ public class BallController : Singleton<BallController>
                 StartCoroutine(StopColor(other.transform.GetChild(0).GetChild(0).GetComponent<Renderer>(), pushColor));
                 StartCoroutine(StopColor(other.transform.GetChild(1).GetChild(0).GetComponent<Renderer>(), pushColor));
 
+                //comboMultiplier = Mathf.Clamp(comboMultiplier - 0.5f, 0, 3f);
+                //GameManager.Instance.powerFiller.fillAmount = (comboMultiplier) / 3f;
 
             }
             else

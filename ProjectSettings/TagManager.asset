@@ -3,7 +3,21 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Magnet
+  - Spawn
+  - Blank
+  - Collectable
+  - Cart
+  - CartTrigger
+  - FxTemporaire
+  - Steel
+  - Bottom
+  - Chest
+  - Level
+  - Danger
+  - PowerCol
   layers:
   - Default
   - TransparentFX
